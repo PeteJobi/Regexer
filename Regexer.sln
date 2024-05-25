@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Regexer", "Regexer\Regexer.csproj", "{52C40F7D-C14D-4181-AE72-2236E81F676C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegexerConsole", "RegexerConsole\RegexerConsole.csproj", "{9B657181-6315-4FCF-AEA9-3CB2002541FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52C40F7D-C14D-4181-AE72-2236E81F676C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52C40F7D-C14D-4181-AE72-2236E81F676C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52C40F7D-C14D-4181-AE72-2236E81F676C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52C40F7D-C14D-4181-AE72-2236E81F676C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B657181-6315-4FCF-AEA9-3CB2002541FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B657181-6315-4FCF-AEA9-3CB2002541FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B657181-6315-4FCF-AEA9-3CB2002541FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B657181-6315-4FCF-AEA9-3CB2002541FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF5054A5-1E45-419C-BD5F-09C92770FBE1}
+	EndGlobalSection
+EndGlobal
