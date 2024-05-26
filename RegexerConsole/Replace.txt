@@ -1,9 +1,9 @@
 ﻿Functions.fetchCall<[type]>([url], { [comment]
-	notOk: (status, responseText, noConnection, noConnectionString) => {
-		[not]
-	}
+    notOk: (status, responseText, noConnection, noConnectionString) => {
+        1[not]
+    }
 }).then((response) => {
-	if(!response.ok) return
+    if(!response.ok) return
     const [ident] = response.result
-    [act]
+    [act],
 })
