@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Regexer", "Regexer\Regexer.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegexerConsole", "RegexerConsole\RegexerConsole.csproj", "{9B657181-6315-4FCF-AEA9-3CB2002541FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegexerUI", "RegexerUI\RegexerUI.csproj", "{00C0BDD1-B8E4-4B1F-B423-9E246135DE20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9B657181-6315-4FCF-AEA9-3CB2002541FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B657181-6315-4FCF-AEA9-3CB2002541FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B657181-6315-4FCF-AEA9-3CB2002541FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00C0BDD1-B8E4-4B1F-B423-9E246135DE20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00C0BDD1-B8E4-4B1F-B423-9E246135DE20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00C0BDD1-B8E4-4B1F-B423-9E246135DE20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00C0BDD1-B8E4-4B1F-B423-9E246135DE20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
