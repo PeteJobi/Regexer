@@ -1,11 +1,12 @@
 ﻿$.ajax({
-    url: [url], [comment]
+    url: [[url]],
     contentType: "application/json",
-    method: "POST",
-    success: ([ident]: [type]) => {
-        [act|ml]
+    data: [[query]],
+    method: "GET",
+    success: ([[ident]]: [[type]]) => {
+        [[act|ml]]
     },
     error: (xhr, status, error) => {
-        [not|ml]
+        [[not|ml]]
     }
 })

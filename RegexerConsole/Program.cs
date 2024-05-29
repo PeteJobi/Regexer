@@ -11,10 +11,15 @@ await using var fileStream = File.OpenRead("../../../../RegexerConsole/Input.tsx
     await using var fileStream3 = File.OpenRead("../../../../RegexerConsole/Replace.txt");
     using var streamReader3 = new StreamReader(fileStream3);
     var replace = await streamReader3.ReadToEndAsync();
-    var result = new Regexer.Regexer().AutoRegex(input, pattern, replace);
-    Console.WriteLine(result);
+    try
+    {
+        var result = await new Regexer.Regexer().AutoRegex(input, pattern, replace);
+        Console.WriteLine(result);
+    }catch(Exception e){
+        Console.WriteLine(e);
+    }
     return;
     await using var fileStream4 = File.OpenWrite("../../../../RegexerConsole/Output.cs");
     await using var streamWriter = new StreamWriter(fileStream4);
-    await streamWriter.WriteLineAsync(result);
+    //await streamWriter.WriteLineAsync(result);
 }

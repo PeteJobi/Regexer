@@ -1,38 +1,12 @@
-﻿$.ajax({
-    url: Strings.URL_CLASS + "joinClass/" + classe.id, // api/Class/joinClass
-    contentType: "application/json",
-    method: "POST",
-    success: (classe: Types.IClass) => {
-        updClassDispatch({
-            type: Strings.UPDATE_CLASS_PARAMS,
-            classAction: Strings.EDIT_CLASS,
-            classId: classe.id,
-            class: classe
-        })
-    },
-    error: (xhr, status, error) => {
-        console.log(xhr.responseText, status, error)
-        yo()
-    }
-})
-
-() => {
-    $.ajax({
-        url: Strings.URL_CLASS + "joinClass/" + classe.id, // api/Class/joinClass
-        contentType: "application/json",
-        method: "POST",
-        success: (classe: Types.IClass) => {
-            updClassDispatch({
-                type: Strings.UPDATE_CLASS_PARAMS,
-                classAction: Strings.EDIT_CLASS,
-                classId: classe.id,
-                class: classe
-            })
-            ibad()
-        },
-        error: (xhr, status, error) => {
-            whoBad()
-            console.log(xhr.responseText, status, error)
-        }
-    })
-}
+﻿                    $.ajax({
+                        url: Strings.URL_CLASS + "ratings/" + classe.id,
+                        contentType: "application/json",
+                        data: { count: Integers.OPTS_DOM_LIMIT, ref1Id, ref2Id, ref3Id, ref4Id, ref5Id } as Types.IRatsLoadParams,
+                        method: "GET",
+                        success: (result: Types.IInfScrollResult<Types.IOptRow>) => {
+                            resolve(result)
+                        },
+                        error: (xhr, status, error) => {
+                            console.log(xhr.responseText, status, error)
+                        }
+                    })
