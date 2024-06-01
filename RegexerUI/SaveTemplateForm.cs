@@ -38,7 +38,7 @@ namespace RegexerUI
 
             await using var fileStream = File.OpenWrite(templatePath);
             await using var streamWriter = new StreamWriter(fileStream);
-            await streamWriter.WriteLineAsync($"{_pattern}{TEMPLATE_SEPARATOR}{_replace}");
+            await streamWriter.WriteAsync($"{_pattern}{TEMPLATE_SEPARATOR}{_replace}");
             SavedTemplate = templatesComboBox.Text;
             Close();
         }
