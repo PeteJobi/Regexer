@@ -47,25 +47,25 @@ public class Regexer
         pattern = @"(?<space>[^\S\r\n]+)?" + pattern;
         pattern = Regex.Replace(pattern, "\r\n", "\r\n([^\\S\\r\\n]+)?");
         pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+(\|\w+)?)\\\]\\\])", "[$2]");
-        pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+)?\{(.+)\}\\\]\\\])", "[$2{$3}]");
+        pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+)?\{([^\r\n]+)\}\\\]\\\])", "[$2{$3}]");
         pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+\|)?u\|([^\r\n]+?)\\\]\\\])", "[$2u|$3]");
         pattern = Regex.Replace(pattern, @"(?>[^\S\r\n]+)(?!\[\w+\|ml\])", @"[^\S\r\n]+");
         var multiLineGroups = Regex.Matches(pattern, @"\[(\w+)\|ml\]").Select(g => g.Groups[1].Value);
         if (multiLineGroups.Any())
         {
             pattern = Regex.Replace(pattern, @"(?<mlSpace>[^\S\r\n]+)\[(?<mlName>\w+)\|ml\]",
-                @"(?<${mlName}FirstLine>.+?)((\r\n\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]+)?.+?))+?)?");
+                @"(?<${mlName}FirstLine>[^\r\n]*?)(\r\n(\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]*)[^\r\n]*?))?)*?");
         }
-        pattern = Regex.Replace(pattern, @"\[(\w+)\]", "(?<$1>.+?)");
-        pattern = Regex.Replace(pattern, @"\[(\w+)\|o\]", "(?<$1>.+?)?");
+        pattern = Regex.Replace(pattern, @"\[(\w+)\]", "(?<$1>[^\\r\\n]+?)");
+        pattern = Regex.Replace(pattern, @"\[(\w+)\|o\]", "(?<$1>[^\\r\\n]+?)?");
         pattern = Regex.Replace(pattern, @"\[(\w+)\|w\]", "(?<$1>\\w+?)");
         pattern = Regex.Replace(pattern, @"\[(\w+)\|d\]", "(?<$1>\\d+?)");
         pattern = Regex.Replace(pattern, @"\[(\w+)\|s\]", "(?<$1>[^\\S\\r\\n]+?)");
         pattern = Regex.Replace(pattern, @"\[(\w+)\|wo\]", "(?<$1>\\w+?)?");
         pattern = Regex.Replace(pattern, @"\[(\w+)\|do\]", "(?<$1>\\d+?)?");
         pattern = Regex.Replace(pattern, @"\[(\w+)\|so\]", "(?<$1>[^\\S\\r\\n]+?)?");
-        pattern = Regex.Replace(pattern, @"\[(\w+)\{(.+)\}\]", "(?<$1>$2)");
-        pattern = Regex.Replace(pattern, @"\[\{(.+)\}\]", "$1");
+        pattern = Regex.Replace(pattern, @"\[(\w+)\{([^\r\n]+)\}\]", "(?<$1>$2)");
+        pattern = Regex.Replace(pattern, @"\[\{([^\r\n]+)\}\]", "$1");
         var uMatches = Regex.Matches(pattern, @"(?<uLines>\r\n\(\[\^\\S\\r\\n\]\+\)\?(\[\^\\S\\r\\n\]\+)?\[(\w+\|)?u\|[^\r\n]+\])+");
         //var bbb = uMatches[0].Groups["uLines"];
         for (var i = uMatches.Count - 1; i >= 0; i--)
@@ -81,12 +81,21 @@ public class Regexer
             pattern = pattern[..uMatch.Index] + fullPattern + pattern[(uMatch.Index + uMatch.Length)..];
         }
 
+        var replaceWasEmpty = replace == string.Empty;
         replace = "${space}" + replace;
         replace = Regex.Replace(replace, "\r\n", "\r\n${space}");
         replace = Regex.Replace(replace, @"\[\[(\w+)\]\]", "${$1}");
 
         var matches = Regex.Matches(input, pattern, RegexOptions.None, regexTimeoutSpan);
         if (!matches.Any()) return input;
+        //try
+        //{
+        //    if (!matches.Any()) return input;
+        //}
+        //catch (RegexMatchTimeoutException e)
+        //{
+        //    return "Fail";
+        //}
         var multiLineGroupsKvps = multiLineGroups.Select(group =>
         {
             replace = replace.Replace($"${{{group}}}", $"[[{group}]]"); //replaces ${id} with [id]
@@ -94,7 +103,7 @@ public class Regexer
             {
                 var firstLine = match.Groups[$"{group}FirstLine"].Captures;
                 var nextLines = match.Groups[$"{group}NextLines"].Captures;
-                return nextLines.Select(capture => capture.Value).Prepend(firstLine[0].Value);
+                return firstLine[0].Value != string.Empty ? nextLines.Select(capture => capture.Value).Prepend(firstLine[0].Value) : nextLines.Select(capture => capture.Value);
             }));
         }).ToArray();
 
@@ -103,16 +112,16 @@ public class Regexer
         if (replaceWasEmpty || !multiLineGroups.Any()) return result;
         foreach (var kvp in multiLineGroupsKvps)
         {
-            var postMatches = Regex.Matches(result, string.Format(@"(?<space>[^\S\r\n]+)(?<before>.+?)?\[\[{0}\]\](?<after>.+?)?\r\n", kvp.Key));
-            if (!postMatches.Any()) continue;
-            for (int i = kvp.Value.Count() - 1; i >= 0; i--)
+            var mlMatches = Regex.Matches(result, string.Format(@"(?<space>[^\S\r\n]+)(?<before>[^\r\n]+?)?\[\[{0}\]\](?<after>[^\r\n]+?)?\r\n", kvp.Key));
+            if (!mlMatches.Any()) continue;
+            for (var i = kvp.Value.Count() - 1; i >= 0; i--)
             {
                 var lines = kvp.Value.ElementAt(i);
-                var segmentCount = postMatches.Count() / kvp.Value.Count();
+                var segmentCount = mlMatches.Count / kvp.Value.Count();
                 var jInit = segmentCount * (i + 1);
                 for (int j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
-                    var match = postMatches.ElementAt(j);
+                    var match = mlMatches.ElementAt(j);
                     var rep = string.Join("\r\n", lines.Select(line => match.Groups["space"].Value + match.Groups["before"] + line + match.Groups["after"])) + "\r\n";
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
