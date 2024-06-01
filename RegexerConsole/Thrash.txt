@@ -83,3 +83,16 @@ Functions.fetchCall<[[type]]>([[url]], { [[comment]]
 ([^\S\r\n]+)?(?<not>(?<notFirstLine>.+?)((\r\n\k<space>?        (?<notNextLines>([^\S\r\n]+)?.+?))+?)?)
 ([^\S\r\n]+)?[^\S\r\n]+}
 ([^\S\r\n]+)?}\)
+
+$.ajax({
+    url: [[url]],
+    [[cont|u|contentType: "application/json",]]
+    [[u|data: [[query]],]]
+    [[me|u|method: "[[met{GET|POST}]]",]]
+    success: ([[ident]]: [[type]]) => {
+        [[act|ml]]
+    },
+    error: (xhr, status, error) => {
+        [[not|ml]]
+    }
+})

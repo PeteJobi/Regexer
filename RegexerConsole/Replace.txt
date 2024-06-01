@@ -1,11 +1,12 @@
 ﻿Functions.fetchCall<[[type]]>([[url]], {
-    query: [[query]]
+    [[dat|query: [[query]],]]
+    [[mePost|method: "POST",]]
     notOk: (status, responseText, noConnection, noConnectionString) => {
         console.log(responseText, status, noConnection, noConnectionString)
-        [[not]]
+        [[not|ml]]
     }
 }).then((response) => {
     if(!response.ok) return
     const [[ident]] = response.result
-    [[act]]
+    [[act|ml]]
 })

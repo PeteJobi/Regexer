@@ -1,8 +1,9 @@
 ﻿$.ajax({
     url: [[url]],
-    contentType: "application/json",
-    data: [[query]],
-    method: "GET",
+    [[u|contentType: "application/json",]]
+    [[dat|u|data: [[query]],]]
+    [[meGet|u|method: "GET",]]
+    [[mePost|u|method: "POST",]]
     success: ([[ident]]: [[type]]) => {
         [[act|ml]]
     },

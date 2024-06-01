@@ -1,0 +1,41 @@
+﻿$.ajax({
+    url: Strings.URL_CLASS + "rating",
+    contentType: "application/json",
+    method: "POST",
+    data: JSON.stringify(zRat),
+    success: (classExtra: Types.IClassExtra) => {
+        if (!hasMounted.current) return
+        updClassDispatch({
+            type: Strings.UPDATE_CLASS_PARAMS,
+            classAction: Strings.EDIT_CLASS,
+            classId: classe.id,
+            class: classe
+        })
+    },
+    error: (xhr, status, error) => {
+        console.log(xhr.responseText, status, error)
+        console.log(xhr.responseText, status, error)
+    }
+})
+
+() => {
+    $.ajax({
+        url: Strings.URL_CLASS + "rating",
+        contentType: "application/json",
+        method: "POST",
+        data: JSON.stringify(zRat),
+        success: (classExtra: Types.IClassExtra) => {
+            if (!hasMounted.current) return
+            updClassDispatch({
+                type: Strings.UPDATE_CLASS_PARAMS,
+                classAction: Strings.EDIT_CLASS,
+                classId: classe.id,
+                class: classe
+            })
+        },
+        error: (xhr, status, error) => {
+            console.log(xhr.responseText, status, error)
+            console.log(xhr.responseText, status, error)
+        }
+    })
+}
