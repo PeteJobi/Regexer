@@ -36,9 +36,11 @@ namespace RegexerUI
             var templatePath = $"{TEMPLATES_FOLDER}/{templatesComboBox.Text}.txt";
             if(File.Exists(templatePath) && MessageBox.Show($"Overwrite {templatesComboBox.Text}?", "Overwrite template?", MessageBoxButtons.OKCancel) != DialogResult.OK) return;
 
-            await using var fileStream = File.OpenWrite(templatePath);
-            await using var streamWriter = new StreamWriter(fileStream);
-            await streamWriter.WriteAsync($"{_pattern}{TEMPLATE_SEPARATOR}{_replace}");
+            await using (var fileStream = File.OpenWrite(templatePath))
+            {
+                await using var streamWriter = new StreamWriter(fileStream);
+                await streamWriter.WriteAsync($"{_pattern}{TEMPLATE_SEPARATOR}{_replace}");
+            }
             SavedTemplate = templatesComboBox.Text;
             Close();
         }

@@ -1,9 +1,11 @@
 ﻿$.ajax({
-    url: [[url]],
+    url: [[url]],[[comment|o]]
     [[u|contentType: "application/json",]]
-    [[dat|u|data: [[query]],]]
+    [[dat|u|data: [[data]],]]
     [[meGet|u|method: "GET",]]
     [[mePost|u|method: "POST",]]
+    [[meDel|u|method: "DELETE",]]
+    [[proc|u|processData: true,]]
     success: ([[ident]]: [[type]]) => {
         [[act|ml]]
     },

@@ -1,10 +1,8 @@
 ﻿$.ajax({
-    url: Strings.URL_CLASS + "rating",
+    url: Strings.URL_CLASS + "joinClass/" + classe.id, // api/Class/joinClass
     contentType: "application/json",
     method: "POST",
-    data: JSON.stringify(zRat),
-    success: (classExtra: Types.IClassExtra) => {
-        if (!hasMounted.current) return
+    success: (classe: Types.IClass) => {
         updClassDispatch({
             type: Strings.UPDATE_CLASS_PARAMS,
             classAction: Strings.EDIT_CLASS,
@@ -14,27 +12,26 @@
     },
     error: (xhr, status, error) => {
         console.log(xhr.responseText, status, error)
-        console.log(xhr.responseText, status, error)
+        yo()
     }
 })
 
 () => {
     $.ajax({
-        url: Strings.URL_CLASS + "rating",
+        url: Strings.URL_CLASS + "joinClass/" + classe.id,
         contentType: "application/json",
         method: "POST",
-        data: JSON.stringify(zRat),
-        success: (classExtra: Types.IClassExtra) => {
-            if (!hasMounted.current) return
+        success: (classe: Types.IClass) => {
             updClassDispatch({
                 type: Strings.UPDATE_CLASS_PARAMS,
                 classAction: Strings.EDIT_CLASS,
                 classId: classe.id,
                 class: classe
             })
+            ibad()
         },
         error: (xhr, status, error) => {
-            console.log(xhr.responseText, status, error)
+            whoBad()
             console.log(xhr.responseText, status, error)
         }
     })
