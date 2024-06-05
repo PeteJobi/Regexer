@@ -1,15 +1,1 @@
-﻿Functions.fetchCall<[[type]]>([[url]], {[[comment]]
-    [[dat|body: [[data]],]]
-    [[proc|query: [[data]],]]
-    [[mePost|method: "post",]]
-    [[meDel|method: "delete",]]
-    notOk: (status, responseText, noConnection, noConnectionString) => {
-        console.log(responseText, status, noConnection, noConnectionString)
-        [[not]]
-    }
-}).then((response) => {
-    if(!response.ok) return
-    const [[ident]] = response.result
-    [[act]]
-})
-
+﻿[[_female|you]]
