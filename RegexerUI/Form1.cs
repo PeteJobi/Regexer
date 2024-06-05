@@ -39,17 +39,19 @@ namespace RegexerUI
             {
                 var result = await regexer.AutoRegex(inputTextbox.Text, patternTextbox.Text, replaceTextbox.Text, tokenSource.Token);
                 if (result == "Cancelled") return;
-                outputTextbox.Text = result; 
-                delayTokenSource?.Cancel();
+                outputTextbox.Text = result;
             }
             catch (RegexMatchTimeoutException ex)
             {
                 outputTextbox.Text = ex.ToString();
-                delayTokenSource?.Cancel();
             }
             catch (RegexParseException ex)
             {
                 outputTextbox.Text = ex.ToString();
+            }
+            finally
+            {
+                delayTokenSource?.Cancel();
             }
         }
 
