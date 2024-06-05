@@ -1,10 +1,24 @@
 # Regexer (Multi-line Find-And-Replace)
 
-This is a simple tool for finding and replacing text without having to deal with complex Regex patterns.
+This is a simple tool for finding and replacing text without having to deal with complex Regex patterns. Only supports Windows 10 and 11 (not tested on other versions of Windows).
 
 ![image](https://github.com/PeteJobi/Regexer/assets/45200292/960c3ee2-e209-4099-a01a-44b5148eb24a)
 
-## Usage
+## How to build
+You need to have at least .NET 6 runtime installed to build the software. Download the latest runtime [here](https://dotnet.microsoft.com/en-us/download). If you're not sure which one to download, try [.NET 6.0 Version 6.0.16](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.408-windows-x64-installer)
+
+In the project folder, run the below
+```
+dotnet publish -p:PublishSingleFile=true -r win-x64 -c Release --self-contained false
+```
+When that completes, go to `\bin\Release\net<version>-windows\win-x64\publish` and you'll find the **RegexerUI.exe**. Run it to use the software.
+
+## Run without building
+You can also just download the release builds if you don't wish to build manually.
+
+If you wish to run the software without installing the required .NET runtime, download the self-contained release.
+
+## How to use
 The text to search in should be entered in the **Input** textbox. 
 The structure of the text to search for is entered in the **Pattern** textbox. Use _[[double braces]]_ to capture text for replacement, equivalent to Regex groups. The text within the double braces becomes the name of the captured group.
 The text that should replace captures is entered into the **Replace** textbox. You can use the names entered in the Pattern textbox here, and rewrite text surrounding it to change structure of each match in the input.
