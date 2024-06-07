@@ -19,7 +19,7 @@ public class Regexer
 
     private string EscapeRegexKeywords(string pattern)
     {
-        const string regexKeywords = @"[\\$.+*()\[\]|]";
+        const string regexKeywords = @"[\\$.+*()\[\]|^]";
         pattern = Regex.Replace(pattern, $"({regexKeywords})", "\\$1");
         var matches = Regex.Matches(pattern, @"(?<=\\\[\\\[\w*?\{)(((?!\}\\\]\\\]).)+)(?=\}\\\]\\\])");
         for (var i = matches.Count - 1; i >= 0; i--)
@@ -51,17 +51,19 @@ public class Regexer
     private string AutoRegexInternal(string input, string pattern, string replace)
     {
         pattern = EscapeRegexKeywords(pattern);
-        pattern = @"(?<space>[^\S\r\n]+)?" + pattern;
         pattern = Regex.Replace(pattern, "\r\n", "\r\n([^\\S\\r\\n]+)?");
+        pattern = Regex.Replace(pattern, @"^(\\\[\\\[\w+\\\|ml\\\]\\\])$", "^$1$");
         pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+(\\\|\w+)?)\\\]\\\])", "[$2]");
         pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+)?\{([^\r\n]+?)\}\\\]\\\])", "[$2{$3}]");
         pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+\\\|)?u\\\|([^\r\n]+?)\\\]\\\])", "[$2u|$3]");
         pattern = Regex.Replace(pattern, @"(?>[^\S\r\n]+)(?!\[\w+\\\|ml\])", @"[^\S\r\n]+");
+        pattern = @"(?<space>[^\S\r\n]+)?" + pattern;
         var multiLineGroups = Regex.Matches(pattern, @"\[(\w+)\\\|ml\]").Select(g => g.Groups[1].Value);
         if (multiLineGroups.Any())
         {
-            pattern = Regex.Replace(pattern, @"(?<mlSpace>[^\S\r\n]+)\[(?<mlName>\w+)\\\|ml\]",
-                @"(?<${mlName}FirstLine>[^\r\n]*?)(\r\n(\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]*)[^\r\n]*?))?)*?");
+            pattern = Regex.Replace(pattern, @"(?<mlSpace>[^\S\r\n]+)?\[(?<mlName>\w+)\\\|ml\]",
+                //@"(?<${mlName}FirstLine>([^\r\n]+)?)((\r\n\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]+)?([^\r\n]+)?))+?)?");
+            @"(?<${mlName}FirstLine>[^\r\n]*?)(\r\n(\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]*)[^\r\n]*?))?)*?");
         }
         pattern = Regex.Replace(pattern, @"\[(\w+)\]", "(?<$1>[^\\r\\n]+?)");
         pattern = Regex.Replace(pattern, @"\[(\w+)\\\|o\]", "(?<$1>[^\\r\\n]+?)?");
@@ -119,7 +121,7 @@ public class Regexer
         if (replaceWasEmpty) return result;
         foreach (var kvp in multiLineGroupsKvps)
         {
-            var mlMatches = Regex.Matches(result, string.Format(@"(?<space>[^\S\r\n]+)(?<before>[^\r\n]+?)?\[\[{0}\]\](?<after>[^\r\n]+?)?\r\n", kvp.Key));
+            var mlMatches = Regex.Matches(result, string.Format(@"(?<space>[^\S\r\n]+)?(?<before>[^\r\n]+?)?\[\[{0}\]\](?<after>[^\r\n]+?)?(\r\n|$)", kvp.Key));
             if (!mlMatches.Any()) continue;
             for (var i = kvp.Value.Count() - 1; i >= 0; i--)
             {
