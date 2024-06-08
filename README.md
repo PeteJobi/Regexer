@@ -19,10 +19,14 @@ You can also just download the release builds if you don't wish to build manuall
 If you wish to run the software without installing the required .NET runtime, download the self-contained release.
 
 ## How to use
-The text to search in should be entered in the **Input** textbox. 
-The structure of the text to search for is entered in the **Pattern** textbox. Use _[[double braces]]_ to capture text for replacement, equivalent to Regex groups. The text within the double braces becomes the name of the captured group.
-The text that should replace captures is entered into the **Replace** textbox. You can use the names entered in the Pattern textbox here, and rewrite text surrounding it to change structure of each match in the input.
+The text to search in should be entered in the **Input** textbox.<br />
+The structure of the text to search for is entered in the **Pattern** textbox. Use _**[[double braces]]**_ to capture text for replacement, equivalent to Regex groups. The text within the double braces becomes the name of the captured group. This text must be made up of word characters i.e it **_should not contain symbols_** besides underscore (_).<br />
+The text that should replace captures is entered into the **Replace** textbox. You can use the names entered in the Pattern textbox here, and rewrite text surrounding it to change structure of each match in the input.<br />
 The **Output** textbox shows the result of the replacement.
+
+You can import text files into the program with the **Select input** button and generated output can also be saved to a file with the **Save output** button. If you want to, for example, perform more operations on generated output, you can hit the **Copy output to input** button to copy the generated output to the input box. This is also useful for recursively running the same pattern on your input.
+
+If you use the same patterns and replacements often, you can save each pattern-replace pair as a template so you don't have to type them in each time you open the program. Click the **Save template** button and enter the name of the template in the dialog that pops up or select an existing template to overwrite. Templates are saved as text files in a folder called _RegexerTemplates_ located in the same directory as the executable. In the program, you can delete templates with the **Delete template** button.
 
 ## Syntax
 - **[[foo]]**: This can capture a character, word, line or depending on what surrounds it. Translates to **([^\r\n]+?)**.
