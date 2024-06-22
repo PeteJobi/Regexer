@@ -170,6 +170,7 @@
             inputTextbox.Dock = DockStyle.Fill;
             inputTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
             inputTextbox.Location = new Point(3, 23);
+            inputTextbox.MaxLength = 524288;
             inputTextbox.Multiline = true;
             inputTextbox.Name = "inputTextbox";
             tableLayoutPanel1.SetRowSpan(inputTextbox, 3);
@@ -184,6 +185,7 @@
             outputTextbox.Dock = DockStyle.Fill;
             outputTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
             outputTextbox.Location = new Point(845, 23);
+            outputTextbox.MaxLength = 524288;
             outputTextbox.Multiline = true;
             outputTextbox.Name = "outputTextbox";
             outputTextbox.ReadOnly = true;
