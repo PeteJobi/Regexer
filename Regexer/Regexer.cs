@@ -19,7 +19,7 @@ public class Regexer
 
     private string EscapeRegexKeywords(string pattern)
     {
-        const string regexKeywords = @"[\\$.+*()\[\]|^]";
+        const string regexKeywords = @"[\\$.+*()\[\]|^?]";
         pattern = Regex.Replace(pattern, $"({regexKeywords})", "\\$1");
         var matches = Regex.Matches(pattern, @"(?<=\\\[\\\[\w*?\{)(((?!\}\\\]\\\]).)+)(?=\}\\\]\\\])");
         for (var i = matches.Count - 1; i >= 0; i--)
