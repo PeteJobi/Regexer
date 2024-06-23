@@ -11,6 +11,8 @@ namespace RegexerUI
         private CancellationTokenSource? delayTokenSource;
         private FastColoredTextBox inputTextbox;
         private FastColoredTextBox outputTextbox;
+        private FastColoredTextBox patternTextbox;
+        private FastColoredTextBox replaceTextbox;
         private readonly TextStyle _highlightStyle = new(null, Brushes.Gainsboro, FontStyle.Bold);
 
         public RegexerForm()
@@ -129,14 +131,22 @@ namespace RegexerUI
             await FindAndReplace();
         }
 
-        private async void patternTextbox_TextChanged(object sender, EventArgs e)
+        private async void patternTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
             saveTemplateBut.Enabled = patternTextbox.Text != string.Empty;
+            e.ChangedRange.ClearStyle(_highlightStyle);
+            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[(\w+\|)?u\|[^\r\n]+\]\]");
+            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?\|\w{1,2}]\]");
+            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?]\]");
             await FindAndReplace();
         }
 
-        private async void replaceTextbox_TextChanged(object sender, EventArgs e)
+        private async void replaceTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            e.ChangedRange.ClearStyle(_highlightStyle);
+            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[(\w+\|)?u\|[^\r\n]+\]\]");
+            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?\|\w{1,2}]\]");
+            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?]\]");
             await FindAndReplace();
         }
 
@@ -226,29 +236,33 @@ namespace RegexerUI
             // 
             // replaceTextbox
             // 
+            replaceTextbox = new();
             replaceTextbox.Dock = DockStyle.Fill;
             replaceTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
             replaceTextbox.Location = new Point(424, 342);
             replaceTextbox.Multiline = true;
             replaceTextbox.Name = "replaceTextbox";
-            replaceTextbox.ScrollBars = ScrollBars.Both;
             replaceTextbox.Size = new Size(415, 293);
             replaceTextbox.TabIndex = 2;
             replaceTextbox.WordWrap = false;
-            //replaceTextbox.TextChanged += replaceTextbox_TextChanged;
+            replaceTextbox.BorderStyle = BorderStyle.FixedSingle;
+            replaceTextbox.ShowLineNumbers = false;
+            replaceTextbox.TextChanged += replaceTextbox_TextChanged;
             // 
             // patternTextbox
             // 
+            patternTextbox = new();
             patternTextbox.Dock = DockStyle.Fill;
             patternTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
             patternTextbox.Location = new Point(424, 23);
             patternTextbox.Multiline = true;
             patternTextbox.Name = "patternTextbox";
-            patternTextbox.ScrollBars = ScrollBars.Both;
             patternTextbox.Size = new Size(415, 293);
             patternTextbox.TabIndex = 1;
             patternTextbox.WordWrap = false;
-            //patternTextbox.TextChanged += patternTextbox_TextChanged;
+            patternTextbox.BorderStyle = BorderStyle.FixedSingle;
+            patternTextbox.ShowLineNumbers = false;
+            patternTextbox.TextChanged += patternTextbox_TextChanged;
 
             tableLayoutPanel1.Controls.Add(inputTextbox, 0, 1);
             tableLayoutPanel1.Controls.Add(outputTextbox, 2, 1);

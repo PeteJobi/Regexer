@@ -38,8 +38,6 @@
             openFileBut = new Button();
             loadingProgressBar = new ProgressBar();
             tableLayoutPanel1 = new TableLayoutPanel();
-            replaceTextbox = new TextBox();
-            patternTextbox = new TextBox();
             label1 = new Label();
             label2 = new Label();
             label4 = new Label();
@@ -143,8 +141,6 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
-            tableLayoutPanel1.Controls.Add(replaceTextbox, 1, 3);
-            tableLayoutPanel1.Controls.Add(patternTextbox, 1, 1);
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
             tableLayoutPanel1.Controls.Add(label2, 1, 0);
             tableLayoutPanel1.Controls.Add(label4, 1, 2);
@@ -160,32 +156,6 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.Size = new Size(1264, 638);
             tableLayoutPanel1.TabIndex = 2;
-            // 
-            // replaceTextbox
-            // 
-            replaceTextbox.Dock = DockStyle.Fill;
-            replaceTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            replaceTextbox.Location = new Point(424, 342);
-            replaceTextbox.Multiline = true;
-            replaceTextbox.Name = "replaceTextbox";
-            replaceTextbox.ScrollBars = ScrollBars.Both;
-            replaceTextbox.Size = new Size(415, 293);
-            replaceTextbox.TabIndex = 2;
-            replaceTextbox.WordWrap = false;
-            replaceTextbox.TextChanged += replaceTextbox_TextChanged;
-            // 
-            // patternTextbox
-            // 
-            patternTextbox.Dock = DockStyle.Fill;
-            patternTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            patternTextbox.Location = new Point(424, 23);
-            patternTextbox.Multiline = true;
-            patternTextbox.Name = "patternTextbox";
-            patternTextbox.ScrollBars = ScrollBars.Both;
-            patternTextbox.Size = new Size(415, 293);
-            patternTextbox.TabIndex = 1;
-            patternTextbox.WordWrap = false;
-            patternTextbox.TextChanged += patternTextbox_TextChanged;
             // 
             // label1
             // 
@@ -275,7 +245,6 @@
         #endregion
         private Panel panel2;
         private TableLayoutPanel tableLayoutPanel1;
-        private TextBox replaceTextbox;
         private OpenFileDialog openFileDialog;
         private Button openFileBut;
         private Button saveFileBut;
@@ -284,7 +253,6 @@
         private Button saveTemplateBut;
         private ProgressBar loadingProgressBar;
         private Label label1;
-        private TextBox patternTextbox;
         private Label label2;
         private Label label3;
         private Label label4;
