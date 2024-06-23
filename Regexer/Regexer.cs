@@ -31,24 +31,24 @@ public class Regexer
         return pattern;
     }
 
-    public async Task<string> AutoRegex(string input, string pattern, string replace, CancellationToken cancellationToken = default)
+    public async Task<RegexerResult> AutoRegex(string input, string pattern, string replace, CancellationToken cancellationToken = default)
     {
         return await await Task.WhenAny(
             Cancel(cancellationToken),
             Task.Run(() => AutoRegexInternal(input, pattern, replace), cancellationToken));
     }
 
-    private async Task<string> Cancel(CancellationToken cancellationToken)
+    private async Task<RegexerResult> Cancel(CancellationToken cancellationToken)
     {
         try
         {
             await Task.Delay(-1, cancellationToken);
         }
         catch (TaskCanceledException){}
-        return "Cancelled";
+        return null;
     }
 
-    private string AutoRegexInternal(string input, string pattern, string replace)
+    private RegexerResult AutoRegexInternal(string input, string pattern, string replace)
     {
         pattern = EscapeRegexKeywords(pattern);
         pattern = Regex.Replace(pattern, "\r\n", "\r\n([^\\S\\r\\n]+)?");
@@ -76,7 +76,6 @@ public class Regexer
         pattern = Regex.Replace(pattern, @"\[(\w+)\{([^\r\n]+?)\}\]", "(?<$1>$2)");
         pattern = Regex.Replace(pattern, @"\[\{([^\r\n]+?)\}\]", "$1");
         var uMatches = Regex.Matches(pattern, @"(?<uLines>\r\n\(\[\^\\S\\r\\n\]\+\)\?(\[\^\\S\\r\\n\]\+)?\[(\w+\\\|)?u\|[^\r\n]+\])+");
-        //var bbb = uMatches[0].Groups["uLines"];
         for (var i = uMatches.Count - 1; i >= 0; i--)
         {
             var uMatch = uMatches[i];
@@ -96,7 +95,7 @@ public class Regexer
         replace = Regex.Replace(replace, @"\[\[(\w+?)\]\]", "${$1}");
 
         var matches = Regex.Matches(input, pattern, RegexOptions.None, regexTimeoutSpan);
-        if (!matches.Any()) return input;
+        if (!matches.Any()) return new RegexerResult{ Result = input };
         //try
         //{
         //    if (!matches.Any()) return input;
@@ -118,7 +117,15 @@ public class Regexer
 
         var result = Regex.Replace(input, pattern, replace, RegexOptions.None, regexTimeoutSpan);
 
-        if (replaceWasEmpty) return result;
+        RegexerMatchPair[] resultMatches;
+        if (replaceWasEmpty)
+        {
+            resultMatches = GetRegexMatches(matches, replace, true);
+            return new RegexerResult{ Result = result, Matches = resultMatches };
+        }
+
+        var uMultiLineReplacements = new List<KeyValuePair<string, string>>?[matches.Count];
+
         foreach (var kvp in multiLineGroupsKvps)
         {
             var mlMatches = Regex.Matches(result, string.Format(@"(?<space>[^\S\r\n]+)?(?<before>[^\r\n]+?)?\[\[{0}\]\](?<after>[^\r\n]+?)?(\r\n|$)", kvp.Key));
@@ -128,10 +135,12 @@ public class Regexer
                 var lines = kvp.Value.ElementAt(i);
                 var segmentCount = mlMatches.Count / kvp.Value.Count();
                 var jInit = segmentCount * (i + 1);
-                for (int j = jInit - 1; j >= jInit - segmentCount; j--)
+                uMultiLineReplacements[i] ??= new ();
+                for (var j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
                     var match = mlMatches.ElementAt(j);
                     var rep = string.Join("\r\n", lines.Select(line => match.Groups["space"].Value + match.Groups["before"] + line + match.Groups["after"])) + "\r\n";
+                    uMultiLineReplacements[i].Insert(0, new (match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -146,15 +155,81 @@ public class Regexer
                 var inputMatch = matches[i].Groups[group];
                 var segmentCount = uResultMatches.Count / matches.Count;
                 var jInit = segmentCount * (i + 1);
+                uMultiLineReplacements[i] ??= new();
                 for (var j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
                     var match = uResultMatches.ElementAt(j);
                     var rep = !inputMatch.Success ? string.Empty : match.Groups["uSpace"].Value + (match.Groups["uLine"].Success ? match.Groups["uLine"].Value : inputMatch.Value);
+                    uMultiLineReplacements[i].Insert(0, new (match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
         }
 
-        return result;
+        resultMatches = GetRegexMatches(matches, replace, false, uMultiLineReplacements);
+        return new RegexerResult { Result = result, Matches = resultMatches };
     }
+
+    RegexerMatchPair[] GetRegexMatches(MatchCollection matches, string replace, bool noReplace, List<KeyValuePair<string, string>>?[]? uMultiLineReplacements = null)
+    {
+        var offset = 0;
+        var matchPairs = new RegexerMatchPair[matches.Count];
+        for (var i = 0; i < matchPairs.Length; i++)
+        {
+            var match = matches[i];
+            var inpMatch = new RegexerMatch
+            {
+                Index = match.Index,
+                Length = match.Length,
+                Text = match.Value
+            };
+            if (noReplace && uMultiLineReplacements == null)
+            {
+                matchPairs[i] = new RegexerMatchPair { InputMatch = inpMatch };
+                continue;
+            }
+
+            var rep = match.Result(replace);
+            if (uMultiLineReplacements != null && uMultiLineReplacements.All(r => r != null))
+            {
+                rep = "\r\n" + rep + "\r\n"; //Add new lines before and after
+                foreach (var keyValuePair in uMultiLineReplacements[i])
+                {
+                    rep = rep.Replace(keyValuePair.Key, keyValuePair.Value);
+                }
+                rep = rep[2..^2]; //Remove new lines
+            }
+
+            var outMatch = new RegexerMatch
+            {
+                Index = match.Index + offset,
+                Length = rep.Length,
+                Text = rep
+            };
+            offset += rep.Length - match.Length;
+
+            matchPairs[i] = new RegexerMatchPair { InputMatch = inpMatch, OutputMatch = outMatch };
+        }
+
+        return matchPairs;
+    }
+}
+
+public class RegexerResult
+{
+    public string Result { get; set; }
+    public RegexerMatchPair[]? Matches { get; set; }
+}
+
+public class RegexerMatchPair
+{
+    public RegexerMatch InputMatch { get; set; }
+    public RegexerMatch? OutputMatch { get; set; }
+}
+
+public class RegexerMatch
+{
+    public int Index { get; set; }
+    public int Length { get; set; }
+    public string Text { get; set; }
 }

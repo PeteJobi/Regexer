@@ -13,7 +13,7 @@ await using var fileStream = File.OpenRead(Path.Combine(Environment.CurrentDirec
     try
     {
         var result = await new Regexer.Regexer().AutoRegex(input, pattern, replace);
-        Console.WriteLine(result);
+        Console.WriteLine(result.Result);
     }
     catch (Exception e)
     {
