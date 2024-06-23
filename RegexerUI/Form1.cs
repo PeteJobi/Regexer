@@ -144,7 +144,7 @@ namespace RegexerUI
         private async void replaceTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
             e.ChangedRange.ClearStyle(_highlightStyle);
-            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[(\w+\|)?u\|[^\r\n]+\]\]");
+            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+\|[^\r\n]+\]\]");
             e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?\|\w{1,2}]\]");
             e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?]\]");
             await FindAndReplace();
