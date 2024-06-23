@@ -2,7 +2,8 @@
 
 This is a simple tool for finding and replacing text without having to deal with complex Regex patterns. Only supports Windows 10 and 11 (not tested on other versions of Windows).
 
-![image](https://github.com/PeteJobi/Regexer/assets/45200292/960c3ee2-e209-4099-a01a-44b5148eb24a)
+![image](https://github.com/PeteJobi/Regexer/assets/45200292/b0e99cd9-d9d5-4221-9365-bd8a6d76e3a5)
+![image](https://github.com/PeteJobi/Regexer/assets/45200292/cc00be95-c994-4691-8824-846299145697)
 
 ## How to build
 You need to have at least .NET 6 runtime installed to build the software. Download the latest runtime [here](https://dotnet.microsoft.com/en-us/download). If you're not sure which one to download, try [.NET 6.0 Version 6.0.16](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.408-windows-x64-installer)
