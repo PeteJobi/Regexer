@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Regexer\Regexer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="FastColoredTextBox">
+      <HintPath>FastColoredTextBox.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

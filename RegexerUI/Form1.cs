@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using FastColoredTextBoxNS;
 
 namespace RegexerUI
 {
@@ -8,6 +9,9 @@ namespace RegexerUI
         private string currentFileName;
         private CancellationTokenSource tokenSource;
         private CancellationTokenSource? delayTokenSource;
+        private FastColoredTextBox inputTextbox;
+        private FastColoredTextBox outputTextbox;
+        private readonly TextStyle _highlightStyle = new(null, Brushes.Gainsboro, FontStyle.Bold);
 
         public RegexerForm()
         {
@@ -16,6 +20,7 @@ namespace RegexerUI
             regexer = new Regexer.Regexer(TimeSpan.FromMinutes(1));
             tokenSource = new CancellationTokenSource();
             loadingProgressBar.Visible = false;
+            InitializeFCTextBoxes();
         }
 
         public async Task FindAndReplace()
@@ -38,8 +43,19 @@ namespace RegexerUI
             try
             {
                 var result = await regexer.AutoRegex(inputTextbox.Text, patternTextbox.Text, replaceTextbox.Text, tokenSource.Token);
-                if (result == "Cancelled") return;
-                outputTextbox.Text = result;
+                if (result == null) return;
+                outputTextbox.Text = result.Result;
+                if (result.Matches != null)
+                {
+                    foreach (var matchPair in result.Matches)
+                    {
+                        var matchRange = inputTextbox.GetRange(matchPair.InputMatch.Index, matchPair.InputMatch.Index + matchPair.InputMatch.Length);
+                        matchRange.SetStyle(_highlightStyle);
+                        if (matchPair.OutputMatch == null) continue;
+                        matchRange = outputTextbox.GetRange(matchPair.OutputMatch.Index, matchPair.OutputMatch.Index + matchPair.OutputMatch.Length);
+                        matchRange.SetStyle(_highlightStyle);
+                    }
+                }
             }
             catch (RegexMatchTimeoutException ex)
             {
@@ -168,6 +184,76 @@ namespace RegexerUI
             if(File.Exists(filePath)) File.Delete(filePath);
             templatesComboBox.Items.Remove(templateName);
             deleteTemplateBut.Enabled = false;
+        }
+
+        void InitializeFCTextBoxes()
+        {
+            // 
+            // inputTextbox
+            // 
+            inputTextbox = new();
+            inputTextbox.Dock = DockStyle.Fill;
+            inputTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            inputTextbox.Location = new Point(3, 23);
+            //inputTextbox.MaxLength = 524288;
+            inputTextbox.Multiline = true;
+            inputTextbox.Name = "inputTextbox";
+            tableLayoutPanel1.SetRowSpan(inputTextbox, 3);
+            //inputTextbox.ScrollBars = ScrollBars.Both;
+            inputTextbox.Size = new Size(415, 612);
+            inputTextbox.TabIndex = 0;
+            inputTextbox.WordWrap = false;
+            inputTextbox.BorderStyle = BorderStyle.FixedSingle;
+            inputTextbox.ShowLineNumbers = false;
+            inputTextbox.TextChanged += inputTextbox_TextChanged;
+            // 
+            // outputTextbox
+            // 
+            outputTextbox = new();
+            outputTextbox.Dock = DockStyle.Fill;
+            outputTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            outputTextbox.Location = new Point(845, 23);
+            outputTextbox.Multiline = true;
+            outputTextbox.Name = "outputTextbox";
+            outputTextbox.ReadOnly = true;
+            tableLayoutPanel1.SetRowSpan(outputTextbox, 3);
+            outputTextbox.Size = new Size(416, 612);
+            outputTextbox.TabIndex = 2;
+            outputTextbox.WordWrap = false;
+            outputTextbox.ShowLineNumbers = false;
+            outputTextbox.ReadOnly = true;
+            outputTextbox.BorderStyle = BorderStyle.FixedSingle;
+            // 
+            // replaceTextbox
+            // 
+            replaceTextbox.Dock = DockStyle.Fill;
+            replaceTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            replaceTextbox.Location = new Point(424, 342);
+            replaceTextbox.Multiline = true;
+            replaceTextbox.Name = "replaceTextbox";
+            replaceTextbox.ScrollBars = ScrollBars.Both;
+            replaceTextbox.Size = new Size(415, 293);
+            replaceTextbox.TabIndex = 2;
+            replaceTextbox.WordWrap = false;
+            //replaceTextbox.TextChanged += replaceTextbox_TextChanged;
+            // 
+            // patternTextbox
+            // 
+            patternTextbox.Dock = DockStyle.Fill;
+            patternTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            patternTextbox.Location = new Point(424, 23);
+            patternTextbox.Multiline = true;
+            patternTextbox.Name = "patternTextbox";
+            patternTextbox.ScrollBars = ScrollBars.Both;
+            patternTextbox.Size = new Size(415, 293);
+            patternTextbox.TabIndex = 1;
+            patternTextbox.WordWrap = false;
+            //patternTextbox.TextChanged += patternTextbox_TextChanged;
+
+            tableLayoutPanel1.Controls.Add(inputTextbox, 0, 1);
+            tableLayoutPanel1.Controls.Add(outputTextbox, 2, 1);
+            tableLayoutPanel1.Controls.Add(replaceTextbox, 1, 3);
+            tableLayoutPanel1.Controls.Add(patternTextbox, 1, 1);
         }
     }
 }

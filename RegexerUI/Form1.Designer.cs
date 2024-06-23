@@ -38,8 +38,6 @@
             openFileBut = new Button();
             loadingProgressBar = new ProgressBar();
             tableLayoutPanel1 = new TableLayoutPanel();
-            inputTextbox = new TextBox();
-            outputTextbox = new TextBox();
             replaceTextbox = new TextBox();
             patternTextbox = new TextBox();
             label1 = new Label();
@@ -145,8 +143,6 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
-            tableLayoutPanel1.Controls.Add(inputTextbox, 0, 1);
-            tableLayoutPanel1.Controls.Add(outputTextbox, 2, 1);
             tableLayoutPanel1.Controls.Add(replaceTextbox, 1, 3);
             tableLayoutPanel1.Controls.Add(patternTextbox, 1, 1);
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
@@ -164,36 +160,6 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.Size = new Size(1264, 638);
             tableLayoutPanel1.TabIndex = 2;
-            // 
-            // inputTextbox
-            // 
-            inputTextbox.Dock = DockStyle.Fill;
-            inputTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            inputTextbox.Location = new Point(3, 23);
-            inputTextbox.MaxLength = 524288;
-            inputTextbox.Multiline = true;
-            inputTextbox.Name = "inputTextbox";
-            tableLayoutPanel1.SetRowSpan(inputTextbox, 3);
-            inputTextbox.ScrollBars = ScrollBars.Both;
-            inputTextbox.Size = new Size(415, 612);
-            inputTextbox.TabIndex = 0;
-            inputTextbox.WordWrap = false;
-            inputTextbox.TextChanged += inputTextbox_TextChanged;
-            // 
-            // outputTextbox
-            // 
-            outputTextbox.Dock = DockStyle.Fill;
-            outputTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            outputTextbox.Location = new Point(845, 23);
-            outputTextbox.MaxLength = 524288;
-            outputTextbox.Multiline = true;
-            outputTextbox.Name = "outputTextbox";
-            outputTextbox.ReadOnly = true;
-            tableLayoutPanel1.SetRowSpan(outputTextbox, 3);
-            outputTextbox.ScrollBars = ScrollBars.Both;
-            outputTextbox.Size = new Size(416, 612);
-            outputTextbox.TabIndex = 2;
-            outputTextbox.WordWrap = false;
             // 
             // replaceTextbox
             // 
@@ -309,9 +275,7 @@
         #endregion
         private Panel panel2;
         private TableLayoutPanel tableLayoutPanel1;
-        private TextBox inputTextbox;
         private TextBox replaceTextbox;
-        private TextBox outputTextbox;
         private OpenFileDialog openFileDialog;
         private Button openFileBut;
         private Button saveFileBut;
