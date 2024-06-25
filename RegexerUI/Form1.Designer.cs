@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegexerForm));
             panel2 = new Panel();
+            nextBut = new Button();
+            prevBut = new Button();
             outToInBut = new Button();
             deleteTemplateBut = new Button();
             saveTemplateBut = new Button();
@@ -53,6 +55,8 @@
             // panel2
             // 
             panel2.BackColor = SystemColors.Control;
+            panel2.Controls.Add(nextBut);
+            panel2.Controls.Add(prevBut);
             panel2.Controls.Add(outToInBut);
             panel2.Controls.Add(deleteTemplateBut);
             panel2.Controls.Add(saveTemplateBut);
@@ -64,6 +68,26 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(1264, 43);
             panel2.TabIndex = 1;
+            // 
+            // nextBut
+            // 
+            nextBut.Location = new Point(854, 10);
+            nextBut.Name = "nextBut";
+            nextBut.Size = new Size(75, 23);
+            nextBut.TabIndex = 10;
+            nextBut.Text = "Next";
+            nextBut.UseVisualStyleBackColor = true;
+            nextBut.Click += nextBut_Click;
+            // 
+            // prevBut
+            // 
+            prevBut.Location = new Point(773, 10);
+            prevBut.Name = "prevBut";
+            prevBut.Size = new Size(75, 23);
+            prevBut.TabIndex = 9;
+            prevBut.Text = "Previous";
+            prevBut.UseVisualStyleBackColor = true;
+            prevBut.Click += prevBut_Click;
             // 
             // outToInBut
             // 
@@ -259,5 +283,7 @@
         private TableLayoutPanel tableLayoutPanel2;
         private Button deleteTemplateBut;
         private Button outToInBut;
+        private Button nextBut;
+        private Button prevBut;
     }
 }

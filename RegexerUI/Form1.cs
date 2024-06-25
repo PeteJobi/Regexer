@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using FastColoredTextBoxNS;
+using Range = FastColoredTextBoxNS.Range;
 
 namespace RegexerUI
 {
@@ -14,15 +15,19 @@ namespace RegexerUI
         private FastColoredTextBox patternTextbox;
         private FastColoredTextBox replaceTextbox;
         private readonly TextStyle _highlightStyle = new(null, Brushes.Gainsboro, FontStyle.Bold);
+        private int currentMatchRange;
+        private List<(Range inpRange, Range? outRange)> matchRanges = new();
 
         public RegexerForm()
         {
             InitializeComponent();
+            InitializeFCTextBoxes();
             GetTemplates();
             regexer = new Regexer.Regexer(TimeSpan.FromMinutes(1));
             tokenSource = new CancellationTokenSource();
             loadingProgressBar.Visible = false;
-            InitializeFCTextBoxes();
+            prevBut.Enabled = false;
+            nextBut.Enabled = false;
         }
 
         public async Task FindAndReplace()
@@ -33,6 +38,8 @@ namespace RegexerUI
             if (inputTextbox.Text == string.Empty || patternTextbox.Text == string.Empty)
             {
                 outputTextbox.Text = inputTextbox.Text;
+                matchRanges.Clear();
+                prevBut.Enabled = nextBut.Enabled = false;
                 return;
             }
 
@@ -45,19 +52,28 @@ namespace RegexerUI
             try
             {
                 var result = await regexer.AutoRegex(inputTextbox.Text, patternTextbox.Text, replaceTextbox.Text, tokenSource.Token);
-                if (result == null) return;
+                if (result.Result == "Cancelled") return;
                 outputTextbox.Text = result.Result;
+                matchRanges.Clear();
+                inputTextbox.Range.ClearStyle(_highlightStyle);
+                outputTextbox.Range.ClearStyle(_highlightStyle);
                 if (result.Matches != null)
                 {
                     foreach (var matchPair in result.Matches)
                     {
                         var matchRange = inputTextbox.GetRange(matchPair.InputMatch.Index, matchPair.InputMatch.Index + matchPair.InputMatch.Length);
+                        (Range inpRange, Range? outRange) pairRanges = (matchRange, null);
                         matchRange.SetStyle(_highlightStyle);
-                        if (matchPair.OutputMatch == null) continue;
-                        matchRange = outputTextbox.GetRange(matchPair.OutputMatch.Index, matchPair.OutputMatch.Index + matchPair.OutputMatch.Length);
-                        matchRange.SetStyle(_highlightStyle);
+                        if (matchPair.OutputMatch != null)
+                        {
+                            matchRange = outputTextbox.GetRange(matchPair.OutputMatch.Index, matchPair.OutputMatch.Index + matchPair.OutputMatch.Length);
+                            matchRange.SetStyle(_highlightStyle);
+                            pairRanges.outRange = matchRange;
+                        }
+                        matchRanges.Add(pairRanges);
                     }
                 }
+                prevBut.Enabled = nextBut.Enabled = matchRanges.Any();
             }
             catch (RegexMatchTimeoutException ex)
             {
@@ -77,7 +93,7 @@ namespace RegexerUI
         {
             try
             {
-                await Task.Delay(TimeSpan.FromSeconds(3), token);
+                await Task.Delay(TimeSpan.FromSeconds(1), token);
                 loadingProgressBar.Visible = true;
                 await Task.Delay(-1, token);
             }
@@ -136,8 +152,7 @@ namespace RegexerUI
             saveTemplateBut.Enabled = patternTextbox.Text != string.Empty;
             e.ChangedRange.ClearStyle(_highlightStyle);
             e.ChangedRange.SetStyle(_highlightStyle, @"\[\[(\w+\|)?u\|[^\r\n]+\]\]");
-            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?\|\w{1,2}]\]");
-            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?]\]");
+            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?(\|\w{1,4})?]\]");
             await FindAndReplace();
         }
 
@@ -145,8 +160,7 @@ namespace RegexerUI
         {
             e.ChangedRange.ClearStyle(_highlightStyle);
             e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+\|[^\r\n]+\]\]");
-            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?\|\w{1,2}]\]");
-            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?]\]");
+            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?(\|\w{1,4})?]\]");
             await FindAndReplace();
         }
 
@@ -191,9 +205,25 @@ namespace RegexerUI
             var templateName = templatesComboBox.Text;
             if (MessageBox.Show($"Are you sure you want to delete {templateName}?", "Delete template?", MessageBoxButtons.OKCancel) != DialogResult.OK) return;
             var filePath = $"{SaveTemplateForm.TEMPLATES_FOLDER}/{templateName}.txt";
-            if(File.Exists(filePath)) File.Delete(filePath);
+            if (File.Exists(filePath)) File.Delete(filePath);
             templatesComboBox.Items.Remove(templateName);
             deleteTemplateBut.Enabled = false;
+        }
+
+        private void prevBut_Click(object sender, EventArgs e)
+        {
+            currentMatchRange--;
+            if (currentMatchRange == -1) currentMatchRange = matchRanges.Count - 1;
+            inputTextbox.DoRangeVisible(matchRanges[currentMatchRange].inpRange);
+            if(matchRanges[currentMatchRange].outRange != null) outputTextbox.DoRangeVisible(matchRanges[currentMatchRange].outRange);
+        }
+
+        private void nextBut_Click(object sender, EventArgs e)
+        {
+            currentMatchRange++;
+            if (currentMatchRange == matchRanges.Count) currentMatchRange = 0;
+            inputTextbox.DoRangeVisible(matchRanges[currentMatchRange].inpRange);
+            if(matchRanges[currentMatchRange].outRange != null) outputTextbox.DoRangeVisible(matchRanges[currentMatchRange].outRange);
         }
 
         void InitializeFCTextBoxes()
