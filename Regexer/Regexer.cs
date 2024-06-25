@@ -44,8 +44,8 @@ public class Regexer
         {
             await Task.Delay(-1, cancellationToken);
         }
-        catch (TaskCanceledException){}
-        return null;
+        catch (TaskCanceledException) { }
+        return new RegexerResult { Result = "Cancelled" };
     }
 
     private RegexerResult AutoRegexInternal(string input, string pattern, string replace)
@@ -66,13 +66,30 @@ public class Regexer
             @"(?<${mlName}FirstLine>[^\r\n]*?)(\r\n(\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]*)[^\r\n]*?))?)*?");
         }
         pattern = Regex.Replace(pattern, @"\[(\w+)\]", "(?<$1>[^\\r\\n]+?)");
-        pattern = Regex.Replace(pattern, @"\[(\w+)\\\|o\]", "(?<$1>[^\\r\\n]+?)?");
-        pattern = Regex.Replace(pattern, @"\[(\w+)\\\|w\]", "(?<$1>\\w+?)");
-        pattern = Regex.Replace(pattern, @"\[(\w+)\\\|d\]", "(?<$1>\\d+?)");
-        pattern = Regex.Replace(pattern, @"\[(\w+)\\\|s\]", "(?<$1>[^\\S\\r\\n]+?)");
-        pattern = Regex.Replace(pattern, @"\[(\w+)\\\|wo\]", "(?<$1>\\w+?)?");
-        pattern = Regex.Replace(pattern, @"\[(\w+)\\\|do\]", "(?<$1>\\d+?)?");
-        pattern = Regex.Replace(pattern, @"\[(\w+)\\\|so\]", "(?<$1>[^\\S\\r\\n]+?)?");
+        var configMatches = Regex.Matches(pattern, @"\[(\w+)\\\|([wdsgol]+)\]");
+        for (int i = configMatches.Count - 1; i >= 0; i--)
+        {
+            var name = configMatches[i].Groups[1].Value;
+            var options = configMatches[i].Groups[2].Value;
+            var restriction = options.Contains('w') ? "\\w"
+                : options.Contains('d') ? "\\d"
+                : options.Contains('s') ? (options.Contains('l') ? "\\s" : "[^\\S\\r\\n]")
+                : (options.Contains('l') ? "[\\S\\s]" : "[^\\r\\n]");
+            var quantifier = options.Contains('g') ? "+" : "+?";
+            var optional = options.Contains('o') ? "?" : "";
+
+            var newPattern = $"(?<{name}>{restriction}{quantifier}){optional}";
+
+            pattern = pattern[..configMatches[i].Index] + newPattern + pattern[(configMatches[i].Index + configMatches[i].Length)..];
+        }
+        //pattern = Regex.Replace(pattern, @"\[(\w+)\\\|o\]", "(?<$1>.+?)?");
+        //pattern = Regex.Replace(pattern, @"\[(\w+)\\\|w\]", "(?<$1>\\w+?)");
+        //pattern = Regex.Replace(pattern, @"\[(\w+)\\\|d\]", "(?<$1>\\d+?)");
+        //pattern = Regex.Replace(pattern, @"\[(\w+)\\\|s\]", "(?<$1>[^\\S\\r\\n]+?)");
+        //pattern = Regex.Replace(pattern, @"\[(\w+)\\\|wo\]", "(?<$1>\\w+?)?");
+        //pattern = Regex.Replace(pattern, @"\[(\w+)\\\|do\]", "(?<$1>\\d+?)?");
+        //pattern = Regex.Replace(pattern, @"\[(\w+)\\\|so\]", "(?<$1>[^\\S\\r\\n]+?)?");
+
         pattern = Regex.Replace(pattern, @"\[(\w+)\{([^\r\n]+?)\}\]", "(?<$1>$2)");
         pattern = Regex.Replace(pattern, @"\[\{([^\r\n]+?)\}\]", "$1");
         var uMatches = Regex.Matches(pattern, @"(?<uLines>\r\n\(\[\^\\S\\r\\n\]\+\)\?(\[\^\\S\\r\\n\]\+)?\[(\w+\\\|)?u\|[^\r\n]+\])+");
@@ -95,7 +112,7 @@ public class Regexer
         replace = Regex.Replace(replace, @"\[\[(\w+?)\]\]", "${$1}");
 
         var matches = Regex.Matches(input, pattern, RegexOptions.None, regexTimeoutSpan);
-        if (!matches.Any()) return new RegexerResult{ Result = input };
+        if (!matches.Any()) return new RegexerResult { Result = input };
         //try
         //{
         //    if (!matches.Any()) return input;
@@ -121,7 +138,7 @@ public class Regexer
         if (replaceWasEmpty)
         {
             resultMatches = GetRegexMatches(matches, replace, true);
-            return new RegexerResult{ Result = result, Matches = resultMatches };
+            return new RegexerResult { Result = result, Matches = resultMatches };
         }
 
         var uMultiLineReplacements = new List<KeyValuePair<string, string>>?[matches.Count];
@@ -135,12 +152,12 @@ public class Regexer
                 var lines = kvp.Value.ElementAt(i);
                 var segmentCount = mlMatches.Count / kvp.Value.Count();
                 var jInit = segmentCount * (i + 1);
-                uMultiLineReplacements[i] ??= new ();
+                uMultiLineReplacements[i] ??= new();
                 for (var j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
                     var match = mlMatches.ElementAt(j);
                     var rep = string.Join("\r\n", lines.Select(line => match.Groups["space"].Value + match.Groups["before"] + line + match.Groups["after"])) + "\r\n";
-                    uMultiLineReplacements[i].Insert(0, new (match.Value, rep));
+                    uMultiLineReplacements[i].Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -160,7 +177,7 @@ public class Regexer
                 {
                     var match = uResultMatches.ElementAt(j);
                     var rep = !inputMatch.Success ? string.Empty : match.Groups["uSpace"].Value + (match.Groups["uLine"].Success ? match.Groups["uLine"].Value : inputMatch.Value);
-                    uMultiLineReplacements[i].Insert(0, new (match.Value, rep));
+                    uMultiLineReplacements[i].Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
