@@ -84,7 +84,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   ```
 - **[[foo|\<quantifier\>]]**: Two quantifiers are available to use with captures: Optional (**o**) and greedy (**g**). The optional quantifier, used as **[[foo|o]]**, means the capture may or may not appear in the match. Translates to **([^\r\n]+?)?**. The greedy quantitfier, used as **[[foo|g]]**, will capture the most it can on the line it appears in. Translates to **([^\r\n]+)**. Both can be used together.
 
-  Example (Greedy)
+  Example (greedy)
   ```
   //Input
   madam
@@ -99,7 +99,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   madam,
   ```
   
-  Example (Optional)
+  Example (optional)
   ```
   //Input
   madam.
