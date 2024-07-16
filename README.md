@@ -60,7 +60,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   //Output
   {madam}
   ```
-  Example (lines)
+  Example (single lines)
   ```
   //Input
   <tag>
@@ -119,7 +119,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   (mud):
   (well): //deep and wide
   ```
-- **[[foo|\<restriction\>]]**: You can restrict your capture to word characters(**w**), digits (**d**) or whitespace (**s**). Translates to **(\w+?)**, **(\d+?)** and **([^\S\r\n]+?)** respectively. Each can be used with quantifiers e.g **[[foo|so]]** which translates to **([^\S\r\n]+?)?**. You can only use one restriction in a capture.
+- **[[foo|\<restriction\>]]**: You can restrict your capture to word characters (**w**), digits (**d**) or whitespace (**s**). Translates to **(\w+?)**, **(\d+?)** and **([^\S\r\n]+?)** respectively. Each can be used with quantifiers e.g **[[foo|so]]** which translates to **([^\S\r\n]+?)?**. You can only use one restriction in a capture.
   
   Example
   ```
@@ -145,7 +145,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   Linda, thirty.
   Name: Bossa, Age: 9
   ```
-- **[[foo|l]]**: Use this to include new-lines in the capture. In other words, make the match span multiple lines. Can be used with restriction and quantifiers. **[[foo|l]]** translates to **([\S\s]+?)** and **[[foo|wl]]** translates to **([\w\r\n]+?)**.
+- **[[foo|l]]**: Use this to include new-line characters in the capture. In other words, make the match span multiple lines. Can be used with restriction and quantifiers. **[[foo|l]]** translates to **([\S\s]+?)** and **[[foo|wl]]** translates to **([\w\r\n]+?)**.
 
   Example
   ```
@@ -216,7 +216,6 @@ If you use the same patterns and replacements often, you can save each pattern-r
       max-length="5" disabled/>
 
   //Pattern
-  <input
   <input
   [[id|u|id="[[id|w]]"]]
   [[class|u|class="[[class|w]]"]]
