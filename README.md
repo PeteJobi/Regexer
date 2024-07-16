@@ -82,9 +82,24 @@ If you use the same patterns and replacements often, you can save each pattern-r
     <content>Hello</content>
   </new-tag>
   ```
-- **[[foo|o]]**: Same as **[[foo]]**, but will treat the capture as optional. Translates to **([^\r\n]+?)?**.
+- **[[foo|\<quantifier\>]]**: Two quantifiers are available to use with captures: Optional (**o**) and greedy (**g**). The optional quantifier, used as **[[foo|o]]**, means the capture may or may not appear in the match. Translates to **([^\r\n]+?)?**. The greedy quantitfier, used as **[[foo|g]]**, will capture the most it can on the line it appears in. Translates to **([^\r\n]+)**. Both can be used together.
+
+  Example (Greedy)
+  ```
+  //Input
+  madam
+
+  //Pattern
+  [[foo|g]]
+
+  //Replace
+  [[foo]],
+
+  //Output
+  madam,
+  ```
   
-  Example
+  Example (Optional)
   ```
   //Input
   madam.
@@ -104,7 +119,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   (mud):
   (well): //deep and wide
   ```
-- **[[foo|\<restrict\>]]**: You can restrict your capture to word characters(**w**), digits (**d**) or whitespace (**s**). Translates to **(\w+?)**, **(\d+?)** and **([^\S\r\n]+?)** respectively. Can also be used in an optional capture i.e **[[foo|so]]** which translates to **([^\S\r\n]+?)?**.
+- **[[foo|\<restriction\>]]**: You can restrict your capture to word characters(**w**), digits (**d**) or whitespace (**s**). Translates to **(\w+?)**, **(\d+?)** and **([^\S\r\n]+?)** respectively. Each can be used with quantifiers e.g **[[foo|so]]** which translates to **([^\S\r\n]+?)?**. You can only use one restriction in a capture.
   
   Example
   ```
@@ -130,7 +145,42 @@ If you use the same patterns and replacements often, you can save each pattern-r
   Linda, thirty.
   Name: Bossa, Age: 9
   ```
-- **[[foo|ml]]**: This captures one or more lines. Translates to **([^\r\n]*?)(\r\n(([^\S\r\n]\*)[^\r\n]\*?)?)\*?**.
+- **[[foo|l]]**: Use this to include new-lines in the capture. In other words, make the match span multiple lines. Can be used with restriction and quantifiers. **[[foo|l]]** translates to **([\S\s]+?)** and **[[foo|wl]]** translates to **([\w\r\n]+?)**.
+
+  Example
+  ```
+  //Input
+  names: {
+  "Pete"
+  "Abigail"
+  "Tolani"
+  }
+  
+  ages: {
+  45
+  18
+  23
+  }
+
+  //Pattern
+  [[key]]: {[[nums|dl]]}
+
+  //Replace
+  [[key]]:[[nums]]
+
+  //Output
+  names: {
+  "Pete"
+  "Abigail"
+  "Tolani"
+  }
+  
+  ages:
+  45
+  18
+  23
+  ```
+- **[[foo|ml]]**: This captures one or more lines. Translates to **([^\r\n]*?)(\r\n(([^\S\r\n]\*)[^\r\n]\*?)?)\*?**. The difference between this and the _include new-lines option ("l")_ is that each line captured using this can be modified in the replacement using prefixes or suffixes. Cannot be used with restrictions or quantifiers.
   
   Example
   ```
@@ -147,18 +197,42 @@ If you use the same patterns and replacements often, you can save each pattern-r
 
   //Replace
   <new-[[bar]]>
-    [[foo]]
+    <p>[[foo]]</p>
   </new-[[bar]]>
 
   //Output
   <new-tag>
-    <content>Hello</content>
-    <content>Hi</content>
+    <p><content>Hello</content></p>
+    <p><content>Hi</content></p>
   </new-tag>
   ```
-- **[[foo|u|line-to-capture]]**: Use this to capture lines that can be optional and appear in any order. You may also omit the name (i.e **[[u|line-to-match]]**) and it will be used for matching and not captured.
+- **[[foo|u|phrase-or-line-to-capture]]**: Use this to capture phrases (space-separated) or lines (new-line-separated) that can be optional and appear in any order. You may also omit the name (i.e **[[u|phrase-or-line-to-match]]**) and it will be used for matching and not captured. In the pattern, each phrase/line capture should appear on separate lines and should be adjacent to one another to represent a group.
 
-  Example
+  Example (phrases)
+  ```
+  //Input
+  <input id="name" type="text" disabled class="name"/>
+  <input type="button" id="submit" class="big"
+      max-length="5" disabled/>
+
+  //Pattern
+  <input
+  <input
+  [[id|u|id="[[id|w]]"]]
+  [[class|u|class="[[class|w]]"]]
+  [[type|u|type="[[type|w]]"]]
+  [[length|u|max-length="[[length|w]]"]]
+  [[u|disabled]]/>
+
+  //Replace
+  <input [[id]] [[class]] [[type]] [[length]]/>
+
+  //Output
+  <input id="name" class="name" type="text"/>
+  <input id="submit" class="big" type="button" max-length="5"/>
+  ```
+
+  Example (lines)
   ```
   //Input
   saveUser(
