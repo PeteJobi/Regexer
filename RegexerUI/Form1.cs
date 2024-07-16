@@ -16,7 +16,7 @@ namespace RegexerUI
         private FastColoredTextBox replaceTextbox;
         private readonly TextStyle _highlightStyle = new(null, Brushes.Gainsboro, FontStyle.Bold);
         private int currentMatchRange;
-        private List<(Range inpRange, Range? outRange)> matchRanges = new();
+        private readonly List<(Range inpRange, Range? outRange)> matchRanges = new();
 
         public RegexerForm()
         {
