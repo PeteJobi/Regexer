@@ -85,7 +85,7 @@ public class Regexer
 
         pattern = Regex.Replace(pattern, @"\[(\w+)\{([^\r\n]+?)\}\]", "(?<$1>$2)");
         pattern = Regex.Replace(pattern, @"\[\{([^\r\n]+?)\}\]", "$1");
-        var uMatches = Regex.Matches(pattern, @"(?<uLines>\r\n\(\[\^\\S\\r\\n\]\+\)\?(\[\^\\S\\r\\n\]\+)?\[(\w+\\\|)?u\\\|[^\r\n]+\])+");
+        var uMatches = Regex.Matches(pattern, @"(?<uLines>\r\n\(\[\^\\S\\r\\n\]\+\)\?(\[\^\\S\\r\\n\]\+)?\[(\w+\\\|)?u\\\|[^\r\n]+\])+\r\n");
         for (var i = uMatches.Count - 1; i >= 0; i--)
         {
             var uMatch = uMatches[i];
@@ -95,7 +95,7 @@ public class Regexer
             var inAnyOrder = string.Join(string.Empty, linesAndNames.Select(l => $"(?=.*({l.line})?)"));
             var noDuplicates = $"(?!.*({string.Join('|', linesAndNames.Select(l => $"\\s+{l.line}"))})+.*\\1)";
             var nothingElseBesidesThem = $"({string.Join('|', linesAndNames.Select(l => "\\s+" + (l.name == string.Empty ? l.line : $"(?<{l.name}>{l.line})")))})*";
-            var fullPattern = inAnyOrder + noDuplicates + nothingElseBesidesThem;
+            var fullPattern = inAnyOrder + noDuplicates + nothingElseBesidesThem + "(\\r\\n)?";
             pattern = pattern[..uMatch.Index] + fullPattern + pattern[(uMatch.Index + uMatch.Length)..];
         }
 
