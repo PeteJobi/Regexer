@@ -221,7 +221,8 @@ If you use the same patterns and replacements often, you can save each pattern-r
   [[class|u|class="[[class|w]]"]]
   [[type|u|type="[[type|w]]"]]
   [[length|u|max-length="[[length|w]]"]]
-  [[u|disabled]]/>
+  [[u|disabled]]
+  />
 
   //Replace
   <input [[id]] [[class]] [[type]] [[length]]/>
