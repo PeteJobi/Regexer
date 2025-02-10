@@ -95,7 +95,7 @@ public class Regexer
             var inAnyOrder = string.Join(string.Empty, linesAndNames.Select(l => $"(?=.*({l.line})?)"));
             var noDuplicates = $"(?!.*({string.Join('|', linesAndNames.Select(l => $"\\s+{l.line}"))})+.*\\1)";
             var nothingElseBesidesThem = $"({string.Join('|', linesAndNames.Select(l => "\\s+" + (l.name == string.Empty ? l.line : $"(?<{l.name}>{l.line})")))})*";
-            var fullPattern = inAnyOrder + noDuplicates + nothingElseBesidesThem + "(\\r\\n)?";
+            var fullPattern = inAnyOrder + noDuplicates + nothingElseBesidesThem + "(?:\\r\\n)?";
             pattern = pattern[..uMatch.Index] + fullPattern + pattern[(uMatch.Index + uMatch.Length)..];
         }
 
@@ -169,8 +169,9 @@ public class Regexer
                 for (var j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
                     var match = uResultMatches.ElementAt(j);
-                    var rep = !inputMatch.Success ? string.Empty : match.Groups["uSpace"].Value + (match.Groups["uLine"].Value != string.Empty ? match.Groups["uLine"].Value : inputMatch.Value);
-                    uMultiLineReplacements[i].Insert(0, new(match.Value, rep));
+                    var space = match.Groups["uSpace"].Value;
+                    var rep = space + (!inputMatch.Success ? string.Empty : (match.Groups["uLine"].Value != string.Empty ? match.Groups["uLine"].Value : inputMatch.Value));
+                    uMultiLineReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
