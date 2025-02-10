@@ -194,21 +194,16 @@ public class Regexer
                 Length = match.Length,
                 Text = match.Value
             };
-            if (noReplace && uMultiLineReplacements == null)
+            if (noReplace || uMultiLineReplacements == null)
             {
                 matchPairs[i] = new RegexerMatchPair { InputMatch = inpMatch };
                 continue;
             }
 
             var rep = match.Result(replace);
-            if (uMultiLineReplacements != null && uMultiLineReplacements.All(r => r != null))
+            if (uMultiLineReplacements.All(r => r != null))
             {
-                rep = "\r\n" + rep + "\r\n"; //Add new lines before and after
-                foreach (var keyValuePair in uMultiLineReplacements[i])
-                {
-                    rep = rep.Replace(keyValuePair.Key, keyValuePair.Value);
-                }
-                rep = rep[2..^2]; //Remove new lines
+                rep = uMultiLineReplacements[i]!.Aggregate(rep, (current, keyValuePair) => current.Replace(keyValuePair.Key, keyValuePair.Value));
             }
 
             var outMatch = new RegexerMatch
