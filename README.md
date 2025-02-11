@@ -102,13 +102,13 @@ If you use the same patterns and replacements often, you can save each pattern-r
   Example (optional)
   ```
   //Input
-  madam.
-  tree. //huge and leafy
-  mud.
-  well. //deep and wide
+  "madam."
+  "tree. //huge and leafy"
+  "mud."
+  "well. //deep and wide"
 
   //Pattern
-  [[word]].[[comment|o]]
+  "[[word]].[[comment|o]]"
 
   //Replace
   ([[word]]):[[comment]]
@@ -217,10 +217,10 @@ If you use the same patterns and replacements often, you can save each pattern-r
 
   //Pattern
   <input
-  [[id|u|id="[[id|w]]"]]
-  [[class|u|class="[[class|w]]"]]
-  [[type|u|type="[[type|w]]"]]
-  [[length|u|max-length="[[length|w]]"]]
+  [[id|u|id="[[_id|w]]"]]
+  [[class|u|class="[[_class|w]]"]]
+  [[type|u|type="[[_type|w]]"]]
+  [[length|u|max-length="[[_length|w]]"]]
   [[u|disabled]]
   />
 
@@ -266,20 +266,19 @@ If you use the same patterns and replacements often, you can save each pattern-r
 
   //Pattern
   saveUser(
-    [[_name|u|name: [[userName]],]]
-    [[_age|u|age: [[userAge]],]]
+    [[name|u|name: [[userName]],]]
+    [[age|u|age: [[userAge]],]]
     [[u|gender: M,]]
     [[u|gender: F,]]
-    [[_editing|u|isEditing: true,]]
-    [[_adding|u|isEditing: false,]]
+    [[editing|u|isEditing: true,]]
+    [[adding|u|isEditing: false,]]
     status: alive
   )
 
   //Replace
-  [[_adding|addUser{]]
-  [[_editing|editUser{]]
-     [[_name|User's name is [[userName]]]]
-     [[_age|User's age is [[userAge]]]]
+  [[adding|addUser{]][[editing|editUser{]]
+     [[name|User's name is [[userName]]]]
+     [[age|User's age is [[userAge]]]]
      [[userName]] is [[userAge]] years old
   }
 
@@ -289,6 +288,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
      User's age is 12
      Peter is 12 years old
   }
+  
   editUser{
      User's name is Bossa
      User's age is 9
@@ -300,6 +300,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
      User's age is 30
      Judas is 30 years old
   }
+  
   editUser{
      User's name is Paula
      Paula is  years old
