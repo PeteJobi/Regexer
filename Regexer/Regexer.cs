@@ -231,6 +231,19 @@ public class RegexerMatchPair
 {
     public RegexerMatch InputMatch { get; set; }
     public RegexerMatch? OutputMatch { get; set; }
+
+    public override bool Equals(object? obj)
+    {
+        var pair = obj as RegexerMatchPair;
+        if(pair == null) return false;
+        if (InputMatch.Index != pair.InputMatch.Index) return false;
+        if (InputMatch.Length != pair.InputMatch.Length) return false;
+        if (InputMatch.Text != pair.InputMatch.Text) return false;
+        if (OutputMatch?.Index != pair.OutputMatch?.Index) return false;
+        if (OutputMatch?.Length != pair.OutputMatch?.Length) return false;
+        if (OutputMatch?.Text != pair.OutputMatch?.Text) return false;
+        return true;
+    }
 }
 
 public class RegexerMatch
