@@ -1,0 +1,62 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 1,
+      "Text": "m"
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 2,
+      "Text": "m,"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 1,
+      "Length": 1,
+      "Text": "a"
+    },
+    "OutputMatch": {
+      "Index": 2,
+      "Length": 2,
+      "Text": "a,"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 2,
+      "Length": 1,
+      "Text": "d"
+    },
+    "OutputMatch": {
+      "Index": 4,
+      "Length": 2,
+      "Text": "d,"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 3,
+      "Length": 1,
+      "Text": "a"
+    },
+    "OutputMatch": {
+      "Index": 6,
+      "Length": 2,
+      "Text": "a,"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 4,
+      "Length": 1,
+      "Text": "m"
+    },
+    "OutputMatch": {
+      "Index": 8,
+      "Length": 2,
+      "Text": "m,"
+    }
+  }
+]

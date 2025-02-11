@@ -1,0 +1,26 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 507,
+      "Text": "$.ajax({\r\n    url: Strings.URL_CLASS + \"joinClass/\" + classe.id, // api/Class/joinClass\r\n    contentType: \"application/json\",\r\n    method: \"POST\",\r\n    success: (classe: Types.IClass) => {\r\n        updClassDispatch({\r\n            type: Strings.UPDATE_CLASS_PARAMS,\r\n            classAction: Strings.EDIT_CLASS,\r\n            classId: classe.id,\r\n            class: classe\r\n        })\r\n    },\r\n    error: (xhr, status, error) => {\r\n        console.log(xhr.responseText, status, error)\r\n        yo()\r\n    }\r\n})"
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 547,
+      "Text": "Functions.fetchCall<Types.IClass>(Strings.URL_CLASS + \"joinClass/\" + classe.id, {  // api/Class/joinClass\r\n    method: \"POST\",\r\n    notOk: (status, responseText, noConnection, noConnectionString) => {\r\n        console.log(xhr.responseText, status, error);\r\n        yo();\r\n    }\r\n}).then((response) => {\r\n    if(!response.ok) return\r\n    const classe = response.result\r\n    updClassDispatch({,\r\n        type: Strings.UPDATE_CLASS_PARAMS,,\r\n        classAction: Strings.EDIT_CLASS,,\r\n        classId: classe.id,,\r\n        class: classe,\r\n    }),\r\n})"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 520,
+      "Length": 554,
+      "Text": "    $.ajax({\r\n        url: Strings.URL_CLASS + \"joinClass/\" + classe.id,\r\n        contentType: \"application/json\",\r\n        method: \"POST\",\r\n        success: (classe: Types.IClass) => {\r\n            updClassDispatch({\r\n                type: Strings.UPDATE_CLASS_PARAMS,\r\n                classAction: Strings.EDIT_CLASS,\r\n                classId: classe.id,\r\n                class: classe\r\n            })\r\n            ibad()\r\n        },\r\n        error: (xhr, status, error) => {\r\n            console.log(xhr.responseText, status, error)\r\n        }\r\n    })"
+    },
+    "OutputMatch": {
+      "Index": 560,
+      "Length": 586,
+      "Text": "    Functions.fetchCall<Types.IClass>(Strings.URL_CLASS + \"joinClass/\" + classe.id, { \r\n        method: \"POST\",\r\n        notOk: (status, responseText, noConnection, noConnectionString) => {\r\n            console.log(xhr.responseText, status, error);\r\n        }\r\n    }).then((response) => {\r\n        if(!response.ok) return\r\n        const classe = response.result\r\n        updClassDispatch({,\r\n            type: Strings.UPDATE_CLASS_PARAMS,,\r\n            classAction: Strings.EDIT_CLASS,,\r\n            classId: classe.id,,\r\n            class: classe,\r\n        }),\r\n        ibad(),\r\n    })"
+    }
+  }
+]

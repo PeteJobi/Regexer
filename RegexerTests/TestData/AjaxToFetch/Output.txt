@@ -1,0 +1,35 @@
+﻿Functions.fetchCall<Types.IClass>(Strings.URL_CLASS + "joinClass/" + classe.id, {  // api/Class/joinClass
+    method: "POST",
+    notOk: (status, responseText, noConnection, noConnectionString) => {
+        console.log(xhr.responseText, status, error);
+        yo();
+    }
+}).then((response) => {
+    if(!response.ok) return
+    const classe = response.result
+    updClassDispatch({,
+        type: Strings.UPDATE_CLASS_PARAMS,,
+        classAction: Strings.EDIT_CLASS,,
+        classId: classe.id,,
+        class: classe,
+    }),
+})
+
+() => {
+    Functions.fetchCall<Types.IClass>(Strings.URL_CLASS + "joinClass/" + classe.id, { 
+        method: "POST",
+        notOk: (status, responseText, noConnection, noConnectionString) => {
+            console.log(xhr.responseText, status, error);
+        }
+    }).then((response) => {
+        if(!response.ok) return
+        const classe = response.result
+        updClassDispatch({,
+            type: Strings.UPDATE_CLASS_PARAMS,,
+            classAction: Strings.EDIT_CLASS,,
+            classId: classe.id,,
+            class: classe,
+        }),
+        ibad(),
+    })
+}

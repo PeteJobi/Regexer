@@ -1,0 +1,14 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 66,
+      "Text": "<tag>\r\n  <content>Hello</content>\r\n  <content>Hi</content>\r\n</tag>"
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 88,
+      "Text": "<new-tag>\r\n  <p><content>Hello</content></p>\r\n  <p><content>Hi</content></p>\r\n</new-tag>"
+    }
+  }
+]

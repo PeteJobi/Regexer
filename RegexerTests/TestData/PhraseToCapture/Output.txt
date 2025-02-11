@@ -1,0 +1,2 @@
+﻿<input id="name" class="name" type="text" />
+<input id="submit" class="big" type="button" max-length="5"/>

@@ -1,0 +1,23 @@
+﻿addUser{
+   User's name is Peter
+   User's age is 12
+   Peter is 12 years old
+}
+
+editUser{
+   User's name is Bossa
+   User's age is 9
+   Bossa is 9 years old
+}
+
+addUser{
+   User's name is Judas
+   User's age is 30
+   Judas is 30 years old
+}
+
+editUser{
+   User's name is Paula
+   
+   Paula is  years old
+}

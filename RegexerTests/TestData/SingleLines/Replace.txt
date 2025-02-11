@@ -1,0 +1,3 @@
+﻿<new-tag>
+  [[foo]]
+</new-tag>

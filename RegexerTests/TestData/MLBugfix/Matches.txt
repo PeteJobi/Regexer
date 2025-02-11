@@ -1,0 +1,50 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 25,
+      "Text": "testEvent(2, true, false)"
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 5,
+      "Text": "enter"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 30,
+      "Length": 25,
+      "Text": "testEvent(3, true, false)"
+    },
+    "OutputMatch": {
+      "Index": 10,
+      "Length": 5,
+      "Text": "enter"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 62,
+      "Length": 26,
+      "Text": "testEvent(3, false, false)"
+    },
+    "OutputMatch": {
+      "Index": 22,
+      "Length": 4,
+      "Text": "exit"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 93,
+      "Length": 26,
+      "Text": "testEvent(2, false, false)"
+    },
+    "OutputMatch": {
+      "Index": 31,
+      "Length": 4,
+      "Text": "exit"
+    }
+  }
+]

@@ -1,6 +1,0 @@
-﻿<input
-[[id|u|id="[[id|w]]"]]
-[[class|u|class="[[class|w]]"]]
-[[type|u|type="[[type|w]]"]]
-[[length|u|max-length="[[length|w]]"]]
-[[u|extra]]/>

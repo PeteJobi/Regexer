@@ -1,0 +1,50 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 10,
+      "Text": "Peter, 12."
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 20,
+      "Text": "Name: Peter, Age: 12"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 24,
+      "Length": 10,
+      "Text": "Judas, 30."
+    },
+    "OutputMatch": {
+      "Index": 34,
+      "Length": 20,
+      "Text": "Name: Judas, Age: 30"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 36,
+      "Length": 8,
+      "Text": "Macon, ."
+    },
+    "OutputMatch": {
+      "Index": 56,
+      "Length": 18,
+      "Text": "Name: Macon, Age: "
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 62,
+      "Length": 9,
+      "Text": "Bossa, 9."
+    },
+    "OutputMatch": {
+      "Index": 92,
+      "Length": 19,
+      "Text": "Name: Bossa, Age: 9"
+    }
+  }
+]

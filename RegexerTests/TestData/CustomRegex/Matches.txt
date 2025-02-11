@@ -1,0 +1,38 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 18,
+      "Text": "Ade has 50 apples."
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 26,
+      "Text": "-Name: Ade\r\n-Items: apples"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 42,
+      "Length": 20,
+      "Text": "Bose had 70 oranges?"
+    },
+    "OutputMatch": {
+      "Index": 50,
+      "Length": 28,
+      "Text": "-Name: Bose\r\n-Items: oranges"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 85,
+      "Length": 18,
+      "Text": "Shola had 15 caps!"
+    },
+    "OutputMatch": {
+      "Index": 101,
+      "Length": 26,
+      "Text": "-Name: Shola\r\n-Items: caps"
+    }
+  }
+]

@@ -1,0 +1,3 @@
+﻿<new-tag>
+  <content>Hello</content>
+</new-tag>

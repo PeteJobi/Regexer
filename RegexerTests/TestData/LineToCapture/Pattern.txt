@@ -1,0 +1,9 @@
+﻿saveUser(
+  [[name|u|name: [[userName]],]]
+  [[age|u|age: [[userAge]],]]
+  [[u|gender: M,]]
+  [[u|gender: F,]]
+  [[editing|u|isEditing: true,]]
+  [[adding|u|isEditing: false,]]
+  status: alive
+)
