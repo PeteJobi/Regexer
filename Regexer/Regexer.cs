@@ -45,7 +45,7 @@ public class Regexer
             await Task.Delay(-1, cancellationToken);
         }
         catch (TaskCanceledException) { }
-        return new RegexerResult { Result = "Cancelled" };
+        return new RegexerResult { Output = "Cancelled" };
     }
 
     private RegexerResult AutoRegexInternal(string input, string pattern, string replace)
@@ -105,7 +105,7 @@ public class Regexer
         replace = Regex.Replace(replace, @"\[\[(\w+?)\]\]", "${$1}");
 
         var matches = Regex.Matches(input, pattern, RegexOptions.None, regexTimeoutSpan);
-        if (!matches.Any()) return new RegexerResult { Result = input };
+        if (!matches.Any()) return new RegexerResult { Output = input };
         //try
         //{
         //    if (!matches.Any()) return input;
@@ -131,7 +131,7 @@ public class Regexer
         if (replaceWasEmpty)
         {
             resultMatches = GetRegexMatches(matches, replace, true);
-            return new RegexerResult { Result = result, Matches = resultMatches };
+            return new RegexerResult { Output = result, Matches = resultMatches };
         }
 
         var uMultiLineReplacements = new List<KeyValuePair<string, string>>?[matches.Count];
@@ -178,7 +178,7 @@ public class Regexer
         }
 
         resultMatches = GetRegexMatches(matches, replace, false, uMultiLineReplacements);
-        return new RegexerResult { Result = result, Matches = resultMatches };
+        return new RegexerResult { Output = result, Matches = resultMatches };
     }
 
     RegexerMatchPair[] GetRegexMatches(MatchCollection matches, string replace, bool noReplace, List<KeyValuePair<string, string>>?[]? uMultiLineReplacements = null)
@@ -223,7 +223,7 @@ public class Regexer
 
 public class RegexerResult
 {
-    public string Result { get; set; }
+    public string Output { get; set; }
     public RegexerMatchPair[]? Matches { get; set; }
 }
 

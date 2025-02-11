@@ -52,8 +52,8 @@ namespace RegexerUI
             try
             {
                 var result = await regexer.AutoRegex(inputTextbox.Text, patternTextbox.Text, replaceTextbox.Text, tokenSource.Token);
-                if (result.Result == "Cancelled") return;
-                outputTextbox.Text = result.Result;
+                if (result.Output == "Cancelled") return;
+                outputTextbox.Text = result.Output;
                 matchRanges.Clear();
                 inputTextbox.Range.ClearStyle(_highlightStyle);
                 outputTextbox.Range.ClearStyle(_highlightStyle);
