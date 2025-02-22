@@ -1,0 +1,14 @@
+﻿    void Action1(int input){
+        input *= 4;
+        yield return input;
+    }
+
+    int Action2(string input){
+        input += "Nice";
+        return input;
+    }
+
+    void Action3(int input){
+        input += 10;
+        return input;
+    }

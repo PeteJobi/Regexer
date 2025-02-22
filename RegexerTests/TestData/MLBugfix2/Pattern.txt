@@ -1,0 +1,4 @@
+﻿void [[name]]([[args]]){
+    [[lines|ml]]
+    return [[ret]];
+}

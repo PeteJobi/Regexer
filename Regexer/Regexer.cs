@@ -62,8 +62,8 @@ public class Regexer
         if (multiLineGroups.Any())
         {
             pattern = Regex.Replace(pattern, @"(?<mlSpace>[^\S\r\n]+)?\[(?<mlName>\w+)\\\|ml\]",
-                //@"(?<${mlName}FirstLine>([^\r\n]+)?)((\r\n\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]+)?([^\r\n]+)?))+?)?");
-            @"(?<${mlName}FirstLine>[^\r\n]*?)(\r\n(\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]*)[^\r\n]*?))?)*?");
+                @"(?<${mlName}FirstLine>([^\r\n]+)?)((\r\n\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]+)?([^\r\n]+)?))+?)?");
+            //@"(?<${mlName}FirstLine>[^\r\n]*?)(\r\n(\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]*)[^\r\n]*?))?)*?");
         }
         pattern = Regex.Replace(pattern, @"\[(\w+)\]", "(?<$1>[^\\r\\n]+?)");
         var configMatches = Regex.Matches(pattern, @"\[(\w+)\\\|([wdsgol]+)\]");
@@ -138,7 +138,7 @@ public class Regexer
 
         foreach (var kvp in multiLineGroupsKvps)
         {
-            var mlMatches = Regex.Matches(result, string.Format(@"(?<space>[^\S\r\n]+)?(?<before>[^\r\n]+?)?\[\[{0}\]\](?<after>[^\r\n]+?)?(\r\n|$)", kvp.Key));
+            var mlMatches = Regex.Matches(result, string.Format(@"(?<space>[^\S\r\n]+)?(?<before>[^\r\n]+?)?\[\[{0}\]\](?<after>[^\r\n]+?)?(?<end>\r\n|$)", kvp.Key));
             if (!mlMatches.Any()) continue;
             for (var i = kvp.Value.Count() - 1; i >= 0; i--)
             {
@@ -149,7 +149,7 @@ public class Regexer
                 for (var j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
                     var match = mlMatches.ElementAt(j);
-                    var rep = string.Join("\r\n", lines.Select(line => match.Groups["space"].Value + match.Groups["before"] + line + match.Groups["after"])) + "\r\n";
+                    var rep = string.Join("\r\n", lines.Select(line => match.Groups["space"].Value + match.Groups["before"] + line + match.Groups["after"])) + match.Groups["end"];
                     uMultiLineReplacements[i].Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
