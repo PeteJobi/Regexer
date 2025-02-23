@@ -83,6 +83,14 @@ namespace RegexerUI
             {
                 outputTextbox.Text = ex.ToString();
             }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                outputTextbox.Text = ex.ToString();
+            }
+            catch (ArithmeticException ex)
+            {
+                outputTextbox.Text = ex.ToString();
+            }
             finally
             {
                 delayTokenSource?.Cancel();
