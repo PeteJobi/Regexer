@@ -1,0 +1,26 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 21,
+      "Text": "peter went to school."
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 21,
+      "Text": "Peter went to SCHOOL."
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 23,
+      "Length": 22,
+      "Text": "jackson went to class."
+    },
+    "OutputMatch": {
+      "Index": 23,
+      "Length": 22,
+      "Text": "Jackson went to CLASS."
+    }
+  }
+]

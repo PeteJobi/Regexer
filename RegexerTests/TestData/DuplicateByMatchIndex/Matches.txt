@@ -1,0 +1,38 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 23,
+      "Text": "The soup was delicious!"
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 23,
+      "Text": "The soup was delicious!"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 25,
+      "Length": 23,
+      "Text": "The porridge was sweet!"
+    },
+    "OutputMatch": {
+      "Index": 25,
+      "Length": 28,
+      "Text": "The porridge was sweetsweet!"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 50,
+      "Length": 18,
+      "Text": "The pap was tasty!"
+    },
+    "OutputMatch": {
+      "Index": 55,
+      "Length": 28,
+      "Text": "The pap was tastytastytasty!"
+    }
+  }
+]

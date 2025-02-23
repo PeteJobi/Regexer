@@ -1,0 +1,50 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 8,
+      "Text": "\"madam.\""
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 7,
+      "Text": "(madam)"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 10,
+      "Length": 24,
+      "Text": "\"tree. //huge and leafy\""
+    },
+    "OutputMatch": {
+      "Index": 9,
+      "Length": 28,
+      "Text": "(The tree line had comments)"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 36,
+      "Length": 6,
+      "Text": "\"mud.\""
+    },
+    "OutputMatch": {
+      "Index": 39,
+      "Length": 5,
+      "Text": "(mud)"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 44,
+      "Length": 23,
+      "Text": "\"well. //deep and wide\""
+    },
+    "OutputMatch": {
+      "Index": 46,
+      "Length": 28,
+      "Text": "(The well line had comments)"
+    }
+  }
+]

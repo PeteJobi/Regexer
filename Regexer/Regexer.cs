@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
+using NCalc;
 
 namespace Regexer;
 
@@ -66,8 +67,10 @@ public class Regexer
             //@"(?<${mlName}FirstLine>[^\r\n]*?)(\r\n(\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]*)[^\r\n]*?))?)*?");
         }
         pattern = Regex.Replace(pattern, @"\[(\w+)\]", "(?<$1>[^\\r\\n]+?)");
+        var optionalGroups = new List<string>();
+        var digitGroups = new List<string>();
         var configMatches = Regex.Matches(pattern, @"\[(\w+)\\\|([wdsgol]+)\]");
-        for (int i = configMatches.Count - 1; i >= 0; i--)
+        for (var i = configMatches.Count - 1; i >= 0; i--)
         {
             var name = configMatches[i].Groups[1].Value;
             var options = configMatches[i].Groups[2].Value;
@@ -77,6 +80,8 @@ public class Regexer
                 : (options.Contains('l') ? "[\\S\\s]" : "[^\\r\\n]");
             var quantifier = options.Contains('g') ? "+" : "+?";
             var optional = options.Contains('o') ? "?" : "";
+            if (optional != string.Empty) optionalGroups.Add(name);
+            if(restriction == "\\d") digitGroups.Add(name);
 
             var newPattern = $"(?<{name}>{restriction}{quantifier}){optional}";
 
@@ -90,7 +95,8 @@ public class Regexer
         {
             var uMatch = uMatches[i];
             var lMatches = uMatch.Groups["uLines"].Captures.Select(c => Regex.Match(c.Value, @"\r\n.+?\[((?<uName>\w+)\\\|)?u\\\|(?<uLine>.+)\]"));
-            replace = lMatches.Select(m => m.Groups["uName"].Value).Aggregate(replace, (current, name) => current.Replace($"[[{name}]]", $"[[{name}|]]"));
+            optionalGroups.AddRange(lMatches.Select(m => m.Groups["uName"].Value));
+            replace = lMatches.Select(m => m.Groups["uName"].Value).Aggregate(replace, (current, name) => current.Replace($"[[{name}]]", $"[[{name}|o:]]"));
             IEnumerable<(string line, string name)> linesAndNames = lMatches.Select(m => (m.Groups["uLine"].Value, m.Groups["uName"].Value));
             var inAnyOrder = string.Join(string.Empty, linesAndNames.Select(l => $"(?=.*({l.line})?)"));
             var noDuplicates = $"(?!.*({string.Join('|', linesAndNames.Select(l => $"\\s+{l.line}"))})+.*\\1)";
@@ -156,21 +162,112 @@ public class Regexer
             }
         }
 
-        var uLineGroups = Regex.Matches(replace, @"\[\[(\w+)\|[^\r\n]*?\]\]").Select(g => g.Groups[1].Value).Distinct();
-        foreach (var group in uLineGroups)
+        foreach (var group in optionalGroups)
         {
-            var uResultMatches = Regex.Matches(result, string.Format(@"(?<uSpace>\s+)?\[\[{0}\|(?<uLine>[^\r\n]*?)\]\]", group));
+            var oResultMatches = Regex.Matches(result, string.Format(@"(?<oSpace>\s+)?\[\[{0}\|o:(?<oLine>[^\r\n]*?)\]\]", group));
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var inputMatch = matches[i].Groups[group];
-                var segmentCount = uResultMatches.Count / matches.Count;
+                var segmentCount = oResultMatches.Count / matches.Count;
                 var jInit = segmentCount * (i + 1);
                 uMultiLineReplacements[i] ??= new();
                 for (var j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
-                    var match = uResultMatches.ElementAt(j);
-                    var space = match.Groups["uSpace"].Value;
-                    var rep = space + (!inputMatch.Success ? string.Empty : (match.Groups["uLine"].Value != string.Empty ? match.Groups["uLine"].Value : inputMatch.Value));
+                    var match = oResultMatches.ElementAt(j);
+                    var space = match.Groups["oSpace"].Value;
+                    var rep = space + (!inputMatch.Success ? string.Empty : (match.Groups["oLine"].Value != string.Empty ? match.Groups["oLine"].Value : inputMatch.Value));
+                    uMultiLineReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
+                    result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
+                }
+            }
+        }
+
+        var duplicateGroups = Regex.Matches(replace, @"\[\[(\w+)\|d:(?:\d+|[\di+*/-]+)(?::.+?)?\]\]").Select(g => g.Groups[1].Value).Distinct();
+        foreach (var group in duplicateGroups)
+        {
+            var dResultMatches = Regex.Matches(result, string.Format(@"(?<dSpace>\s+)?\[\[{0}\|d:((?<amount>\d+)|(?<eval>[\di+*/-]+))(:(?<separator>.+?))?\]\]", group));
+            for (var i = matches.Count - 1; i >= 0; i--)
+            {
+                var inputMatch = matches[i].Groups[group];
+                var segmentCount = dResultMatches.Count / matches.Count;
+                var jInit = segmentCount * (i + 1);
+                uMultiLineReplacements[i] ??= new();
+                for (var j = jInit - 1; j >= jInit - segmentCount; j--)
+                {
+                    var match = dResultMatches.ElementAt(j);
+                    byte amount;
+                    if (match.Groups["amount"].Value != string.Empty)
+                    {
+                        if (!byte.TryParse(match.Groups["amount"].Value, out amount))
+                        {
+                            throw new ArgumentOutOfRangeException("The maximum amount of duplications allowed is 255.", default(Exception));
+                        }
+                    }
+                    else if (match.Groups["eval"].Value != string.Empty)
+                    {
+                        var expression = match.Groups["eval"].Value.Replace("i", (j + 1).ToString()); //i: one-based match index
+                        var evaluation = Evaluate(expression);
+                        if (evaluation > byte.MaxValue)
+                        {
+                            throw new ArgumentOutOfRangeException("The maximum amount of duplications allowed is 255.", default(Exception));
+                        }
+                        amount = (byte)evaluation;
+                    }
+                    else continue;
+                    var separator = match.Groups["separator"].Value;
+                    if (separator == "ml") separator = "\r\n";
+                    var space = match.Groups["dSpace"].Value;
+                    var rep = space + string.Join(separator, Enumerable.Repeat(inputMatch.Value, amount));
+                    uMultiLineReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
+                    result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
+                }
+            }
+        }
+
+        var capitalizeGroups = Regex.Matches(replace, @"\[\[(\w+)\|c:(?:u|l|s)\]\]").Select(g => g.Groups[1].Value).Distinct();
+        foreach (var group in capitalizeGroups)
+        {
+            if(digitGroups.Contains(group)) continue;
+            var cResultMatches = Regex.Matches(result, string.Format(@"(?<cSpace>\s+)?\[\[{0}\|c:(?<type>u|l|s)\]\]", group));
+            for (var i = matches.Count - 1; i >= 0; i--)
+            {
+                var inputMatch = matches[i].Groups[group];
+                var segmentCount = cResultMatches.Count / matches.Count;
+                var jInit = segmentCount * (i + 1);
+                uMultiLineReplacements[i] ??= new();
+                for (var j = jInit - 1; j >= jInit - segmentCount; j--)
+                {
+                    var match = cResultMatches.ElementAt(j);
+                    var caseType = match.Groups["type"].Value;
+                    var rep = caseType switch
+                    {
+                        "u" => inputMatch.Value.ToUpper(), //u: Upper case
+                        "l" => inputMatch.Value.ToLower(), //l: Lower case
+                        _ => inputMatch.Value[..1].ToUpper() + inputMatch.Value[1..].ToLower() //s: Sentence case
+                    };
+                    var space = match.Groups["cSpace"].Value;
+                    rep = space + rep;
+                    uMultiLineReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
+                    result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
+                }
+            }
+        }
+
+        foreach (var group in digitGroups)
+        {
+            var eResultMatches = Regex.Matches(result, string.Format(@"(?<eSpace>\s+)?\[\[{0}\|e:(?<eval>[\dim+*/-]+)\]\]", group));
+            for (var i = matches.Count - 1; i >= 0; i--)
+            {
+                var inputMatch = matches[i].Groups[group];
+                var segmentCount = eResultMatches.Count / matches.Count;
+                var jInit = segmentCount * (i + 1);
+                uMultiLineReplacements[i] ??= new();
+                for (var j = jInit - 1; j >= jInit - segmentCount; j--)
+                {
+                    var match = eResultMatches.ElementAt(j);
+                    var expression = match.Groups["eval"].Value.Replace("i", (j + 1).ToString()).Replace("m", inputMatch.Value); //i: one-based match index, m: match value
+                    var space = match.Groups["eSpace"].Value;
+                    var rep = space + Evaluate(expression);
                     uMultiLineReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
@@ -179,6 +276,19 @@ public class Regexer
 
         resultMatches = GetRegexMatches(matches, replace, false, uMultiLineReplacements);
         return new RegexerResult { Output = result, Matches = resultMatches };
+    }
+
+    int Evaluate(string expression)
+    {
+        try
+        {
+            var expr = new Expression(expression);
+            return expr.ToLambda<int>()();
+        }
+        catch (EvaluationException e)
+        {
+            throw new ArithmeticException($"Expression \"{expression}\" could not be evaluated.", e);
+        }
     }
 
     RegexerMatchPair[] GetRegexMatches(MatchCollection matches, string replace, bool noReplace, List<KeyValuePair<string, string>>?[]? uMultiLineReplacements = null)

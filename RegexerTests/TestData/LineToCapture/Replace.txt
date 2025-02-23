@@ -1,5 +1,5 @@
-﻿[[adding|addUser{]][[editing|editUser{]]
-   [[name|User's name is [[userName]]]]
-   [[age|User's age is [[userAge]]]]
+﻿[[adding|o:addUser{]][[editing|o:editUser{]]
+   [[name|o:User's name is [[userName]]]]
+   [[age|o:User's age is [[userAge]]]]
    [[userName]] is [[userAge]] years old
 }
