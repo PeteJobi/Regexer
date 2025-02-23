@@ -140,7 +140,7 @@ public class Regexer
             return new RegexerResult { Output = result, Matches = resultMatches };
         }
 
-        var uMultiLineReplacements = new List<KeyValuePair<string, string>>?[matches.Count];
+        var transformReplacements = new List<KeyValuePair<string, string>>?[matches.Count];
 
         foreach (var kvp in multiLineGroupsKvps)
         {
@@ -151,12 +151,12 @@ public class Regexer
                 var lines = kvp.Value.ElementAt(i);
                 var segmentCount = mlMatches.Count / kvp.Value.Count();
                 var jInit = segmentCount * (i + 1);
-                uMultiLineReplacements[i] ??= new();
+                transformReplacements[i] ??= new();
                 for (var j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
                     var match = mlMatches.ElementAt(j);
                     var rep = string.Join("\r\n", lines.Select(line => match.Groups["space"].Value + match.Groups["before"] + line + match.Groups["after"])) + match.Groups["end"];
-                    uMultiLineReplacements[i].Insert(0, new(match.Value, rep));
+                    transformReplacements[i].Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -170,13 +170,13 @@ public class Regexer
                 var inputMatch = matches[i].Groups[group];
                 var segmentCount = oResultMatches.Count / matches.Count;
                 var jInit = segmentCount * (i + 1);
-                uMultiLineReplacements[i] ??= new();
+                transformReplacements[i] ??= new();
                 for (var j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
                     var match = oResultMatches.ElementAt(j);
                     var space = match.Groups["oSpace"].Value;
                     var rep = space + (!inputMatch.Success ? string.Empty : (match.Groups["oLine"].Value != string.Empty ? match.Groups["oLine"].Value : inputMatch.Value));
-                    uMultiLineReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
+                    transformReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -191,7 +191,7 @@ public class Regexer
                 var inputMatch = matches[i].Groups[group];
                 var segmentCount = dResultMatches.Count / matches.Count;
                 var jInit = segmentCount * (i + 1);
-                uMultiLineReplacements[i] ??= new();
+                transformReplacements[i] ??= new();
                 for (var j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
                     var match = dResultMatches.ElementAt(j);
@@ -218,7 +218,7 @@ public class Regexer
                     if (separator == "ml") separator = "\r\n";
                     var space = match.Groups["dSpace"].Value;
                     var rep = space + string.Join(separator, Enumerable.Repeat(inputMatch.Value, amount));
-                    uMultiLineReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
+                    transformReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -234,7 +234,7 @@ public class Regexer
                 var inputMatch = matches[i].Groups[group];
                 var segmentCount = cResultMatches.Count / matches.Count;
                 var jInit = segmentCount * (i + 1);
-                uMultiLineReplacements[i] ??= new();
+                transformReplacements[i] ??= new();
                 for (var j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
                     var match = cResultMatches.ElementAt(j);
@@ -247,7 +247,7 @@ public class Regexer
                     };
                     var space = match.Groups["cSpace"].Value;
                     rep = space + rep;
-                    uMultiLineReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
+                    transformReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -261,20 +261,20 @@ public class Regexer
                 var inputMatch = matches[i].Groups[group];
                 var segmentCount = eResultMatches.Count / matches.Count;
                 var jInit = segmentCount * (i + 1);
-                uMultiLineReplacements[i] ??= new();
+                transformReplacements[i] ??= new();
                 for (var j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
                     var match = eResultMatches.ElementAt(j);
                     var expression = match.Groups["eval"].Value.Replace("i", (j + 1).ToString()).Replace("m", inputMatch.Value); //i: one-based match index, m: match value
                     var space = match.Groups["eSpace"].Value;
                     var rep = space + Evaluate(expression);
-                    uMultiLineReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
+                    transformReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
         }
 
-        resultMatches = GetRegexMatches(matches, replace, false, uMultiLineReplacements);
+        resultMatches = GetRegexMatches(matches, replace, false, transformReplacements);
         return new RegexerResult { Output = result, Matches = resultMatches };
     }
 
@@ -291,7 +291,7 @@ public class Regexer
         }
     }
 
-    RegexerMatchPair[] GetRegexMatches(MatchCollection matches, string replace, bool noReplace, List<KeyValuePair<string, string>>?[]? uMultiLineReplacements = null)
+    RegexerMatchPair[] GetRegexMatches(MatchCollection matches, string replace, bool noReplace, List<KeyValuePair<string, string>>?[]? transformReplacements = null)
     {
         var offset = 0;
         var matchPairs = new RegexerMatchPair[matches.Count];
@@ -304,16 +304,16 @@ public class Regexer
                 Length = match.Length,
                 Text = match.Value
             };
-            if (noReplace || uMultiLineReplacements == null)
+            if (noReplace || transformReplacements == null)
             {
                 matchPairs[i] = new RegexerMatchPair { InputMatch = inpMatch };
                 continue;
             }
 
             var rep = match.Result(replace);
-            if (uMultiLineReplacements.All(r => r != null))
+            if (transformReplacements.All(r => r != null))
             {
-                rep = uMultiLineReplacements[i]!.Aggregate(rep, (current, keyValuePair) => current.Replace(keyValuePair.Key, keyValuePair.Value));
+                rep = transformReplacements[i]!.Aggregate(rep, (current, keyValuePair) => current.Replace(keyValuePair.Key, keyValuePair.Value));
             }
 
             var outMatch = new RegexerMatch
