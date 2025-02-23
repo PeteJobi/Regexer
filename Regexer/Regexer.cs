@@ -182,10 +182,10 @@ public class Regexer
             }
         }
 
-        var duplicateGroups = Regex.Matches(replace, @"\[\[(\w+)\|d:(?:\d+|[\di+*/-]+)(?::.+?)?\]\]").Select(g => g.Groups[1].Value).Distinct();
+        var duplicateGroups = Regex.Matches(replace, @"\[\[(\w+)\|d:(?:\d+|[\di+*/%-]+)(?::.+?)?\]\]").Select(g => g.Groups[1].Value).Distinct();
         foreach (var group in duplicateGroups)
         {
-            var dResultMatches = Regex.Matches(result, string.Format(@"(?<dSpace>\s+)?\[\[{0}\|d:((?<amount>\d+)|(?<eval>[\di+*/-]+))(:(?<separator>.+?))?\]\]", group));
+            var dResultMatches = Regex.Matches(result, string.Format(@"(?<dSpace>\s+)?\[\[{0}\|d:((?<amount>\d+)|(?<eval>[\di+*/%-]+))(:(?<separator>.+?))?\]\]", group));
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var inputMatch = matches[i].Groups[group];
@@ -255,7 +255,7 @@ public class Regexer
 
         foreach (var group in digitGroups)
         {
-            var eResultMatches = Regex.Matches(result, string.Format(@"(?<eSpace>\s+)?\[\[{0}\|e:(?<eval>[\dim+*/-]+)\]\]", group));
+            var eResultMatches = Regex.Matches(result, string.Format(@"(?<eSpace>\s+)?\[\[{0}\|e:(?<eval>[\dim+*/%-]+)\]\]", group));
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var inputMatch = matches[i].Groups[group];
