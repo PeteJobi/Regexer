@@ -1,1 +1,1 @@
-﻿[[enum|d]]. [[name]] is [[age|d]] years old.
+﻿[[sn|d]]. [[name]] is [[age|d]] years old.
