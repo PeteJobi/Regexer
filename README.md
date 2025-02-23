@@ -334,3 +334,118 @@ If you use the same patterns and replacements often, you can save each pattern-r
   -Name: Shola
   -Items: caps
   ```
+## Replacement transformations:
+You can apply a few transformations to your match replacements, as described below:
+- **Duplications**: You can repeat a match multiple times in the output text with the replacement syntax **[[foo|d:(number/expression):separator]]**. The number represents the amount of duplications for the match. You can specify an expression instead of a number, and in this expression, you can use _**i**_, which represents the position of the match i.e if the match is the second one, **_i_** is 2. The only characters allowed in the expression are digits, +, -, /, * and % (modulo). Spaces are not allowed. The separator, which is optional, is the text that should appear between the duplications. If the separator isn't specified, the duplications are adjacent to each other (separated by nothing). To put each duplication in a separate line, use **_ml_** as the separator.
+  
+  Example (basic)
+  ```
+  //Input
+  Tasty!
+
+  //Pattern
+  [[foo|g]]
+
+  //Replace
+  [[foo|d:5]]
+
+  //Output
+  Tasty!Tasty!Tasty!Tasty!Tasty!
+  ```
+  
+  Example (separator)
+  ```
+  //Input
+  Tasty!
+
+  //Pattern
+  [[foo|g]]
+
+  //Replace
+  [[foo|d:5:...]]
+
+  //Output
+  Tasty!...Tasty!...Tasty!...Tasty!...Tasty!
+  ```
+
+  Example (expression)
+  ```
+  //Input
+  The soup was delicious!
+  The porridge was sweet!
+  The pap was tasty!
+
+  //Pattern
+  The [[food]] was [[adjective]]!
+
+  //Replace
+  The [[food]] was [[adjective|d:i]]!
+
+  //Output
+  The soup was delicious!
+  The porridge was sweetsweet!
+  The pap was tastytastytasty!
+  ```
+  
+- **Capitalizations**: You can change the capitalization of a match to any of 3 supported types namely Upper case (**u**), Lower case (**l**) and Sentence case (**s**). The syntax is **[[foo|c:(u/l/s)]]**.
+  
+  Example
+  ```
+  //Input
+  peter went to school.
+  jackson went to class.
+
+  //Pattern
+  [[name]] went to [[place]].
+
+  //Replace
+  [[name|c:s]] went to [[place|c:u]].
+
+  //Output
+  Peter went to SCHOOL.
+  Jackson went to CLASS.
+  ```
+  
+- **Evaluations**: You can replace a number match with an evaluation involving the number itself and/or the position of the match. The syntax is **[[foo|e:expression]]**. The expression works the same as in **Duplications**, except that in addition to **i** for using the match position, you also have **m** for using the match itself. This transform can only be used for matches restricted to digits i.e **[[foo|d]]**. An example of an expression is **_(m * 2) + i_**. In this example, if the match is 4, and its position is 2, the match is replaced with 10.
+
+  Example
+  ```
+  //Input
+  1. Peter is 7 years old.
+  1. Tolani is 23 years old.
+  1. Adeolu is 12 years old.
+
+  //Pattern
+  [[sn|d]]. [[name]] is [[age|d]] years old.
+
+  //Replace
+  [[sn|e:i]]. [[name]] will be [[age|e:m+5]] years old in 5 years.
+
+  //Output
+  1. Peter will be 12 years old in 5 years.
+  2. Tolani will be 28 years old in 5 years.
+  3. Adeolu will be 17 years old in 5 years.
+  ```
+
+- **Conditional appearances**: For optional matches (**[[foo|o]]**) and optional phrase/line capture (**[[foo|u|phrase-or-line-to-capture]]**), you can add text to the match depending on whether they are present. The syntax is [[foo|o:conditional_text]].
+
+  Example
+  ```
+  //Input
+  "madam."
+  "tree. //huge and leafy"
+  "mud."
+  "well. //deep and wide"
+
+  //Pattern
+  "[[word]].[[comment|o]]"
+
+  //Replace
+  ([[comment|o:The ]][[word]][[comment|o: line had comments]])
+
+  //Output
+  (madam)
+  (The tree line had comments)
+  (mud)
+  (The well line had comments)
+  ```
