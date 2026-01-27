@@ -10,21 +10,21 @@
 
   <ItemGroup>
     <None Remove="TestData\Characters\Output.txt" />
-    <None Remove="TestData\LineToCapture\Input.txt" />
-    <None Remove="TestData\LineToCapture\Matches.txt" />
-    <None Remove="TestData\LineToCapture\Output.txt" />
-    <None Remove="TestData\LineToCapture\Pattern.txt" />
-    <None Remove="TestData\LineToCapture\Replace.txt" />
+    <None Remove="TestData\UnorderedOptionalLineToCapture\Input.txt" />
+    <None Remove="TestData\UnorderedOptionalLineToCapture\Matches.txt" />
+    <None Remove="TestData\UnorderedOptionalLineToCapture\Output.txt" />
+    <None Remove="TestData\UnorderedOptionalLineToCapture\Pattern.txt" />
+    <None Remove="TestData\UnorderedOptionalLineToCapture\Replace.txt" />
     <None Remove="TestData\MultiLine\Input.txt" />
     <None Remove="TestData\MultiLine\Matches.txt" />
     <None Remove="TestData\MultiLine\Output.txt" />
     <None Remove="TestData\MultiLine\Pattern.txt" />
     <None Remove="TestData\MultiLine\Replace.txt" />
-    <None Remove="TestData\PhraseToCapture\Input.txt" />
-    <None Remove="TestData\PhraseToCapture\Matches.txt" />
-    <None Remove="TestData\PhraseToCapture\Output.txt" />
-    <None Remove="TestData\PhraseToCapture\Pattern.txt" />
-    <None Remove="TestData\PhraseToCapture\Replace.txt" />
+    <None Remove="TestData\UnorderedOptionalPhraseToCapture\Input.txt" />
+    <None Remove="TestData\UnorderedOptionalPhraseToCapture\Matches.txt" />
+    <None Remove="TestData\UnorderedOptionalPhraseToCapture\Output.txt" />
+    <None Remove="TestData\UnorderedOptionalPhraseToCapture\Pattern.txt" />
+    <None Remove="TestData\UnorderedOptionalPhraseToCapture\Replace.txt" />
     <None Remove="TestData\MLBugfix2\Input.txt" />
     <None Remove="TestData\MLBugfix2\Matches.txt" />
     <None Remove="TestData\MLBugfix2\Output.txt" />
@@ -97,20 +97,20 @@
     <Content Include="TestData\DuplicateByMatchIndex\Replace.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\LineToCapture\Input.txt">
+    <Content Include="TestData\UnorderedOptionalLineToCapture\Input.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\LineToCapture\Matches.txt">
+    <Content Include="TestData\UnorderedOptionalLineToCapture\Matches.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\LineToCapture\Output.txt">
+    <Content Include="TestData\UnorderedOptionalLineToCapture\Output.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Code</SubType>
     </Content>
-    <Content Include="TestData\LineToCapture\Pattern.txt">
+    <Content Include="TestData\UnorderedOptionalLineToCapture\Pattern.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\LineToCapture\Replace.txt">
+    <Content Include="TestData\UnorderedOptionalLineToCapture\Replace.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Duplicate\Input.txt">
@@ -206,20 +206,20 @@
     <Content Include="TestData\CustomRegex\Replace.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\PhraseToCapture\Input.txt">
+    <Content Include="TestData\UnorderedOptionalPhraseToCapture\Input.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\PhraseToCapture\Matches.txt">
+    <Content Include="TestData\UnorderedOptionalPhraseToCapture\Matches.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\PhraseToCapture\Output.txt">
+    <Content Include="TestData\UnorderedOptionalPhraseToCapture\Output.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Code</SubType>
     </Content>
-    <Content Include="TestData\PhraseToCapture\Pattern.txt">
+    <Content Include="TestData\UnorderedOptionalPhraseToCapture\Pattern.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\PhraseToCapture\Replace.txt">
+    <Content Include="TestData\UnorderedOptionalPhraseToCapture\Replace.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\AjaxToFetch\Input.txt">
