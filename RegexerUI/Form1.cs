@@ -121,9 +121,8 @@ namespace RegexerUI
 
         public async Task SaveOutputFile(string fileName)
         {
-            await using var fileStream = File.OpenWrite(fileName);
-            await using var streamWriter = new StreamWriter(fileStream);
-            await streamWriter.WriteLineAsync(outputTextbox.Text);
+            await using var streamWriter = new StreamWriter(fileName);
+            await streamWriter.WriteAsync(outputTextbox.Text);
         }
 
         private void GetTemplates()
