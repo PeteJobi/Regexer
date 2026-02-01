@@ -164,7 +164,7 @@ public class Regexer
 
         foreach (var group in optionalGroups)
         {
-            var oResultMatches = Regex.Matches(result, string.Format(@"(?<oSpace>\s+)?\[\[{0}\|o:(?<oLine>[^\r\n]*?)\]\]", group));
+            var oResultMatches = Regex.Matches(result, string.Format(@"(?<oSpace>\s+)?\[\[{0}\|o:(?<replacement>[^\r\n]*?)\]\]", group));
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var inputMatch = matches[i].Groups[group];
@@ -175,7 +175,7 @@ public class Regexer
                 {
                     var match = oResultMatches.ElementAt(j);
                     var space = match.Groups["oSpace"].Value;
-                    var rep = space + (!inputMatch.Success ? string.Empty : (match.Groups["oLine"].Value != string.Empty ? match.Groups["oLine"].Value : inputMatch.Value));
+                    var rep = space + (!inputMatch.Success ? string.Empty : (match.Groups["replacement"].Value != string.Empty ? match.Groups["replacement"].Value : inputMatch.Value));
                     transformReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
