@@ -22,7 +22,7 @@ public class Regexer
     {
         const string regexKeywords = @"[\\$.+*()\[\]|^?]";
         pattern = Regex.Replace(pattern, $"({regexKeywords})", "\\$1");
-        var matches = Regex.Matches(pattern, @"(?<=\\\[\\\[\w*?\{)(((?!\}\\\]\\\]).)+)(?=\}\\\]\\\])");
+        var matches = Regex.Matches(pattern, @"(?<=\\\[\\\[\w*?(?:(?:\\\|)?m\\\|)?\{)(((?!\}(?:\\\|.+?)?\\\]\\\]).)+)(?=\}(?:\\\|.+?)?\\\]\\\])");
         for (var i = matches.Count - 1; i >= 0; i--)
         {
             var match = matches[i];
@@ -57,6 +57,8 @@ public class Regexer
         pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+(\\\|\w+)?)\\\]\\\])", "[$2]");
         pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+)?\{([^\r\n]+?)\}\\\]\\\])", "[$2{$3}]");
         pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+\\\|)?u\\\|([^\r\n]+?)\\\]\\\])", "[$2u\\|$3]");
+        pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+\\\|)?m\\\|\{([^\r\n]+?)\}\\\|([^\r\n]+?)\\\]\\\])", "[$2m\\|{$3}\\|$4]");
+        pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+\\\|)?m\\\|\{([^\r\n]+?)\}\\\]\\\])", "[$2m\\|{$3}]");
         pattern = Regex.Replace(pattern, @"(?>[^\S\r\n]+)(?!\[\w+\\\|ml\])", @"[^\S\r\n]+");
         pattern = @"(?<space>[^\S\r\n]+)?" + pattern;
         var multiLineGroups = Regex.Matches(pattern, @"\[(\w+)\\\|ml\]").Select(g => g.Groups[1].Value);
@@ -103,6 +105,24 @@ public class Regexer
             var nothingElseBesidesThem = $"({string.Join('|', linesAndNames.Select(l => "\\s+" + (l.name == string.Empty ? l.line : $"(?<{l.name}>{l.line})")))})*";
             var fullPattern = inAnyOrder + noDuplicates + nothingElseBesidesThem + "(?:\\r\\n)?";
             pattern = pattern[..uMatch.Index] + fullPattern + pattern[(uMatch.Index + uMatch.Length)..];
+        }
+
+        var mMatches = Regex.Matches(pattern, @"\[((?<mName>\w+)\\\|)?m\\\|\{(?<separator>.*?)\}(?:\\\|(?<mLine>(?>[^\[\]]+|(?<Open>\[)|(?<-Open>\]))+(?(Open)(?!))))?\]");
+        var multiGroups = new List<KeyValuePair<string, HashSet<string>>>();
+        for (var i = mMatches.Count - 1; i >= 0; i--)
+        {
+            var mMatch = mMatches[i];
+            var lineCaptured = mMatch.Groups["mLine"].Success ? mMatch.Groups["mLine"].Value : @"[^\r\n]+?";
+            var phraseOrLineToMatch = mMatch.Groups["mName"].Value == string.Empty ? lineCaptured : $"(?<{mMatch.Groups["mName"]}>{lineCaptured})";
+            if (mMatch.Groups["mName"].Value != string.Empty && mMatch.Groups["mLine"].Success)
+            {
+                var multiData = new KeyValuePair<string, HashSet<string>>(mMatch.Groups["mName"].Value,
+                    Regex.Matches(phraseOrLineToMatch, @"\(\?<(.+?)>").Select(m => m.Groups[1].Value).ToHashSet());
+                multiGroups.Add(multiData);
+            }
+            var separator = mMatch.Groups["separator"].Value.Replace("<ml>", "\r\n");
+            var fullPattern = $"{phraseOrLineToMatch}(?:{separator}{phraseOrLineToMatch})*?";
+            pattern = pattern[..mMatch.Index] + fullPattern + pattern[(mMatch.Index + mMatch.Length)..];
         }
 
         var replaceWasEmpty = replace == string.Empty;
@@ -156,6 +176,61 @@ public class Regexer
                 {
                     var match = mlMatches.ElementAt(j);
                     var rep = string.Join("\r\n", lines.Select(line => match.Groups["space"].Value + match.Groups["before"] + line + match.Groups["after"])) + match.Groups["end"];
+                    transformReplacements[i].Insert(0, new(match.Value, rep));
+                    result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
+                }
+            }
+        }
+
+        foreach (var group in multiGroups)
+        {
+            var mResultMatches = Regex.Matches(result, string.Format(@"\[\[{0}\|m:(?<separator>[^\r\n]*?):(?<replacement>(?>\[\[(?<Open>)|(?<-Open>\]\])|\[(?!\[)|\](?!\])|[^\[\]])*(?(Open)(?!)))\]\]", group.Key));
+            if (!mResultMatches.Any()) continue;
+            for (var i = matches.Count - 1; i >= 0; i--)
+            {
+                var inputMatch = matches[i].Groups[group.Key];
+                var segmentCount = mResultMatches.Count / matches.Count;
+                var jInit = segmentCount * (i + 1);
+                transformReplacements[i] ??= new();
+                for (var j = jInit - 1; j >= jInit - segmentCount; j--)
+                {
+                    var match = mResultMatches.ElementAt(j);
+                    var separator = match.Groups["separator"].Value.Replace("<ml>", "\r\n");
+                    string rep;
+                    var list = new List<string>();
+                    var subMatches = Regex.Matches(match.Groups["replacement"].Value, @"\[\[(\w+?)\|m\]\]");
+                    for (var k = 0; k < inputMatch.Captures.Count; k++)
+                    {
+                        var replacementLine = match.Groups["replacement"].Value;
+                        for (var l = subMatches.Count - 1; l >= 0; l--)
+                        {
+                            if (!group.Value.Contains(subMatches[l].Groups[1].Value)) continue;
+                            replacementLine = replacementLine[..subMatches[l].Index] + matches[i].Groups[subMatches[l].Groups[1].Value].Captures[k].Value + replacementLine[(subMatches[l].Index + subMatches[l].Length)..];
+                        }
+                        list.Add(replacementLine);
+                    }
+                    rep = string.Join(separator, list);
+                    transformReplacements[i].Insert(0, new(match.Value, rep));
+                    result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
+                }
+            }
+        }
+
+        var multiGroupsGeneral = Regex.Matches(replace, @"\[\[(\w+)\|m:[^\r\n:]*?\]\]").Select(g => g.Groups[1].Value).Distinct();
+        foreach (var group in multiGroupsGeneral)
+        {
+            var mResultMatches = Regex.Matches(result, string.Format(@"\[\[{0}\|m:(?<separator>[^\r\n]*?)\]\]", group));
+            for (var i = matches.Count - 1; i >= 0; i--)
+            {
+                var inputMatch = matches[i].Groups[group];
+                var segmentCount = mResultMatches.Count / matches.Count;
+                var jInit = segmentCount * (i + 1);
+                transformReplacements[i] ??= new();
+                for (var j = jInit - 1; j >= jInit - segmentCount; j--)
+                {
+                    var match = mResultMatches.ElementAt(i);
+                    var separator = match.Groups["separator"].Value.Replace("<ml>", "\r\n");
+                    var rep = string.Join(separator, inputMatch.Captures.Select(c => c.Value));
                     transformReplacements[i].Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
