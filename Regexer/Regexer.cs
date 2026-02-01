@@ -7,6 +7,7 @@ namespace Regexer;
 public class Regexer
 {
     private TimeSpan regexTimeoutSpan;
+    private bool fasterML;
 
     public Regexer()
     {
@@ -39,6 +40,8 @@ public class Regexer
             Task.Run(() => AutoRegexInternal(input, pattern, replace), cancellationToken));
     }
 
+    public bool EnableFasterML(bool faster) => fasterML = faster;
+
     private async Task<RegexerResult> Cancel(CancellationToken cancellationToken)
     {
         try
@@ -64,9 +67,10 @@ public class Regexer
         var multiLineGroups = Regex.Matches(pattern, @"\[(\w+)\\\|ml\]").Select(g => g.Groups[1].Value);
         if (multiLineGroups.Any())
         {
-            pattern = Regex.Replace(pattern, @"(?<mlSpace>[^\S\r\n]+)?\[(?<mlName>\w+)\\\|ml\]",
-                @"(?<${mlName}FirstLine>([^\r\n]+)?)((\r\n\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]+)?([^\r\n]+)?))+?)?");
-            //@"(?<${mlName}FirstLine>[^\r\n]*?)(\r\n(\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]*)[^\r\n]*?))?)*?");
+            var rep = fasterML
+                ? @"(?<${mlName}FirstLine>[^\r\n]*?)(\r\n(\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]*)[^\r\n]*?))?)*?"
+                : @"(?<${mlName}FirstLine>([^\r\n]+)?)(\r\n\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]+)?([^\r\n]+)?))*?";
+            pattern = Regex.Replace(pattern, @"(?<mlSpace>[^\S\r\n]+)?\[(?<mlName>\w+)\\\|ml\]", rep);
         }
         pattern = Regex.Replace(pattern, @"\[(\w+)\]", "(?<$1>[^\\r\\n]+?)");
         var optionalGroups = new List<string>();
@@ -132,14 +136,7 @@ public class Regexer
 
         var matches = Regex.Matches(input, pattern, RegexOptions.None, regexTimeoutSpan);
         if (!matches.Any()) return new RegexerResult { Output = input };
-        //try
-        //{
-        //    if (!matches.Any()) return input;
-        //}
-        //catch (RegexMatchTimeoutException e)
-        //{
-        //    return "Fail";
-        //}
+
         var multiLineGroupsKvps = multiLineGroups.Select(group =>
         {
             replace = replace.Replace($"${{{group}}}", $"[[{group}]]"); //replaces ${id} with [id]

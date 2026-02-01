@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegexerForm));
             panel2 = new Panel();
+            fasterMLCheckBox = new CheckBox();
             nextBut = new Button();
             prevBut = new Button();
             outToInBut = new Button();
@@ -55,6 +56,7 @@
             // panel2
             // 
             panel2.BackColor = SystemColors.Control;
+            panel2.Controls.Add(fasterMLCheckBox);
             panel2.Controls.Add(nextBut);
             panel2.Controls.Add(prevBut);
             panel2.Controls.Add(outToInBut);
@@ -68,6 +70,17 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(1264, 43);
             panel2.TabIndex = 1;
+            // 
+            // fasterMLCheckBox
+            // 
+            fasterMLCheckBox.AutoSize = true;
+            fasterMLCheckBox.Location = new Point(952, 13);
+            fasterMLCheckBox.Name = "fasterMLCheckBox";
+            fasterMLCheckBox.Size = new Size(77, 19);
+            fasterMLCheckBox.TabIndex = 11;
+            fasterMLCheckBox.Text = "Faster ML";
+            fasterMLCheckBox.UseVisualStyleBackColor = true;
+            fasterMLCheckBox.CheckedChanged += fasterMLCheckBox_CheckedChanged;
             // 
             // nextBut
             // 
@@ -259,6 +272,7 @@
             Name = "RegexerForm";
             Text = "Regexer";
             panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             tableLayoutPanel2.ResumeLayout(false);
@@ -285,5 +299,6 @@
         private Button outToInBut;
         private Button nextBut;
         private Button prevBut;
+        private CheckBox fasterMLCheckBox;
     }
 }

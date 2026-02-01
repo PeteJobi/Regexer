@@ -23,11 +23,12 @@ namespace RegexerUI
             InitializeComponent();
             InitializeFCTextBoxes();
             GetTemplates();
-            regexer = new Regexer.Regexer(TimeSpan.FromMinutes(1));
+            regexer = new Regexer.Regexer(TimeSpan.FromMinutes(10));
             tokenSource = new CancellationTokenSource();
             loadingProgressBar.Visible = false;
             prevBut.Enabled = false;
             nextBut.Enabled = false;
+            fasterMLCheckBox.Visible = false;
         }
 
         public async Task FindAndReplace()
@@ -160,6 +161,7 @@ namespace RegexerUI
             e.ChangedRange.ClearStyle(_highlightStyle);
             e.ChangedRange.SetStyle(_highlightStyle, @"\[\[(\w+\|)?u\|[^\r\n]+\]\]");
             e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?(\|\w{1,4})?]\]");
+            fasterMLCheckBox.Visible = Regex.IsMatch(patternTextbox.Text, @"\[\[\w+?\|ml\]\]");
             await FindAndReplace();
         }
 
@@ -222,7 +224,7 @@ namespace RegexerUI
             currentMatchRange--;
             if (currentMatchRange == -1) currentMatchRange = matchRanges.Count - 1;
             inputTextbox.DoRangeVisible(matchRanges[currentMatchRange].inpRange);
-            if(matchRanges[currentMatchRange].outRange != null) outputTextbox.DoRangeVisible(matchRanges[currentMatchRange].outRange);
+            if (matchRanges[currentMatchRange].outRange != null) outputTextbox.DoRangeVisible(matchRanges[currentMatchRange].outRange);
         }
 
         private void nextBut_Click(object sender, EventArgs e)
@@ -230,7 +232,12 @@ namespace RegexerUI
             currentMatchRange++;
             if (currentMatchRange == matchRanges.Count) currentMatchRange = 0;
             inputTextbox.DoRangeVisible(matchRanges[currentMatchRange].inpRange);
-            if(matchRanges[currentMatchRange].outRange != null) outputTextbox.DoRangeVisible(matchRanges[currentMatchRange].outRange);
+            if (matchRanges[currentMatchRange].outRange != null) outputTextbox.DoRangeVisible(matchRanges[currentMatchRange].outRange);
+        }
+
+        private void fasterMLCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            regexer.EnableFasterML(fasterMLCheckBox.Checked);
         }
 
         void InitializeFCTextBoxes()
