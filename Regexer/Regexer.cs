@@ -52,7 +52,7 @@ public class Regexer
     private RegexerResult AutoRegexInternal(string input, string pattern, string replace)
     {
         pattern = EscapeRegexKeywords(pattern);
-        pattern = Regex.Replace(pattern, "\r\n", "\r\n([^\\S\\r\\n]+)?");
+        pattern = Regex.Replace(pattern, "\r\n", "\r\n(?:[^\\S\\r\\n]+)?");
         pattern = Regex.Replace(pattern, @"^(\\\[\\\[\w+\\\|ml\\\]\\\])$", "^$1$");
         pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+(\\\|\w+)?)\\\]\\\])", "[$2]");
         pattern = Regex.Replace(pattern, @"(\\\[\\\[(\w+)?\{([^\r\n]+?)\}\\\]\\\])", "[$2{$3}]");
@@ -92,7 +92,7 @@ public class Regexer
 
         pattern = Regex.Replace(pattern, @"\[(\w+)\{([^\r\n]+?)\}\]", "(?<$1>$2)");
         pattern = Regex.Replace(pattern, @"\[\{([^\r\n]+?)\}\]", "$1");
-        var uMatches = Regex.Matches(pattern, @"(?<uLines>\r\n\(\[\^\\S\\r\\n\]\+\)\?(\[\^\\S\\r\\n\]\+)?\[(\w+\\\|)?u\\\|[^\r\n]+\])+\r\n");
+        var uMatches = Regex.Matches(pattern, @"(?<uLines>\r\n\(\?:\[\^\\S\\r\\n\]\+\)\?(\[\^\\S\\r\\n\]\+)?\[(\w+\\\|)?u\\\|[^\r\n]+\])+\r\n");
         for (var i = uMatches.Count - 1; i >= 0; i--)
         {
             var uMatch = uMatches[i];
