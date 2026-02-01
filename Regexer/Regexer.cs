@@ -223,11 +223,11 @@ public class Regexer
             }
         }
 
-        var capitalizeGroups = Regex.Matches(replace, @"\[\[(\w+)\|c:(?:u|l|s)\]\]").Select(g => g.Groups[1].Value).Distinct();
+        var capitalizeGroups = Regex.Matches(replace, @"\[\[(\w+)\|c:(?:u|l|s|fu|fl)\]\]").Select(g => g.Groups[1].Value).Distinct();
         foreach (var group in capitalizeGroups)
         {
             if(digitGroups.Contains(group)) continue;
-            var cResultMatches = Regex.Matches(result, string.Format(@"(?<cSpace>\s+)?\[\[{0}\|c:(?<type>u|l|s)\]\]", group));
+            var cResultMatches = Regex.Matches(result, string.Format(@"(?<cSpace>\s+)?\[\[{0}\|c:(?<type>u|l|s|fu|fl)\]\]", group));
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var inputMatch = matches[i].Groups[group];
@@ -242,6 +242,8 @@ public class Regexer
                     {
                         "u" => inputMatch.Value.ToUpper(), //u: Upper case
                         "l" => inputMatch.Value.ToLower(), //l: Lower case
+                        "fu" => inputMatch.Value[..1].ToUpper() + inputMatch.Value[1..], //fu: First letter upper case
+                        "fl" => inputMatch.Value[..1].ToLower() + inputMatch.Value[1..], //fl: First letter lower case
                         _ => inputMatch.Value[..1].ToUpper() + inputMatch.Value[1..].ToLower() //s: Sentence case
                     };
                     var space = match.Groups["cSpace"].Value;
