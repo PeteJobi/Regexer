@@ -7,8 +7,8 @@
     },
     "OutputMatch": {
       "Index": 0,
-      "Length": 83,
-      "Text": "addUser{\r\n   User's name is Peter\r\n   User's age is 12\r\n   Peter is 12 years old\r\n}"
+      "Length": 118,
+      "Text": "saveUser{ \r\n  \"name\" = \"Peter\",\r\n  \"age\" = \"12\",\r\n  \"gender\" = \"M\",\r\n  \"isEditing\" = \"false\",\r\n  \"status\" = \"alive\"\r\n}"
     }
   },
   {
@@ -18,9 +18,9 @@
       "Text": "saveUser(\r\n  age: 9,\r\n  gender: F,\r\n  name: Bossa,\r\n  isEditing: true,\r\n  status: alive\r\n)"
     },
     "OutputMatch": {
-      "Index": 87,
-      "Length": 82,
-      "Text": "editUser{\r\n   User's name is Bossa\r\n   User's age is 9\r\n   Bossa is 9 years old\r\n}"
+      "Index": 122,
+      "Length": 116,
+      "Text": "saveUser{ \r\n  \"age\" = \"9\",\r\n  \"gender\" = \"F\",\r\n  \"name\" = \"Bossa\",\r\n  \"isEditing\" = \"true\",\r\n  \"status\" = \"alive\"\r\n}"
     }
   },
   {
@@ -30,9 +30,9 @@
       "Text": "saveUser(\r\n  name: Judas,\r\n  age: 30,\r\n  isEditing: false,\r\n  status: alive\r\n)"
     },
     "OutputMatch": {
-      "Index": 173,
-      "Length": 83,
-      "Text": "addUser{\r\n   User's name is Judas\r\n   User's age is 30\r\n   Judas is 30 years old\r\n}"
+      "Index": 242,
+      "Length": 99,
+      "Text": "saveUser{ \r\n  \"name\" = \"Judas\",\r\n  \"age\" = \"30\",\r\n  \"isEditing\" = \"false\",\r\n  \"status\" = \"alive\"\r\n}"
     }
   },
   {
@@ -42,9 +42,9 @@
       "Text": "saveUser(\r\n  name: Paula,\r\n  isEditing: true,\r\n  status: alive\r\n)"
     },
     "OutputMatch": {
-      "Index": 260,
-      "Length": 61,
-      "Text": "editUser{\r\n   User's name is Paula\r\n   Paula is  years old\r\n}"
+      "Index": 345,
+      "Length": 81,
+      "Text": "saveUser{ \r\n  \"name\" = \"Paula\",\r\n  \"isEditing\" = \"true\",\r\n  \"status\" = \"alive\"\r\n}"
     }
   }
 ]

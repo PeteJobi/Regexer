@@ -18,6 +18,5 @@ addUser{
 
 editUser{
    User's name is Paula
-   
    Paula is  years old
 }

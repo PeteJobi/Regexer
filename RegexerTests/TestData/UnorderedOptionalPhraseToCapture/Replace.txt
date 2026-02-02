@@ -1,1 +1,1 @@
-﻿<input [[id]] [[class]] [[type]] [[length]]/>
+﻿<input [[id|u]] [[class|u]] [[type|u]] [[length|u]]/>

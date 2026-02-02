@@ -1,1 +1,1 @@
-﻿[[y|o:exit]][[x|o:enter]]
+﻿[[y|u:exit]][[x|u:enter]]

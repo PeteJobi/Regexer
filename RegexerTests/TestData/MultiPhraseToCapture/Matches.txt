@@ -1,0 +1,26 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 60,
+      "Text": "<input id=\"name\" type=\"text\" disabled=\"false\" class=\"name\"/>"
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 155,
+      "Text": "<input The key is id, the value is name--The key is type, the value is text--The key is disabled, the value is false--The key is class, the value is name/>"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 62,
+      "Length": 82,
+      "Text": "<input type=\"button\" id=\"submit\" class=\"big\"\r\n    max-length=\"5\" disabled=\"true\"/>"
+    },
+    "OutputMatch": {
+      "Index": 157,
+      "Length": 196,
+      "Text": "<input The key is type, the value is button--The key is id, the value is submit--The key is class, the value is big--The key is max-length, the value is 5--The key is disabled, the value is true/>"
+    }
+  }
+]

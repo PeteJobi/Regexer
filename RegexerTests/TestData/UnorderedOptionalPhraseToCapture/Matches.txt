@@ -2,23 +2,35 @@
   {
     "InputMatch": {
       "Index": 0,
-      "Length": 52,
-      "Text": "<input id=\"name\" type=\"text\" disabled class=\"name\"/>"
+      "Length": 30,
+      "Text": "<input disabled class=\"name\"/>"
     },
     "OutputMatch": {
       "Index": 0,
-      "Length": 44,
-      "Text": "<input id=\"name\" class=\"name\" type=\"text\" />"
+      "Length": 21,
+      "Text": "<input class=\"name\"/>"
     }
   },
   {
     "InputMatch": {
-      "Index": 54,
+      "Index": 32,
+      "Length": 52,
+      "Text": "<input id=\"name\" type=\"text\" disabled class=\"name\"/>"
+    },
+    "OutputMatch": {
+      "Index": 23,
+      "Length": 43,
+      "Text": "<input id=\"name\" class=\"name\" type=\"text\"/>"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 86,
       "Length": 75,
       "Text": "<input type=\"button\" id=\"submit\" class=\"big\"\r\n    max-length=\"5\" disabled/>"
     },
     "OutputMatch": {
-      "Index": 46,
+      "Index": 68,
       "Length": 61,
       "Text": "<input id=\"submit\" class=\"big\" type=\"button\" max-length=\"5\"/>"
     }

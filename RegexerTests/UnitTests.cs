@@ -15,7 +15,7 @@ namespace RegexerTests
 
         [Theory]
         [MemberData(nameof(TestData))]
-        public async Task Test(string input, string pattern, string replace, string output, RegexerMatchPair[]? matches)
+        public async Task Test(string testFolder, string input, string pattern, string replace, string output, RegexerMatchPair[]? matches)
         {
             var result = await regexer.AutoRegex(input, pattern, replace);
             //var x = JsonConvert.SerializeObject(result.Matches);
@@ -32,7 +32,7 @@ namespace RegexerTests
 
         static IEnumerable<object[]> TestData()
         {
-            string specificTest = null; //Set to the name of test folder to run specific test e.g "MLBugfix"
+            string? specificTest = null; //Set to the name of test folder to run specific test e.g "MLBugfix"
             var testFolders = specificTest == null
                 ? Directory.EnumerateDirectories(TEST_DATA_FOLDER)
                 : new[] { $"{TEST_DATA_FOLDER}/{specificTest}" };
@@ -44,13 +44,13 @@ namespace RegexerTests
                 var replace = File.ReadAllText($"{testFolder}/Replace.txt");
                 var output = File.ReadAllText($"{testFolder}/Output.txt");
                 RegexerMatchPair[]? matches = null;
-                var matchesFolder = $"{testFolder}/Matches.txt";
-                if (File.Exists(matchesFolder))
+                var matchesPath = $"{testFolder}/Matches.txt";
+                if (File.Exists(matchesPath))
                 {
-                    var matchesJson = File.ReadAllText(matchesFolder);
+                    var matchesJson = File.ReadAllText(matchesPath);
                     matches = JsonConvert.DeserializeObject<RegexerMatchPair[]>(matchesJson);
                 }
-                yield return new object[] { input, pattern, replace, output, matches };
+                yield return new object[] { Path.GetFileName(testFolder), input, pattern, replace, output, matches };
             }
         }
     }

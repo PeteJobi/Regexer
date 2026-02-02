@@ -1,0 +1,26 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 60,
+      "Text": "<input id=\"name\" type=\"text\" disabled=\"false\" class=\"name\"/>"
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 63,
+      "Text": "<input id=\"name\"--type=\"text\"--disabled=\"false\"--class=\"name\"/>"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 62,
+      "Length": 82,
+      "Text": "<input type=\"button\" id=\"submit\" class=\"big\"\r\n    max-length=\"5\" disabled=\"true\"/>"
+    },
+    "OutputMatch": {
+      "Index": 65,
+      "Length": 81,
+      "Text": "<input type=\"button\"--id=\"submit\"--class=\"big\"--max-length=\"5\"--disabled=\"true\"/>"
+    }
+  }
+]

@@ -1,0 +1,2 @@
+﻿<input The key is id, the value is name--The key is type, the value is text--The key is disabled, the value is false--The key is class, the value is name/>
+<input The key is type, the value is button--The key is id, the value is submit--The key is class, the value is big--The key is max-length, the value is 5--The key is disabled, the value is true/>
