@@ -234,9 +234,10 @@ public class Regexer
             }
         }
 
+        //var optionalGroups = Regex.Matches(replace, @"\[\[(\w+)\|o:(?:(?>\[\[(?<Open>)|(?<-Open>\]\])|\[(?!\[)|\](?!\])|[^\[\]])*(?(Open)(?!)))\]\]").Select(g => g.Groups[1].Value).Distinct();
         foreach (var group in optionalGroups)
         {
-            var oResultMatches = Regex.Matches(result, string.Format(@"(?<oSpace>\s+)?\[\[{0}\|o:(?<replacement>[^\r\n]*?)\]\]", group));
+            var oResultMatches = Regex.Matches(result, string.Format(@"(?<oSpace>\s+)?\[\[{0}\|o:(?<replacement>(?>\[\[(?<Open>)|(?<-Open>\]\])|\[(?!\[)|\](?!\])|[^\[\]])*(?(Open)(?!)))\]\]", group));
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var inputMatch = matches[i].Groups[group];
