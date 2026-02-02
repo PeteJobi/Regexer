@@ -257,10 +257,6 @@
             label3.Text = "Output";
             label3.TextAlign = ContentAlignment.BottomLeft;
             // 
-            // openFileDialog
-            // 
-            openFileDialog.FileName = "302.txt";
-            // 
             // RegexerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
