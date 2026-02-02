@@ -87,7 +87,7 @@ public class Regexer
             var quantifier = options.Contains('g') ? "+" : "+?";
             var optional = options.Contains('o') ? "?" : "";
             if (optional != string.Empty) optionalGroups.Add(name);
-            if(restriction == "\\d") digitGroups.Add(name);
+            if (restriction == "\\d") digitGroups.Add(name);
 
             var newPattern = $"(?<{name}>{restriction}{quantifier}){optional}";
 
@@ -101,7 +101,7 @@ public class Regexer
         {
             var uMatch = uMatches[i];
             var lMatches = uMatch.Groups["uLines"].Captures.Select(c => Regex.Match(c.Value, @"\r\n.+?\[((?<uName>\w+)\\\|)?u\\\|(?<uLine>.+)\]"));
-            optionalGroups.AddRange(lMatches.Select(m => m.Groups["uName"].Value));
+            //optionalGroups.AddRange(lMatches.Select(m => m.Groups["uName"].Value));
             replace = lMatches.Select(m => m.Groups["uName"].Value).Aggregate(replace, (current, name) => current.Replace($"[[{name}]]", $"[[{name}|o:]]"));
             IEnumerable<(string line, string name)> linesAndNames = lMatches.Select(m => (m.Groups["uLine"].Value, m.Groups["uName"].Value));
             var inAnyOrder = string.Join(string.Empty, linesAndNames.Select(l => $"(?=.*({l.line})?)"));
@@ -230,6 +230,34 @@ public class Regexer
                     var rep = string.Join(separator, inputMatch.Captures.Select(c => c.Value));
                     transformReplacements[i].Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
+                }
+            }
+        }
+
+        if (Regex.IsMatch(replace, @"\[\[\w+\|u"))
+        {
+            var uResultMatches = Regex.Matches(result, @"(?<uLines>(?:[^\S\r\n]+)?\[\[\w+\|?(?:u(?::(?>\[\[(?<Open>)|(?<-Open>\]\])|\[(?!\[)|\](?!\])|[^\[\]])*(?(Open)(?!)))?)\]\][^\S\r\n]*?(?:\n|\r\n)?)+");
+            for (var i = matches.Count - 1; i >= 0; i--)
+            {
+                var segmentCount = uResultMatches.Count / matches.Count;
+                var jInit = segmentCount * (i + 1);
+                transformReplacements[i] ??= new();
+                for (var j = jInit - 1; j >= jInit - segmentCount; j--)
+                {
+                    for (var k = uResultMatches[j].Groups["uLines"].Captures.Count - 1; k >= 0; k--)
+                    {
+                        var index = uResultMatches[j].Groups["uLines"].Captures[k].Index;
+                        var length = uResultMatches[j].Groups["uLines"].Captures[k].Length;
+                        var match = Regex.Match(uResultMatches[j].Groups["uLines"].Captures[k].Value, @"(?<uSpace>[^\S\r\n]+)?\[\[(?<uName>\w+)\|?u(?::(?<replacement>.+))?\]\](?<uEndSpace>\s+)?");
+                        var startingSpace = match.Groups["uSpace"].Value;
+                        var isLastInGroup = k == uResultMatches[j].Groups["uLines"].Captures.Count - 1;
+                        var name = match.Groups["uName"].Value;
+                        var inputMatch = matches[i].Groups[name];
+                        var endingSpace = isLastInGroup && !inputMatch.Success ? string.Empty : match.Groups["uEndSpace"].Value;
+                        var rep = !inputMatch.Success ? string.Empty : startingSpace + (match.Groups["replacement"].Value != string.Empty ? match.Groups["replacement"].Value : inputMatch.Value) + endingSpace;
+                        transformReplacements[i].Insert(0, new(match.Value, rep));
+                        result = result[..index] + rep + result[(index + length)..];
+                    }
                 }
             }
         }
