@@ -16,9 +16,11 @@ namespace RegexerUI
         private FastColoredTextBox outputMatchesTextbox;
         private FastColoredTextBox patternTextbox;
         private FastColoredTextBox replaceTextbox;
-        private readonly TextStyle _highlightStyle = new(null, Brushes.Gainsboro, FontStyle.Bold);
         private int currentMatchRange;
         private readonly List<(Range inpRange, Range? outRange)> matchRanges = new();
+        private readonly FctbManager fctbManager = new();
+        private readonly List<bool> inputMatchLineBackgroundData = new();
+        private readonly List<bool> outputMatchLineBackgroundData = new();
 
         public RegexerForm()
         {
@@ -58,8 +60,8 @@ namespace RegexerUI
                 if (result.Output == "Cancelled") return;
                 outputTextbox.Text = result.Output;
                 matchRanges.Clear();
-                inputTextbox.Range.ClearStyle(_highlightStyle);
-                outputTextbox.Range.ClearStyle(_highlightStyle);
+                inputTextbox.Range.ClearStyle(FctbManager.BaseStyle);
+                outputTextbox.Range.ClearStyle(FctbManager.BaseStyle);
                 if (result.Matches != null)
                 {
                     inputMatchesTextbox.Text = string.Join('\n', result.Matches.Select(m => m.InputMatch.Text));
@@ -69,11 +71,11 @@ namespace RegexerUI
                     {
                         var matchRange = inputTextbox.GetRange(matchPair.InputMatch.Index, matchPair.InputMatch.Index + matchPair.InputMatch.Length);
                         (Range inpRange, Range? outRange) pairRanges = (matchRange, null);
-                        matchRange.SetStyle(_highlightStyle);
+                        matchRange.SetStyle(FctbManager.BaseStyle);
                         if (matchPair.OutputMatch != null)
                         {
                             matchRange = outputTextbox.GetRange(matchPair.OutputMatch.Index, matchPair.OutputMatch.Index + matchPair.OutputMatch.Length);
-                            matchRange.SetStyle(_highlightStyle);
+                            matchRange.SetStyle(FctbManager.BaseStyle);
                             pairRanges.outRange = matchRange;
                         }
                         matchRanges.Add(pairRanges);
@@ -162,19 +164,15 @@ namespace RegexerUI
 
         private async void patternTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            fctbManager.Highlight(patternTextbox, e.ChangedRange, false);
             saveTemplateBut.Enabled = patternTextbox.Text != string.Empty;
-            e.ChangedRange.ClearStyle(_highlightStyle);
-            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[(\w+\|)?u\|[^\r\n]+\]\]");
-            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?(\|\w{1,4})?]\]");
             fasterMLCheckBox.Visible = Regex.IsMatch(patternTextbox.Text, @"\[\[\w+?\|ml\]\]");
             await FindAndReplace();
         }
 
         private async void replaceTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            e.ChangedRange.ClearStyle(_highlightStyle);
-            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+\|[^\r\n]+\]\]");
-            e.ChangedRange.SetStyle(_highlightStyle, @"\[\[\w+?(\|\w{1,4})?]\]");
+            fctbManager.Highlight(replaceTextbox, e.ChangedRange, true);
             await FindAndReplace();
         }
 
