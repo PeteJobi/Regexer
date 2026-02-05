@@ -39,18 +39,29 @@
             templatesComboBox = new ComboBox();
             saveFileBut = new Button();
             openFileBut = new Button();
-            loadingProgressBar = new ProgressBar();
             tableLayoutPanel1 = new TableLayoutPanel();
-            label1 = new Label();
+            panel1 = new Panel();
+            loadingProgressBar = new ProgressBar();
+            outputTabs = new TabControl();
+            outputTab = new TabPage();
+            outputMatchesTab = new TabPage();
             label2 = new Label();
             label4 = new Label();
-            tableLayoutPanel2 = new TableLayoutPanel();
-            label3 = new Label();
+            inputTabs = new TabControl();
+            inputTab = new TabPage();
+            inputMatchesTab = new TabPage();
             openFileDialog = new OpenFileDialog();
             saveFileDialog = new SaveFileDialog();
+            menuStrip1 = new MenuStrip();
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            openToolStripMenuItem = new ToolStripMenuItem();
+            saveAsToolStripMenuItem = new ToolStripMenuItem();
             panel2.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
+            panel1.SuspendLayout();
+            outputTabs.SuspendLayout();
+            inputTabs.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // panel2
@@ -162,28 +173,18 @@
             openFileBut.Text = "Select input";
             openFileBut.Click += openFileBut_Click;
             // 
-            // loadingProgressBar
-            // 
-            loadingProgressBar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            loadingProgressBar.Location = new Point(53, 5);
-            loadingProgressBar.Margin = new Padding(0, 5, 0, 0);
-            loadingProgressBar.Name = "loadingProgressBar";
-            loadingProgressBar.Size = new Size(363, 9);
-            loadingProgressBar.Style = ProgressBarStyle.Marquee;
-            loadingProgressBar.TabIndex = 4;
-            // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel1.ColumnCount = 3;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
-            tableLayoutPanel1.Controls.Add(label1, 0, 0);
+            tableLayoutPanel1.Controls.Add(panel1, 2, 0);
             tableLayoutPanel1.Controls.Add(label2, 1, 0);
             tableLayoutPanel1.Controls.Add(label4, 1, 2);
-            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 2, 0);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Controls.Add(inputTabs, 0, 0);
+            tableLayoutPanel1.Location = new Point(0, 24);
             tableLayoutPanel1.Margin = new Padding(0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 4;
@@ -191,20 +192,63 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(1264, 638);
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.Size = new Size(1264, 614);
             tableLayoutPanel1.TabIndex = 2;
             // 
-            // label1
+            // panel1
             // 
-            label1.AutoSize = true;
-            label1.Dock = DockStyle.Fill;
-            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(3, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(415, 20);
-            label1.TabIndex = 3;
-            label1.Text = "Input";
-            label1.TextAlign = ContentAlignment.BottomLeft;
+            panel1.Controls.Add(loadingProgressBar);
+            panel1.Controls.Add(outputTabs);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(842, 0);
+            panel1.Margin = new Padding(0);
+            panel1.Name = "panel1";
+            tableLayoutPanel1.SetRowSpan(panel1, 4);
+            panel1.Size = new Size(422, 614);
+            panel1.TabIndex = 0;
+            // 
+            // loadingProgressBar
+            // 
+            loadingProgressBar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            loadingProgressBar.Location = new Point(194, 7);
+            loadingProgressBar.Name = "loadingProgressBar";
+            loadingProgressBar.Size = new Size(228, 10);
+            loadingProgressBar.TabIndex = 10;
+            // 
+            // outputTabs
+            // 
+            outputTabs.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            outputTabs.Controls.Add(outputTab);
+            outputTabs.Controls.Add(outputMatchesTab);
+            outputTabs.Location = new Point(0, 0);
+            outputTabs.Margin = new Padding(0);
+            outputTabs.Name = "outputTabs";
+            outputTabs.Padding = new Point(0, 0);
+            outputTabs.SelectedIndex = 0;
+            outputTabs.Size = new Size(422, 614);
+            outputTabs.TabIndex = 10;
+            // 
+            // outputTab
+            // 
+            outputTab.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            outputTab.Location = new Point(4, 24);
+            outputTab.Margin = new Padding(0);
+            outputTab.Name = "outputTab";
+            outputTab.Size = new Size(414, 586);
+            outputTab.TabIndex = 0;
+            outputTab.Text = "Output";
+            outputTab.UseVisualStyleBackColor = true;
+            // 
+            // outputMatchesTab
+            // 
+            outputMatchesTab.Location = new Point(4, 24);
+            outputMatchesTab.Margin = new Padding(0);
+            outputMatchesTab.Name = "outputMatchesTab";
+            outputMatchesTab.Size = new Size(414, 586);
+            outputMatchesTab.TabIndex = 1;
+            outputMatchesTab.Text = "Matches";
+            outputMatchesTab.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -223,39 +267,75 @@
             label4.AutoSize = true;
             label4.Dock = DockStyle.Fill;
             label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label4.Location = new Point(424, 319);
+            label4.Location = new Point(424, 307);
             label4.Name = "label4";
             label4.Size = new Size(415, 20);
             label4.TabIndex = 7;
             label4.Text = "Replace";
             label4.TextAlign = ContentAlignment.BottomLeft;
             // 
-            // tableLayoutPanel2
+            // inputTabs
             // 
-            tableLayoutPanel2.ColumnCount = 2;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.Controls.Add(loadingProgressBar, 1, 0);
-            tableLayoutPanel2.Controls.Add(label3, 0, 0);
-            tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(845, 3);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 1;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.Size = new Size(416, 14);
-            tableLayoutPanel2.TabIndex = 8;
+            inputTabs.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            inputTabs.Controls.Add(inputTab);
+            inputTabs.Controls.Add(inputMatchesTab);
+            inputTabs.Location = new Point(0, 0);
+            inputTabs.Margin = new Padding(0);
+            inputTabs.Name = "inputTabs";
+            inputTabs.Padding = new Point(0, 0);
+            tableLayoutPanel1.SetRowSpan(inputTabs, 4);
+            inputTabs.SelectedIndex = 0;
+            inputTabs.Size = new Size(421, 614);
+            inputTabs.TabIndex = 9;
             // 
-            // label3
+            // inputTab
             // 
-            label3.AutoSize = true;
-            label3.Dock = DockStyle.Fill;
-            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(3, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(47, 14);
-            label3.TabIndex = 6;
-            label3.Text = "Output";
-            label3.TextAlign = ContentAlignment.BottomLeft;
+            inputTab.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            inputTab.Location = new Point(4, 24);
+            inputTab.Margin = new Padding(0);
+            inputTab.Name = "inputTab";
+            inputTab.Size = new Size(413, 586);
+            inputTab.TabIndex = 0;
+            inputTab.Text = "Input";
+            inputTab.UseVisualStyleBackColor = true;
+            // 
+            // inputMatchesTab
+            // 
+            inputMatchesTab.Location = new Point(4, 24);
+            inputMatchesTab.Margin = new Padding(0);
+            inputMatchesTab.Name = "inputMatchesTab";
+            inputMatchesTab.Size = new Size(413, 586);
+            inputMatchesTab.TabIndex = 1;
+            inputMatchesTab.Text = "Matches";
+            inputMatchesTab.UseVisualStyleBackColor = true;
+            // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1 });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(1264, 24);
+            menuStrip1.TabIndex = 3;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { openToolStripMenuItem, saveAsToolStripMenuItem });
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(37, 20);
+            toolStripMenuItem1.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            openToolStripMenuItem.Name = "openToolStripMenuItem";
+            openToolStripMenuItem.Size = new Size(114, 22);
+            openToolStripMenuItem.Text = "Open";
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            saveAsToolStripMenuItem.Size = new Size(114, 22);
+            saveAsToolStripMenuItem.Text = "Save As";
             // 
             // RegexerForm
             // 
@@ -264,6 +344,7 @@
             ClientSize = new Size(1264, 681);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(panel2);
+            Controls.Add(menuStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "RegexerForm";
             Text = "Regexer";
@@ -271,9 +352,13 @@
             panel2.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
-            tableLayoutPanel2.ResumeLayout(false);
-            tableLayoutPanel2.PerformLayout();
+            panel1.ResumeLayout(false);
+            outputTabs.ResumeLayout(false);
+            inputTabs.ResumeLayout(false);
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -285,16 +370,24 @@
         private SaveFileDialog saveFileDialog;
         private ComboBox templatesComboBox;
         private Button saveTemplateBut;
-        private ProgressBar loadingProgressBar;
-        private Label label1;
         private Label label2;
-        private Label label3;
         private Label label4;
-        private TableLayoutPanel tableLayoutPanel2;
         private Button deleteTemplateBut;
         private Button outToInBut;
         private Button nextBut;
         private Button prevBut;
         private CheckBox fasterMLCheckBox;
+        private TabControl inputTabs;
+        private TabPage inputTab;
+        private TabPage inputMatchesTab;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem openToolStripMenuItem;
+        private ToolStripMenuItem saveAsToolStripMenuItem;
+        private TabControl outputTabs;
+        private TabPage outputTab;
+        private TabPage outputMatchesTab;
+        private Panel panel1;
+        private ProgressBar loadingProgressBar;
     }
 }

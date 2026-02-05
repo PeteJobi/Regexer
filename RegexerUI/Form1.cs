@@ -11,7 +11,9 @@ namespace RegexerUI
         private CancellationTokenSource tokenSource;
         private CancellationTokenSource? delayTokenSource;
         private FastColoredTextBox inputTextbox;
+        private FastColoredTextBox inputMatchesTextbox;
         private FastColoredTextBox outputTextbox;
+        private FastColoredTextBox outputMatchesTextbox;
         private FastColoredTextBox patternTextbox;
         private FastColoredTextBox replaceTextbox;
         private readonly TextStyle _highlightStyle = new(null, Brushes.Gainsboro, FontStyle.Bold);
@@ -60,6 +62,9 @@ namespace RegexerUI
                 outputTextbox.Range.ClearStyle(_highlightStyle);
                 if (result.Matches != null)
                 {
+                    inputMatchesTextbox.Text = string.Join('\n', result.Matches.Select(m => m.InputMatch.Text));
+                    outputMatchesTextbox.Text = string.Join('\n', result.Matches.Select(m => m.OutputMatch?.Text));
+
                     foreach (var matchPair in result.Matches)
                     {
                         var matchRange = inputTextbox.GetRange(matchPair.InputMatch.Index, matchPair.InputMatch.Index + matchPair.InputMatch.Length);
@@ -240,78 +245,52 @@ namespace RegexerUI
             regexer.EnableFasterML(fasterMLCheckBox.Checked);
         }
 
+        private void InputMatchesTextbox_PaintLine(object? sender, PaintLineEventArgs e)
+        {
+            e.Graphics.FillRectangle(inputMatchLineBackgroundData[e.LineIndex] ? FctbManager.MatchStyle.BackgroundBrush : FctbManager.MatchLightStyle.BackgroundBrush, e.LineRect);
+        }
+
+        private void OutputMatchesTextbox_PaintLine(object? sender, PaintLineEventArgs e)
+        {
+            e.Graphics.FillRectangle(outputMatchLineBackgroundData[e.LineIndex] ? FctbManager.MatchStyle.BackgroundBrush : FctbManager.MatchLightStyle.BackgroundBrush, e.LineRect);
+        }
+
         void InitializeFCTextBoxes()
         {
-            // 
-            // inputTextbox
-            // 
-            inputTextbox = new();
-            inputTextbox.Dock = DockStyle.Fill;
-            inputTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            inputTextbox.Location = new Point(3, 23);
-            //inputTextbox.MaxLength = 524288;
-            inputTextbox.Multiline = true;
-            inputTextbox.Name = "inputTextbox";
-            tableLayoutPanel1.SetRowSpan(inputTextbox, 3);
-            //inputTextbox.ScrollBars = ScrollBars.Both;
-            inputTextbox.Size = new Size(415, 612);
-            inputTextbox.TabIndex = 0;
-            inputTextbox.WordWrap = false;
-            inputTextbox.BorderStyle = BorderStyle.FixedSingle;
-            inputTextbox.ShowLineNumbers = false;
-            inputTextbox.TextChanged += inputTextbox_TextChanged;
-            // 
-            // outputTextbox
-            // 
-            outputTextbox = new();
-            outputTextbox.Dock = DockStyle.Fill;
-            outputTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            outputTextbox.Location = new Point(845, 23);
-            outputTextbox.Multiline = true;
-            outputTextbox.Name = "outputTextbox";
-            outputTextbox.ReadOnly = true;
-            tableLayoutPanel1.SetRowSpan(outputTextbox, 3);
-            outputTextbox.Size = new Size(416, 612);
-            outputTextbox.TabIndex = 2;
-            outputTextbox.WordWrap = false;
-            outputTextbox.ShowLineNumbers = false;
-            outputTextbox.ReadOnly = true;
-            outputTextbox.BorderStyle = BorderStyle.FixedSingle;
-            // 
-            // replaceTextbox
-            // 
-            replaceTextbox = new();
-            replaceTextbox.Dock = DockStyle.Fill;
-            replaceTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            replaceTextbox.Location = new Point(424, 342);
-            replaceTextbox.Multiline = true;
-            replaceTextbox.Name = "replaceTextbox";
-            replaceTextbox.Size = new Size(415, 293);
-            replaceTextbox.TabIndex = 2;
-            replaceTextbox.WordWrap = false;
-            replaceTextbox.BorderStyle = BorderStyle.FixedSingle;
-            replaceTextbox.ShowLineNumbers = false;
-            replaceTextbox.TextChanged += replaceTextbox_TextChanged;
-            // 
-            // patternTextbox
-            // 
-            patternTextbox = new();
-            patternTextbox.Dock = DockStyle.Fill;
-            patternTextbox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            patternTextbox.Location = new Point(424, 23);
-            patternTextbox.Multiline = true;
-            patternTextbox.Name = "patternTextbox";
-            patternTextbox.Size = new Size(415, 293);
-            patternTextbox.TabIndex = 1;
-            patternTextbox.WordWrap = false;
-            patternTextbox.BorderStyle = BorderStyle.FixedSingle;
-            patternTextbox.ShowLineNumbers = false;
-            patternTextbox.TextChanged += patternTextbox_TextChanged;
+            inputTextbox = CreateFCTextBoxes(nameof(inputTextbox), 0, inputTextbox_TextChanged);
+            patternTextbox = CreateFCTextBoxes(nameof(patternTextbox), 1, patternTextbox_TextChanged);
+            replaceTextbox = CreateFCTextBoxes(nameof(replaceTextbox), 2, replaceTextbox_TextChanged);
+            outputTextbox = CreateFCTextBoxes(nameof(outputTextbox), 3);
+            inputMatchesTextbox = CreateFCTextBoxes(nameof(inputMatchesTextbox));
+            outputMatchesTextbox = CreateFCTextBoxes(nameof(outputMatchesTextbox));
 
-            tableLayoutPanel1.Controls.Add(inputTextbox, 0, 1);
-            tableLayoutPanel1.Controls.Add(outputTextbox, 2, 1);
-            tableLayoutPanel1.Controls.Add(replaceTextbox, 1, 3);
+            inputTabs.TabPages["inputTab"].Controls.Add(inputTextbox);
+            inputTabs.TabPages["inputMatchesTab"].Controls.Add(inputMatchesTextbox);
+            outputTabs.TabPages["outputTab"].Controls.Add(outputTextbox);
+            outputTabs.TabPages["outputMatchesTab"].Controls.Add(outputMatchesTextbox);
             tableLayoutPanel1.Controls.Add(patternTextbox, 1, 1);
+            tableLayoutPanel1.Controls.Add(replaceTextbox, 1, 3);
+
+            inputMatchesTextbox.PaintLine += InputMatchesTextbox_PaintLine;
+            outputMatchesTextbox.PaintLine += OutputMatchesTextbox_PaintLine;
+        }
+
+        FastColoredTextBox CreateFCTextBoxes(string name, int? tabIndex = null, EventHandler<TextChangedEventArgs>? eventHandler = null)
+        {
+            var fastTextBox = new FastColoredTextBox();
+            fastTextBox.Dock = DockStyle.Fill;
+            fastTextBox.Font = new Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            //fastTextBox.MaxLength = 524288;
+            fastTextBox.Multiline = true;
+            fastTextBox.Name = name;
+            if(tabIndex != null) fastTextBox.TabIndex = tabIndex.Value;
+            fastTextBox.WordWrap = false;
+            fastTextBox.BorderStyle = BorderStyle.FixedSingle;
+            fastTextBox.ShowLineNumbers = false;
+            fastTextBox.ReadOnly = eventHandler == null;
+            fastTextBox.AllowSeveralTextStyleDrawing = true;
+            if (eventHandler != null) fastTextBox.TextChanged += eventHandler;
+            return fastTextBox;
         }
     }
 }
