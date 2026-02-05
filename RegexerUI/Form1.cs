@@ -42,8 +42,10 @@ namespace RegexerUI
             tokenSource = new CancellationTokenSource();
             if (inputTextbox.Text == string.Empty || patternTextbox.Text == string.Empty)
             {
-                outputTextbox.Text = inputTextbox.Text;
+                outputTextbox.Text = inputMatchesTextbox.Text = outputMatchesTextbox.Text = string.Empty;
                 matchRanges.Clear();
+                inputMatchLineBackgroundData.Clear();
+                outputMatchLineBackgroundData.Clear();
                 prevBut.Enabled = nextBut.Enabled = false;
                 return;
             }
@@ -62,24 +64,38 @@ namespace RegexerUI
                 matchRanges.Clear();
                 inputTextbox.Range.ClearStyle(FctbManager.BaseStyle);
                 outputTextbox.Range.ClearStyle(FctbManager.BaseStyle);
+                inputMatchesTextbox.Text = string.Empty;
+                outputMatchesTextbox.Text = string.Empty;
                 if (result.Matches != null)
                 {
                     inputMatchesTextbox.Text = string.Join('\n', result.Matches.Select(m => m.InputMatch.Text));
                     outputMatchesTextbox.Text = string.Join('\n', result.Matches.Select(m => m.OutputMatch?.Text));
 
+                    var lastInputMatchEndIndex = 0;
+                    var lastOutputMatchEndIndex = 0;
+                    var alternate = false;
+                    inputMatchLineBackgroundData.Clear();
+                    outputMatchLineBackgroundData.Clear();
                     foreach (var matchPair in result.Matches)
                     {
                         var matchRange = inputTextbox.GetRange(matchPair.InputMatch.Index, matchPair.InputMatch.Index + matchPair.InputMatch.Length);
                         (Range inpRange, Range? outRange) pairRanges = (matchRange, null);
                         matchRange.SetStyle(FctbManager.BaseStyle);
+                        alternate = !alternate;
+                        var inputMatchRange = inputMatchesTextbox.GetRange(lastInputMatchEndIndex, lastInputMatchEndIndex += matchPair.InputMatch.Length + 2);
+                        inputMatchLineBackgroundData.AddRange(Enumerable.Repeat(alternate, inputMatchRange.End.iLine - inputMatchRange.Start.iLine));
                         if (matchPair.OutputMatch != null)
                         {
                             matchRange = outputTextbox.GetRange(matchPair.OutputMatch.Index, matchPair.OutputMatch.Index + matchPair.OutputMatch.Length);
                             matchRange.SetStyle(FctbManager.BaseStyle);
                             pairRanges.outRange = matchRange;
+                            var outputMatchRange = outputMatchesTextbox.GetRange(lastOutputMatchEndIndex, lastOutputMatchEndIndex += matchPair.OutputMatch.Length + 2);
+                            outputMatchLineBackgroundData.AddRange(Enumerable.Repeat(alternate, outputMatchRange.End.iLine - outputMatchRange.Start.iLine));
                         }
                         matchRanges.Add(pairRanges);
                     }
+                    inputMatchLineBackgroundData.Add(alternate);
+                    outputMatchLineBackgroundData.Add(alternate);
                 }
                 prevBut.Enabled = nextBut.Enabled = matchRanges.Any();
             }
@@ -157,12 +173,12 @@ namespace RegexerUI
             replaceTextbox.Text = template[1];
         }
 
-        private async void inputTextbox_TextChanged(object sender, EventArgs e)
+        private async void inputTextbox_TextChanged(object? sender, EventArgs e)
         {
             await FindAndReplace();
         }
 
-        private async void patternTextbox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void patternTextbox_TextChanged(object? sender, TextChangedEventArgs e)
         {
             fctbManager.Highlight(patternTextbox, e.ChangedRange, false);
             saveTemplateBut.Enabled = patternTextbox.Text != string.Empty;
@@ -170,7 +186,7 @@ namespace RegexerUI
             await FindAndReplace();
         }
 
-        private async void replaceTextbox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void replaceTextbox_TextChanged(object? sender, TextChangedEventArgs e)
         {
             fctbManager.Highlight(replaceTextbox, e.ChangedRange, true);
             await FindAndReplace();
@@ -245,12 +261,14 @@ namespace RegexerUI
 
         private void InputMatchesTextbox_PaintLine(object? sender, PaintLineEventArgs e)
         {
-            e.Graphics.FillRectangle(inputMatchLineBackgroundData[e.LineIndex] ? FctbManager.MatchStyle.BackgroundBrush : FctbManager.MatchLightStyle.BackgroundBrush, e.LineRect);
+            e.Graphics.FillRectangle(e.LineIndex >= inputMatchLineBackgroundData.Count ? FctbManager.TransparentBrush :
+                inputMatchLineBackgroundData[e.LineIndex] ? FctbManager.MatchStyle.BackgroundBrush : FctbManager.MatchLightStyle.BackgroundBrush, e.LineRect);
         }
 
         private void OutputMatchesTextbox_PaintLine(object? sender, PaintLineEventArgs e)
         {
-            e.Graphics.FillRectangle(outputMatchLineBackgroundData[e.LineIndex] ? FctbManager.MatchStyle.BackgroundBrush : FctbManager.MatchLightStyle.BackgroundBrush, e.LineRect);
+            e.Graphics.FillRectangle(e.LineIndex >= outputMatchLineBackgroundData.Count ? FctbManager.TransparentBrush :
+                outputMatchLineBackgroundData[e.LineIndex] ? FctbManager.MatchStyle.BackgroundBrush : FctbManager.MatchLightStyle.BackgroundBrush, e.LineRect);
         }
 
         void InitializeFCTextBoxes()
