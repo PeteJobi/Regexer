@@ -173,7 +173,7 @@ public class Regexer
                 {
                     var match = mlMatches.ElementAt(j);
                     var rep = string.Join("\r\n", lines.Select(line => match.Groups["space"].Value + match.Groups["before"] + line + match.Groups["after"])) + match.Groups["end"];
-                    transformReplacements[i].Insert(0, new(match.Value, rep));
+                    transformReplacements[i]!.Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -193,7 +193,6 @@ public class Regexer
                 {
                     var match = mResultMatches.ElementAt(j);
                     var separator = match.Groups["separator"].Value.Replace("<ml>", "\r\n");
-                    string rep;
                     var list = new List<string>();
                     var subMatches = Regex.Matches(match.Groups["replacement"].Value, @"\[\[(\w+?)\|m\]\]");
                     for (var k = 0; k < inputMatch.Captures.Count; k++)
@@ -206,8 +205,8 @@ public class Regexer
                         }
                         list.Add(replacementLine);
                     }
-                    rep = string.Join(separator, list);
-                    transformReplacements[i].Insert(0, new(match.Value, rep));
+                    var rep = string.Join(separator, list);
+                    transformReplacements[i]!.Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -228,7 +227,7 @@ public class Regexer
                     var match = mResultMatches.ElementAt(i);
                     var separator = match.Groups["separator"].Value.Replace("<ml>", "\r\n");
                     var rep = string.Join(separator, inputMatch.Captures.Select(c => c.Value));
-                    transformReplacements[i].Insert(0, new(match.Value, rep));
+                    transformReplacements[i]!.Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -255,7 +254,7 @@ public class Regexer
                         var inputMatch = matches[i].Groups[name];
                         var endingSpace = isLastInGroup && !inputMatch.Success ? string.Empty : match.Groups["uEndSpace"].Value;
                         var rep = !inputMatch.Success ? string.Empty : startingSpace + (match.Groups["replacement"].Value != string.Empty ? match.Groups["replacement"].Value : inputMatch.Value) + endingSpace;
-                        transformReplacements[i].Insert(0, new(match.Value, rep));
+                        transformReplacements[i]!.Insert(0, new(match.Value, rep));
                         result = result[..index] + rep + result[(index + length)..];
                     }
                 }
@@ -265,7 +264,7 @@ public class Regexer
         //var optionalGroups = Regex.Matches(replace, @"\[\[(\w+)\|o:(?:(?>\[\[(?<Open>)|(?<-Open>\]\])|\[(?!\[)|\](?!\])|[^\[\]])*(?(Open)(?!)))\]\]").Select(g => g.Groups[1].Value).Distinct();
         foreach (var group in optionalGroups)
         {
-            var oResultMatches = Regex.Matches(result, string.Format(@"(?<oSpace>\s+)?\[\[{0}\|o:(?<replacement>(?>\[\[(?<Open>)|(?<-Open>\]\])|\[(?!\[)|\](?!\])|[^\[\]])*(?(Open)(?!)))\]\]", group));
+            var oResultMatches = Regex.Matches(result, string.Format(@"\[\[{0}\|o:(?<replacement>(?>\[\[(?<Open>)|(?<-Open>\]\])|\[(?!\[)|\](?!\])|[^\[\]])*(?(Open)(?!)))\]\]", group));
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var inputMatch = matches[i].Groups[group];
@@ -275,9 +274,8 @@ public class Regexer
                 for (var j = jInit - 1; j >= jInit - segmentCount; j--)
                 {
                     var match = oResultMatches.ElementAt(j);
-                    var space = match.Groups["oSpace"].Value;
-                    var rep = space + (!inputMatch.Success ? string.Empty : (match.Groups["replacement"].Value != string.Empty ? match.Groups["replacement"].Value : inputMatch.Value));
-                    transformReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
+                    var rep = !inputMatch.Success ? string.Empty : match.Groups["replacement"].Value != string.Empty ? match.Groups["replacement"].Value : inputMatch.Value;
+                    transformReplacements[i]!.Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -286,7 +284,7 @@ public class Regexer
         var duplicateGroups = Regex.Matches(replace, @"\[\[(\w+)\|d:(?:\d+|[\di+*/%-]+)(?::.+?)?\]\]").Select(g => g.Groups[1].Value).Distinct();
         foreach (var group in duplicateGroups)
         {
-            var dResultMatches = Regex.Matches(result, string.Format(@"(?<dSpace>\s+)?\[\[{0}\|d:(?:(?<amount>\d+)|(?<eval>[\di()+*/%-]+))(?::(?<separator>.+?))?\]\]", group));
+            var dResultMatches = Regex.Matches(result, string.Format(@"\[\[{0}\|d:(?:(?<amount>\d+)|(?<eval>[\di()+*/%-]+))(?::(?<separator>.+?))?\]\]", group));
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var inputMatch = matches[i].Groups[group];
@@ -316,9 +314,8 @@ public class Regexer
                     }
                     else continue;
                     var separator = match.Groups["separator"].Value.Replace("<ml>", "\r\n");
-                    var space = match.Groups["dSpace"].Value;
-                    var rep = space + string.Join(separator, Enumerable.Repeat(inputMatch.Value, amount));
-                    transformReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
+                    var rep = string.Join(separator, Enumerable.Repeat(inputMatch.Value, amount));
+                    transformReplacements[i]!.Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -328,7 +325,7 @@ public class Regexer
         foreach (var group in capitalizeGroups)
         {
             if(digitGroups.Contains(group)) continue;
-            var cResultMatches = Regex.Matches(result, string.Format(@"(?<cSpace>\s+)?\[\[{0}\|c:(?<type>u|l|s|fu|fl)\]\]", group));
+            var cResultMatches = Regex.Matches(result, string.Format(@"\[\[{0}\|c:(?<type>u|l|s|fu|fl)\]\]", group));
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var inputMatch = matches[i].Groups[group];
@@ -347,9 +344,7 @@ public class Regexer
                         "fl" => inputMatch.Value[..1].ToLower() + inputMatch.Value[1..], //fl: First letter lower case
                         _ => inputMatch.Value[..1].ToUpper() + inputMatch.Value[1..].ToLower() //s: Sentence case
                     };
-                    var space = match.Groups["cSpace"].Value;
-                    rep = space + rep;
-                    transformReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
+                    transformReplacements[i]!.Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -357,7 +352,7 @@ public class Regexer
 
         foreach (var group in digitGroups)
         {
-            var eResultMatches = Regex.Matches(result, string.Format(@"(?<eSpace>\s+)?\[\[{0}\|e:(?<eval>[\dim()+*/%-]+)\]\]", group));
+            var eResultMatches = Regex.Matches(result, string.Format(@"\[\[{0}\|e:(?<eval>[\dim()+*/%-]+)\]\]", group));
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var inputMatch = matches[i].Groups[group];
@@ -368,9 +363,8 @@ public class Regexer
                 {
                     var match = eResultMatches.ElementAt(j);
                     var expression = match.Groups["eval"].Value.Replace("i", (j + 1).ToString()).Replace("m", inputMatch.Value); //i: one-based match index, m: match value
-                    var space = match.Groups["eSpace"].Value;
-                    var rep = space + Evaluate(expression);
-                    transformReplacements[i].Insert(0, new(match.Value[space.Length..], rep[space.Length..]));
+                    var rep = Evaluate(expression).ToString();
+                    transformReplacements[i]!.Insert(0, new(match.Value, rep));
                     result = result[..match.Index] + rep + result[(match.Index + match.Length)..];
                 }
             }
@@ -413,7 +407,7 @@ public class Regexer
             }
 
             var rep = match.Result(replace);
-            if (transformReplacements.All(r => r != null))
+            if (transformReplacements[i] != null)
             {
                 rep = transformReplacements[i]!.Aggregate(rep, (current, keyValuePair) => current.Replace(keyValuePair.Key, keyValuePair.Value));
             }
