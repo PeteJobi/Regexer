@@ -236,7 +236,7 @@ public class Regexer
 
         if (Regex.IsMatch(replace, @"\[\[\w+\|u"))
         {
-            var uResultMatches = Regex.Matches(result, @"(?<uLines>(?:[^\S\r\n]+)?\[\[\w+\|?(?:u(?::(?>\[\[(?<Open>)|(?<-Open>\]\])|\[(?!\[)|\](?!\])|[^\[\]])*(?(Open)(?!)))?)\]\][^\S\r\n]*?(?:\n|\r\n)?)+");
+            var uResultMatches = Regex.Matches(result, @"(?<uLines>(?:[^\S\r\n]+)?\[\[\w+\|u(?::(?>\[\[(?<Open>)|(?<-Open>\]\])|\[(?!\[)|\](?!\])|[^\[\]])*(?(Open)(?!)))?\]\][^\S\r\n]*?(?:\n|\r\n)?)+");
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var segmentCount = uResultMatches.Count / matches.Count;
@@ -286,7 +286,7 @@ public class Regexer
         var duplicateGroups = Regex.Matches(replace, @"\[\[(\w+)\|d:(?:\d+|[\di+*/%-]+)(?::.+?)?\]\]").Select(g => g.Groups[1].Value).Distinct();
         foreach (var group in duplicateGroups)
         {
-            var dResultMatches = Regex.Matches(result, string.Format(@"(?<dSpace>\s+)?\[\[{0}\|d:((?<amount>\d+)|(?<eval>[\di()+*/%-]+))(:(?<separator>.+?))?\]\]", group));
+            var dResultMatches = Regex.Matches(result, string.Format(@"(?<dSpace>\s+)?\[\[{0}\|d:(?:(?<amount>\d+)|(?<eval>[\di()+*/%-]+))(?::(?<separator>.+?))?\]\]", group));
             for (var i = matches.Count - 1; i >= 0; i--)
             {
                 var inputMatch = matches[i].Groups[group];
