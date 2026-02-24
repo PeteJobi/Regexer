@@ -10,6 +10,9 @@
 
   <ItemGroup>
     <None Remove="TestData\Characters\Output.txt" />
+    <None Remove="TestData\LargeMLTest\Input.txt" />
+    <None Remove="TestData\LargeMLTest\Pattern.txt" />
+    <None Remove="TestData\LargeMLTest\Replace.txt" />
     <None Remove="TestData\UnorderedOptionalLineToCapture\Input.txt" />
     <None Remove="TestData\UnorderedOptionalLineToCapture\Matches.txt" />
     <None Remove="TestData\UnorderedOptionalLineToCapture\Output.txt" />
@@ -95,6 +98,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\DuplicateByMatchIndex\Replace.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\LargeMLTest\Input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\LargeMLTest\Pattern.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\LargeMLTest\Output.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\LargeMLTest\Replace.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\MultiLineToCapture\Input.txt">
@@ -412,6 +427,22 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\MLBugfix2\Replace.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\SameNameMultiCapture\Input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\SameNameMultiCapture\Matches.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\SameNameMultiCapture\Output.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="TestData\SameNameMultiCapture\Pattern.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\SameNameMultiCapture\Replace.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Words\Input.txt">

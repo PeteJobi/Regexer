@@ -1,0 +1,15 @@
+﻿$.ajax({
+    url: [[url]],[[comment|o]]
+    [[u|contentType: "application/json",]]
+    [[dat|u|data: [[data]],]]
+    [[meGet|u|method: "GET",]]
+    [[mePost|u|method: "POST",]]
+    [[meDel|u|method: "DELETE",]]
+    [[proc|u|processData: true,]]
+    success: () => {
+        [[act|ml]]
+    },
+    error: (xhr, status, error) => {
+        [[not|ml]]
+    }
+})
