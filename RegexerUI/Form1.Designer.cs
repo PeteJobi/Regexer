@@ -29,149 +29,57 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegexerForm));
-            panel2 = new Panel();
-            fasterMLCheckBox = new CheckBox();
-            nextBut = new Button();
-            prevBut = new Button();
-            outToInBut = new Button();
-            deleteTemplateBut = new Button();
-            saveTemplateBut = new Button();
-            templatesComboBox = new ComboBox();
-            saveFileBut = new Button();
-            openFileBut = new Button();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel1 = new Panel();
             loadingProgressBar = new ProgressBar();
             outputTabs = new TabControl();
             outputTab = new TabPage();
             outputMatchesTab = new TabPage();
+            outputSubMatchesTab = new TabPage();
+            outputDataGridView = new DataGridView();
             label2 = new Label();
             label4 = new Label();
             inputTabs = new TabControl();
             inputTab = new TabPage();
             inputMatchesTab = new TabPage();
+            inputSubMatchesTab = new TabPage();
+            inputDataGridView = new DataGridView();
             openFileDialog = new OpenFileDialog();
             saveFileDialog = new SaveFileDialog();
-            menuStrip1 = new MenuStrip();
             toolStripMenuItem1 = new ToolStripMenuItem();
             openToolStripMenuItem = new ToolStripMenuItem();
             saveAsToolStripMenuItem = new ToolStripMenuItem();
-            panel2.SuspendLayout();
+            copyOutputToInputToolStripMenuItem = new ToolStripMenuItem();
+            clearPatternsToolStripMenuItem = new ToolStripMenuItem();
+            clearAllToolStripMenuItem = new ToolStripMenuItem();
+            menuStrip1 = new MenuStrip();
+            toolStripMenuItem2 = new ToolStripMenuItem();
+            syncTabsToolStripCheckBox = new ToolStripMenuItem();
+            syncScrollToolStripCheckBox = new ToolStripMenuItem();
+            wordWrapToolStripCheckBox = new ToolStripMenuItem();
+            lineNumbersToolStripCheckbox = new ToolStripMenuItem();
+            fasterMLToolStripCheckbox = new ToolStripMenuItem();
+            toolStrip1 = new ToolStrip();
+            templatesComboBox = new ToolStripComboBox();
+            saveTemplateBut = new ToolStripButton();
+            deleteTemplateBut = new ToolStripButton();
+            toolStripSeparator1 = new ToolStripSeparator();
+            prevBut = new ToolStripButton();
+            nextBut = new ToolStripButton();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            matchNavLabel = new Label();
             tableLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
             outputTabs.SuspendLayout();
+            outputSubMatchesTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)outputDataGridView).BeginInit();
             inputTabs.SuspendLayout();
+            inputSubMatchesTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)inputDataGridView).BeginInit();
             menuStrip1.SuspendLayout();
+            toolStrip1.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
-            // 
-            // panel2
-            // 
-            panel2.BackColor = SystemColors.Control;
-            panel2.Controls.Add(fasterMLCheckBox);
-            panel2.Controls.Add(nextBut);
-            panel2.Controls.Add(prevBut);
-            panel2.Controls.Add(outToInBut);
-            panel2.Controls.Add(deleteTemplateBut);
-            panel2.Controls.Add(saveTemplateBut);
-            panel2.Controls.Add(templatesComboBox);
-            panel2.Controls.Add(saveFileBut);
-            panel2.Controls.Add(openFileBut);
-            panel2.Dock = DockStyle.Bottom;
-            panel2.Location = new Point(0, 638);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(1264, 43);
-            panel2.TabIndex = 1;
-            // 
-            // fasterMLCheckBox
-            // 
-            fasterMLCheckBox.AutoSize = true;
-            fasterMLCheckBox.Location = new Point(952, 13);
-            fasterMLCheckBox.Name = "fasterMLCheckBox";
-            fasterMLCheckBox.Size = new Size(77, 19);
-            fasterMLCheckBox.TabIndex = 11;
-            fasterMLCheckBox.Text = "Faster ML";
-            fasterMLCheckBox.UseVisualStyleBackColor = true;
-            fasterMLCheckBox.CheckedChanged += fasterMLCheckBox_CheckedChanged;
-            // 
-            // nextBut
-            // 
-            nextBut.Location = new Point(854, 10);
-            nextBut.Name = "nextBut";
-            nextBut.Size = new Size(75, 23);
-            nextBut.TabIndex = 10;
-            nextBut.Text = "Next";
-            nextBut.UseVisualStyleBackColor = true;
-            nextBut.Click += nextBut_Click;
-            // 
-            // prevBut
-            // 
-            prevBut.Location = new Point(773, 10);
-            prevBut.Name = "prevBut";
-            prevBut.Size = new Size(75, 23);
-            prevBut.TabIndex = 9;
-            prevBut.Text = "Previous";
-            prevBut.UseVisualStyleBackColor = true;
-            prevBut.Click += prevBut_Click;
-            // 
-            // outToInBut
-            // 
-            outToInBut.Location = new Point(196, 10);
-            outToInBut.Name = "outToInBut";
-            outToInBut.Size = new Size(132, 23);
-            outToInBut.TabIndex = 8;
-            outToInBut.Text = "Copy output to input";
-            outToInBut.UseVisualStyleBackColor = true;
-            outToInBut.Click += outToInBut_Click;
-            // 
-            // deleteTemplateBut
-            // 
-            deleteTemplateBut.Enabled = false;
-            deleteTemplateBut.Location = new Point(634, 10);
-            deleteTemplateBut.Name = "deleteTemplateBut";
-            deleteTemplateBut.Size = new Size(100, 23);
-            deleteTemplateBut.TabIndex = 7;
-            deleteTemplateBut.Text = "Delete template";
-            deleteTemplateBut.UseVisualStyleBackColor = true;
-            deleteTemplateBut.Click += deleteTemplateBut_Click;
-            // 
-            // saveTemplateBut
-            // 
-            saveTemplateBut.Enabled = false;
-            saveTemplateBut.Location = new Point(538, 10);
-            saveTemplateBut.Name = "saveTemplateBut";
-            saveTemplateBut.Size = new Size(90, 23);
-            saveTemplateBut.TabIndex = 6;
-            saveTemplateBut.Text = "Save template";
-            saveTemplateBut.UseVisualStyleBackColor = true;
-            saveTemplateBut.Click += saveTemplateBut_Click;
-            // 
-            // templatesComboBox
-            // 
-            templatesComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            templatesComboBox.FormattingEnabled = true;
-            templatesComboBox.Location = new Point(366, 10);
-            templatesComboBox.Name = "templatesComboBox";
-            templatesComboBox.Size = new Size(166, 23);
-            templatesComboBox.TabIndex = 5;
-            templatesComboBox.SelectedIndexChanged += templatesComboBox_SelectedIndexChanged;
-            // 
-            // saveFileBut
-            // 
-            saveFileBut.Location = new Point(106, 10);
-            saveFileBut.Name = "saveFileBut";
-            saveFileBut.Size = new Size(84, 23);
-            saveFileBut.TabIndex = 4;
-            saveFileBut.Text = "Save output";
-            saveFileBut.Click += saveFileBut_Click;
-            // 
-            // openFileBut
-            // 
-            openFileBut.Location = new Point(12, 10);
-            openFileBut.Name = "openFileBut";
-            openFileBut.Size = new Size(88, 23);
-            openFileBut.TabIndex = 3;
-            openFileBut.Text = "Select input";
-            openFileBut.Click += openFileBut_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -193,7 +101,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new Size(1264, 614);
+            tableLayoutPanel1.Size = new Size(1264, 657);
             tableLayoutPanel1.TabIndex = 2;
             // 
             // panel1
@@ -205,7 +113,7 @@
             panel1.Margin = new Padding(0);
             panel1.Name = "panel1";
             tableLayoutPanel1.SetRowSpan(panel1, 4);
-            panel1.Size = new Size(422, 614);
+            panel1.Size = new Size(422, 657);
             panel1.TabIndex = 0;
             // 
             // loadingProgressBar
@@ -221,13 +129,16 @@
             outputTabs.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             outputTabs.Controls.Add(outputTab);
             outputTabs.Controls.Add(outputMatchesTab);
+            outputTabs.Controls.Add(outputSubMatchesTab);
+            outputTabs.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             outputTabs.Location = new Point(0, 0);
             outputTabs.Margin = new Padding(0);
             outputTabs.Name = "outputTabs";
             outputTabs.Padding = new Point(0, 0);
             outputTabs.SelectedIndex = 0;
-            outputTabs.Size = new Size(422, 614);
+            outputTabs.Size = new Size(422, 657);
             outputTabs.TabIndex = 10;
+            outputTabs.Selected += outputTabs_Selected;
             // 
             // outputTab
             // 
@@ -235,7 +146,7 @@
             outputTab.Location = new Point(4, 24);
             outputTab.Margin = new Padding(0);
             outputTab.Name = "outputTab";
-            outputTab.Size = new Size(414, 586);
+            outputTab.Size = new Size(414, 629);
             outputTab.TabIndex = 0;
             outputTab.Text = "Output";
             outputTab.UseVisualStyleBackColor = true;
@@ -245,10 +156,42 @@
             outputMatchesTab.Location = new Point(4, 24);
             outputMatchesTab.Margin = new Padding(0);
             outputMatchesTab.Name = "outputMatchesTab";
-            outputMatchesTab.Size = new Size(414, 586);
+            outputMatchesTab.Size = new Size(414, 629);
             outputMatchesTab.TabIndex = 1;
             outputMatchesTab.Text = "Matches";
             outputMatchesTab.UseVisualStyleBackColor = true;
+            // 
+            // outputSubMatchesTab
+            // 
+            outputSubMatchesTab.Controls.Add(outputDataGridView);
+            outputSubMatchesTab.Location = new Point(4, 24);
+            outputSubMatchesTab.Margin = new Padding(0);
+            outputSubMatchesTab.Name = "outputSubMatchesTab";
+            outputSubMatchesTab.Size = new Size(414, 629);
+            outputSubMatchesTab.TabIndex = 2;
+            outputSubMatchesTab.Text = "Sub matches";
+            outputSubMatchesTab.UseVisualStyleBackColor = true;
+            // 
+            // outputDataGridView
+            // 
+            outputDataGridView.AllowUserToAddRows = false;
+            outputDataGridView.AllowUserToDeleteRows = false;
+            outputDataGridView.BackgroundColor = SystemColors.Control;
+            outputDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            outputDataGridView.Dock = DockStyle.Fill;
+            outputDataGridView.EnableHeadersVisualStyles = false;
+            outputDataGridView.Location = new Point(0, 0);
+            outputDataGridView.Name = "outputDataGridView";
+            outputDataGridView.ReadOnly = true;
+            outputDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            outputDataGridView.RowTemplate.Height = 25;
+            outputDataGridView.Size = new Size(414, 629);
+            outputDataGridView.TabIndex = 0;
+            outputDataGridView.CellPainting += IndieMatchesDataGridView_CellPainting;
+            outputDataGridView.ColumnAdded += outputDataGridView_ColumnWidthChanged;
+            outputDataGridView.ColumnWidthChanged += outputDataGridView_ColumnWidthChanged;
+            outputDataGridView.Scroll += outputDataGridView_Scroll;
+            outputDataGridView.SelectionChanged += IndieMatchesDataGridView_SelectionChanged;
             // 
             // label2
             // 
@@ -267,7 +210,7 @@
             label4.AutoSize = true;
             label4.Dock = DockStyle.Fill;
             label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label4.Location = new Point(424, 307);
+            label4.Location = new Point(424, 328);
             label4.Name = "label4";
             label4.Size = new Size(415, 20);
             label4.TabIndex = 7;
@@ -279,14 +222,17 @@
             inputTabs.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             inputTabs.Controls.Add(inputTab);
             inputTabs.Controls.Add(inputMatchesTab);
+            inputTabs.Controls.Add(inputSubMatchesTab);
+            inputTabs.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             inputTabs.Location = new Point(0, 0);
             inputTabs.Margin = new Padding(0);
             inputTabs.Name = "inputTabs";
             inputTabs.Padding = new Point(0, 0);
             tableLayoutPanel1.SetRowSpan(inputTabs, 4);
             inputTabs.SelectedIndex = 0;
-            inputTabs.Size = new Size(421, 614);
+            inputTabs.Size = new Size(421, 657);
             inputTabs.TabIndex = 9;
+            inputTabs.Selected += inputTabs_Selected;
             // 
             // inputTab
             // 
@@ -294,7 +240,7 @@
             inputTab.Location = new Point(4, 24);
             inputTab.Margin = new Padding(0);
             inputTab.Name = "inputTab";
-            inputTab.Size = new Size(413, 586);
+            inputTab.Size = new Size(413, 629);
             inputTab.TabIndex = 0;
             inputTab.Text = "Input";
             inputTab.UseVisualStyleBackColor = true;
@@ -304,23 +250,45 @@
             inputMatchesTab.Location = new Point(4, 24);
             inputMatchesTab.Margin = new Padding(0);
             inputMatchesTab.Name = "inputMatchesTab";
-            inputMatchesTab.Size = new Size(413, 586);
+            inputMatchesTab.Size = new Size(413, 629);
             inputMatchesTab.TabIndex = 1;
             inputMatchesTab.Text = "Matches";
             inputMatchesTab.UseVisualStyleBackColor = true;
             // 
-            // menuStrip1
+            // inputSubMatchesTab
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1 });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1264, 24);
-            menuStrip1.TabIndex = 3;
-            menuStrip1.Text = "menuStrip1";
+            inputSubMatchesTab.Controls.Add(inputDataGridView);
+            inputSubMatchesTab.Location = new Point(4, 24);
+            inputSubMatchesTab.Margin = new Padding(0);
+            inputSubMatchesTab.Name = "inputSubMatchesTab";
+            inputSubMatchesTab.Size = new Size(413, 629);
+            inputSubMatchesTab.TabIndex = 2;
+            inputSubMatchesTab.Text = "Sub matches";
+            inputSubMatchesTab.UseVisualStyleBackColor = true;
+            // 
+            // inputDataGridView
+            // 
+            inputDataGridView.AllowUserToAddRows = false;
+            inputDataGridView.AllowUserToDeleteRows = false;
+            inputDataGridView.BackgroundColor = SystemColors.Control;
+            inputDataGridView.Dock = DockStyle.Fill;
+            inputDataGridView.EnableHeadersVisualStyles = false;
+            inputDataGridView.Location = new Point(0, 0);
+            inputDataGridView.Name = "inputDataGridView";
+            inputDataGridView.ReadOnly = true;
+            inputDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            inputDataGridView.RowTemplate.Height = 25;
+            inputDataGridView.Size = new Size(413, 629);
+            inputDataGridView.TabIndex = 0;
+            inputDataGridView.CellPainting += IndieMatchesDataGridView_CellPainting;
+            inputDataGridView.ColumnAdded += inputDataGridView_ColumnWidthChanged;
+            inputDataGridView.ColumnWidthChanged += inputDataGridView_ColumnWidthChanged;
+            inputDataGridView.Scroll += inputDataGridView_Scroll;
+            inputDataGridView.SelectionChanged += IndieMatchesDataGridView_SelectionChanged;
             // 
             // toolStripMenuItem1
             // 
-            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { openToolStripMenuItem, saveAsToolStripMenuItem });
+            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { openToolStripMenuItem, saveAsToolStripMenuItem, copyOutputToInputToolStripMenuItem, clearPatternsToolStripMenuItem, clearAllToolStripMenuItem });
             toolStripMenuItem1.Name = "toolStripMenuItem1";
             toolStripMenuItem1.Size = new Size(37, 20);
             toolStripMenuItem1.Text = "File";
@@ -328,66 +296,246 @@
             // openToolStripMenuItem
             // 
             openToolStripMenuItem.Name = "openToolStripMenuItem";
-            openToolStripMenuItem.Size = new Size(114, 22);
-            openToolStripMenuItem.Text = "Open";
+            openToolStripMenuItem.Size = new Size(186, 22);
+            openToolStripMenuItem.Text = "Open input";
+            openToolStripMenuItem.Click += openFileBut_Click;
             // 
             // saveAsToolStripMenuItem
             // 
             saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            saveAsToolStripMenuItem.Size = new Size(114, 22);
-            saveAsToolStripMenuItem.Text = "Save As";
+            saveAsToolStripMenuItem.Size = new Size(186, 22);
+            saveAsToolStripMenuItem.Text = "Save output";
+            saveAsToolStripMenuItem.Click += saveFileBut_Click;
+            // 
+            // copyOutputToInputToolStripMenuItem
+            // 
+            copyOutputToInputToolStripMenuItem.Name = "copyOutputToInputToolStripMenuItem";
+            copyOutputToInputToolStripMenuItem.Size = new Size(186, 22);
+            copyOutputToInputToolStripMenuItem.Text = "Copy output to input";
+            copyOutputToInputToolStripMenuItem.Click += outToInBut_Click;
+            // 
+            // clearPatternsToolStripMenuItem
+            // 
+            clearPatternsToolStripMenuItem.Name = "clearPatternsToolStripMenuItem";
+            clearPatternsToolStripMenuItem.Size = new Size(186, 22);
+            clearPatternsToolStripMenuItem.Text = "Clear patterns";
+            clearPatternsToolStripMenuItem.Click += clearPatternsToolStripMenuItem_Click;
+            // 
+            // clearAllToolStripMenuItem
+            // 
+            clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
+            clearAllToolStripMenuItem.Size = new Size(186, 22);
+            clearAllToolStripMenuItem.Text = "Clear all";
+            clearAllToolStripMenuItem.Click += clearAllToolStripMenuItem_Click;
+            // 
+            // menuStrip1
+            // 
+            menuStrip1.Dock = DockStyle.None;
+            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, toolStripMenuItem2 });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(245, 24);
+            menuStrip1.TabIndex = 3;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem2
+            // 
+            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, fasterMLToolStripCheckbox });
+            toolStripMenuItem2.Name = "toolStripMenuItem2";
+            toolStripMenuItem2.Size = new Size(80, 20);
+            toolStripMenuItem2.Text = "Preferences";
+            // 
+            // syncTabsToolStripCheckBox
+            // 
+            syncTabsToolStripCheckBox.Checked = true;
+            syncTabsToolStripCheckBox.CheckState = CheckState.Checked;
+            syncTabsToolStripCheckBox.Name = "syncTabsToolStripCheckBox";
+            syncTabsToolStripCheckBox.Size = new Size(180, 22);
+            syncTabsToolStripCheckBox.Text = "Sync tabs";
+            // 
+            // syncScrollToolStripCheckBox
+            // 
+            syncScrollToolStripCheckBox.Checked = true;
+            syncScrollToolStripCheckBox.CheckOnClick = true;
+            syncScrollToolStripCheckBox.CheckState = CheckState.Checked;
+            syncScrollToolStripCheckBox.Name = "syncScrollToolStripCheckBox";
+            syncScrollToolStripCheckBox.Size = new Size(180, 22);
+            syncScrollToolStripCheckBox.Text = "Sync scroll";
+            // 
+            // wordWrapToolStripCheckBox
+            // 
+            wordWrapToolStripCheckBox.CheckOnClick = true;
+            wordWrapToolStripCheckBox.Name = "wordWrapToolStripCheckBox";
+            wordWrapToolStripCheckBox.Size = new Size(180, 22);
+            wordWrapToolStripCheckBox.Text = "Word wrap";
+            wordWrapToolStripCheckBox.Click += wordWrapToolStripCheckBox_Click;
+            // 
+            // lineNumbersToolStripCheckbox
+            // 
+            lineNumbersToolStripCheckbox.CheckOnClick = true;
+            lineNumbersToolStripCheckbox.Name = "lineNumbersToolStripCheckbox";
+            lineNumbersToolStripCheckbox.Size = new Size(180, 22);
+            lineNumbersToolStripCheckbox.Text = "Line numbers";
+            lineNumbersToolStripCheckbox.Click += lineNumbersToolStripCheckbox_Click;
+            // 
+            // fasterMLToolStripCheckbox
+            // 
+            fasterMLToolStripCheckbox.CheckOnClick = true;
+            fasterMLToolStripCheckbox.Name = "fasterMLToolStripCheckbox";
+            fasterMLToolStripCheckbox.Size = new Size(180, 22);
+            fasterMLToolStripCheckbox.Text = "Faster ML";
+            fasterMLToolStripCheckbox.CheckedChanged += fasterMLCheckBox_CheckedChanged;
+            // 
+            // toolStrip1
+            // 
+            toolStrip1.Dock = DockStyle.None;
+            toolStrip1.Items.AddRange(new ToolStripItem[] { templatesComboBox, saveTemplateBut, deleteTemplateBut, toolStripSeparator1, prevBut, nextBut });
+            toolStrip1.Location = new Point(245, 0);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new Size(415, 24);
+            toolStrip1.TabIndex = 4;
+            toolStrip1.Text = "toolStrip1";
+            // 
+            // templatesComboBox
+            // 
+            templatesComboBox.Name = "templatesComboBox";
+            templatesComboBox.Size = new Size(170, 24);
+            templatesComboBox.ToolTipText = "Select template";
+            templatesComboBox.SelectedIndexChanged += templatesComboBox_SelectedIndexChanged;
+            // 
+            // saveTemplateBut
+            // 
+            saveTemplateBut.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            saveTemplateBut.Image = (Image)resources.GetObject("saveTemplateBut.Image");
+            saveTemplateBut.ImageTransparentColor = Color.Magenta;
+            saveTemplateBut.Name = "saveTemplateBut";
+            saveTemplateBut.Size = new Size(85, 21);
+            saveTemplateBut.Text = "Save template";
+            saveTemplateBut.Click += saveTemplateBut_Click;
+            // 
+            // deleteTemplateBut
+            // 
+            deleteTemplateBut.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            deleteTemplateBut.Image = (Image)resources.GetObject("deleteTemplateBut.Image");
+            deleteTemplateBut.ImageTransparentColor = Color.Magenta;
+            deleteTemplateBut.Name = "deleteTemplateBut";
+            deleteTemplateBut.Size = new Size(94, 21);
+            deleteTemplateBut.Text = "Delete template";
+            deleteTemplateBut.Click += deleteTemplateBut_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(6, 24);
+            // 
+            // prevBut
+            // 
+            prevBut.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            prevBut.Image = (Image)resources.GetObject("prevBut.Image");
+            prevBut.ImageTransparentColor = Color.Magenta;
+            prevBut.Name = "prevBut";
+            prevBut.Size = new Size(23, 21);
+            prevBut.Text = "Previous match";
+            prevBut.Click += prevBut_Click;
+            // 
+            // nextBut
+            // 
+            nextBut.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            nextBut.Image = (Image)resources.GetObject("nextBut.Image");
+            nextBut.ImageTransparentColor = Color.Magenta;
+            nextBut.Name = "nextBut";
+            nextBut.Size = new Size(23, 21);
+            nextBut.Text = "Next match";
+            nextBut.Click += nextBut_Click;
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Controls.Add(menuStrip1);
+            flowLayoutPanel1.Controls.Add(toolStrip1);
+            flowLayoutPanel1.Controls.Add(matchNavLabel);
+            flowLayoutPanel1.Location = new Point(0, 0);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(1264, 24);
+            flowLayoutPanel1.TabIndex = 3;
+            // 
+            // matchNavLabel
+            // 
+            matchNavLabel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            matchNavLabel.AutoSize = true;
+            matchNavLabel.Location = new Point(663, 0);
+            matchNavLabel.Name = "matchNavLabel";
+            matchNavLabel.Size = new Size(38, 24);
+            matchNavLabel.TabIndex = 5;
+            matchNavLabel.Text = "label1";
+            matchNavLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // RegexerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1264, 681);
+            Controls.Add(flowLayoutPanel1);
             Controls.Add(tableLayoutPanel1);
-            Controls.Add(panel2);
-            Controls.Add(menuStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "RegexerForm";
             Text = "Regexer";
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             panel1.ResumeLayout(false);
             outputTabs.ResumeLayout(false);
+            outputSubMatchesTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)outputDataGridView).EndInit();
             inputTabs.ResumeLayout(false);
+            inputSubMatchesTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)inputDataGridView).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            toolStrip1.ResumeLayout(false);
+            toolStrip1.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-        private Panel panel2;
         private TableLayoutPanel tableLayoutPanel1;
         private OpenFileDialog openFileDialog;
-        private Button openFileBut;
-        private Button saveFileBut;
         private SaveFileDialog saveFileDialog;
-        private ComboBox templatesComboBox;
-        private Button saveTemplateBut;
         private Label label2;
         private Label label4;
-        private Button deleteTemplateBut;
-        private Button outToInBut;
-        private Button nextBut;
-        private Button prevBut;
-        private CheckBox fasterMLCheckBox;
         private TabControl inputTabs;
         private TabPage inputTab;
         private TabPage inputMatchesTab;
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem toolStripMenuItem1;
-        private ToolStripMenuItem openToolStripMenuItem;
-        private ToolStripMenuItem saveAsToolStripMenuItem;
         private TabControl outputTabs;
         private TabPage outputTab;
         private TabPage outputMatchesTab;
         private Panel panel1;
         private ProgressBar loadingProgressBar;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem openToolStripMenuItem;
+        private ToolStripMenuItem saveAsToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItem2;
+        private ToolStrip toolStrip1;
+        private ToolStripButton saveTemplateBut;
+        private ToolStripMenuItem syncTabsToolStripCheckBox;
+        private ToolStripMenuItem syncScrollToolStripCheckBox;
+        private ToolStripMenuItem fasterMLToolStripCheckbox;
+        private ToolStripButton deleteTemplateBut;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripButton prevBut;
+        private ToolStripButton nextBut;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private ToolStripMenuItem copyOutputToInputToolStripMenuItem;
+        private ToolStripComboBox templatesComboBox;
+        private TabPage inputSubMatchesTab;
+        private DataGridView inputDataGridView;
+        private TabPage outputSubMatchesTab;
+        private DataGridView outputDataGridView;
+        private ToolStripMenuItem clearPatternsToolStripMenuItem;
+        private ToolStripMenuItem clearAllToolStripMenuItem;
+        private Label matchNavLabel;
+        private ToolStripMenuItem wordWrapToolStripCheckBox;
+        private ToolStripMenuItem lineNumbersToolStripCheckbox;
     }
 }
