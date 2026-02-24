@@ -389,6 +389,7 @@ public class Regexer
 
             foreach (var group in optionalGroups)
             {
+                if(!namedCaptures.Contains(group)) continue;
                 var oResultMatches = Regex.Matches(replacement, string.Format(@"\[\[{0}\|o:(?<replacement>(?>\[\[(?<Open>)|(?<-Open>\]\])|\[(?!\[)|\](?!\])|[^\[\]])*(?(Open)(?!)))\]\]", group));
                 var inputMatch = matches[i].Groups[group];
                 var n = GetAlphabeticalOrderIndex(outputIndieMatches, l => l.Label, group);
@@ -406,6 +407,7 @@ public class Regexer
 
             foreach (var group in duplicateGroups)
             {
+                if(!namedCaptures.Contains(group)) continue;
                 var dResultMatches = Regex.Matches(replacement, string.Format(@"\[\[{0}\|d:(?:(?<amount>\d+)|(?<eval>[\di()+*/%-]+))(?::(?<separator>.+?))?\]\]", group));
                 var inputMatch = matches[i].Groups[group];
                 var n = GetAlphabeticalOrderIndex(outputIndieMatches, l => l.Label, group);
@@ -443,7 +445,7 @@ public class Regexer
 
             foreach (var group in capitalizeGroups)
             {
-                if(digitGroups.Contains(group) && resultExtent != ResultExtent.Full) continue;
+                if((digitGroups.Contains(group) && resultExtent != ResultExtent.Full) || !namedCaptures.Contains(group)) continue;
                 var cResultMatches = Regex.Matches(replacement, string.Format(@"\[\[{0}\|c:(?<type>u|l|s|fu|fl)\]\]", group));
                 var inputMatch = matches[i].Groups[group];
                 var n = GetAlphabeticalOrderIndex(outputIndieMatches, l => l.Label, group);
@@ -469,6 +471,7 @@ public class Regexer
 
             foreach (var group in digitGroups)
             {
+                if(!namedCaptures.Contains(group)) continue;
                 var eResultMatches = Regex.Matches(replacement, string.Format(@"\[\[{0}\|e:(?<eval>[\dim()+*/%-]+)\]\]", group));
                 var inputMatch = matches[i].Groups[group];
                 var n = GetAlphabeticalOrderIndex(outputIndieMatches, l => l.Label, group);
