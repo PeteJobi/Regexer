@@ -499,7 +499,8 @@ public class Regexer
                 replacement = replacement[..mData.Index] + mData.Text + replacement[(mData.Index + mDataOldLength)..];
                 mData.Index += matchesOffset;
                 mData.Length = mData.Text.Length;
-                offset += mData.Text.Length - mDataOldLength;
+                if (mData.Length == 0) mData.Index = 0;
+                offset += mData.Length - mDataOldLength;
             }
 
             resultPairs[i] = new RegexerMatchPair
@@ -532,10 +533,17 @@ public class Regexer
                 var startingOffset = offset;
                 var endOffset = 0;
                 int j;
+                var searchStartIndex = 0;
                 for (j = matchDataIndex; j < orderedMatchData.Count; j++)
                 {
                     var mData = orderedMatchData[j];
                     if (mData.Index >= matchDataSearched.Index + matchDataSearched.Length) break;
+                    if (matchDataSearched.Text == string.Empty)
+                    {
+                        mData.Index = mData.Length = 0;
+                        mData.Text = string.Empty;
+                        continue;
+                    }
                     if (j < orderedMatchData.Count - 1 && orderedMatchData[j + 1].Index + orderedMatchData[j + 1].Length < mData.Index + mData.Length)
                     {
                         var (lengthOffset, amountProcessed) = Search(j + 1, mData, offset);
@@ -545,12 +553,11 @@ public class Regexer
 
                     mData.Index += startingOffset;
                     var oldText = replacement[mData.Index..(mData.Index + mData.Length + endOffset)];
-                    mData.Index = matchDataSearched.Index + startingOffset + matchesOffset;
-                    var indexInParent = matchDataSearched.Text.IndexOf(oldText, StringComparison.Ordinal);
-                    if (indexInParent != -1)
-                    {
-                        mData.Index += indexInParent;
-                        matchDataSearched.Text = matchDataSearched.Text[..indexInParent] + mData.Text + matchDataSearched.Text[(indexInParent + oldText.Length)..];
+                    var indexInParent = matchDataSearched.Text.IndexOf(oldText, searchStartIndex, StringComparison.Ordinal);
+                    searchStartIndex = indexInParent + mData.Text.Length;
+                    mData.Index = matchDataSearched.Index + startingOffset + matchesOffset + indexInParent;
+                    matchDataSearched.Text = matchDataSearched.Text[..indexInParent] + mData.Text +
+                                             matchDataSearched.Text[(indexInParent + oldText.Length)..];
                         offset += mData.Text.Length - mData.Length;
                     }
                     mData.Length = mData.Text.Length;
