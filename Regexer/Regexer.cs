@@ -522,15 +522,6 @@ public class Regexer
             fullReplacement += input[beforeMatchStartIndex..matches[i].Index] + replacement;
             if(i == matches.Count - 1) fullReplacement += input[(matches[i].Index + matches[i].Length)..];
 
-            foreach (var outputIndieMatch in outputIndieMatches)
-            {
-                foreach (var matchData in outputIndieMatch.Captures)
-                {
-                    Debug.WriteLine($"{outputIndieMatch.Label} -> {fullReplacement[matchData.Index..(matchData.Index + matchData.Length)]} ..... {matchData.Length},{matchData.Text.Length}");
-                    
-                }
-            }
-
             (int LengthOffset, int AmountProcessed) Search(int matchDataIndex, MatchData matchDataSearched, int offset)
             {
                 var startingOffset = offset;
@@ -561,8 +552,7 @@ public class Regexer
                     mData.Index = matchDataSearched.Index + startingOffset + matchesOffset + indexInParent;
                     matchDataSearched.Text = matchDataSearched.Text[..indexInParent] + mData.Text +
                                              matchDataSearched.Text[(indexInParent + oldText.Length)..];
-                        offset += mData.Text.Length - mData.Length;
-                    }
+                    offset += mData.Text.Length - mData.Length;
                     mData.Length = mData.Text.Length;
                 }
 
