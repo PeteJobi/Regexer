@@ -1,16 +1,17 @@
 # Regexer (Multi-line Find-And-Replace)
 
-This is a simple tool for finding and replacing text without having to deal with complex Regex patterns. Only supports Windows 10 and 11 (not tested on other versions of Windows).
+This is a tool for finding and replacing text without having to deal with complex Regex patterns. Only supports Windows 10 and 11 (not tested on other versions of Windows).
 
-![image](https://github.com/PeteJobi/Regexer/assets/45200292/b0e99cd9-d9d5-4221-9365-bd8a6d76e3a5)
-![image](https://github.com/PeteJobi/Regexer/assets/45200292/cc00be95-c994-4691-8824-846299145697)
+<img width="1270" height="717" alt="image" src="https://github.com/user-attachments/assets/941fc830-ce1a-4f56-902f-8203d1cdc94f" />
+<img width="3439" height="1391" alt="image" src="https://github.com/user-attachments/assets/a21a8c6a-ffcc-4754-bff4-91c47b944a0e" />
+
 
 ## How to build
 You need to have at least .NET 6 runtime installed to build the software. Download the latest runtime [here](https://dotnet.microsoft.com/en-us/download). If you're not sure which one to download, try [.NET 6.0 Version 6.0.16](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.408-windows-x64-installer)
 
 In the project folder, run the below
 ```
-dotnet publish -p:PublishSingleFile=true -r win-x64 -c Release --self-contained false
+dotnet publish -c Release -r win-x64 -p:PublishSingleFile=true -p:SelfContained=false
 ```
 When that completes, go to `\bin\Release\net<version>-windows\win-x64\publish` and you'll find the **RegexerUI.exe**. Run it to use the software.
 
@@ -197,7 +198,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
 
   //Replace
   <new-[[bar]]>
-    <p>[[foo]]</p>
+    <p>[[foo|ml]]</p>
   </new-[[bar]]>
 
   //Output
