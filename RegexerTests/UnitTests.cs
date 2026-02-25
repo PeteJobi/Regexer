@@ -17,6 +17,7 @@ namespace RegexerTests
         [MemberData(nameof(TestData))]
         public async Task Test(string testFolder, string input, string pattern, string replace, string output, RegexerMatchPair[]? matches)
         {
+            //regexer.EnableFasterML(true);
             var result = await regexer.AutoRegex(input, pattern, replace);
             //var x = JsonConvert.SerializeObject(result.Matches);
             Assert.NotNull(result);

@@ -20,7 +20,7 @@ namespace RegexerUI
         private FastColoredTextBox inputMatchesTextbox;
         private FastColoredTextBox outputTextbox;
         private FastColoredTextBox outputMatchesTextbox;
-        private FastColoredTextBox patternTextbox;
+        private FastColoredTextBox findTextbox;
         private FastColoredTextBox replaceTextbox;
         private int currentMatchRange;
         private readonly List<(Range inpRange, Range? outRange)> matchRanges = new();
@@ -59,7 +59,7 @@ namespace RegexerUI
         private void InitializeFcTextBoxes()
         {
             inputTextbox = CreateFcTextBoxes(nameof(inputTextbox), 0, inputTextbox_TextChanged);
-            patternTextbox = CreateFcTextBoxes(nameof(patternTextbox), 1, patternTextbox_TextChanged);
+            findTextbox = CreateFcTextBoxes(nameof(findTextbox), 1, findTextbox_TextChanged);
             replaceTextbox = CreateFcTextBoxes(nameof(replaceTextbox), 2, replaceTextbox_TextChanged);
             outputTextbox = CreateFcTextBoxes(nameof(outputTextbox), 3);
             inputMatchesTextbox = CreateFcTextBoxes(nameof(inputMatchesTextbox));
@@ -69,11 +69,11 @@ namespace RegexerUI
             inputTabs.TabPages["inputMatchesTab"].Controls.Add(inputMatchesTextbox);
             outputTabs.TabPages["outputTab"].Controls.Add(outputTextbox);
             outputTabs.TabPages["outputMatchesTab"].Controls.Add(outputMatchesTextbox);
-            tableLayoutPanel1.Controls.Add(patternTextbox, 1, 1);
+            tableLayoutPanel1.Controls.Add(findTextbox, 1, 1);
             tableLayoutPanel1.Controls.Add(replaceTextbox, 1, 3);
 
             fctbManager.SetupTextBoxStyles(inputTextbox, outputTextbox);
-            fctbManager.SetupPatternTextBoxes(patternTextbox, replaceTextbox);
+            fctbManager.SetupPatternTextBoxes(findTextbox, replaceTextbox);
 
             inputMatchesTextbox.PaintLine += InputMatchesTextbox_PaintLine;
             outputMatchesTextbox.PaintLine += OutputMatchesTextbox_PaintLine;
@@ -112,7 +112,7 @@ namespace RegexerUI
             tokenSource.Cancel();
             tokenSource.Dispose();
             tokenSource = new CancellationTokenSource();
-            if (inputTextbox.Text == string.Empty || patternTextbox.Text == string.Empty)
+            if (inputTextbox.Text == string.Empty || findTextbox.Text == string.Empty)
             {
                 prevBut.Enabled = nextBut.Enabled = matchNavLabel.Visible = false;
                 Reset();
@@ -127,7 +127,7 @@ namespace RegexerUI
 
             try
             {
-                var result = await regexer.AutoRegex(inputTextbox.Text, patternTextbox.Text, replaceTextbox.Text, tokenSource.Token);
+                var result = await regexer.AutoRegex(inputTextbox.Text, findTextbox.Text, replaceTextbox.Text, tokenSource.Token);
                 if (result.Output == "Cancelled") return;
                 Reset();
                 outputTextbox.Text = result.Output;
@@ -246,7 +246,7 @@ namespace RegexerUI
                 MessageBox.Show("Template invalid");
                 return;
             }
-            patternTextbox.Text = template[0];
+            findTextbox.Text = template[0];
             replaceTextbox.Text = template[1];
         }
 
@@ -273,10 +273,10 @@ namespace RegexerUI
             await FindAndReplace();
         }
 
-        private async void patternTextbox_TextChanged(object? sender, TextChangedEventArgs e)
+        private async void findTextbox_TextChanged(object? sender, TextChangedEventArgs e)
         {
-            fctbManager.HighlightPatternSyntax(patternTextbox, e.ChangedRange, false);
-            saveTemplateBut.Enabled = patternTextbox.Text != string.Empty;
+            fctbManager.HighlightPatternSyntax(findTextbox, e.ChangedRange, false);
+            saveTemplateBut.Enabled = findTextbox.Text != string.Empty;
             await FindAndReplace();
         }
 
@@ -310,7 +310,7 @@ namespace RegexerUI
 
         private void saveTemplateBut_Click(object sender, EventArgs e)
         {
-            var saveTemplateForm = new SaveTemplateForm(templatesComboBox.Items, templatesComboBox.Text, patternTextbox.Text, replaceTextbox.Text);
+            var saveTemplateForm = new SaveTemplateForm(templatesComboBox.Items, templatesComboBox.Text, findTextbox.Text, replaceTextbox.Text);
             saveTemplateForm.ShowDialog();
             if (saveTemplateForm.SavedTemplate == null) return;
             GetTemplates();
@@ -558,14 +558,14 @@ namespace RegexerUI
 
         private void clearPatternsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            patternTextbox.Text = string.Empty;
+            findTextbox.Text = string.Empty;
             replaceTextbox.Text = string.Empty;
         }
 
         private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             inputTextbox.Text = string.Empty;
-            patternTextbox.Text = string.Empty;
+            findTextbox.Text = string.Empty;
             replaceTextbox.Text = string.Empty;
         }
     }
