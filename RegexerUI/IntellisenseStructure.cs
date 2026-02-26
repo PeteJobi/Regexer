@@ -231,6 +231,28 @@ internal static class IntellisenseStructure
                                 }
                             }
                         },
+                        new SuggestionItem("u (No replacement)", "u]]", GetResource("NoUReplaceTitle"), GetResource("NoUReplaceText"))
+                        {
+                            ShouldHide = group => group["type"].Success,
+                            IntellisenseData = new IntellisenseData(@"u", true)
+                            {
+                                SuggestionItems = new []
+                                {
+                                    CloseTag(null)
+                                }
+                            }
+                        },
+                        new SuggestionItem("m (Capture from multi match)", "m]]", GetResource("MultiMatchCaptureTitle"), GetResource("MultiMatchCaptureText"))
+                        {
+                            ShouldHide = group => group["type"].Success,
+                            IntellisenseData = new IntellisenseData(@"m", true)
+                            {
+                                SuggestionItems = new []
+                                {
+                                    CloseTag(group => group["type"].Success)
+                                }
+                            }
+                        },
                         new SuggestionItem("d <Duplication amount : Duplication text>", "d:", GetResource("DuplicationTitle"), GetResource("DuplicationText"))
                         {
                             ShouldHide = group => group["type"].Success,
@@ -320,7 +342,7 @@ internal static class IntellisenseStructure
                                 {
                                     new SuggestionItem("l (Multi line replace)", "l]]", GetResource("MultiLineRepTitle"), GetResource("MultiLineRepText"))
                                     {
-                                        ShouldHide = group => group["hasL"].Success
+                                        ShouldHide = group => group["hasL"].Success || group["type"].Success
                                     },
                                     CloseTag(group => !group["hasL"].Success)
                                 }
@@ -328,7 +350,7 @@ internal static class IntellisenseStructure
                         },
                         new SuggestionItem(":", ":", "", "")
                         {
-                            ShouldHide = group => !group["type"].Success
+                            ShouldHide = group => !group["type"].Success || group["type"].Value == "ml"
                         },
                     }
                 }

@@ -306,4 +306,16 @@
   <data name="CloseTagText" xml:space="preserve">
     <value>Close the tag with ]]</value>
   </data>
+  <data name="NoUReplaceTitle" xml:space="preserve">
+    <value>Unordered match no replacement</value>
+  </data>
+  <data name="NoUReplaceText" xml:space="preserve">
+    <value>Use the match as captured without transforming, when no replacement text is specified.</value>
+  </data>
+  <data name="MultiMatchCaptureTitle" xml:space="preserve">
+    <value>Multi match capture</value>
+  </data>
+  <data name="MultiMatchCaptureText" xml:space="preserve">
+    <value>This is to be used within a multi match replacement text. It represents a single capture from the multiple captures.</value>
+  </data>
 </root>
