@@ -127,7 +127,7 @@ namespace RegexerUI
                 autocomplete.Items.AutoWidth = true;
                 autocomplete.Items.UseSolidBrushForSelected = true;
                 autocomplete.Items.ReShowMenuAfterSelected = true;
-                autocomplete.MaxTooltipSize = new Size(300, 1000);
+                autocomplete.MaxTooltipSize = new Size(600, 1000);
                 autocomplete.Items.SetAutocompleteItems(new Intellisense(textBox, autocomplete, isReplaceText, () => _patternLabels.OrderBy(l => l)));
             }
         }
