@@ -1,0 +1,8 @@
+﻿private [[type]] [[name]]([[params]])
+{
+   for([[init]]; [[condition]]; [[increment]])
+   {
+      [[otherActions|ml]]
+   }
+   [[otherLines|ml]]
+}

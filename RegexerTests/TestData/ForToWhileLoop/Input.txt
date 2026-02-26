@@ -1,0 +1,27 @@
+﻿public class Test{
+    private readonly string _name = "Shade";
+    
+    public int Print(){
+       int i = 0;
+       while (i < 5){
+          Console.WriteLine($"Value of i is {i}");
+          DoSomethingElse(i);
+          i++;
+       }
+       return i
+    }
+    
+    private void DoSomethingElse(int i){
+    
+    }
+    
+    public int SumUpTo(int max){
+       int n = 0;
+       while (n < max){
+          max += n;   // accumulate into parameter
+          n++;
+       }
+       Console.WriteLine(max.ToString());
+       return max;
+    }
+}

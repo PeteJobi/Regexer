@@ -1,0 +1,8 @@
+﻿public [[type]] [[name]]([[params|o]]){
+   [[init]];
+   while ([[condition]]){
+      [[otherActions|ml]]
+      [[increment]];
+   }
+   [[otherLines|ml]]
+}
