@@ -222,6 +222,43 @@ If you use the same find and replacement patterns often, you can save each find-
     <p><content>Hi</content></p>
   </new-tag>
   ```
+- **[[foo|m|separator|multiple-structured-text-to-capture]]**: Use this to match multiple text with similar structure separated by the specified separator. The separator can be a regex pattern, and you can use _<ml>_ to represent a line break. If the structured-text part is omitted, this will match whatever appears between the separators. You may also omit the name (i.e [[m|<separator>|multiple-structured-text-to-capture]]) and it will be used for matching and not captured.
+
+  Example (with name)
+  ```
+  //Input
+  <input id="name" type="text" disabled="false" class="name"/>
+  <input type="button" id="submit" class="big"
+      max-length="5" disabled="true"/>
+
+  //Find
+  <input [[mul|m|{[\s<ml>]+}|[[key]]="[[value]]"]]/>
+
+  //Replace
+  <input [[mul|m:--:The key is [[key|m]], the value is [[value|m]]]]/>
+
+  //Output
+  <input The key is id, the value is name--The key is type, the value is text--The key is disabled, the value is false--The key is class, the value is name/>
+  <input The key is type, the value is button--The key is id, the value is submit--The key is class, the value is big--The key is max-length, the value is 5--The key is disabled, the value is true/>
+  ```
+
+  Example (without name)
+  ```
+  //Input
+  <input id="name" type="text" disabled="false" class="name"/>
+  <input type="button" id="submit" class="big"
+      max-length="5" disabled="true"/>
+
+  //Find
+  <input [[m|{[\s<ml>]+}|[[key]]="[[value]]"]]/>
+
+  //Replace
+  <input Keys are [[key|m:, ]] and Values are [[value|m:, ]]/>
+
+  //Output
+  <input Keys are id, type, disabled, class and Values are name, text, false, name/>
+  <input Keys are type, id, class, max-length, disabled and Values are button, submit, big, 5, true/>
+  ```
 - **[[foo|u|phrase-or-line-to-capture]]**: Use this to capture phrases (space-separated) or lines (new-line-separated) that can be optional and appear in any order. You may also omit the name (i.e **[[u|phrase-or-line-to-match]]**) and it will be used for matching and not captured. In the pattern, each phrase/line capture should appear on separate lines and should be adjacent to one another to represent a group.
 
   Example (phrases)
