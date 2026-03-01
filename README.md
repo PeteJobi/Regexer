@@ -22,13 +22,13 @@ If you wish to run the software without installing the required .NET runtime, do
 
 ## How to use
 The text to search in should be entered in the **Input** textbox.<br />
-The structure of the text to search for is entered in the **Pattern** textbox. Use _**[[double braces]]**_ to capture text for replacement, equivalent to Regex groups. The text within the double braces becomes the name of the captured group. This text must be made up of word characters i.e it **_should not contain symbols_** besides underscore (_).<br />
-The text that should replace captures is entered into the **Replace** textbox. You can use the names entered in the Pattern textbox here, and rewrite text surrounding it to change structure of each match in the input.<br />
+The structure of the text to search for is entered in the **Find** textbox. Use _**[[double braces]]**_ to capture text for replacement, equivalent to Regex groups. The text within the double braces becomes the name of the captured group. This text must be made up of word characters i.e it **_should not contain symbols_** besides underscore (_).<br />
+The text that should replace captures is entered into the **Replace** textbox. You can use the names entered in the Find textbox here, and rewrite text surrounding it to change structure of each match in the input.<br />
 The **Output** textbox shows the result of the replacement.
 
-You can import text files into the program with the **Select input** button and generated output can also be saved to a file with the **Save output** button. If you want to, for example, perform more operations on generated output, you can hit the **Copy output to input** button to copy the generated output to the input box. This is also useful for recursively running the same pattern on your input.
+You can import text files into the program with the **Select input** button and generated output can also be saved to a file with the **Save output** button. If you want to, for example, perform more operations on generated output, you can hit the **Copy output to input** button to copy the generated output to the input box. This is also useful for recursively running the same patterns on your input.
 
-If you use the same patterns and replacements often, you can save each pattern-replace pair as a template so you don't have to type them in each time you open the program. Click the **Save template** button and enter the name of the template in the dialog that pops up or select an existing template to overwrite. Templates are saved as text files in a folder called _RegexerTemplates_ located in the same directory as the executable. In the program, you can delete templates with the **Delete template** button.
+If you use the same find and replacement patterns often, you can save each find-replace pair as a template so you don't have to type them in each time you open the program. Click the **Save template** button and enter the name of the template in the dialog that pops up or select an existing template to overwrite. Templates are saved as text files in a folder called _RegexerTemplates_ located in the same directory as the executable. In the program, you can delete templates with the **Delete template** button.
 
 ## Syntax
 - **[[foo]]**: This can capture a character, word, line or depending on what surrounds it. Translates to **([^\r\n]+?)**.
@@ -38,7 +38,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   //Input
   madam
   
-  //Pattern
+  //Find
   [[foo]]
   
   //Replace
@@ -52,7 +52,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   //Input
   (madam)
   
-  //Pattern
+  //Find
   ([[foo]])
   
   //Replace
@@ -68,7 +68,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
     <content>Hello</content>
   </tag>
   
-  //Pattern
+  //Find
   <tag>
     [[foo]]
   </tag>
@@ -83,14 +83,14 @@ If you use the same patterns and replacements often, you can save each pattern-r
     <content>Hello</content>
   </new-tag>
   ```
-- **[[foo|\<quantifier\>]]**: Two quantifiers are available to use with captures: Optional (**o**) and greedy (**g**). The optional quantifier, used as **[[foo|o]]**, means the capture may or may not appear in the match. Translates to **([^\r\n]+?)?**. The greedy quantitfier, used as **[[foo|g]]**, will capture the most it can on the line it appears in. Translates to **([^\r\n]+)**. Both can be used together.
+- **[[foo|\<quantifier\>]]**: Three quantifiers are available to use with captures: Optional (**o**), greedy (**g**) and exact amount (**<..>**). The optional quantifier, used as **[[foo|o]]**, means the capture may or may not appear in the match. Translates to **([^\r\n]+?)?**. The greedy quantifier, used as **[[foo|g]]**, will capture the most it can on the line it appears in. Translates to **([^\r\n]+)**. The exact amount quantifier, used as **[[foo|<amount>]]** or **[[foo|<minAmount-maxAmount>]]**, will capture the specified number of characters. In the case of the second usage, **_maxAmount_** can be ommitted, in which case, it will work similar to **greedy** except it will capture at least **_minAmount_** characters. **greedy** and **exact amount** cannot be used together, but they can each be used with **optional**.
 
   Example (greedy)
   ```
   //Input
   madam
 
-  //Pattern
+  //Find
   [[foo|g]]
 
   //Replace
@@ -108,7 +108,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   "mud."
   "well. //deep and wide"
 
-  //Pattern
+  //Find
   "[[word]].[[comment|o]]"
 
   //Replace
@@ -119,6 +119,21 @@ If you use the same patterns and replacements often, you can save each pattern-r
   (tree): //huge and leafy
   (mud):
   (well): //deep and wide
+  ```
+
+  Example (exact amount)
+  ```
+  //Input
+  My number is 08160120004
+
+  //Find
+  0[[first|<3>]][[second|<3>]][[third|<4>]]
+
+  //Replace
+  (+234)-[[first]]-[[second]]-[[third]]
+
+  //Output
+  My number is (+234)-816-012-0004
   ```
 - **[[foo|\<restriction\>]]**: You can restrict your capture to word characters (**w**), digits (**d**) or whitespace (**s**). Translates to **(\w+?)**, **(\d+?)** and **([^\S\r\n]+?)** respectively. Each can be used with quantifiers e.g **[[foo|so]]** which translates to **([^\S\r\n]+?)?**. You can only use one restriction in a capture.
   
@@ -132,7 +147,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   Linda, thirty.
   Bossa, 9.
 
-  //Pattern
+  //Find
   [[name|w]], [[age|do]].
 
   //Replace
@@ -163,7 +178,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   23
   }
 
-  //Pattern
+  //Find
   [[key]]: {[[nums|dl]]}
 
   //Replace
@@ -191,7 +206,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
     <content>Hi</content>
   </tag>
 
-  //Pattern
+  //Find
   <[[bar]]>
     [[foo|ml]]
   </[[lou]]>
@@ -216,7 +231,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   <input type="button" id="submit" class="big"
       max-length="5" disabled/>
 
-  //Pattern
+  //Find
   <input
   [[id|u|id="[[_id|w]]"]]
   [[class|u|class="[[_class|w]]"]]
@@ -226,7 +241,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   />
 
   //Replace
-  <input [[id]] [[class]] [[type]] [[length]]/>
+  <input [[id|u]] [[class|u]] [[type|u]] [[length|u]]/>
 
   //Output
   <input id="name" class="name" type="text"/>
@@ -265,7 +280,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
     status: alive
   )
 
-  //Pattern
+  //Find
   saveUser(
     [[name|u|name: [[userName]],]]
     [[age|u|age: [[userAge]],]]
@@ -277,9 +292,10 @@ If you use the same patterns and replacements often, you can save each pattern-r
   )
 
   //Replace
-  [[adding|addUser{]][[editing|editUser{]]
-     [[name|User's name is [[userName]]]]
-     [[age|User's age is [[userAge]]]]
+  [[adding|u:addUser{]]
+  [[editing|u:editUser{]]
+     [[name|u:User's name is [[userName]]]]
+     [[age|u:User's age is [[userAge]]]]
      [[userName]] is [[userAge]] years old
   }
 
@@ -318,7 +334,7 @@ If you use the same patterns and replacements often, you can save each pattern-r
   Tayo1 has 30 bowls.
   Shola had 15 caps!
 
-  //Pattern
+  //Find
   [[name{[a-zA-Z]+?}]] [[{(has|had)}]] [[{\d+}]] [[items{\w+}]][[{[.,?!]}]]
 
   //Replace
@@ -344,7 +360,7 @@ You can apply a few transformations to your match replacements, as described bel
   //Input
   Tasty!
 
-  //Pattern
+  //Find
   [[foo|g]]
 
   //Replace
@@ -359,7 +375,7 @@ You can apply a few transformations to your match replacements, as described bel
   //Input
   Tasty!
 
-  //Pattern
+  //Find
   [[foo|g]]
 
   //Replace
@@ -376,7 +392,7 @@ You can apply a few transformations to your match replacements, as described bel
   The porridge was sweet!
   The pap was tasty!
 
-  //Pattern
+  //Find
   The [[food]] was [[adjective]]!
 
   //Replace
@@ -388,7 +404,7 @@ You can apply a few transformations to your match replacements, as described bel
   The pap was tastytastytasty!
   ```
   
-- **Capitalizations**: You can change the capitalization of a match to any of 3 supported types namely Upper case (**u**), Lower case (**l**) and Sentence case (**s**). The syntax is **[[foo|c:(u/l/s)]]**.
+- **Capitalizations**: You can change the capitalization of a match to any of 3 supported types namely Upper case (**u**), Lower case (**l**), First letter upper case (**fu**), First letter lower case (**fl**) and Sentence case (**s**). The syntax is **[[foo|c:(u/l/fu/fl/s)]]**.
   
   Example
   ```
@@ -396,7 +412,7 @@ You can apply a few transformations to your match replacements, as described bel
   peter went to school.
   jackson went to class.
 
-  //Pattern
+  //Find
   [[name]] went to [[place]].
 
   //Replace
@@ -428,7 +444,7 @@ You can apply a few transformations to your match replacements, as described bel
   3. Adeolu will be 17 years old in 5 years.
   ```
 
-- **Conditional appearances**: For optional matches (**[[foo|o]]**) and optional phrase/line capture (**[[foo|u|phrase-or-line-to-capture]]**), you can add text to the match depending on whether they are present. The syntax is [[foo|o:conditional_text]].
+- **Conditional appearances**: For optional matches (**[[foo|o]]**) and optional phrase/line capture (**[[foo|u|phrase-or-line-to-capture]]**), you can add text to the match depending on whether they are present. The syntax is **[[foo|o:conditional_text]]** or **[[foo|u:conditional text]]**.
 
   Example
   ```
@@ -438,7 +454,7 @@ You can apply a few transformations to your match replacements, as described bel
   "mud."
   "well. //deep and wide"
 
-  //Pattern
+  //Find
   "[[word]].[[comment|o]]"
 
   //Replace
