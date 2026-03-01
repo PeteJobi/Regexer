@@ -71,7 +71,8 @@ namespace RegexerUI
         private readonly Dictionary<Style, StyleIndex> _allStyles = new();
         private readonly HashSet<string> _patternLabels = new();
         private readonly HashSet<string> _patternUmLabels = new();
-        private readonly Dictionary<string, (StyleIndex, SolidBrush)> _labelStyles = new();
+        private readonly Dictionary<string, StyleIndex> _labelStyleIndices = new();
+        private readonly Dictionary<string, SolidBrush> _labelStyleBrushes = new();
         private readonly List<int> _stylingOrder = new();
 
         public void SetupTextBoxStyles(FastColoredTextBox inputTextBox, FastColoredTextBox outputTextBox)
@@ -199,10 +200,56 @@ namespace RegexerUI
             }
         }
 
-        public void StyleMatches(FastColoredTextBox inputTextbox, FastColoredTextBox outputTextbox, DataGridView inputGrid, DataGridView outputGrid, RegexerResult result)
+        public void StyleMatches(FastColoredTextBox inputTextbox, FastColoredTextBox outputTextbox, RegexerResult result)
         {
-            _labelStyles.Clear();
+            _labelStyleIndices.Clear();
             _stylingOrder.Clear();
+
+            for (var i = 0; i < result.Matches[0].InputMatch.IndividualMatches.Count; i++)
+            {
+                if (i == IndividualMatchStyles.Length) i = 0;
+                var match = result.Matches[0].InputMatch.IndividualMatches[i];
+                _labelStyleIndices.Add(match.Label, Range.ToStyleIndex(i + 1));
+                if(_patternUmLabels.Contains(match.Label)) _stylingOrder.Insert(0, i);
+                else _stylingOrder.Add(i);
+            }
+
+            for (var i = 0; i < result.Matches.Length; i++)
+            {
+                var matchPair = result.Matches[i];
+                Range matchRange;
+                StyleIndex styleIndex;
+                if (matchPair.InputMatch.IndividualMatches.Count == 0) continue;
+                foreach (var index in _stylingOrder)
+                {
+                    var individualMatch = matchPair.InputMatch.IndividualMatches[index];
+                    styleIndex = _labelStyleIndices[individualMatch.Label];
+                    foreach (var capture in individualMatch.Captures)
+                    {
+                        matchRange = inputTextbox.GetRange(capture.Index, capture.Index + capture.Length);
+                        matchRange.SetStyle(styleIndex);
+                    }
+                }
+
+                if (matchPair.OutputMatch != null)
+                {
+                    foreach (var index in _stylingOrder)
+                    {
+                        var individualMatch = matchPair.OutputMatch.IndividualMatches[index];
+                        styleIndex = _labelStyleIndices[individualMatch.Label];
+                        foreach (var capture in individualMatch.Captures)
+                        {
+                            matchRange = outputTextbox.GetRange(capture.Index, capture.Index + capture.Length);
+                            matchRange.SetStyle(styleIndex);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void PopulateSubMatches(DataGridView inputGrid, DataGridView outputGrid, RegexerResult result, bool limit)
+        {
+            _labelStyleBrushes.Clear();
 
             for (var i = 0; i < result.Matches[0].InputMatch.IndividualMatches.Count; i++)
             {
@@ -213,45 +260,32 @@ namespace RegexerUI
                 var brush = (SolidBrush)IndividualMatchStyles[i].ForeBrush;
                 inputGrid.Columns[i].HeaderCell.Style.ForeColor = brush.Color;
                 outputGrid.Columns[i].HeaderCell.Style.ForeColor = brush.Color;
-                _labelStyles.Add(match.Label, (Range.ToStyleIndex(i + 1), brush));
-                if(_patternUmLabels.Contains(match.Label)) _stylingOrder.Insert(0, i);
-                else _stylingOrder.Add(i);
+                _labelStyleBrushes.Add(match.Label, brush);
             }
 
-            foreach (var matchPair in result.Matches)
+            //inputGrid.RowHeadersVisible = false; //Disabling and re-enabling this after the for-loop saves performance, but it's not needed with the limit
+            var rowCount = limit ? Math.Min(result.Matches.Length, 20) : result.Matches.Length;
+            for (var i = 0; i < rowCount; i++)
             {
-                Range matchRange;
-                StyleIndex styleIndex;
+                var matchPair = result.Matches[i];
                 SolidBrush brush;
-                if(matchPair.InputMatch.IndividualMatches.Count == 0) continue;
+                if (matchPair.InputMatch.IndividualMatches.Count == 0) continue;
                 var dataGridRow = inputGrid.Rows[inputGrid.Rows.Add()];
                 dataGridRow.HeaderCell.Value = (dataGridRow.Index + 1).ToString();
-                foreach (var index in _stylingOrder)
+                foreach (var individualMatch in matchPair.InputMatch.IndividualMatches)
                 {
-                    var individualMatch = matchPair.InputMatch.IndividualMatches[index];
-                    (styleIndex, brush) = _labelStyles[individualMatch.Label];
+                    brush = _labelStyleBrushes[individualMatch.Label];
                     dataGridRow.Cells[individualMatch.Label].Value = new CellMatchData(individualMatch.Captures, brush);
-                    foreach (var capture in individualMatch.Captures)
-                    {
-                        matchRange = inputTextbox.GetRange(capture.Index, capture.Index + capture.Length);
-                        matchRange.SetStyle(styleIndex);
-                    }
                 }
 
                 if (matchPair.OutputMatch != null)
                 {
                     dataGridRow = outputGrid.Rows[outputGrid.Rows.Add()];
                     dataGridRow.HeaderCell.Value = (dataGridRow.Index + 1).ToString();
-                    foreach (var index in _stylingOrder)
+                    foreach (var individualMatch in matchPair.OutputMatch.IndividualMatches)
                     {
-                        var individualMatch = matchPair.OutputMatch.IndividualMatches[index];
-                        (styleIndex, brush) = _labelStyles[individualMatch.Label];
+                        brush = _labelStyleBrushes[individualMatch.Label];
                         dataGridRow.Cells[individualMatch.Label].Value = new CellMatchData(individualMatch.Captures, brush);
-                        foreach (var capture in individualMatch.Captures)
-                        {
-                            matchRange = outputTextbox.GetRange(capture.Index, capture.Index + capture.Length);
-                            matchRange.SetStyle(styleIndex);
-                        }
                     }
                 }
             }

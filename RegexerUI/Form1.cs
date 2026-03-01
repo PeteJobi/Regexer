@@ -159,7 +159,8 @@ namespace RegexerUI
                     }
                     inputMatchLineBackgroundData.Add(alternate);
                     outputMatchLineBackgroundData.Add(alternate);
-                    fctbManager.StyleMatches(inputTextbox, outputTextbox, inputDataGridView, outputDataGridView, result);
+                    fctbManager.StyleMatches(inputTextbox, outputTextbox, result);
+                    fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView, result, limitSubmatchesToolStripCheckBox.Checked);
                 }
                 if (matchRanges.Any())
                 {
@@ -374,6 +375,11 @@ namespace RegexerUI
             outputTextbox.ShowLineNumbers = lineNumbersToolStripCheckbox.Checked;
             inputMatchesTextbox.ShowLineNumbers = lineNumbersToolStripCheckbox.Checked;
             outputMatchesTextbox.ShowLineNumbers = lineNumbersToolStripCheckbox.Checked;
+        }
+
+        private async void limitSubmatchesToolStripCheckBox_Click(object sender, EventArgs e)
+        {
+            if (!limitSubmatchesToolStripCheckBox.Checked) await FindAndReplace();
         }
 
         private void InputMatchesTextbox_PaintLine(object? sender, PaintLineEventArgs e)
