@@ -51,7 +51,7 @@ namespace RegexerUI
         private static readonly string SubMatchPattern = @$"(?<{Style.BaseLight}>(?>\[\[(?<Open>)|(?<-Open>\]\])|\[(?!\[)|\](?!\])|[^\[\]])*(?(Open)(?!)))";
         private readonly string[] _patterns =
         {
-            @$"\[\[(?<{Style.Label}>\w+)(?:(?<{Style.Separator}>\|)(?<{Style.KeyLetter}>(ml|[wdsgol]+)))?\]\]",
+            @$"\[\[(?<{Style.Label}>\w+)(?:(?<{Style.Separator}>\|)(?<{Style.KeyLetter}>(?:ml|(?:[wdsgol]|<(?:\d+)(?:-(?:\d+)?)?>)+)))?\]\]",
             @$"\[\[(?<{Style.Label}>\w+)?(?<{Style.Regex}>\{{[^\r\n]+?\}})\]\]",
             @$"\[\[(?:(?<{Style.Label}>\w+)(?<{Style.Separator}>\|))?(?<{Style.KeyLetter}>u)(?<{Style.Separator}>\|)(?<{Style.BaseLight}>[^\r\n]+)\]\]",
             @$"\[\[(?:(?<{Style.Label}>\w+)(?<{Style.Separator}>\|))?(?<{Style.KeyLetter}>m)(?<{Style.Separator}>\|)(?<{Style.Regex}>\{{[^\r\n]+?\}})(?:(?<{Style.Separator}>\|){SubMatchPattern})?\]\]"

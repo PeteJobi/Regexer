@@ -66,7 +66,7 @@ public class Regexer
         find = EscapeRegexKeywords(find);
         find = Regex.Replace(find, "\r\n", "\r\n(?:[^\\S\\r\\n]+)?");
         find = Regex.Replace(find, @"^(\\\[\\\[\w+\\\|ml\\\]\\\])$", "^$1$");
-        find = Regex.Replace(find, @"(\\\[\\\[(\w+(\\\|\w+)?)\\\]\\\])", "[$2]");
+        find = Regex.Replace(find, @"(\\\[\\\[(\w+(\\\|(\w|[<>-])+)?)\\\]\\\])", "[$2]");
         find = Regex.Replace(find, @"(\\\[\\\[(\w+)?\{([^\r\n]+?)\}\\\]\\\])", "[$2{$3}]");
         find = Regex.Replace(find, @"(\\\[\\\[(\w+\\\|)?u\\\|([^\r\n]+?)\\\]\\\])", "[$2u\\|$3]");
         find = Regex.Replace(find, @"(\\\[\\\[(\w+\\\|)?m\\\|\{([^\r\n]+?)\}\\\|([^\r\n]+?)\\\]\\\])", "[$2m\\|{$3}\\|$4]");
@@ -90,7 +90,7 @@ public class Regexer
         find = Regex.Replace(find, @"\[(\w+)\]", "(?<$1>[^\\r\\n]+?)");
         var optionalGroups = new List<string>();
         var digitGroups = new List<string>();
-        var configMatches = Regex.Matches(find, @"\[(\w+)\\\|([wdsgol]+)\]");
+        var configMatches = Regex.Matches(find, @"\[(\w+)\\\|((?:[wdsgol]|<(?<min>\d+)(?:-(?<max>\d+)?)?>)+)\]");
         for (var i = configMatches.Count - 1; i >= 0; i--)
         {
             var name = configMatches[i].Groups[1].Value;
@@ -100,6 +100,10 @@ public class Regexer
                 : options.Contains('s') ? (options.Contains('l') ? "\\s" : "[^\\S\\r\\n]")
                 : (options.Contains('l') ? "[\\S\\s]" : "[^\\r\\n]");
             var quantifier = options.Contains('g') ? "+" : "+?";
+            if (configMatches[i].Groups["min"].Success || configMatches[i].Groups["max"].Success)
+            {
+                quantifier = $"{{{configMatches[i].Groups["min"].Value},{configMatches[i].Groups["max"].Value}}}";
+            }
             var optional = options.Contains('o') ? "?" : "";
             if (optional != string.Empty) optionalGroups.Add(name);
             if (restriction == "\\d") digitGroups.Add(name);

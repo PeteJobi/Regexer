@@ -118,7 +118,7 @@ internal static class IntellisenseStructure
             new SuggestionItem("| <Modifiers>", "|", GetResource("ModifierTitle"), GetResource("ModifierText"))
             {
                 ShouldHide = group => !group["name"].Success || group["separator"].Success,
-                IntellisenseData = new IntellisenseData(@"\|(?<modifiers>[wdsgol]+)?")
+                IntellisenseData = new IntellisenseData(@"\|(?<modifiers>(?:[wdsgol]|(?<range><(?:\d+)(?:-(?:\d+)?)?>))+)?")
                 {
                     SuggestionItems = new []
                     {
@@ -141,6 +141,26 @@ internal static class IntellisenseStructure
                         new SuggestionItem("o <Optional match>", "o", GetResource("CustomRegexOptionalTitle"), GetResource("CustomRegexOptionalText"))
                         {
                             ShouldHide = group => group["modifiers"].Value.Contains('o')
+                        },
+                        new SuggestionItem("<..> <Exact amount match>", "<", GetResource("CustomRegexExactTitle"), GetResource("CustomRegexExactText"))
+                        {
+                            ShouldHide = group => group["range"].Success,
+                            IntellisenseData = new IntellisenseData(@"(?<rangeStart><)(?<min>\d+)?(?<dash>-)?(?<max>\d+)?")
+                            {
+                                SuggestionItems = new []
+                                {
+                                    AddTextHere("exact or minimum amount", group => !group["rangeStart"].Success || group["dash"].Success),
+                                    new SuggestionItem("- (Range separator)", "-", GetResource("CustomRegexExactDashTitle"), GetResource("CustomRegexExactDashText"))
+                                    {
+                                        ShouldHide = group => group["dash"].Success || !group["min"].Success
+                                    },
+                                    AddTextHere("maximum amount", group => !group["dash"].Success),
+                                    new SuggestionItem("> (Close range)", ">", GetResource("CustomRegexExactCloseTitle"), GetResource("CustomRegexExactCloseText"))
+                                    {
+                                        ShouldHide = group => !group["rangeStart"].Success || (!group["dash"].Success && !group["min"].Success)
+                                    }
+                                }
+                            }
                         },
                         new SuggestionItem("l <Include line breaks>", "l", GetResource("CustomRegexLBTitle"), GetResource("CustomRegexLBText"))
                         {

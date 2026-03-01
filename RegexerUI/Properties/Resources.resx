@@ -318,4 +318,22 @@
   <data name="MultiMatchCaptureText" xml:space="preserve">
     <value>This is to be used within a multi match replacement text. It represents a single capture from the multiple captures.</value>
   </data>
+  <data name="CustomRegexExactTitle" xml:space="preserve">
+    <value>Exact amount or range ({1,3})</value>
+  </data>
+  <data name="CustomRegexExactText" xml:space="preserve">
+    <value>Match only the specified amount (which can be an exact number or a range) of characters.</value>
+  </data>
+  <data name="CustomRegexExactDashTitle" xml:space="preserve">
+    <value>Amount range separator</value>
+  </data>
+  <data name="CustomRegexExactDashText" xml:space="preserve">
+    <value>Use a dash to separate the minimum and maximum amount of characters to match. Maximum can be omitted.</value>
+  </data>
+  <data name="CustomRegexExactCloseTitle" xml:space="preserve">
+    <value>Close amount range</value>
+  </data>
+  <data name="CustomRegexExactCloseText" xml:space="preserve">
+    <value>Close the amount range with &gt;</value>
+  </data>
 </root>

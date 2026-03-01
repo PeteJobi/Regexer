@@ -10,6 +10,11 @@
 
   <ItemGroup>
     <None Remove="TestData\Characters\Output.txt" />
+    <None Remove="TestData\ExactQuantifier\Input.txt" />
+    <None Remove="TestData\ExactQuantifier\Matches.txt" />
+    <None Remove="TestData\ExactQuantifier\Output.txt" />
+    <None Remove="TestData\ExactQuantifier\Pattern.txt" />
+    <None Remove="TestData\ExactQuantifier\Replace.txt" />
     <None Remove="TestData\LargeMLTest\Input.txt" />
     <None Remove="TestData\LargeMLTest\Pattern.txt" />
     <None Remove="TestData\LargeMLTest\Replace.txt" />
@@ -111,6 +116,22 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\ForToWhileLoop\Replace.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\ExactQuantifier\Input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\ExactQuantifier\Matches.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\ExactQuantifier\Output.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="TestData\ExactQuantifier\Pattern.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\ExactQuantifier\Replace.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\LargeMLTest\Input.txt">

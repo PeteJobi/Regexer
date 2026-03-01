@@ -1,0 +1,14 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 5,
+      "Text": "madam"
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 6,
+      "Text": "madam,"
+    }
+  }
+]
