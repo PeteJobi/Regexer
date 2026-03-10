@@ -26,7 +26,7 @@ The structure of the text to search for is entered in the **Find** textbox. Use 
 The text that should replace captures is entered into the **Replace** textbox. You can use the names entered in the Find textbox here, and rewrite text surrounding it to change structure of each match in the input.<br />
 The **Output** textbox shows the result of the replacement.
 
-When typing find or replace patterns, you have access to autocomplete suggestions once you're within a pattern i.e after entering **[[**__. The suggestions don't automatically show up in areas where you can type freely e.g labels, separator texts, replacement texts, but you can press **CTRL + SPACE** to bring them up. If they still don't show up, it means the pattern so far is invalid and you should delete some characters until it shows up, or it means that you're not within a pattern.
+When typing find or replace patterns, you have access to autocomplete suggestions once you're within a pattern i.e after entering **_[[_**. The suggestions don't automatically show up in areas where you can type freely e.g labels, separator texts, replacement texts, but you can press **CTRL + SPACE** to bring them up. If they still don't show up, it means the pattern so far is invalid and you should delete some characters until it shows up, or it means that you're not within a pattern.
 
 You can import text files into the program with the **Select input** button and generated output can also be saved to a file with the **Save output** button. If you want to, for example, perform more operations on generated output, you can hit the **Copy output to input** button to copy the generated output to the input box. This is also useful for recursively running the same patterns on your input.
 
