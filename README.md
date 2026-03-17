@@ -28,12 +28,12 @@ The **Output** textbox shows the result of the replacement.
 
 When typing find or replace patterns, you have access to autocomplete suggestions once you're within a pattern i.e after entering **_[[_**. The suggestions don't automatically show up in areas where you can type freely e.g labels, separator texts, replacement texts, but you can press **CTRL + SPACE** to bring them up. If they still don't show up, it means the pattern so far is invalid and you should delete some characters until it shows up, or it means that you're not within a pattern.
 
-You can import text files into the program with the **Select input** button and generated output can also be saved to a file with the **Save output** button. If you want to, for example, perform more operations on generated output, you can hit the **Copy output to input** button to copy the generated output to the input box. This is also useful for recursively running the same patterns on your input.
+You can import text files into the program with the **Select input** button in the file menu and generated output can also be saved to a file with the **Save output** button. If you want to, for example, perform more operations on generated output, you can hit the **Copy output to input** button to copy the generated output to the input box. This is also useful for recursively running the same patterns on your input.
 
-If you use the same find and replacement patterns often, you can save each find-replace pair as a template so you don't have to type them in each time you open the program. Click the **Save template** button and enter the name of the template in the dialog that pops up or select an existing template to overwrite. Templates are saved as text files in a folder called _RegexerTemplates_ located in the same directory as the executable. In the program, you can delete templates with the **Delete template** button.
+If you use the same find and replace patterns often, you can save each find-replace pair as a template so you don't have to type them in each time you open the program. Click the **Save template** button and enter the name of the template in the dialog that pops up or select an existing template to overwrite. Templates are saved as text files in a folder called _RegexerTemplates_ located in the same directory as the executable. In the program, you can delete templates with the **Delete template** button.
 
 ## Syntax
-- **[[foo]]**: This can capture a character, word, line or depending on what surrounds it. Translates to **([^\r\n]+?)**.
+- **[[foo]]**: This can capture a character, word or line depending on what surrounds it. Translates to **([^\r\n]+?)**.
   
   Example (characters)
   ```
@@ -85,7 +85,7 @@ If you use the same find and replacement patterns often, you can save each find-
     <content>Hello</content>
   </new-tag>
   ```
-- **[[foo|\<quantifier\>]]**: Three quantifiers are available to use with captures: Optional (**o**), greedy (**g**) and exact amount (**<..>**). The optional quantifier, used as **[[foo|o]]**, means the capture may or may not appear in the match. Translates to **([^\r\n]+?)?**. The greedy quantifier, used as **[[foo|g]]**, will capture the most it can on the line it appears in. Translates to **([^\r\n]+)**. The exact amount quantifier, used as **[[foo|<amount>]]** or **[[foo|<minAmount-maxAmount>]]**, will capture the specified number of characters. In the case of the second usage, **_maxAmount_** can be ommitted, in which case, it will work similar to **greedy** except it will capture at least **_minAmount_** characters. **greedy** and **exact amount** cannot be used together, but they can each be used with **optional**.
+- **[[foo|\<quantifier\>]]**: Three quantifiers are available to use with captures: Optional (**o**), greedy (**g**) and exact amount (**<..>**). The optional quantifier, used as **[[foo|o]]**, means the capture may or may not appear in the match. Translates to **([^\r\n]+?)?**. The greedy quantifier, used as **[[foo|g]]**, will capture the most it can on the line it appears in. Translates to **([^\r\n]+)**. The exact amount quantifier, used as **[[foo|\<amount\>]]** or **[[foo|\<minAmount-maxAmount\>]]**, will capture the specified number of characters. In the case of the second usage, **_maxAmount_** can be ommitted, in which case, it will work similar to **greedy** except it will capture at least **_minAmount_** characters. **greedy** and **exact amount** cannot be used together, but they can each be used with **optional**.
 
   Example (greedy)
   ```
@@ -224,7 +224,7 @@ If you use the same find and replacement patterns often, you can save each find-
     <p><content>Hi</content></p>
   </new-tag>
   ```
-- **[[foo|m|separator|multiple-structured-text-to-capture]]**: Use this to match multiple text with similar structure separated by the specified separator. The separator can be a regex pattern, and you can use _<ml>_ to represent a line break. If the structured-text part is omitted, this will match whatever appears between the separators. You may also omit the name (i.e [[m|<separator>|multiple-structured-text-to-capture]]) and it will be used for matching and not captured.
+- **[[foo|m|separator|multiple-structured-text-to-capture]]**: Use this to match multiple text with similar structure separated by the specified separator. The separator can be a regex pattern, and you can use _<ml>_ to represent a line break. If the structured-text part is omitted, this will match whatever appears between the separators. You may also omit the name (i.e **[[m|\<separator\>|multiple-structured-text-to-capture]]**) and it will be used for matching and not captured.
 
   Example (with name)
   ```
@@ -443,7 +443,7 @@ You can apply a few transformations to your match replacements, as described bel
   The pap was tastytastytasty!
   ```
   
-- **Capitalizations**: You can change the capitalization of a match to any of 3 supported types namely Upper case (**u**), Lower case (**l**), First letter upper case (**fu**), First letter lower case (**fl**) and Sentence case (**s**). The syntax is **[[foo|c:(u/l/fu/fl/s)]]**.
+- **Capitalizations**: You can change the capitalization of a match to any of 5 supported types namely Upper case (**u**), Lower case (**l**), First letter upper case (**fu**), First letter lower case (**fl**) and Sentence case (**s**). The syntax is **[[foo|c:(u/l/fu/fl/s)]]**.
   
   Example
   ```
