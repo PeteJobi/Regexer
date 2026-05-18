@@ -105,8 +105,8 @@ internal static class IntellisenseStructure
                 {
                     SuggestionItems = new []
                     {
-                        AddTextHere("regex", group => group["separator"].Success),
-                        MlKeyword(group => group["separator"].Success),
+                        AddTextHere("regex", group => group["separator"].Success || group["closed"].Success),
+                        MlKeyword(group => group["separator"].Success || group["closed"].Success),
                         new SuggestionItem("} <Close regex>", "}]]", GetResource("CustomRegexTitle"), GetResource("CustomRegexText"))
                         {
                             ShouldHide = group => group["separator"].Success || !group["regex"].Success || group["closed"].Success

@@ -264,6 +264,7 @@ namespace RegexerUI
             }
 
             //inputGrid.RowHeadersVisible = false; //Disabling and re-enabling this after the for-loop saves performance, but it's not needed with the limit
+            //TODO: find a way to save performance without limiting the number of rows. Take a look at https://stackoverflow.com/questions/10226992/slow-performance-in-populating-datagridview-with-large-data, https://10tec.com/articles/why-datagridview-slow.aspx
             var rowCount = limit ? Math.Min(result.Matches.Length, 20) : result.Matches.Length;
             for (var i = 0; i < rowCount; i++)
             {
