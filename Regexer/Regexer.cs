@@ -77,8 +77,9 @@ public class Regexer
         if (multiLineGroups.Any())
         {
             var rep = fasterMl
-                ? @"(?<${mlName}FirstLine>[^\r\n]*?)(\r\n(\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]*)[^\r\n]*?))?)*?"
-                : @"(?<${mlName}FirstLine>([^\r\n]+)?)(\r\n\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]+)?([^\r\n]+)?))*?";
+                //? @"(?<${mlName}FirstLine>[^\r\n]*?)(\r\n(\k<space>?${mlSpace}(?<${mlName}NextLines>([^\S\r\n]*)[^\r\n]*?))?)*?"
+                ? @"(?<${mlName}FirstLine>[^\r\n]*?)(\r\n((?<${mlName}NextLines>\s*)|(\k<space>?${mlSpace}(?<${mlName}NextLines>([^\r\n]+)?))))*?"
+                : @"(?<${mlName}FirstLine>([^\r\n]+)?)(\r\n\k<space>?${mlSpace}(?<${mlName}NextLines>([^\r\n]+)?))*?";
             find = Regex.Replace(find, @"(?<mlSpace>[^\S\r\n]+)?\[(?<mlName>\w+)\\\|ml\]", rep);
         }
         var namedCaptures = new HashSet<string>();
@@ -284,7 +285,8 @@ public class Regexer
                 }
                 var firstLine = matches[i].Groups[$"{group}FirstLine"].Captures;
                 var nextLines = matches[i].Groups[$"{group}NextLines"].Captures;
-                var lineCaptures = (firstLine[0].Value != string.Empty ? nextLines.Prepend(firstLine[0]) : nextLines).ToArray();
+                var lineCaptures = nextLines.Prepend(firstLine[0]).ToArray();
+                //var lineCaptures = (firstLine[0].Value != string.Empty ? nextLines.Prepend(firstLine[0]) : nextLines).ToArray();
                 inputCaptures.AddRange(lineCaptures.Select(capture => new MatchData(capture.Index, capture.Length, capture.Value)));
                 for (var j = mlMatches.Count - 1; j >= 0; j--)
                 {
