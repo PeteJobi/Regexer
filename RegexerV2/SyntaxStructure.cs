@@ -14,15 +14,6 @@ namespace RegexerV2
         private static readonly Symbol StartPlainTextSymbol = new("{");
         private static readonly Symbol EndPlainTextSymbol = new("}");
         private static readonly Symbol NewLineSymbol = new("\r\n");
-        private static readonly Symbol MatchIndexSymbol = new("i");
-        private static readonly Symbol MatchValueSymbol = new("m");
-        private static readonly Symbol PlusSymbol = new("+");
-        private static readonly Symbol MinusSymbol = new("-");
-        private static readonly Symbol MultSymbol = new("*");
-        private static readonly Symbol DivSymbol = new("/");
-        private static readonly Symbol ModSymbol = new("%");
-        private static readonly Symbol BracketOpenSymbol = new("(");
-        private static readonly Symbol BracketCloseSymbol = new(")");
         private static readonly Vary ZeroOrOneAnyPatterns = new(StructureQuantifier.ZERO_OR_ONE, AnyPattern){ ReturnNullIfEmpty = true };
         private static readonly Vary ZeroOrOneAnyPatternsReplace = new(StructureQuantifier.ZERO_OR_ONE, AnyPatternReplace){ ReturnNullIfEmpty = true };
 
@@ -323,7 +314,7 @@ namespace RegexerV2
                                         {
                                             Contents = [
                                                 DemarcateSymbol,
-                                                new FreeText(FreeTextType.PLAIN_TEXT, /*DemarcateSymbol, */CloserSymbol){ Name = TokenName.PlainText }
+                                                new FreeText(FreeTextType.PLAIN_TEXT, CloserSymbol){ Name = TokenName.PlainText }
                                             ]
                                         })
                                     ]
@@ -469,9 +460,7 @@ namespace RegexerV2
             public int Length { get; set; }
             public string Text { get; set; }
             public TokenName Name { get; set; }
-            public BacktrackContext BacktrackContext { get; set; }
             public override string ToString() => Text;
-            //public override string ToString() => $"[{Index}, {Length}]";
         }
         public class FreeTextToken: Token
         {
@@ -481,13 +470,6 @@ namespace RegexerV2
         {
             public List<Token> Children { get; set; }
             public override string ToString() => $"({(Name != TokenName.None ? $"{Name}:" : "")}{Text} => {string.Join(", ", Children)})";
-            //public override string ToString() => $"({(Type != TokenType.None ? $"{Type}:" : "")}[{Index}, {Length}] => {string.Join(", ", Children)})";
-        }
-
-        public record struct BacktrackContext(int startingIndex, int endingIndex)
-        {
-            public int StartingIndex { get; set; } = startingIndex;
-            public int EndingIndex { get; set; } = endingIndex;
         }
 
         public static void SetupCyclicRelationships()

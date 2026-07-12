@@ -53,21 +53,6 @@ namespace RegexerUIV2
             matchNavLabel.Visible = false;
             inputIndieMaximumScrollX = -inputDataGridView.Width + inputDataGridView.RowHeadersWidth + 2;
             outputIndieMaximumScrollX = -outputDataGridView.Width + outputDataGridView.RowHeadersWidth + 2;
-
-            _ = Task.Run(async () =>
-            {
-                await Task.Delay(10);
-                BeginInvoke(async () =>
-                {
-                    try
-                    {
-                        await ApplyTemplate("Test");
-                        //await ProcessInputFile(@"C:\Users\Peter Egunjobi\source\repos\PeteJobi\Regexer\RegexerTests\TestData\AjaxToFetch\Input.txt");
-                        await ProcessInputFile(@"C:\Users\Peter Egunjobi\source\repos\PeteJobi\Regexer\RegexerTests\TestDataV2\MultiLineToCapture\Input.txt");
-                    }
-                    catch(Exception e){}
-                });
-            });
         }
 
         private void InitializeFcTextBoxes()
