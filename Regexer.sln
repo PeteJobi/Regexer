@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.9.34714.143
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11520.95
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Regexer", "Regexer\Regexer.csproj", "{52C40F7D-C14D-4181-AE72-2236E81F676C}"
 EndProject
