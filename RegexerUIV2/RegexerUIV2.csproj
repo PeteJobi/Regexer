@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RegexerV2\RegexerV2.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FastColoredTextBox">
+      <HintPath>FastColoredTextBox.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
