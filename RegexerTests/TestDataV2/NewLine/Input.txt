@@ -1,0 +1,11 @@
+﻿names: {
+"Pete"
+"Abigail"
+"Tolani"
+}
+
+ages: {
+45
+18
+23
+}

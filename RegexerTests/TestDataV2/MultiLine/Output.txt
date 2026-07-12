@@ -1,0 +1,4 @@
+﻿<new-tag>
+  <p><content>Hello</content></p>
+  <p><content>Hi</content></p>
+</new-tag>

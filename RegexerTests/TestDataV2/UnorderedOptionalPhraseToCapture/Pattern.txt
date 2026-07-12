@@ -1,0 +1,7 @@
+﻿<input
+[[id|u|id="[[_id|w]]"]]
+[[class|u|class="[[_class|w]]"]]
+[[type|u|type="[[_type|w]]"]]
+[[length|u|max-length="[[_length|w]]"]]
+[[u|disabled]]
+/>

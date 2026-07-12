@@ -1,0 +1,26 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 17,
+      "Length": 23,
+      "Text": " (Abeeb, Tosin, Ishola)"
+    },
+    "OutputMatch": {
+      "Index": 17,
+      "Length": 29,
+      "Text": " (Abeeb and Tosin and Ishola)"
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 123,
+      "Length": 41,
+      "Text": " (Apple, Meta, Google, Amazon, Microsoft)"
+    },
+    "OutputMatch": {
+      "Index": 129,
+      "Length": 53,
+      "Text": " (Apple and Meta and Google and Amazon and Microsoft)"
+    }
+  }
+]

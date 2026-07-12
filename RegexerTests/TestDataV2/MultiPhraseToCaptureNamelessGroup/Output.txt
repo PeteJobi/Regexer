@@ -1,0 +1,2 @@
+﻿<input Keys are id, type, disabled, class and Values are name, text, false, name/>
+<input Keys are type, id, class, max-length, disabled and Values are button, submit, big, 5, true/>

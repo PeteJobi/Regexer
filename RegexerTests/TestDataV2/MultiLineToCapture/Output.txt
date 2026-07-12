@@ -1,0 +1,28 @@
+﻿saveUser{ 
+  "name" = "Peter",
+  "age" = "12",
+  "gender" = "M",
+  "isEditing" = "false",
+  "status" = "alive"
+}
+
+saveUser{ 
+  "age" = "9",
+  "gender" = "F",
+  "name" = "Bossa",
+  "isEditing" = "true",
+  "status" = "alive"
+}
+
+saveUser{ 
+  "name" = "Judas",
+  "age" = "30",
+  "isEditing" = "false",
+  "status" = "alive"
+}
+
+saveUser{ 
+  "name" = "Paula",
+  "isEditing" = "true",
+  "status" = "alive"
+}

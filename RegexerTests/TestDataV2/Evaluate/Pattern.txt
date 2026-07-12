@@ -1,0 +1,1 @@
+﻿[[sn|d]]. [[name]] is [[age|d]] years old.

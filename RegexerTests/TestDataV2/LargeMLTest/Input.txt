@@ -1,0 +1,397 @@
+const xx = () =>{
+    const setRating = (score: Objects.RatingChoice) => {
+        const zRat: Omit<Types.IRating, "userId"> = { classId: classe.id, score }
+        $.ajax({
+            url: Strings.URL_CLASS + "rating",
+            contentType: "application/json",
+            method: "POST",
+            data: JSON.stringify(zRat),
+            success: (classExtra: Types.IClassExtra) => {
+                if (!hasMounted.current) return
+                const c = Functions.updateClassExtra(classe, classExtra)
+                const newClass = updateClassRatingScore(c, classExtra)
+                setMyRating(classExtra.myRating)
+
+                updClassDispatch({
+                    type: Strings.UPDATE_CLASS_PARAMS,
+                    classAction: Strings.EDIT_CLASS,
+                    classId: classe.id,
+                    class: newClass
+                })
+                fetchInitRatings()
+            },
+            error: (xhr, status, error) => {
+                console.log(xhr.responseText, status, error)
+            }
+        })
+    }
+    const updateClassRatingScore = (classe: Types.IClass, extra: Partial<Types.IClassExtra>) => {
+        const score = (extra.rating1Count * 1 + extra.rating2Count * 2 + extra.rating3Count * 3 + extra.rating4Count * 4
+            + extra.rating5Count * 5) / (extra.rating1Count + extra.rating2Count + extra.rating3Count + extra.rating4Count
+            + extra.rating5Count)
+        return Object.assign({}, classe, { rating: score } as Types.IClass)
+    }
+    const isMember = useMemo(() => !!user && classe.extra.position !== Objects.ClassPosition.NON_MEMBER, [classe.extra]);
+    const ratsCountArr = () => [classe.extra.rating1Count, classe.extra.rating2Count, classe.extra.rating3Count,
+        classe.extra.rating4Count, classe.extra.rating5Count]
+    const totalRats = useMemo(() => ratsCountArr().reduce((total, curr) => curr + total, 0), [classe.extra])
+    const [joinObj, setJoinObj] = useState(useMemo(() => {
+        if (isMember) return { text: Texts.LEAVE_CLASS, path: Paths.UNSUBSCRIBE, col: Objects.ButType.RED }
+        else {
+            switch (classe.joinMode) {
+                case Objects.JoinType.ANYONE: return { text: Texts.JOIN_CLASS, path: Paths.SUBSCRIBE, col: Objects.ButType.GREEN };
+                case Objects.JoinType.REQUEST: return true ?
+                    { text: Texts.REQUEST_TO_JOIN, path: Paths.REQUEST_SUB, col: Objects.ButType.GREEN } :
+                    { text: Texts.CANCEL_REQUEST, path: Paths.UNSUBSCRIBE, col: Objects.ButType.RED }
+                case Objects.JoinType.INVITATION: return { text: Texts.INVITATION_ONLY, path: Paths.INVITE_SUB, col: Objects.ButType.RED }
+            }
+        }
+    }, []))
+    const [showBut, setShowBut] = useState<boolean>(!user || classe.joinMode !== Objects.JoinType.REQUEST || isMember)
+    const getRatsCount = (i: number) => ratsCountArr()[i - 1]
+    const action = () => {
+        if (!user) {
+            console.log(location)
+            setToLogin(true)
+            return
+        }
+        if (joinObj.text === Texts.JOIN_CLASS) {
+            setJoinObj({ text: Texts.LEAVE_CLASS, path: Paths.UNSUBSCRIBE, col: Objects.ButType.RED })
+            join()
+        } else if (joinObj.text === Texts.REQUEST_TO_JOIN) {
+            setJoinObj({ text: Texts.CANCEL_REQUEST, path: Paths.UNSUBSCRIBE, col: Objects.ButType.RED })
+            request();
+        } else if (joinObj.text === Texts.LEAVE_CLASS) {
+            setLeaveClassDia(immutate(leaveClassDia, { show: true }))
+        }
+    }
+
+    const fetchUnsubbedPublicCourses = () => {
+        $.ajax({
+            url: Strings.URL_CLASS + `unsubbedCourses/${classe.id}`,
+            contentType: "application/json",
+            method: "GET",
+            success: (_courses: Types.ICourse[]) => {
+                if (!hasMounted.current) return
+                courses.current = courses.current.concat(_courses)
+                setUnsubCourses(_courses)
+            },
+            error: (xhr, status, error) => {
+                console.log(xhr.responseText, status, error)
+            }
+        })
+    }
+    const fetchInitRatings = () => {
+        $.ajax({
+            url: Strings.URL_CLASS + "ratings/" + classe.id,
+            contentType: "application/json",
+            data: { count: Integers.OPTS_DOM_LIMIT } as Types.IOptsLoadParams,
+            method: "GET",
+            success: (result: Types.IInfScrollResult<Types.IOptRow>) => {
+                setOptRowsInit(result)
+            },
+            error: (xhr, status, error) => {
+                console.log(xhr.responseText, status, error)
+            }
+        })
+    }
+    const fetchMoreRatings = (down: boolean, refId: string | number) => {
+        const [ref1Id, ref2Id, ref3Id, ref4Id, ref5Id] = (refId as string).split("-").map(s => {
+            const int = parseInt(s)
+            return int === 0 ? Integers.MAX_INT : int
+        })
+        return new Promise<Types.IInfScrollResult<Types.IOptRow>>((resolve, reject) => {
+            $.ajax({
+                url: Strings.URL_CLASS + "ratings/" + classe.id,
+                contentType: "application/json",
+                data: { count: Integers.OPTS_DOM_LIMIT, ref1Id, ref2Id, ref3Id, ref4Id, ref5Id } as Types.IRatsLoadParams,
+                method: "GET",
+                success: (result: Types.IInfScrollResult<Types.IOptRow>) => {
+                    resolve(result)
+                },
+                error: (xhr, status, error) => {
+                    console.log(xhr.responseText, status, error)
+                    reject("an error occured in fetchMoreRatings CourseInfo.tsx")
+                }
+            })
+        })
+    }
+    const fetchInitMembers = (isTutor: boolean) => {
+        $.ajax({
+            url: `${Strings.URL_CLASS}${isTutor ? "tutors" : "students"}/${course.id}`,
+            contentType: "application/json",
+            data: { refId: 0, count: Integers.FETCH_DOWN_COUNT, forward: true } as Types.IItemsLoadParams,
+            method: "GET",
+            success: (result: Types.IInfScrollResult<Types.IIDUser>) => {
+                isTutor ? setTutorsInit(result) : setStudentsInit(result)
+            },
+            error: (xhr, status, error) => {
+                console.log(xhr.responseText, status, error)
+            }
+        })
+    }
+
+    const join = () => {
+        $.ajax({
+            url: Strings.URL_CLASS + "joinClass/" + classe.id, // api/Class/joinClass
+            contentType: "application/json",
+            method: "POST",
+            success: (classe: Types.IClass) => {
+                updClassDispatch({
+                    type: Strings.UPDATE_CLASS_PARAMS,
+                    classAction: Strings.EDIT_CLASS,
+                    classId: classe.id,
+                    class: classe
+                })
+            },
+            error: (xhr, status, error) => {
+                console.log(xhr.responseText, status, error)
+            }
+        })
+    }
+
+    const subscribe = () => {
+        const ex = course.extra;
+        if(ex.unsubByTutor) throw new Error("You were unsubscribed from this course")
+        const isSubbing = ex.unsubBySelf
+        $.ajax({
+            url: Strings.URL_CLASS + (isSubbing ? "subscribeToCourse" : "unsubscribeFromCourse") + `/${course.id}`,
+            method: "POST",
+            success: () => {
+                updClassDispatch({ type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.RELOAD_CLASS, classId: classe.id })
+                console.log("Unsubscribed")
+            },
+            error: (xhr, status, error) => {
+                console.log(xhr.responseText, status, error)
+            }
+        })
+        if (!isSubbing) {
+            updCourseDispatch({
+                type: Strings.UPDATE_COURSE_PARAMS, courseAction: Strings.DELETE_COURSE, classId: classe.id,
+                courseId: course.id
+            })
+        } else {
+            //updCourseDispatch({
+            //    type: Strings.UPDATE_COURSE_PARAMS, courseAction: Strings.ADD_COURSE, classId: classe.id,
+            //    course: updateExtraAfterSub()
+            //})
+        }
+        if (pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })
+    }
+
+    //const updateExtraAfterSub = () => {
+    //    const newExtra: Partial<Types.ICourseExtra> = { unsubBySelf: false }
+    //    if(Functions.isTutor(course.extra.position)) newExtra.tutorCount = course.extra.tutorCount + 1
+    //    else newExtra.studentCount = course.extra.studentCount + 1
+    //    return Functions.updateCourseExtra(course, newExtra)
+    //}
+
+    const request = () => {
+        $.ajax({
+            url: Strings.URL_NOTICE + "memberRequest/" + classe.id,
+            method: "POST",
+            contentType: "application/json",
+            success: (successful: boolean) => {
+                if (successful) console.log("sent")
+                else setJoinObj({ text: Texts.LEAVE_CLASS, path: Paths.UNSUBSCRIBE, col: Objects.ButType.RED }) //has already joined
+            },
+            error: (xhr, status, error) => {
+                console.log(xhr.responseText, status, error)
+            }
+        })
+    }
+
+    const leave = () => {
+        $.ajax({
+            url: Strings.URL_CLASS + `leave/${classe.id}`, // api/Class/leave/5
+            method: "POST",
+            success: () => {
+                console.log("Left")
+            },
+            error: (xhr, status, error) => {
+                console.log(xhr.responseText, status, error)
+            }
+        })
+        updClassDispatch({
+            type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.DELETE_CLASS,
+            classId: classe.id
+        })
+        if (pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })
+    }
+
+    const leaveSubCourseClicked = () => {
+        if (course.extra.unsubBySelf) {
+            subscribe()
+            return;
+        }
+        setLeaveCourseDia(immutate(leaveCourseDia, { show: true }))
+    }
+
+    const leaveClass = () => {
+        if (pageView !== Objects.PageView.MODAL) leave()
+        else setTimeout(leave, 300)
+    }
+
+    const leaveSubCourse = () => {
+        if (pageView !== Objects.PageView.MODAL) subscribe()
+        else setTimeout(subscribe, 300)
+    }
+
+    const typeToDeleteCourse = () => {
+        if (pageView !== Objects.PageView.MODAL) deleteCourse()
+        else setTimeout(deleteCourse, 300)
+    }
+    const typeToDeleteClass = () => {
+        if (pageView !== Objects.PageView.MODAL) dissolveClass()
+        else setTimeout(dissolveClass, 300)
+    }
+
+    const deleteCourse = () => {
+        setIsLoading(true)
+        $.ajax({
+            url: Strings.URL_CLASS + "course/" + course.id, // api/Class/Course/5
+            contentType: "application/json",
+            method: "DELETE",
+            success: () => {
+                if (!hasMounted.current) return;
+                setIsLoading(false)
+                updCourseDispatch({
+                    type: Strings.UPDATE_COURSE_PARAMS, courseAction: Strings.DELETE_COURSE,
+                    courseId: course.id, classId: course.classId
+                })
+                if(pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })
+            },
+            error: (xhr, status, error) => {
+                console.log(xhr.responseText, "fa", error, status)
+            }
+        })
+    }
+
+    const dissolveClass = () => {
+        setIsLoading(true)
+        $.ajax({
+            url: Strings.URL_CLASS + "class/" + classe.id, // api/Class/Course
+            contentType: "application/json",
+            method: "DELETE",
+            success: () => {
+                if (!hasMounted.current) return;
+                setIsLoading(false)
+                updClassDispatch({
+                    type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.DELETE_CLASS,
+                    classId: classe.id
+                })
+                if (pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })
+            },
+            error: (xhr, status, error) => {
+                console.log(xhr.responseText, "fa", error, status)
+            }
+        })
+    }
+
+    const fullPage = () => isMain ? `/${Strings.CLASSES}/@@${classe.identifierName}` : `/${Strings.COURSES}/${course.id}`;
+    const editPage = () => `/${Strings.EDIT_CLASS}/${classe.id}`
+    const editCourse = (type?: "course" | "table" | "events" | "members") => {
+        const loc = type === "table" ? Strings.MANAGE_TIMETABLE
+            : type === "events" ? Strings.MANAGE_EVENTS
+                : type === "members" ? Strings.MANAGE_MEMBERS
+                    : Strings.MANAGE_COURSE
+        return `/${loc}/${classe.id}/${course.id}`
+    }
+
+    const closeAllModals = (e?: React.MouseEvent) => {
+        if(pageView === Objects.PageView.MODAL) modalDispatch({ type: Strings.REMOVE_ALL_MODALS })
+    }
+
+    const courseClicked = (e: React.MouseEvent, courseId: number) => {
+        infoDispatch({ type: Strings.SET_INFO_PARAMS, params: { classe, courseId, infoType: Objects.InfoViewType.COURSE }})
+    }
+    const classClicked = (e: React.MouseEvent) => {
+        infoDispatch({ type: Strings.SET_INFO_PARAMS, params: { classe, course: classe.mainCourse, infoType: Objects.InfoViewType.CLASS } })
+    }
+    const headTutorClicked = (e: React.MouseEvent) => {
+        infoDispatch({ type: Strings.SET_INFO_PARAMS, params: { userId: classe.headTutorId, infoType: Objects.InfoViewType.USER } })
+    }
+    const userClicked = (e: React.MouseEvent, userId: string) => {
+        infoDispatch({ type: Strings.SET_INFO_PARAMS, params: { userId, infoType: Objects.InfoViewType.USER } })
+    }
+    const optRowArr = (row: Types.IOptRow) => [row.userE, row.userD, row.userC, row.userB, row.userA]
+    const optRowId = (id: string | number) => `${classe.identifierName}-${id}`
+    const editClassState = (): Types.IEditClassState => ({ classe, editedCourse: course })
+
+    useEffect(() => {
+        hasMounted.current = true
+        $.ajax({
+            url: Strings.URL_CLASS + `tablesAndEvents/${course.id}`,
+            contentType: "application/json",
+            method: "GET",
+            success: tAndE => {
+                if (!hasMounted.current) return
+                Functions.sortEvents(tAndE.events)
+                setTableAndEvents(tAndE)
+            },
+            error: (xhr, status, error) => {
+                console.log(xhr.responseText, status, error)
+            }
+        })
+        $.ajax({
+            url: Strings.URL_CLASS + "postStats",
+            contentType: "application/json",
+            method: "GET",
+            data: { courseId: course.id, isMain: course.isMain },
+            processData: true,
+            success: postStats => {
+                if (hasMounted.current) setPostStats(postStats)
+            },
+            error: (xhr, status, error) => {
+                console.log(xhr.responseText, status, error)
+            }
+        })
+
+        if (user && isMain && !isMember) {
+            if (classe.joinMode === Objects.JoinType.REQUEST) {
+                $.ajax({
+                    url: Strings.URL_NOTICE + `memberRequestCheck/${classe.id}`,
+                    method: "GET",
+                    contentType: "application/json",
+                    success: (hasRequested: boolean) => {
+                        setShowBut(true)
+                        setJoinObj({
+                            text: hasRequested ? Texts.CANCEL_REQUEST : Texts.REQUEST_TO_JOIN,
+                            path: hasRequested ? Paths.UNSUBSCRIBE : Paths.SUBSCRIBE,
+                            col: hasRequested ? Objects.ButType.RED : Objects.ButType.GREEN
+                        })
+                    },
+                    error: (xhr, status, error) => {
+                        console.log(xhr.responseText, status, error)
+                    }
+                })
+            }
+        }
+        fetchUnsubbedPublicCourses()
+        fetchInitRatings()
+        fetchInitMembers(true)
+        fetchInitMembers(false)
+
+        return () => { hasMounted.current = false; }
+    }, [])
+
+    useEffect(() => {
+        if (pageView === Objects.PageView.EXPANDED && isMain ? classe.mainCourseId === refreshPostStatsId ||
+            classe.courses.find(c => c.id === refreshPostStatsId) : course.id === refreshPostStatsId) {
+            pStatsDispatch({ type: Strings.CLEAR_REFRESH_POST_STATS });
+            $.ajax({
+                url: Strings.URL_CLASS + "postStats",
+                contentType: "application/json",
+                method: "GET",
+                data: { courseId: course.id, isMain: course.isMain },
+                processData: true,
+                success: postStats => {
+                    if (hasMounted.current) setPostStats(postStats)
+                },
+                error: (xhr, status, error) => {
+                    console.log(xhr.responseText, status, error)
+                }
+            })
+        }
+    }, [refreshPostStatsId])
+}

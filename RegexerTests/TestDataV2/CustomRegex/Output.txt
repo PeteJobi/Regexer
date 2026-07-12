@@ -1,0 +1,8 @@
+﻿-Name: Ade
+-Items: apples
+Tolu had ten chairs,
+-Name: Bose
+-Items: oranges
+Tayo1 has 30 bowls.
+-Name: Shola
+-Items: caps

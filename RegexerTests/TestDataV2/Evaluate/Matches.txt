@@ -1,0 +1,38 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 0,
+      "Length": 24,
+      "Text": "1. Peter is 7 years old."
+    },
+    "OutputMatch": {
+      "Index": 0,
+      "Length": 41,
+      "Text": "1. Peter will be 12 years old in 5 years."
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 26,
+      "Length": 26,
+      "Text": "1. Tolani is 23 years old."
+    },
+    "OutputMatch": {
+      "Index": 43,
+      "Length": 42,
+      "Text": "2. Tolani will be 28 years old in 5 years."
+    }
+  },
+  {
+    "InputMatch": {
+      "Index": 54,
+      "Length": 26,
+      "Text": "1. Adeolu is 12 years old."
+    },
+    "OutputMatch": {
+      "Index": 87,
+      "Length": 42,
+      "Text": "3. Adeolu will be 17 years old in 5 years."
+    }
+  }
+]

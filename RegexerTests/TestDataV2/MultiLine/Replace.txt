@@ -1,0 +1,3 @@
+﻿<new-[[bar]]>
+  <p>[[foo|ml]]</p>
+</new-[[bar]]>

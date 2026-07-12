@@ -1,0 +1,14 @@
+﻿[
+  {
+    "InputMatch": {
+      "Index": 44,
+      "Length": 22,
+      "Text": "ages: {\r\n45\r\n18\r\n23\r\n}"
+    },
+    "OutputMatch": {
+      "Index": 44,
+      "Length": 19,
+      "Text": "ages:\r\n45\r\n18\r\n23\r\n"
+    }
+  }
+]
