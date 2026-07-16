@@ -95,15 +95,30 @@ namespace RegexerV2
                 DemarcateSymbol,
                 new Or
                 {
-                    Contents = [new Modifier("ui"), new Modifier("u")]
+                    Contents = [
+                        new And
+                        {
+                            Contents = [
+                                new Modifier("ui"),
+                                DemarcateSymbol,
+                                SingleLineStructure
+                            ]
                 },
+                        new And
+                        {
+                            Contents = [
+                                new Modifier("u"),
                 new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                 {
                     Contents = [
                         DemarcateSymbol,
                         SingleLineStructure
                     ]
-                }),
+                                })
+                            ]
+                        }
+                    ]
+                },
                 CloserSymbol
             ]
         }){ Name = TokenName.UnorderedGroup };
