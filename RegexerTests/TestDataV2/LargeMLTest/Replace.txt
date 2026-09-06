@@ -1,8 +1,8 @@
 ﻿Functions.fetchCall([[url]], {[[comment]]
-    [[dat|u:body: [[data]],]]
-    [[proc|u:query: [[data]],]]
-    [[mePost|u:method: "post",]]
-    [[meDel|u:method: "delete",]]
+    [[dat|u|body: [[data]],]]
+    [[proc|u|query: [[data]],]]
+    [[mePost|u|method: "post",]]
+    [[meDel|u|method: "delete",]]
     notOk: (status, responseText, noConnection, noConnectionString) => {
         console.log(responseText, status, noConnection, noConnectionString)
         [[not|ml]]
