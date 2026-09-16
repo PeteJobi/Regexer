@@ -16,6 +16,8 @@ namespace RegexerV2
         private const string PrefixSpaceLabel = "__space__";
         private readonly StringBuilder patternBuilder = new();
         private readonly Dictionary<string, PatternData> patternMap = new();
+        private readonly Structure[] FindStructureArray = [FindStructure];
+        private readonly Structure[] ReplaceStructureArray = [ReplaceStructure];
 
         public Regexer()
         {
@@ -30,40 +32,62 @@ namespace RegexerV2
             SetupCyclicRelationships();
         }
 
-        public async Task<RegexerResult> AutoRegex(string input, string find, string replace, CancellationToken cancellationToken)
+        public IEnumerable<Token> ParsePatternOriginal(string pattern, bool isReplace)
         {
-            return await await Task.WhenAny(
-                Cancel(cancellationToken),
-                Task.Run(() => AutoRegex(input, find, replace), cancellationToken));
+            return parser.ParsePattern(pattern, 0, isReplace ? ReplaceStructureArray : FindStructureArray, 0)!;
         }
 
-        private async Task<RegexerResult> Cancel(CancellationToken cancellationToken)
+        public IEnumerable<Token> ParsePattern(string pattern, bool isReplace)
         {
-            try
+            return parser.ParsePatternWithSuggestions(pattern, 0, pattern.Length, 0, isReplace ? ReplaceStructureArray : FindStructureArray, 0, false).AlreadyTyped!;
+        }
+
+        public IEnumerable<Token> ParsePattern(string pattern, int patternStart, int patternEnd, bool isReplace)
+        {
+            return parser.ParsePatternWithSuggestions(pattern, patternStart, patternEnd, patternStart, isReplace ? ReplaceStructureArray : FindStructureArray, 0, false).AlreadyTyped!;
+        }
+
+        public (IEnumerable<Token>? AlreadyTyped, List<SuggestionToken> Suggestions) ParsePatternWithSuggestions(string pattern, bool isReplace)
+        {
+            return parser.ParsePatternWithSuggestions(pattern, 0, pattern.Length, 0, isReplace ? ReplaceStructureArray : FindStructureArray, 0, true);
+        }
+
+        public (IEnumerable<Token>? AlreadyTyped, List<SuggestionToken> Suggestions) ParsePatternWithSuggestions(string pattern, int patternStart, int patternEnd, bool isReplace)
+        {
+            return parser.ParsePatternWithSuggestions(pattern, patternStart, patternEnd, patternStart, isReplace ? ReplaceStructureArray : FindStructureArray, 0, true);
+        }
+
+        public async Task<RegexerResult> AutoRegex(string input, string find, string replace, CancellationToken cancellationToken)
+        {
+            return await await Task.WhenAny(Cancel(), Task.Run(() => AutoRegex(input, find, replace), cancellationToken));
+
+            async Task<RegexerResult> Cancel()
             {
-                await Task.Delay(-1, cancellationToken);
+                try
+                {
+                    await Task.Delay(-1, cancellationToken);
+                }
+                catch (TaskCanceledException) { }
+                return new RegexerResult { Output = "Cancelled" };
             }
-            catch (TaskCanceledException) { }
-            return new RegexerResult { Output = "Cancelled" };
         }
 
         public RegexerResult AutoRegex(string input, string find, string replace)
         {
-            var patternStructure = parser.ParsePattern(find, 0, [FindStructure], 0);
+            var patternStructure = ParsePattern(find, false).ToArray();
 
             patternBuilder.Clear();
             patternMap.Clear();
             hasNewLine = hasMl = false;
-            ProcessFindFullStructure(find, patternStructure!);
+            ProcessFindFullStructure(find, patternStructure);
             if (!exactWhiteSpace && (hasNewLine || hasMl)) patternBuilder.Insert(0, $@"(?<{PrefixSpaceLabel}>^[^\S\r\n]*)".AsSpan());
             find = patternBuilder.ToString();
             var matches = Regex.Matches(input, find, RegexOptions.Singleline | RegexOptions.Multiline, _regexTimeout);
             if (matches.Count == 0) return new RegexerResult { Output = input };
 
-            patternStructure = parser.ParsePattern(replace, 0, [ReplaceStructure], 0);
+            patternStructure = ParsePattern(replace, true).ToArray();
 
             patternBuilder.Clear();
-            var patternStructureArray = patternStructure as Token[] ?? patternStructure!.ToArray();
 
             var lastInputMatchEnd = 0;
             var outputOffset = 0;
@@ -79,7 +103,7 @@ namespace RegexerV2
                 }
                 outputOffset += matches[i].Index - lastInputMatchEnd;
                 var outputIndieMatches = new List<IndividualMatch>();
-                var length = prefixSpaceLength + ProcessReplaceFullStructure(replace, patternStructureArray, matches[i], i, outputIndieMatches, outputOffset + prefixSpaceLength);
+                var length = prefixSpaceLength + ProcessReplaceFullStructure(replace, patternStructure, matches[i], i, outputIndieMatches, outputOffset + prefixSpaceLength);
                 results[i] = new RegexerMatchPair
                 {
                     InputMatch = new RegexerMatch(matches[i].Index, matches[i].Length, matches[i].Value)
@@ -693,7 +717,7 @@ namespace RegexerV2
         {
             var elements = multiLineToken.Children;
             var label = pattern.Substring(elements[3].Index, elements[3].Length);
-            if (!patternMap.TryGetValue(label, out var patternData))
+            if (!patternMap.TryGetValue(label, out var patternData) || !patternData.IsMultiLine)
             {
                 patternBuilder.Append(pattern.AsSpan(multiLineToken.Index, multiLineToken.Length)); //Use the pattern text as is
                 return multiLineToken.Length;
@@ -804,7 +828,7 @@ namespace RegexerV2
             {
                 var unorderedElements = ((ComplexToken)unorderedGroupToken.Children[i]).Children;
                 var label = pattern.Substring(unorderedElements[2].Index, unorderedElements[2].Length);
-                if (!patternMap.TryGetValue(label, out var patternData))
+                if (!patternMap.TryGetValue(label, out var patternData) || !patternData.IsOptional)
                 {
                     patternBuilder.Append(pattern.AsSpan(unorderedGroupToken.Children[i].Index, unorderedGroupToken.Children[i].Length)); //Use the pattern text as is
                     totalLength += unorderedGroupToken.Children[i].Length;

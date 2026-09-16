@@ -48,26 +48,7 @@ namespace RegexerUIV2
             //new (new SolidBrush(Color.FromArgb(34, 139, 34)), BaseBrush, FontStyle.Bold),      // Forest Green
         };
 
-        private static readonly string SubMatchPattern = @$"(?<{Style.BaseLight}>(?>\[\[(?<Open>)|(?<-Open>\]\])|\[(?!\[)|\](?!\])|[^\[\]])*(?(Open)(?!)))";
-        private readonly string[] _patterns =
-        {
-            @$"\[\[(?<{Style.Label}>\w+)(?:(?<{Style.Separator}>\|)(?<{Style.KeyLetter}>(?:ml|(?:[wdsgol]|<(?:\d+)(?:-(?:\d+)?)?>)+)))?\]\]",
-            @$"\[\[(?<{Style.Label}>\w+)?(?<{Style.Regex}>\{{[^\r\n]+?\}})\]\]",
-            @$"\[\[(?:(?<{Style.Label}>\w+)(?<{Style.Separator}>\|))?(?<{Style.KeyLetter}>u)(?<{Style.Separator}>\|)(?<{Style.BaseLight}>[^\r\n]+)\]\]",
-            @$"\[\[(?:(?<{Style.Label}>\w+)(?<{Style.Separator}>\|))?(?<{Style.KeyLetter}>m)(?<{Style.Separator}>\|)(?<{Style.Regex}>\{{[^\r\n]+?\}})(?:(?<{Style.Separator}>\|){SubMatchPattern})?\]\]"
-        };
-        private readonly string[] _replacePatterns =
-        {
-            @$"\[\[(?<{Style.Label}>\w+)(?:(?<{Style.Separator}>\|)(?<{Style.KeyLetter}>ml))?\]\]",
-            @$"\[\[(?<{Style.Label}>\w+)(?<{Style.Separator}>\|)(?<{Style.KeyLetter}>c)(?<{Style.Separator}>:)(?<{Style.KeyLetter}>u|l|s|fu|fl)\]\]",
-            @$"\[\[(?<{Style.Label}>\w+)(?<{Style.Separator}>\|)(?<{Style.KeyLetter}>o)(?<{Style.Separator}>:){SubMatchPattern}\]\]",
-            @$"\[\[(?<{Style.Label}>\w+)(?<{Style.Separator}>\|)(?<{Style.KeyLetter}>u)(?:(?<{Style.Separator}>:){SubMatchPattern})?\]\]",
-            @$"\[\[(?<{Style.Label}>\w+)(?<{Style.Separator}>\|)(?<{Style.KeyLetter}>m)(?:(?<{Style.Separator}>:)(?<{Style.Regex}>[^\r\n]+?)(?:(?<{Style.Separator}>:){SubMatchPattern})?)?\]\]",
-            @$"\[\[(?<{Style.Label}>\w+)(?<{Style.Separator}>\|)(?<{Style.KeyLetter}>d)(?<{Style.Separator}>:)(?<{Style.KeyLetter}>\d+|[\di+*/%-]+)(?:(?<{Style.Separator}>:)(?<{Style.Regex}>[^\r\n]+?))?\]\]",
-            @$"\[\[(?<{Style.Label}>\w+)(?<{Style.Separator}>\|)(?<{Style.KeyLetter}>e)(?<{Style.Separator}>:)(?<{Style.KeyLetter}>\d+|[\dim()+*/%-]+)\]\]",
-        };
-
-        private readonly Regex _newLineRegex = new("<ml>");
+        private readonly Regexer _regexer = new (false, TimeSpan.Zero); //Regex actually never gets used, so these constructor arguments don't matter.
         private readonly Dictionary<Style, StyleIndex> _allStyles = new();
         private readonly HashSet<string> _patternLabels = new();
         private readonly HashSet<string> _patternUmLabels = new();
@@ -75,6 +56,7 @@ namespace RegexerUIV2
         private readonly Dictionary<string, SolidBrush> _labelStyleBrushes = new();
         private readonly List<int> _findStylingOrder = new();
         private readonly List<int> _replaceStylingOrder = new();
+        private List<SyntaxStructure.SuggestionToken> _suggestionTokens = [];
 
         public void SetupTextBoxStyles(FastColoredTextBox inputTextBox, FastColoredTextBox outputTextBox)
         {
@@ -102,6 +84,7 @@ namespace RegexerUIV2
                 {
                     var textStyle = style switch
                     {
+                        Style.Escape => new TextStyle(Brushes.DarkGray, null, FontStyle.Regular),
                         Style.Label => BaseStyle,
                         Style.Separator => new TextStyle(Brushes.BlueViolet, BaseBrush, FontStyle.Bold),
                         Style.KeyLetter => new TextStyle(Brushes.CornflowerBlue, BaseBrush, FontStyle.Bold),
@@ -114,7 +97,7 @@ namespace RegexerUIV2
                 }
             }
 
-            void InitializePopup(FastColoredTextBox textBox, bool isReplaceText)
+            void InitializePopup(FastColoredTextBox textBox, bool isReplacePattern)
             {
                 var autocomplete = new AutocompleteMenu(textBox);
                 autocomplete.SearchPattern = @"[^\r\n]";
@@ -130,72 +113,96 @@ namespace RegexerUIV2
                 autocomplete.Items.UseSolidBrushForSelected = true;
                 autocomplete.Items.ReShowMenuAfterSelected = true;
                 autocomplete.MaxTooltipSize = new Size(300, 0);
-                autocomplete.Items.SetAutocompleteItems(new Intellisense(textBox, autocomplete, isReplaceText, () => _patternLabels.OrderBy(l => l)));
+                autocomplete.Items.SetAutocompleteItems(new Intellisense(textBox, autocomplete, isReplacePattern, () => _patternLabels.OrderBy(l => l), () => _suggestionTokens));
             }
         }
 
-        public void HighlightPatternSyntax(FastColoredTextBox textBox, Range range, bool isReplaceText, bool isNested = false)
+        public void HighlightAndSuggest(FastColoredTextBox textBox, bool isReplacePattern)
         {
-            if (!isNested)
+            IEnumerable<SyntaxStructure.Token>? tokens;
+            if (textBox.Range.End == textBox.Selection.End)
             {
-                foreach (var styleIndex in _allStyles.Values)
-                {
-                    range.ClearStyle(styleIndex);
-                }
-                if (!isReplaceText)
-                {
-                    _patternLabels.Clear();
-                    _patternUmLabels.Clear();
-                }
+                (tokens, _suggestionTokens) = _regexer.ParsePatternWithSuggestions(textBox.Text, isReplacePattern);
             }
-            var start = range.Start.iChar;
-            for (var i = 0; i < range.Start.iLine; i++)
+            else
             {
-                start += textBox.GetLine(i).Length + "\r\n".Length;
+                tokens = _regexer.ParsePattern(textBox.Text, isReplacePattern);
+                var fragmentBeforeCursor = textBox.Range.GetIntersectionWith(new Range(textBox, textBox.Range.Start, textBox.Selection.End));
+                _suggestionTokens = fragmentBeforeCursor.Length == 0 ? []
+                    : _regexer.ParsePatternWithSuggestions(textBox.Text, 0, fragmentBeforeCursor.Length, isReplacePattern).Suggestions;
             }
-            var patterns = isReplaceText ? _replacePatterns : _patterns;
-            foreach (var pattern in patterns)
+            HighlightPatternSyntax(textBox, tokens!, isReplacePattern);
+        }
+
+        public void HighlightPatternSyntax(FastColoredTextBox textBox, IEnumerable<SyntaxStructure.Token> tokens, bool isReplacePattern)
+        {
+            foreach (var styleIndex in _allStyles.Values)
             {
-                var matches = Regex.Matches(range.Text, pattern);
-                if (!matches.Any()) continue;
-                foreach (Match match in matches)
+                textBox.Range.ClearStyle(styleIndex);
+            }
+            if (!isReplacePattern)
+            {
+                _patternLabels.Clear();
+                _patternUmLabels.Clear();
+            }
+            Highlight(tokens);
+            void Highlight(IEnumerable<SyntaxStructure.Token> tokens)
+            {
+                var tokensArray = tokens.ToArray();
+                foreach (var token in tokensArray)
                 {
-                    textBox.GetRange(start + match.Index, start + match.Index + match.Length).SetStyle(BaseStyleIndex);
-                    foreach (var style in _allStyles.Keys)
+                    switch (token)
                     {
-                        var group = match.Groups[style.ToString()];
-                        if (group.Success)
-                        {
-                            switch (style)
+                        case SyntaxStructure.FreeTextToken freeTextToken:
+                            if(freeTextToken.Name == SyntaxStructure.TokenName.PlainText)
+                                textBox.GetRange(freeTextToken.Index, freeTextToken.Index + freeTextToken.Length).SetStyle(_allStyles[Style.Regex]);
+                            else if (freeTextToken.Name == SyntaxStructure.TokenName.Label && !isReplacePattern)
                             {
-                                case Style.Label:
-                                    if (isReplaceText) break;
-                                    if (_patternLabels.Add(group.Value))
-                                    {
-                                        if (match.Groups[nameof(Style.KeyLetter)].Value is "u" or "m")
-                                            _patternUmLabels.Add(group.Value);
-                                    }
-                                    break;
-                                case Style.Separator:
-                                case Style.KeyLetter:
-                                    foreach (Capture capture in group.Captures)
-                                    {
-                                        textBox.GetRange(start + capture.Index, start + capture.Index + capture.Length).SetStyle(_allStyles[style]);
-                                    }
-                                    break;
-                                case Style.Regex:
-                                    textBox.GetRange(start + group.Index, start + group.Index + group.Length).SetStyle(_allStyles[style]);
-                                    textBox.GetRange(start + group.Index, start + group.Index + group.Length).SetStyle(_allStyles[Style.KeyLetter], _newLineRegex);
-                                    break;
-                                case Style.BaseLight:
-                                    var r = textBox.GetRange(start + group.Index, start + group.Index + group.Length);
-                                    r.SetStyle(_allStyles[style]);
-                                    HighlightPatternSyntax(textBox, r, isReplaceText, true);
-                                    break;
-                                default:
-                                    throw new ArgumentOutOfRangeException();
+                                var label = textBox.Text.Substring(freeTextToken.Index, freeTextToken.Length);
+                                _patternLabels.Add(label);
+                                if (tokensArray.Length > 3 && textBox.Text.AsSpan(tokensArray[3].Index, tokensArray[3].Length) is "u" or "m")
+                                    _patternUmLabels.Add(label);
                             }
-                        }
+                            foreach (var escapeIndex in freeTextToken.EscapeIndices)
+                                textBox.GetRange(escapeIndex, escapeIndex + 1).SetStyle(_allStyles[Style.Escape]);
+                            break;
+                        case SyntaxStructure.ComplexToken complexToken:
+                            switch (complexToken.Name)
+                            {
+                                case SyntaxStructure.TokenName.SingleLineStructure:
+                                    textBox.GetRange(complexToken.Index, complexToken.Index + complexToken.Length).SetStyle(_allStyles[Style.BaseLight]);
+                                    break;
+                                case SyntaxStructure.TokenName.Pattern:
+                                case SyntaxStructure.TokenName.MatchMultipleSpread:
+                                    textBox.GetRange(complexToken.Index, complexToken.Index + complexToken.Length).SetStyle(BaseStyleIndex);
+                                    break;
+                                case SyntaxStructure.TokenName.ExactAmountQuantifier:
+                                    textBox.GetRange(complexToken.Index, complexToken.Index + complexToken.Length).SetStyle(_allStyles[Style.KeyLetter]);
+                                    break;
+                                case SyntaxStructure.TokenName.Unordered:
+                                    //complexToken.Children[0] is whitespace, which should have no style.
+                                    textBox.GetRange(complexToken.Children[1].Index, complexToken.Children[1].Index + complexToken.Length - complexToken.Children[0].Length).SetStyle(BaseStyleIndex);
+                                    break;
+                                case SyntaxStructure.TokenName.MultiLine:
+                                    //Some of the first and last children are whitespace, which should have no style.
+                                    var patternStartIndex = isReplacePattern ? 2 : 1;
+                                    var patternEnd = complexToken.Children[patternStartIndex].Index + complexToken.Children.Skip(patternStartIndex).Take(5).Sum(c => c.Length);
+                                    textBox.GetRange(complexToken.Children[patternStartIndex].Index, patternEnd).SetStyle(BaseStyleIndex);
+                                    break;
+                            }
+                            Highlight(complexToken.Children);
+                            break;
+                        case not null:
+                            switch (token.Name)
+                            {
+                                case SyntaxStructure.TokenName.Demarcate:
+                                    textBox.GetRange(token.Index, token.Index + token.Length).SetStyle(_allStyles[Style.Separator]);
+                                    break;
+                                case SyntaxStructure.TokenName.Modifier:
+                                    textBox.GetRange(token.Index, token.Index + token.Length).SetStyle(_allStyles[Style.KeyLetter]);
+                                    break;
+                            }
+                            break;
                     }
                 }
             }
@@ -315,7 +322,7 @@ namespace RegexerUIV2
             }
         }
 
-        private enum Style{ Label, Separator, KeyLetter, Regex, BaseLight }
+        private enum Style{ Escape, Label, Separator, KeyLetter, Regex, BaseLight }
 
         public class CellMatchData
         {

@@ -11,7 +11,7 @@ namespace RegexerUIV2
 {
     public partial class RegexerForm : Form
     {
-        private Regexer regexer;
+        private readonly Regexer regexer;
         private string currentFileName;
         private CancellationTokenSource tokenSource;
         private CancellationTokenSource? delayTokenSource;
@@ -160,7 +160,7 @@ namespace RegexerUIV2
                     fctbManager.StyleMatches(inputTextbox, outputTextbox, result);
                     fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView, result, limitSubmatchesToolStripCheckBox.Checked);
                 }
-                if (matchRanges.Any())
+                if (matchRanges.Count > 0)
                 {
                     currentMatchRange = -1;
                     prevBut.Enabled = nextBut.Enabled = matchNavLabel.Visible = true;
@@ -274,14 +274,14 @@ namespace RegexerUIV2
 
         private async void findTextbox_TextChanged(object? sender, TextChangedEventArgs e)
         {
-            fctbManager.HighlightPatternSyntax(findTextbox, e.ChangedRange, false);
+            fctbManager.HighlightAndSuggest(findTextbox, false);
             saveTemplateBut.Enabled = findTextbox.Text != string.Empty;
             await FindAndReplace();
         }
 
         private async void replaceTextbox_TextChanged(object? sender, TextChangedEventArgs e)
         {
-            fctbManager.HighlightPatternSyntax(replaceTextbox, e.ChangedRange, true);
+            fctbManager.HighlightAndSuggest(replaceTextbox, true);
             await FindAndReplace();
         }
 

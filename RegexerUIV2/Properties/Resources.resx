@@ -207,6 +207,12 @@
   <data name="ReplaceTitle" xml:space="preserve">
     <value>Replace appearing match</value>
   </data>
+  <data name="ReplaceInverseTitle" xml:space="preserve">
+    <value>Replace missing match</value>
+  </data>
+  <data name="ReplaceInverseText" xml:space="preserve">
+    <value>Replace a match with the specified text if it does not appear, otherwise, omit it. The specified text can contain other matches</value>
+  </data>
   <data name="ReplaceText" xml:space="preserve">
     <value>Replace a match with the specified text if it appears, otherwise, omit it. The specified text can contain other matches</value>
   </data>
