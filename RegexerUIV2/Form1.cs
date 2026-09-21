@@ -128,8 +128,13 @@ namespace RegexerUIV2
             {
                 var result = await regexer.AutoRegex(inputTextbox.Text, findTextbox.Text, replaceTextbox.Text, tokenSource.Token);
                 if (result.Output == "Cancelled") return;
+
+                var scrollPosition = outputTextbox.VerticalScroll.Value;
                 Reset();
                 outputTextbox.Text = result.Output;
+                outputTextbox.VerticalScroll.Value = scrollPosition;
+                outputTextbox.UpdateScrollbars();
+
                 if (result.Matches != null)
                 {
                     inputMatchesTextbox.Text = string.Join('\n', result.Matches.Select(m => m.InputMatch.Text));
