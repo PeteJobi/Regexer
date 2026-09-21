@@ -60,6 +60,9 @@
             lineNumbersToolStripCheckbox = new ToolStripMenuItem();
             exactWhitespaceToolStripCheckbox = new ToolStripMenuItem();
             limitSubmatchesToolStripCheckBox = new ToolStripMenuItem();
+            suggestionModeToolStripMenuItem = new ToolStripMenuItem();
+            alwaysSuggestToolStripMenuItem = new ToolStripMenuItem();
+            suggestOnCommandToolStripMenuItem = new ToolStripMenuItem();
             toolStrip1 = new ToolStrip();
             templatesComboBox = new ToolStripComboBox();
             saveTemplateBut = new ToolStripButton();
@@ -339,7 +342,7 @@
             // 
             // toolStripMenuItem2
             // 
-            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, exactWhitespaceToolStripCheckbox, limitSubmatchesToolStripCheckBox });
+            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, exactWhitespaceToolStripCheckbox, limitSubmatchesToolStripCheckBox, suggestionModeToolStripMenuItem });
             toolStripMenuItem2.Name = "toolStripMenuItem2";
             toolStripMenuItem2.Size = new Size(80, 20);
             toolStripMenuItem2.Text = "Preferences";
@@ -394,6 +397,30 @@
             limitSubmatchesToolStripCheckBox.Size = new Size(201, 22);
             limitSubmatchesToolStripCheckBox.Text = "Limit sub-matches rows";
             limitSubmatchesToolStripCheckBox.Click += limitSubmatchesToolStripCheckBox_Click;
+            // 
+            // suggestionModeToolStripMenuItem
+            // 
+            suggestionModeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { suggestOnCommandToolStripMenuItem, alwaysSuggestToolStripMenuItem });
+            suggestionModeToolStripMenuItem.Name = "suggestionModeToolStripMenuItem";
+            suggestionModeToolStripMenuItem.Size = new Size(201, 22);
+            suggestionModeToolStripMenuItem.Text = "Suggestion mode";
+            // 
+            // alwaysSuggestToolStripMenuItem
+            // 
+            alwaysSuggestToolStripMenuItem.Checked = true;
+            alwaysSuggestToolStripMenuItem.CheckState = CheckState.Checked;
+            alwaysSuggestToolStripMenuItem.Name = "alwaysSuggestToolStripMenuItem";
+            alwaysSuggestToolStripMenuItem.Size = new Size(180, 22);
+            alwaysSuggestToolStripMenuItem.Text = "Always";
+            alwaysSuggestToolStripMenuItem.Click += alwaysSuggestToolStripMenuItem_Click;
+            // 
+            // suggestOnCommandToolStripMenuItem
+            // 
+            suggestOnCommandToolStripMenuItem.Name = "suggestOnCommandToolStripMenuItem";
+            suggestOnCommandToolStripMenuItem.Size = new Size(180, 22);
+            suggestOnCommandToolStripMenuItem.Text = "On command";
+            suggestOnCommandToolStripMenuItem.ToolTipText = "Press CTRL + SPACE to show suggestions if there are any";
+            suggestOnCommandToolStripMenuItem.Click += suggestOnCommandToolStripMenuItem_Click;
             // 
             // toolStrip1
             // 
@@ -547,5 +574,8 @@
         private ToolStripMenuItem wordWrapToolStripCheckBox;
         private ToolStripMenuItem lineNumbersToolStripCheckbox;
         private ToolStripMenuItem limitSubmatchesToolStripCheckBox;
+        private ToolStripMenuItem suggestionModeToolStripMenuItem;
+        private ToolStripMenuItem alwaysSuggestToolStripMenuItem;
+        private ToolStripMenuItem suggestOnCommandToolStripMenuItem;
     }
 }

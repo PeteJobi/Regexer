@@ -17,20 +17,22 @@ namespace RegexerUIV2
         private readonly bool _isReplace;
         private readonly FastColoredTextBox _textBox;
         private readonly AutocompleteMenu _autocompleteMenu;
-        private bool _onlyShowWhenTriggered;
         private bool _manuallyTriggered;
         private IEnumerable<string> _typedLabels;
         private readonly Func<IEnumerable<string>> _getTypedLabels;
         private readonly Func<List<SuggestionToken>> _getSuggestionTokens;
+        private readonly Func<bool> _showOnCommand;
         private bool _shouldRefreshLabelSuggestions;
 
-        public Intellisense(FastColoredTextBox textBox, AutocompleteMenu autocompleteMenu, bool isReplace, Func<IEnumerable<string>> getTypedLabels, Func<List<SuggestionToken>> getSuggestionTokens)
+        public Intellisense(FastColoredTextBox textBox, AutocompleteMenu autocompleteMenu, bool isReplace,
+            Func<IEnumerable<string>> getTypedLabels, Func<List<SuggestionToken>> getSuggestionTokens, Func<bool> showOnCommand)
         {
             _textBox = textBox;
             _isReplace = isReplace;
             _autocompleteMenu = autocompleteMenu;
             _getTypedLabels = getTypedLabels;
             _getSuggestionTokens = getSuggestionTokens;
+            _showOnCommand = showOnCommand;
             textBox.KeyDown += (sender, args) =>
             {
                 if (args is not { Control: true, KeyCode: Keys.Space }) return; //If CTRL+SPACE is not pressed, return
@@ -52,14 +54,14 @@ namespace RegexerUIV2
 
         public IEnumerator<AutocompleteItem> GetEnumerator()
         {
-            var suggestionItems = GetSuggestionItems();
-            if(suggestionItems.Count == 0) yield break;
             if (_manuallyTriggered) _manuallyTriggered = false;
-            else if (_onlyShowWhenTriggered)
+            else if (_showOnCommand())
             {
                 _manuallyTriggered = false;
                 yield break; //If the suggestionItems are only to be shown on user command, the suggestions won't show unless the user manually triggers it (by pressing CTRL+SPACE)
             }
+            var suggestionItems = GetSuggestionItems();
+            if(suggestionItems.Count == 0) yield break;
 
             foreach (var suggestionItem in suggestionItems)
             {

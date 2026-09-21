@@ -585,5 +585,21 @@ namespace RegexerUIV2
             regexer.SetExactWhiteSpace(exactWhitespaceToolStripCheckbox.Checked);
             await FindAndReplace();
         }
+
+        private void alwaysSuggestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (alwaysSuggestToolStripMenuItem.Checked) return;
+            alwaysSuggestToolStripMenuItem.Checked = true;
+            fctbManager.SetSuggestionMode(false);
+            suggestOnCommandToolStripMenuItem.Checked = false;
+        }
+
+        private void suggestOnCommandToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (suggestOnCommandToolStripMenuItem.Checked) return;
+            suggestOnCommandToolStripMenuItem.Checked = true;
+            fctbManager.SetSuggestionMode(true);
+            alwaysSuggestToolStripMenuItem.Checked = false;
+        }
     }
 }
