@@ -6,7 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>EncircledPIERound.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="EncircledPIERound.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RegexerV2\RegexerV2.csproj" />
