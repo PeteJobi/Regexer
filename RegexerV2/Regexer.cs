@@ -80,9 +80,9 @@ namespace RegexerV2
             patternMap.Clear();
             hasNewLine = hasMl = false;
             ProcessFindFullStructure(find, patternStructure);
-            if (!exactWhiteSpace && (hasNewLine || hasMl)) patternBuilder.Insert(0, $@"(?<{PrefixSpaceLabel}>^[^\S\r\n]*)".AsSpan());
+            if (!exactWhiteSpace && (hasNewLine || hasMl)) patternBuilder.Insert(0, $@"(?<=(?:^|\n))(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
             find = patternBuilder.ToString();
-            var matches = Regex.Matches(input, find, RegexOptions.Singleline | RegexOptions.Multiline, _regexTimeout);
+            var matches = Regex.Matches(input, find, RegexOptions.None, _regexTimeout);
             if (matches.Count == 0) return new RegexerResult { Output = input };
 
             patternStructure = ParsePattern(replace, true).ToArray();
@@ -317,7 +317,7 @@ namespace RegexerV2
             }
         }
 
-        private ReadOnlySpan<char> NewLineWithPrefixSpace() => exactWhiteSpace ? "\r\n".AsSpan() : $@"\r\n\k<{PrefixSpaceLabel}>".AsSpan();
+        private ReadOnlySpan<char> NewLineWithPrefixSpace() => exactWhiteSpace ? "\r\n".AsSpan() : $"\r\n\\k<{PrefixSpaceLabel}>".AsSpan();
 
         private void ProcessFindPatternToken(string pattern, ComplexToken patternToken)
         {
@@ -691,23 +691,21 @@ namespace RegexerV2
             var label = pattern.Substring(elements[2].Index, elements[2].Length);
             var spaceStartIndexOffset = pattern[elements[0].Index] == '\r' && pattern[elements[0].Index + 1] == '\n' ? 2 : 0;
             var precedingSpace = pattern.AsSpan(elements[0].Index + spaceStartIndexOffset, elements[0].Length - spaceStartIndexOffset);
-            if (spaceStartIndexOffset > 0) patternBuilder.Append(NewLineWithPrefixSpace());
-            patternBuilder.Append(precedingSpace);
 
             if (patternMap.ContainsKey(label))
             {
-                patternBuilder.Append($"\\k<{label}FirstLine>");
+                patternBuilder.Append($"\\k<{label}Lines>");
                 return;
             }
             patternMap.Add(label, new PatternData(label){ IsMultiLine = true });
 
-            if (false)
+            if (spaceStartIndexOffset == 0) //At start of pattern, no need to match a new line before the first line
             {
-
+                patternBuilder.Append($@"(?:{precedingSpace}(?<{label}Lines>[^\r\n]*)(?:{NewLineWithPrefixSpace()}{precedingSpace}(?<{label}Lines>[^\r\n]*))*)?");
             }
             else
             {
-                patternBuilder.Append($@"(?<{label}FirstLine>([^\r\n]+)?)({NewLineWithPrefixSpace()}{precedingSpace}(?<{label}NextLines>([^\r\n]+)?))*?");
+                patternBuilder.Append($@"(?:{NewLineWithPrefixSpace()}{precedingSpace}(?<{label}Lines>[^\r\n]*))*?");
             }
 
             hasMl = true;
@@ -723,9 +721,7 @@ namespace RegexerV2
                 return multiLineToken.Length;
             }
 
-            var firstLine = match.Groups[$"{label}FirstLine"].Captures;
-            var nextLines = match.Groups[$"{label}NextLines"].Captures;
-            var lineCaptures = nextLines.Prepend(firstLine[0]).ToArray();
+            var lineCaptures = match.Groups[$"{label}Lines"].Captures;
 
             var outputCaptures = new List<MatchData>();
             var n = GetAlphabeticalOrderIndex(outputIndieMatches, l => l.Label, label);
@@ -736,7 +732,7 @@ namespace RegexerV2
             var precedingSpace = pattern.AsSpan(elements[0].Index + spaceStartIndexOffset, elements[0].Length - spaceStartIndexOffset);
 
             var outputStart = multiLineToken.Index + outputOffset;
-            for (var i = 0; i < lineCaptures.Length; i++)
+            for (var i = 0; i < lineCaptures.Count; i++)
             {
                 var outputLength = 0;
                 if (i > 0 || spaceStartIndexOffset > 0)
@@ -895,15 +891,13 @@ namespace RegexerV2
             {
                 var n = GetAlphabeticalOrderIndex(individualMatches, l => l.Label, label);
                 var patternData = patternMap[label];
-                List<MatchData> captures;
+                var captures = new List<MatchData>();
                 if (patternData.IsMultiLine)
                 {
-                    var firstLine = match.Groups[$"{label}FirstLine"].Captures;
-                    var nextLines = match.Groups[$"{label}NextLines"].Captures;
-                    captures = [new(firstLine[0].Index, firstLine[0].Length, firstLine[0].Value)];
-                    for (var i = 0; i < nextLines.Count; i++)
+                    var lines = match.Groups[$"{label}Lines"].Captures;
+                    for (var i = 0; i < lines.Count; i++)
                     {
-                        captures.Add(new MatchData(nextLines[i].Index, nextLines[i].Length, nextLines[i].Value));
+                        captures.Add(new MatchData(lines[i].Index, lines[i].Length, lines[i].Value));
                     }
                     individualMatches.Insert(n.Index, new IndividualMatch(label, captures));
                     continue;
