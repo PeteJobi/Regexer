@@ -9,7 +9,7 @@ namespace RegexerV2
 {
     public class Regexer
     {
-        private readonly bool exactWhiteSpace;
+        private bool _exactWhiteSpace;
         private readonly TimeSpan _regexTimeout;
         private bool hasNewLine, hasMl;
         private readonly SyntaxParser parser = new();
@@ -56,6 +56,8 @@ namespace RegexerV2
             return parser.ParsePatternWithSuggestions(pattern, patternStart, patternEnd, patternStart, isReplace ? ReplaceStructureArray : FindStructureArray, 0, true);
         }
 
+        public void SetExactWhiteSpace(bool exactWhiteSpace) => _exactWhiteSpace = exactWhiteSpace;
+
         public async Task<RegexerResult> AutoRegex(string input, string find, string replace, CancellationToken cancellationToken)
         {
             return await await Task.WhenAny(Cancel(), Task.Run(() => AutoRegex(input, find, replace), cancellationToken));
@@ -79,7 +81,7 @@ namespace RegexerV2
             patternMap.Clear();
             hasNewLine = hasMl = false;
             ProcessFindFullStructure(find, patternStructure);
-            if (!exactWhiteSpace && (hasNewLine || hasMl)) patternBuilder.Insert(0, $@"(?<=(?:^|\n))(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
+            if (hasNewLine || hasMl) patternBuilder.Insert(0, $@"(?<=(?:^|\n))(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
             find = patternBuilder.ToString();
             var matches = Regex.Matches(input, find, RegexOptions.None, _regexTimeout);
             if (matches.Count == 0) return new RegexerResult { Output = input };
@@ -95,7 +97,7 @@ namespace RegexerV2
             {
                 var prefixSpaceLength = 0;
                 patternBuilder.Append(input.AsSpan(lastInputMatchEnd, matches[i].Index - lastInputMatchEnd));
-                if (!exactWhiteSpace)
+                if (hasNewLine || hasMl)
                 {
                     patternBuilder.Append(matches[i].Groups[PrefixSpaceLabel]);
                     prefixSpaceLength = matches[i].Groups[PrefixSpaceLabel].Length;
@@ -262,7 +264,7 @@ namespace RegexerV2
             void AppendWhiteSpaceIfAny()
             {
                 if (spaceBuilder.Length == 0) return;
-                if (exactWhiteSpace) patternBuilder.Append(spaceBuilder);
+                if (_exactWhiteSpace) patternBuilder.Append(spaceBuilder);
                 else patternBuilder.Append(@"[^\S\r\n]+");
                 spaceBuilder.Clear();
             }
@@ -285,7 +287,7 @@ namespace RegexerV2
                 if(c == '\r' && i < pattern.Length - 1 && pattern[i + 1] == '\n')
                 {
                     patternBuilder.AppendLine();
-                    if(!exactWhiteSpace)
+                    if(hasNewLine || hasMl)
                     {
                         patternBuilder.Append(match.Groups[PrefixSpaceLabel].Value);
                         prefixSpaceCount += match.Groups[PrefixSpaceLabel].Length;
@@ -316,7 +318,7 @@ namespace RegexerV2
             }
         }
 
-        private ReadOnlySpan<char> NewLineWithPrefixSpace() => exactWhiteSpace ? "\r\n".AsSpan() : $"\r\n\\k<{PrefixSpaceLabel}>".AsSpan();
+        private ReadOnlySpan<char> NewLineWithPrefixSpace() => $"\r\n\\k<{PrefixSpaceLabel}>".AsSpan();
 
         private void ProcessFindPatternToken(string pattern, ComplexToken patternToken)
         {
@@ -739,7 +741,7 @@ namespace RegexerV2
                     patternBuilder.AppendLine();
                     outputLength += 2;
                 }
-                if (!exactWhiteSpace)
+                if (hasNewLine || hasMl)
                 {
                     patternBuilder.Append(match.Groups[PrefixSpaceLabel].Value);
                     outputLength += match.Groups[PrefixSpaceLabel].Length;
@@ -951,7 +953,7 @@ namespace RegexerV2
             return (left, true);
         }
 
-        public class PatternData(string label)
+        private class PatternData(string label)
         {
             public string Label { get; set; } = label;
             public bool IsOptional { get; set; }

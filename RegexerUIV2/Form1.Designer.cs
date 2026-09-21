@@ -58,7 +58,7 @@
             syncScrollToolStripCheckBox = new ToolStripMenuItem();
             wordWrapToolStripCheckBox = new ToolStripMenuItem();
             lineNumbersToolStripCheckbox = new ToolStripMenuItem();
-            fasterMLToolStripCheckbox = new ToolStripMenuItem();
+            exactWhitespaceToolStripCheckbox = new ToolStripMenuItem();
             limitSubmatchesToolStripCheckBox = new ToolStripMenuItem();
             toolStrip1 = new ToolStrip();
             templatesComboBox = new ToolStripComboBox();
@@ -131,7 +131,7 @@
             outputTabs.Controls.Add(outputTab);
             outputTabs.Controls.Add(outputMatchesTab);
             outputTabs.Controls.Add(outputSubMatchesTab);
-            outputTabs.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            outputTabs.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             outputTabs.Location = new Point(0, 0);
             outputTabs.Margin = new Padding(0);
             outputTabs.Name = "outputTabs";
@@ -143,7 +143,7 @@
             // 
             // outputTab
             // 
-            outputTab.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            outputTab.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             outputTab.Location = new Point(4, 24);
             outputTab.Margin = new Padding(0);
             outputTab.Name = "outputTab";
@@ -185,7 +185,6 @@
             outputDataGridView.Name = "outputDataGridView";
             outputDataGridView.ReadOnly = true;
             outputDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            outputDataGridView.RowTemplate.Height = 25;
             outputDataGridView.Size = new Size(414, 629);
             outputDataGridView.TabIndex = 0;
             outputDataGridView.CellPainting += IndieMatchesDataGridView_CellPainting;
@@ -198,7 +197,7 @@
             // 
             label2.AutoSize = true;
             label2.Dock = DockStyle.Fill;
-            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label2.Location = new Point(424, 0);
             label2.Name = "label2";
             label2.Size = new Size(415, 20);
@@ -210,7 +209,7 @@
             // 
             label4.AutoSize = true;
             label4.Dock = DockStyle.Fill;
-            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label4.Location = new Point(424, 328);
             label4.Name = "label4";
             label4.Size = new Size(415, 20);
@@ -224,7 +223,7 @@
             inputTabs.Controls.Add(inputTab);
             inputTabs.Controls.Add(inputMatchesTab);
             inputTabs.Controls.Add(inputSubMatchesTab);
-            inputTabs.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            inputTabs.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             inputTabs.Location = new Point(0, 0);
             inputTabs.Margin = new Padding(0);
             inputTabs.Name = "inputTabs";
@@ -237,7 +236,7 @@
             // 
             // inputTab
             // 
-            inputTab.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            inputTab.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             inputTab.Location = new Point(4, 24);
             inputTab.Margin = new Padding(0);
             inputTab.Name = "inputTab";
@@ -278,7 +277,6 @@
             inputDataGridView.Name = "inputDataGridView";
             inputDataGridView.ReadOnly = true;
             inputDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            inputDataGridView.RowTemplate.Height = 25;
             inputDataGridView.Size = new Size(413, 629);
             inputDataGridView.TabIndex = 0;
             inputDataGridView.CellPainting += IndieMatchesDataGridView_CellPainting;
@@ -341,7 +339,7 @@
             // 
             // toolStripMenuItem2
             // 
-            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, fasterMLToolStripCheckbox, limitSubmatchesToolStripCheckBox });
+            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, exactWhitespaceToolStripCheckbox, limitSubmatchesToolStripCheckBox });
             toolStripMenuItem2.Name = "toolStripMenuItem2";
             toolStripMenuItem2.Size = new Size(80, 20);
             toolStripMenuItem2.Text = "Preferences";
@@ -379,13 +377,13 @@
             lineNumbersToolStripCheckbox.Text = "Line numbers";
             lineNumbersToolStripCheckbox.Click += lineNumbersToolStripCheckbox_Click;
             // 
-            // fasterMLToolStripCheckbox
+            // exactWhitespaceToolStripCheckbox
             // 
-            fasterMLToolStripCheckbox.CheckOnClick = true;
-            fasterMLToolStripCheckbox.Name = "fasterMLToolStripCheckbox";
-            fasterMLToolStripCheckbox.Size = new Size(201, 22);
-            fasterMLToolStripCheckbox.Text = "Faster ML";
-            fasterMLToolStripCheckbox.CheckedChanged += fasterMLCheckBox_CheckedChanged;
+            exactWhitespaceToolStripCheckbox.CheckOnClick = true;
+            exactWhitespaceToolStripCheckbox.Name = "exactWhitespaceToolStripCheckbox";
+            exactWhitespaceToolStripCheckbox.Size = new Size(201, 22);
+            exactWhitespaceToolStripCheckbox.Text = "Exact whitespace";
+            exactWhitespaceToolStripCheckbox.CheckedChanged += exactWitespaceCheckBox_CheckedChanged;
             // 
             // limitSubmatchesToolStripCheckBox
             // 
@@ -531,7 +529,7 @@
         private ToolStripButton saveTemplateBut;
         private ToolStripMenuItem syncTabsToolStripCheckBox;
         private ToolStripMenuItem syncScrollToolStripCheckBox;
-        private ToolStripMenuItem fasterMLToolStripCheckbox;
+        private ToolStripMenuItem exactWhitespaceToolStripCheckbox;
         private ToolStripButton deleteTemplateBut;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripButton prevBut;

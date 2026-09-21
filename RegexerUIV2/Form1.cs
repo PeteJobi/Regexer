@@ -579,5 +579,11 @@ namespace RegexerUIV2
             findTextbox.Text = string.Empty;
             replaceTextbox.Text = string.Empty;
         }
+
+        private async void exactWitespaceCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            regexer.SetExactWhiteSpace(exactWhitespaceToolStripCheckbox.Checked);
+            await FindAndReplace();
+        }
     }
 }
