@@ -25,9 +25,8 @@ namespace RegexerV2
             SetupCyclicRelationships();
         }
 
-        public Regexer(bool exactWhiteSpace, TimeSpan regexTimeout)
+        public Regexer(TimeSpan regexTimeout)
         {
-            this.exactWhiteSpace = exactWhiteSpace;
             _regexTimeout = regexTimeout;
             SetupCyclicRelationships();
         }

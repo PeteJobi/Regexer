@@ -48,7 +48,7 @@ namespace RegexerUIV2
             //new (new SolidBrush(Color.FromArgb(34, 139, 34)), BaseBrush, FontStyle.Bold),      // Forest Green
         };
 
-        private readonly Regexer _regexer = new (false, TimeSpan.Zero); //Regex actually never gets used, so these constructor arguments don't matter.
+        private readonly Regexer _regexer = new (TimeSpan.Zero); //Regex actually never gets used, so these constructor arguments don't matter.
         private readonly Dictionary<Style, StyleIndex> _allStyles = new();
         private readonly HashSet<string> _patternLabels = new();
         private readonly HashSet<string> _patternUmLabels = new();

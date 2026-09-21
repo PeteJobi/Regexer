@@ -45,7 +45,7 @@ namespace RegexerUIV2
             InitializeComponent();
             InitializeFcTextBoxes();
             GetTemplates();
-            regexer = new Regexer(false, TimeSpan.FromMinutes(10));
+            regexer = new Regexer(TimeSpan.FromMinutes(10));
             tokenSource = new CancellationTokenSource();
             loadingProgressBar.Visible = false;
             prevBut.Enabled = false;
