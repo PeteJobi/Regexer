@@ -63,6 +63,9 @@
             suggestionModeToolStripMenuItem = new ToolStripMenuItem();
             alwaysSuggestToolStripMenuItem = new ToolStripMenuItem();
             suggestOnCommandToolStripMenuItem = new ToolStripMenuItem();
+            highlightModeToolStripMenuItem = new ToolStripMenuItem();
+            monoColouredToolStripMenuItem = new ToolStripMenuItem();
+            multiColouredToolStripMenuItem = new ToolStripMenuItem();
             toolStrip1 = new ToolStrip();
             templatesComboBox = new ToolStripComboBox();
             saveTemplateBut = new ToolStripButton();
@@ -342,7 +345,7 @@
             // 
             // toolStripMenuItem2
             // 
-            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, exactWhitespaceToolStripCheckbox, limitSubmatchesToolStripCheckBox, suggestionModeToolStripMenuItem });
+            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, exactWhitespaceToolStripCheckbox, limitSubmatchesToolStripCheckBox, suggestionModeToolStripMenuItem, highlightModeToolStripMenuItem });
             toolStripMenuItem2.Name = "toolStripMenuItem2";
             toolStripMenuItem2.Size = new Size(80, 20);
             toolStripMenuItem2.Text = "Preferences";
@@ -386,7 +389,7 @@
             exactWhitespaceToolStripCheckbox.Name = "exactWhitespaceToolStripCheckbox";
             exactWhitespaceToolStripCheckbox.Size = new Size(201, 22);
             exactWhitespaceToolStripCheckbox.Text = "Exact whitespace";
-            exactWhitespaceToolStripCheckbox.CheckedChanged += exactWitespaceCheckBox_CheckedChanged;
+            exactWhitespaceToolStripCheckbox.CheckedChanged += exactWhitespaceCheckBox_CheckedChanged;
             // 
             // limitSubmatchesToolStripCheckBox
             // 
@@ -421,6 +424,29 @@
             suggestOnCommandToolStripMenuItem.Text = "On command";
             suggestOnCommandToolStripMenuItem.ToolTipText = "Press CTRL + SPACE to show suggestions if there are any";
             suggestOnCommandToolStripMenuItem.Click += suggestOnCommandToolStripMenuItem_Click;
+            // 
+            // highlightModeToolStripMenuItem
+            // 
+            highlightModeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { monoColouredToolStripMenuItem, multiColouredToolStripMenuItem });
+            highlightModeToolStripMenuItem.Name = "highlightModeToolStripMenuItem";
+            highlightModeToolStripMenuItem.Size = new Size(201, 22);
+            highlightModeToolStripMenuItem.Text = "Highlight mode";
+            // 
+            // monoColouredToolStripMenuItem
+            // 
+            monoColouredToolStripMenuItem.Name = "monoColouredToolStripMenuItem";
+            monoColouredToolStripMenuItem.Size = new Size(180, 22);
+            monoColouredToolStripMenuItem.Text = "Mono-coloured";
+            monoColouredToolStripMenuItem.Click += monoColouredToolStripMenuItem_Click;
+            // 
+            // multiColouredToolStripMenuItem
+            // 
+            multiColouredToolStripMenuItem.Checked = true;
+            multiColouredToolStripMenuItem.CheckState = CheckState.Checked;
+            multiColouredToolStripMenuItem.Name = "multiColouredToolStripMenuItem";
+            multiColouredToolStripMenuItem.Size = new Size(180, 22);
+            multiColouredToolStripMenuItem.Text = "Multi-coloured";
+            multiColouredToolStripMenuItem.Click += multiColouredToolStripMenuItem_Click;
             // 
             // toolStrip1
             // 
@@ -577,5 +603,8 @@
         private ToolStripMenuItem suggestionModeToolStripMenuItem;
         private ToolStripMenuItem alwaysSuggestToolStripMenuItem;
         private ToolStripMenuItem suggestOnCommandToolStripMenuItem;
+        private ToolStripMenuItem highlightModeToolStripMenuItem;
+        private ToolStripMenuItem monoColouredToolStripMenuItem;
+        private ToolStripMenuItem multiColouredToolStripMenuItem;
     }
 }

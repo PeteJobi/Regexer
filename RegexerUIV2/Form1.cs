@@ -510,7 +510,7 @@ namespace RegexerUIV2
 
                 foreach (var line in lines)
                 {
-                    if(line is { Index: 0, Length: 0 }) continue;
+                    if (line is { Index: 0, Length: 0 }) continue;
                     var mainSize = g.MeasureString(line.Text, mainFont);
                     var labelSize = g.MeasureString(FctbManager.CellMatchData.PositionString(line), labelFont);
 
@@ -580,7 +580,7 @@ namespace RegexerUIV2
             replaceTextbox.Text = string.Empty;
         }
 
-        private async void exactWitespaceCheckBox_CheckedChanged(object sender, EventArgs e)
+        private async void exactWhitespaceCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             regexer.SetExactWhiteSpace(exactWhitespaceToolStripCheckbox.Checked);
             await FindAndReplace();
@@ -600,6 +600,24 @@ namespace RegexerUIV2
             suggestOnCommandToolStripMenuItem.Checked = true;
             fctbManager.SetSuggestionMode(true);
             alwaysSuggestToolStripMenuItem.Checked = false;
+        }
+
+        private async void monoColouredToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (monoColouredToolStripMenuItem.Checked) return;
+            monoColouredToolStripMenuItem.Checked = true;
+            fctbManager.SetHighlightMode(true);
+            multiColouredToolStripMenuItem.Checked = false;
+            await FindAndReplace();
+        }
+
+        private async void multiColouredToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (multiColouredToolStripMenuItem.Checked) return;
+            multiColouredToolStripMenuItem.Checked = true;
+            fctbManager.SetHighlightMode(false);
+            monoColouredToolStripMenuItem.Checked = false;
+            await FindAndReplace();
         }
     }
 }

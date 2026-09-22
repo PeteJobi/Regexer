@@ -59,6 +59,7 @@ namespace RegexerUIV2
         private readonly List<int> _replaceStylingOrder = new();
         private List<SyntaxStructure.SuggestionToken> _suggestionTokens = [];
         private bool _showSuggestionsOnCommand;
+        private bool _monoColouredHighlight;
 
         public void SetupTextBoxStyles(FastColoredTextBox inputTextBox, FastColoredTextBox outputTextBox)
         {
@@ -215,7 +216,7 @@ namespace RegexerUIV2
 
         public void StyleMatches(FastColoredTextBox inputTextbox, FastColoredTextBox outputTextbox, RegexerResult result)
         {
-            if (result.Matches == null) return;
+            if (result.Matches == null || _monoColouredHighlight) return;
             _labelStyleIndices.Clear();
             _findStylingOrder.Clear();
             _replaceStylingOrder.Clear();
@@ -281,7 +282,7 @@ namespace RegexerUIV2
                 var match = result.Matches[0].InputMatch.IndividualMatches[i];
                 inputGrid.Columns.Add(match.Label, match.Label);
                 outputGrid.Columns.Add(match.Label, match.Label);
-                var brush = (SolidBrush)IndividualMatchStyles[i].ForeBrush;
+                var brush = _monoColouredHighlight ? (SolidBrush)Brushes.Black : (SolidBrush)IndividualMatchStyles[i].ForeBrush;
                 inputGrid.Columns[i].HeaderCell.Style.ForeColor = brush.Color;
                 outputGrid.Columns[i].HeaderCell.Style.ForeColor = brush.Color;
                 _labelStyleBrushes.Add(match.Label, brush);
@@ -328,6 +329,8 @@ namespace RegexerUIV2
         }
 
         public void SetSuggestionMode(bool showSuggestionsOnCommand) => _showSuggestionsOnCommand = showSuggestionsOnCommand;
+
+        public void SetHighlightMode(bool partialHighlighting) => _monoColouredHighlight = partialHighlighting;
 
         private enum Style{ Escape, Label, Separator, KeyLetter, Regex, BaseLight }
 
