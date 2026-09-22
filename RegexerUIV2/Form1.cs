@@ -26,12 +26,8 @@ namespace RegexerUIV2
         private readonly FctbManager fctbManager = new();
         private readonly List<bool> inputMatchLineBackgroundData = new();
         private readonly List<bool> outputMatchLineBackgroundData = new();
-        private double inputMaximumScroll;
-        private double inputMatchesMaximumScroll;
-        private double outputMaximumScroll;
-        private double outputMatchesMaximumScroll;
-        private double inputIndieMaximumScrollX;
-        private double outputIndieMaximumScrollX;
+        private ScrollValues inputScroll;
+        private ScrollValues outputScroll;
         private bool indieMatchIsScrolling;
         private readonly StringFormat _ellipsisFormat = new()
         {
@@ -51,8 +47,8 @@ namespace RegexerUIV2
             prevBut.Enabled = false;
             nextBut.Enabled = false;
             matchNavLabel.Visible = false;
-            inputIndieMaximumScrollX = -inputDataGridView.Width + inputDataGridView.RowHeadersWidth + 2;
-            outputIndieMaximumScrollX = -outputDataGridView.Width + outputDataGridView.RowHeadersWidth + 2;
+            inputScroll.IndieMaximumX = -inputDataGridView.Width + inputDataGridView.RowHeadersWidth + 2;
+            outputScroll.IndieMaximumX = -outputDataGridView.Width + outputDataGridView.RowHeadersWidth + 2;
         }
 
         private void InitializeFcTextBoxes()
@@ -394,56 +390,56 @@ namespace RegexerUIV2
 
         private void InputTextbox_SizeChanged(object? sender, EventArgs e)
         {
-            inputMaximumScroll = (inputTextbox.LineInfos.Sum(li => li.WordWrapStringsCount) + 1) * inputTextbox.CharHeight - inputTextbox.Height - 2; //Not quite certain what the 1 and 2 are.
+            inputScroll.MaximumY = (inputTextbox.LineInfos.Sum(li => li.WordWrapStringsCount) + 1) * inputTextbox.CharHeight - inputTextbox.Height - 2; //Not quite certain what the 1 and 2 are.
         }
 
         private void OutputTextbox_SizeChanged(object? sender, EventArgs e)
         {
-            outputMaximumScroll = (outputTextbox.LineInfos.Sum(li => li.WordWrapStringsCount) + 1) * outputTextbox.CharHeight - outputTextbox.Height - 2;
+            outputScroll.MaximumY = (outputTextbox.LineInfos.Sum(li => li.WordWrapStringsCount) + 1) * outputTextbox.CharHeight - outputTextbox.Height - 2;
         }
 
         private void InputTextbox_Scroll(object? sender, ScrollEventArgs e)
         {
             //Debug.WriteLine($"{e.OldValue}... {e.NewValue}... {inputTextbox.VerticalScroll.Value}... {inputTextbox.Height}... {inputTextbox.Size.Height}");
-            if (!syncScrollToolStripCheckBox.Checked || outputMaximumScroll < 0) return;
-            var ratio = inputTextbox.VerticalScroll.Value / inputMaximumScroll;
-            outputTextbox.VerticalScroll.Value = (int)(ratio * outputMaximumScroll);
+            if (!syncScrollToolStripCheckBox.Checked || outputScroll.MaximumY < 0) return;
+            var ratio = inputTextbox.VerticalScroll.Value / inputScroll.MaximumY;
+            outputTextbox.VerticalScroll.Value = (int)(ratio * outputScroll.MaximumY);
             outputTextbox.Invalidate();
         }
 
         private void OutputTextbox_Scroll(object? sender, ScrollEventArgs e)
         {
-            if (!syncScrollToolStripCheckBox.Checked || inputMaximumScroll < 0) return;
-            var ratio = outputTextbox.VerticalScroll.Value / outputMaximumScroll;
-            inputTextbox.VerticalScroll.Value = (int)(ratio * inputMaximumScroll);
+            if (!syncScrollToolStripCheckBox.Checked || inputScroll.MaximumY < 0) return;
+            var ratio = outputTextbox.VerticalScroll.Value / outputScroll.MaximumY;
+            inputTextbox.VerticalScroll.Value = (int)(ratio * inputScroll.MaximumY);
             inputTextbox.Invalidate();
         }
 
         private void InputMatchesTextbox_SizeChanged(object? sender, EventArgs e)
         {
-            inputMatchesMaximumScroll = (inputMatchesTextbox.LineInfos.Sum(li => li.WordWrapStringsCount) + 1) * inputMatchesTextbox.CharHeight - inputMatchesTextbox.Height + 2; //Wish I knew why it has to be +2 for this and -2 for the other
+            inputScroll.MatchesMaximumY = (inputMatchesTextbox.LineInfos.Sum(li => li.WordWrapStringsCount) + 1) * inputMatchesTextbox.CharHeight - inputMatchesTextbox.Height + 2; //Wish I knew why it has to be +2 for this and -2 for the other
         }
 
         private void OutputMatchesTextbox_SizeChanged(object? sender, EventArgs e)
         {
-            outputMatchesMaximumScroll = (outputMatchesTextbox.LineInfos.Sum(li => li.WordWrapStringsCount) + 1) * outputMatchesTextbox.CharHeight - outputMatchesTextbox.Height + 2;
+            outputScroll.MatchesMaximumY = (outputMatchesTextbox.LineInfos.Sum(li => li.WordWrapStringsCount) + 1) * outputMatchesTextbox.CharHeight - outputMatchesTextbox.Height + 2;
         }
 
         private void InputMatchesTextbox_Scroll(object? sender, ScrollEventArgs e)
         {
             //Debug.WriteLine($"{e.OldValue}... {e.NewValue}... {inputMatchesTextbox.VerticalScroll.Value}... {inputMatchesTextbox.Height}... {inputMatchesTextbox.Size.Height}");
             //Debug.WriteLine($"{inputMatchesTextbox.Height}...{inputMatchesTextbox.CharHeight}...{inputMatchesTextbox.TextHeight}...{inputMatchesTextbox.LinesCount}");
-            if (!syncScrollToolStripCheckBox.Checked || outputMatchesMaximumScroll < 0) return;
-            var ratio = inputMatchesTextbox.VerticalScroll.Value / inputMatchesMaximumScroll;
-            outputMatchesTextbox.VerticalScroll.Value = (int)(ratio * outputMatchesMaximumScroll);
+            if (!syncScrollToolStripCheckBox.Checked || outputScroll.MatchesMaximumY < 0) return;
+            var ratio = inputMatchesTextbox.VerticalScroll.Value / inputScroll.MatchesMaximumY;
+            outputMatchesTextbox.VerticalScroll.Value = (int)(ratio * outputScroll.MatchesMaximumY);
             outputMatchesTextbox.Invalidate();
         }
 
         private void OutputMatchesTextbox_Scroll(object? sender, ScrollEventArgs e)
         {
-            if (!syncScrollToolStripCheckBox.Checked || inputMatchesMaximumScroll < 0) return;
-            var ratio = outputMatchesTextbox.VerticalScroll.Value / outputMatchesMaximumScroll;
-            inputMatchesTextbox.VerticalScroll.Value = (int)(ratio * inputMatchesMaximumScroll);
+            if (!syncScrollToolStripCheckBox.Checked || inputScroll.MatchesMaximumY < 0) return;
+            var ratio = outputMatchesTextbox.VerticalScroll.Value / outputScroll.MatchesMaximumY;
+            inputMatchesTextbox.VerticalScroll.Value = (int)(ratio * inputScroll.MatchesMaximumY);
             inputMatchesTextbox.Invalidate();
         }
 
@@ -524,24 +520,24 @@ namespace RegexerUIV2
 
         private void inputDataGridView_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
         {
-            inputIndieMaximumScrollX += e.Column.Width;
+            inputScroll.IndieMaximumX += e.Column.Width;
         }
 
         private void outputDataGridView_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
         {
-            outputIndieMaximumScrollX += e.Column.Width;
+            outputScroll.IndieMaximumX += e.Column.Width;
         }
 
         private void inputDataGridView_Scroll(object sender, ScrollEventArgs e)
         {
             //Debug.WriteLine($"{e.OldValue}... {e.NewValue}... {inputDataGridView.HorizontalScrollingOffset}... {inputDataGridView.VerticalScrollingOffset}... {inputDataGridView.Width}...");
             var isHorizontal = e.ScrollOrientation == ScrollOrientation.HorizontalScroll;
-            if (indieMatchIsScrolling || !syncScrollToolStripCheckBox.Checked || (isHorizontal && inputIndieMaximumScrollX < 0)) return;
+            if (indieMatchIsScrolling || !syncScrollToolStripCheckBox.Checked || (isHorizontal && inputScroll.IndieMaximumX < 0)) return;
             indieMatchIsScrolling = true;
             if (isHorizontal)
             {
-                var ratio = inputDataGridView.HorizontalScrollingOffset / inputIndieMaximumScrollX;
-                outputDataGridView.HorizontalScrollingOffset = (int)(ratio * outputIndieMaximumScrollX);
+                var ratio = inputDataGridView.HorizontalScrollingOffset / inputScroll.IndieMaximumX;
+                outputDataGridView.HorizontalScrollingOffset = (int)(ratio * outputScroll.IndieMaximumX);
             }
             else outputDataGridView.FirstDisplayedScrollingRowIndex = inputDataGridView.FirstDisplayedScrollingRowIndex;
             indieMatchIsScrolling = false;
@@ -550,13 +546,13 @@ namespace RegexerUIV2
         private void outputDataGridView_Scroll(object sender, ScrollEventArgs e)
         {
             var isHorizontal = e.ScrollOrientation == ScrollOrientation.HorizontalScroll;
-            if (indieMatchIsScrolling || !syncScrollToolStripCheckBox.Checked || (isHorizontal && outputIndieMaximumScrollX < 0)) return;
+            if (indieMatchIsScrolling || !syncScrollToolStripCheckBox.Checked || (isHorizontal && outputScroll.IndieMaximumX < 0)) return;
             indieMatchIsScrolling = true;
             //Debug.WriteLine($"{e.OldValue}... {e.NewValue}... {outputDataGridView.HorizontalScrollingOffset}... {outputDataGridView.VerticalScrollingOffset}... {outputDataGridView.Width}...");
             if (isHorizontal)
             {
-                var ratio = outputDataGridView.HorizontalScrollingOffset / outputIndieMaximumScrollX;
-                inputDataGridView.HorizontalScrollingOffset = (int)(ratio * inputIndieMaximumScrollX);
+                var ratio = outputDataGridView.HorizontalScrollingOffset / outputScroll.IndieMaximumX;
+                inputDataGridView.HorizontalScrollingOffset = (int)(ratio * inputScroll.IndieMaximumX);
             }
             else inputDataGridView.FirstDisplayedScrollingRowIndex = outputDataGridView.FirstDisplayedScrollingRowIndex;
             indieMatchIsScrolling = false;
@@ -614,5 +610,12 @@ namespace RegexerUIV2
             monoColouredToolStripMenuItem.Checked = false;
             await FindAndReplace();
         }
+    }
+
+    internal struct ScrollValues
+    {
+        public double MaximumY { get; set; }
+        public double MatchesMaximumY { get; set; }
+        public double IndieMaximumX { get; set; }
     }
 }
