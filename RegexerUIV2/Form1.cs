@@ -359,11 +359,6 @@ namespace RegexerUIV2
             matchNavLabel.Text = $"{currentMatchRange + 1} of {matchRanges.Count} matches";
         }
 
-        private void fasterMLCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            //regexer.EnableFasterML(fasterMLToolStripCheckbox.Checked);
-        }
-
         private void wordWrapToolStripCheckBox_Click(object sender, EventArgs e)
         {
             inputTextbox.WordWrap = wordWrapToolStripCheckBox.Checked;
@@ -586,20 +581,20 @@ namespace RegexerUIV2
             await FindAndReplace();
         }
 
-        private void alwaysSuggestToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (alwaysSuggestToolStripMenuItem.Checked) return;
-            alwaysSuggestToolStripMenuItem.Checked = true;
-            fctbManager.SetSuggestionMode(false);
-            suggestOnCommandToolStripMenuItem.Checked = false;
-        }
-
         private void suggestOnCommandToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (suggestOnCommandToolStripMenuItem.Checked) return;
             suggestOnCommandToolStripMenuItem.Checked = true;
             fctbManager.SetSuggestionMode(true);
             alwaysSuggestToolStripMenuItem.Checked = false;
+        }
+
+        private void alwaysSuggestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (alwaysSuggestToolStripMenuItem.Checked) return;
+            alwaysSuggestToolStripMenuItem.Checked = true;
+            fctbManager.SetSuggestionMode(false);
+            suggestOnCommandToolStripMenuItem.Checked = false;
         }
 
         private async void monoColouredToolStripMenuItem_Click(object sender, EventArgs e)

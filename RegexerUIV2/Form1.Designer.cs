@@ -61,8 +61,8 @@
             exactWhitespaceToolStripCheckbox = new ToolStripMenuItem();
             limitSubmatchesToolStripCheckBox = new ToolStripMenuItem();
             suggestionModeToolStripMenuItem = new ToolStripMenuItem();
-            alwaysSuggestToolStripMenuItem = new ToolStripMenuItem();
             suggestOnCommandToolStripMenuItem = new ToolStripMenuItem();
+            alwaysSuggestToolStripMenuItem = new ToolStripMenuItem();
             highlightModeToolStripMenuItem = new ToolStripMenuItem();
             monoColouredToolStripMenuItem = new ToolStripMenuItem();
             multiColouredToolStripMenuItem = new ToolStripMenuItem();
@@ -408,22 +408,22 @@
             suggestionModeToolStripMenuItem.Size = new Size(201, 22);
             suggestionModeToolStripMenuItem.Text = "Suggestion mode";
             // 
+            // suggestOnCommandToolStripMenuItem
+            // 
+            suggestOnCommandToolStripMenuItem.Name = "suggestOnCommandToolStripMenuItem";
+            suggestOnCommandToolStripMenuItem.Size = new Size(148, 22);
+            suggestOnCommandToolStripMenuItem.Text = "On command";
+            suggestOnCommandToolStripMenuItem.ToolTipText = "Press CTRL + SPACE to show suggestions if there are any";
+            suggestOnCommandToolStripMenuItem.Click += suggestOnCommandToolStripMenuItem_Click;
+            // 
             // alwaysSuggestToolStripMenuItem
             // 
             alwaysSuggestToolStripMenuItem.Checked = true;
             alwaysSuggestToolStripMenuItem.CheckState = CheckState.Checked;
             alwaysSuggestToolStripMenuItem.Name = "alwaysSuggestToolStripMenuItem";
-            alwaysSuggestToolStripMenuItem.Size = new Size(180, 22);
+            alwaysSuggestToolStripMenuItem.Size = new Size(148, 22);
             alwaysSuggestToolStripMenuItem.Text = "Always";
             alwaysSuggestToolStripMenuItem.Click += alwaysSuggestToolStripMenuItem_Click;
-            // 
-            // suggestOnCommandToolStripMenuItem
-            // 
-            suggestOnCommandToolStripMenuItem.Name = "suggestOnCommandToolStripMenuItem";
-            suggestOnCommandToolStripMenuItem.Size = new Size(180, 22);
-            suggestOnCommandToolStripMenuItem.Text = "On command";
-            suggestOnCommandToolStripMenuItem.ToolTipText = "Press CTRL + SPACE to show suggestions if there are any";
-            suggestOnCommandToolStripMenuItem.Click += suggestOnCommandToolStripMenuItem_Click;
             // 
             // highlightModeToolStripMenuItem
             // 
