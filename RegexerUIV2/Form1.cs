@@ -79,6 +79,8 @@ namespace RegexerUIV2
             outputTextbox.Scroll += OutputTextbox_Scroll;
             inputMatchesTextbox.Scroll += InputMatchesTextbox_Scroll;
             outputMatchesTextbox.Scroll += OutputMatchesTextbox_Scroll;
+            inputDataGridView.MouseWheel += (_, args) => DataGridView_MouseWheel(inputDataGridView, false, args);
+            outputDataGridView.MouseWheel += (_, args) => DataGridView_MouseWheel(outputDataGridView, true, args);
         }
 
         private static FastColoredTextBox CreateFcTextBoxes(string name, int? tabIndex = null, EventHandler<TextChangedEventArgs>? eventHandler = null)
@@ -574,6 +576,23 @@ namespace RegexerUIV2
             }
             else inputDataGridView.FirstDisplayedScrollingRowIndex = outputDataGridView.FirstDisplayedScrollingRowIndex;
             indieMatchIsScrolling = false;
+        }
+
+        private void DataGridView_MouseWheel(DataGridView dataGridView, bool isOutput, MouseEventArgs args)
+        {
+            if ((ModifierKeys & Keys.Shift) != Keys.Shift) return;
+
+            ((HandledMouseEventArgs)args).Handled = true;
+
+            var scrollAmount = SystemInformation.MouseWheelScrollLines * 15;
+            var newValue = dataGridView.HorizontalScrollingOffset - Math.Sign(args.Delta) * scrollAmount;
+            var newScrollOffset = int.Clamp(newValue, 0, isOutput ? outputScroll.IndieMaximumX : inputScroll.IndieMaximumX);
+            var scrollEvent = new ScrollEventArgs(args.Delta < 0 ? ScrollEventType.SmallDecrement : ScrollEventType.SmallIncrement,
+                dataGridView.HorizontalScrollingOffset, newScrollOffset, ScrollOrientation.HorizontalScroll);
+            dataGridView.HorizontalScrollingOffset = newScrollOffset;
+
+            if (isOutput) outputDataGridView_Scroll(dataGridView, scrollEvent);
+            else inputDataGridView_Scroll(dataGridView, scrollEvent);
         }
 
         private void clearPatternsToolStripMenuItem_Click(object sender, EventArgs e)
