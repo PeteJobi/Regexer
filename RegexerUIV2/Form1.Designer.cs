@@ -193,8 +193,8 @@
             outputDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             outputDataGridView.Size = new Size(414, 629);
             outputDataGridView.TabIndex = 0;
+            outputDataGridView.RowHeadersWidthChanged += outputDataGridView_RowHeadersWidthChanged;
             outputDataGridView.CellPainting += IndieMatchesDataGridView_CellPainting;
-            outputDataGridView.ColumnAdded += outputDataGridView_ColumnWidthChanged;
             outputDataGridView.ColumnWidthChanged += outputDataGridView_ColumnWidthChanged;
             outputDataGridView.Scroll += outputDataGridView_Scroll;
             outputDataGridView.SelectionChanged += IndieMatchesDataGridView_SelectionChanged;
@@ -285,6 +285,7 @@
             inputDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             inputDataGridView.Size = new Size(413, 629);
             inputDataGridView.TabIndex = 0;
+            inputDataGridView.RowHeadersWidthChanged += inputDataGridView_RowHeadersWidthChanged;
             inputDataGridView.CellPainting += IndieMatchesDataGridView_CellPainting;
             inputDataGridView.ColumnAdded += inputDataGridView_ColumnWidthChanged;
             inputDataGridView.ColumnWidthChanged += inputDataGridView_ColumnWidthChanged;
@@ -339,7 +340,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, toolStripMenuItem2 });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(245, 24);
+            menuStrip1.Size = new Size(125, 24);
             menuStrip1.TabIndex = 3;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -435,7 +436,7 @@
             // monoColouredToolStripMenuItem
             // 
             monoColouredToolStripMenuItem.Name = "monoColouredToolStripMenuItem";
-            monoColouredToolStripMenuItem.Size = new Size(180, 22);
+            monoColouredToolStripMenuItem.Size = new Size(158, 22);
             monoColouredToolStripMenuItem.Text = "Mono-coloured";
             monoColouredToolStripMenuItem.Click += monoColouredToolStripMenuItem_Click;
             // 
@@ -444,7 +445,7 @@
             multiColouredToolStripMenuItem.Checked = true;
             multiColouredToolStripMenuItem.CheckState = CheckState.Checked;
             multiColouredToolStripMenuItem.Name = "multiColouredToolStripMenuItem";
-            multiColouredToolStripMenuItem.Size = new Size(180, 22);
+            multiColouredToolStripMenuItem.Size = new Size(158, 22);
             multiColouredToolStripMenuItem.Text = "Multi-coloured";
             multiColouredToolStripMenuItem.Click += multiColouredToolStripMenuItem_Click;
             // 
@@ -452,7 +453,7 @@
             // 
             toolStrip1.Dock = DockStyle.None;
             toolStrip1.Items.AddRange(new ToolStripItem[] { templatesComboBox, saveTemplateBut, deleteTemplateBut, toolStripSeparator1, prevBut, nextBut });
-            toolStrip1.Location = new Point(245, 0);
+            toolStrip1.Location = new Point(125, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(415, 24);
             toolStrip1.TabIndex = 4;
@@ -524,7 +525,7 @@
             // 
             matchNavLabel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             matchNavLabel.AutoSize = true;
-            matchNavLabel.Location = new Point(663, 0);
+            matchNavLabel.Location = new Point(543, 0);
             matchNavLabel.Name = "matchNavLabel";
             matchNavLabel.Size = new Size(38, 24);
             matchNavLabel.TabIndex = 5;

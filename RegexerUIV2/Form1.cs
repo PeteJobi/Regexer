@@ -47,8 +47,6 @@ namespace RegexerUIV2
             prevBut.Enabled = false;
             nextBut.Enabled = false;
             matchNavLabel.Visible = false;
-            inputScroll.IndieMaximumX = -inputDataGridView.Width + inputDataGridView.RowHeadersWidth + 2;
-            outputScroll.IndieMaximumX = -outputDataGridView.Width + outputDataGridView.RowHeadersWidth + 2;
         }
 
         private void InitializeFcTextBoxes()
@@ -534,12 +532,18 @@ namespace RegexerUIV2
 
         private void inputDataGridView_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
         {
-            inputScroll.IndieMaximumX += e.Column.Width;
+            var totalColumnsWidth = inputDataGridView.Columns.GetColumnsWidth(DataGridViewElementStates.Visible);
+            var rowHeadersWidth = inputDataGridView.RowHeadersVisible ? inputDataGridView.RowHeadersWidth : 0;
+            var usableClientWidth = inputDataGridView.ClientSize.Width - rowHeadersWidth;
+            inputScroll.IndieMaximumX = Math.Max(0, totalColumnsWidth - usableClientWidth);
         }
 
         private void outputDataGridView_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
         {
-            outputScroll.IndieMaximumX += e.Column.Width;
+            var totalColumnsWidth = outputDataGridView.Columns.GetColumnsWidth(DataGridViewElementStates.Visible);
+            var rowHeadersWidth = outputDataGridView.RowHeadersVisible ? outputDataGridView.RowHeadersWidth : 0;
+            var usableClientWidth = outputDataGridView.ClientSize.Width - rowHeadersWidth;
+            outputScroll.IndieMaximumX = Math.Max(0, totalColumnsWidth - usableClientWidth);
         }
 
         private void inputDataGridView_Scroll(object sender, ScrollEventArgs e)
@@ -624,6 +628,10 @@ namespace RegexerUIV2
             monoColouredToolStripMenuItem.Checked = false;
             await FindAndReplace();
         }
+
+        private void inputDataGridView_RowHeadersWidthChanged(object sender, EventArgs e) => inputDataGridView_ColumnWidthChanged(inputDataGridView, null!);
+
+        private void outputDataGridView_RowHeadersWidthChanged(object sender, EventArgs e) => outputDataGridView_ColumnWidthChanged(outputDataGridView, null!);
     }
 
     internal struct ScrollValues
