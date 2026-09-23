@@ -431,7 +431,7 @@ namespace RegexerV2
                     'w' => (hasL ? @"[\w\r\n]" : "\\w").AsSpan(),
                     'd' => (hasL ? @"[\d\r\n]" : "\\d").AsSpan(),
                     's' => (hasL ? "\\s" : @"[^\S\r\n]").AsSpan(),
-                    _ => restriction
+                    _ => hasL ? @"[\S\s]" : restriction
                 };
             }
 
