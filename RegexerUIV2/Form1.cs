@@ -47,6 +47,7 @@ namespace RegexerUIV2
             prevBut.Enabled = false;
             nextBut.Enabled = false;
             matchNavLabel.Visible = false;
+            findAndReplaceButton.Visible = false;
         }
 
         private void InitializeFcTextBoxes()
@@ -271,22 +272,32 @@ namespace RegexerUIV2
             ClearMatchDataGrids();
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (processOnButtonClickToolStripMenuItem.Checked && keyData == Keys.F3)
+            {
+                findAndReplaceButton.PerformClick();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private async void inputTextbox_TextChanged(object? sender, EventArgs e)
         {
-            await FindAndReplace();
+            if (!processOnButtonClickToolStripMenuItem.Checked) await FindAndReplace();
         }
 
         private async void findTextbox_TextChanged(object? sender, TextChangedEventArgs e)
         {
             fctbManager.HighlightAndSuggest(findTextbox, false);
             saveTemplateBut.Enabled = findTextbox.Text != string.Empty;
-            await FindAndReplace();
+            if (!processOnButtonClickToolStripMenuItem.Checked) await FindAndReplace();
         }
 
         private async void replaceTextbox_TextChanged(object? sender, TextChangedEventArgs e)
         {
             fctbManager.HighlightAndSuggest(replaceTextbox, true);
-            await FindAndReplace();
+            if (!processOnButtonClickToolStripMenuItem.Checked) await FindAndReplace();
         }
 
         private async void templatesComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -652,6 +663,13 @@ namespace RegexerUIV2
         private void inputDataGridView_RowHeadersWidthChanged(object sender, EventArgs e) => inputDataGridView_ColumnWidthChanged(inputDataGridView, null!);
 
         private void outputDataGridView_RowHeadersWidthChanged(object sender, EventArgs e) => outputDataGridView_ColumnWidthChanged(outputDataGridView, null!);
+
+        private void processOnButtonClickToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            findAndReplaceButton.Visible = processOnButtonClickToolStripMenuItem.Checked;
+        }
+
+        private async void findAndReplaceButton_Click(object sender, EventArgs e) => await FindAndReplace();
     }
 
     internal struct ScrollValues

@@ -54,6 +54,7 @@
             clearAllToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1 = new MenuStrip();
             toolStripMenuItem2 = new ToolStripMenuItem();
+            processOnButtonClickToolStripMenuItem = new ToolStripMenuItem();
             syncTabsToolStripCheckBox = new ToolStripMenuItem();
             syncScrollToolStripCheckBox = new ToolStripMenuItem();
             wordWrapToolStripCheckBox = new ToolStripMenuItem();
@@ -75,6 +76,7 @@
             nextBut = new ToolStripButton();
             flowLayoutPanel1 = new FlowLayoutPanel();
             matchNavLabel = new Label();
+            findAndReplaceButton = new Button();
             tableLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
             outputTabs.SuspendLayout();
@@ -346,10 +348,18 @@
             // 
             // toolStripMenuItem2
             // 
-            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, exactWhitespaceToolStripCheckbox, limitSubmatchesToolStripCheckBox, suggestionModeToolStripMenuItem, highlightModeToolStripMenuItem });
+            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { processOnButtonClickToolStripMenuItem, syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, exactWhitespaceToolStripCheckbox, limitSubmatchesToolStripCheckBox, suggestionModeToolStripMenuItem, highlightModeToolStripMenuItem });
             toolStripMenuItem2.Name = "toolStripMenuItem2";
             toolStripMenuItem2.Size = new Size(80, 20);
             toolStripMenuItem2.Text = "Preferences";
+            // 
+            // processOnButtonClickToolStripMenuItem
+            // 
+            processOnButtonClickToolStripMenuItem.CheckOnClick = true;
+            processOnButtonClickToolStripMenuItem.Name = "processOnButtonClickToolStripMenuItem";
+            processOnButtonClickToolStripMenuItem.Size = new Size(201, 22);
+            processOnButtonClickToolStripMenuItem.Text = "Process on button click";
+            processOnButtonClickToolStripMenuItem.CheckedChanged += processOnButtonClickToolStripMenuItem_CheckedChanged;
             // 
             // syncTabsToolStripCheckBox
             // 
@@ -518,7 +528,7 @@
             flowLayoutPanel1.Controls.Add(matchNavLabel);
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(1264, 24);
+            flowLayoutPanel1.Size = new Size(1128, 24);
             flowLayoutPanel1.TabIndex = 3;
             // 
             // matchNavLabel
@@ -532,6 +542,18 @@
             matchNavLabel.Text = "label1";
             matchNavLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // findAndReplaceButton
+            // 
+            findAndReplaceButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            findAndReplaceButton.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            findAndReplaceButton.Location = new Point(1134, 2);
+            findAndReplaceButton.Name = "findAndReplaceButton";
+            findAndReplaceButton.Size = new Size(130, 22);
+            findAndReplaceButton.TabIndex = 6;
+            findAndReplaceButton.Text = "Find and Replace (F3)";
+            findAndReplaceButton.UseVisualStyleBackColor = true;
+            findAndReplaceButton.Click += findAndReplaceButton_Click;
+            // 
             // RegexerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -539,6 +561,7 @@
             ClientSize = new Size(1264, 681);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(tableLayoutPanel1);
+            Controls.Add(findAndReplaceButton);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "RegexerForm";
             Text = "Regexer";
@@ -607,5 +630,7 @@
         private ToolStripMenuItem highlightModeToolStripMenuItem;
         private ToolStripMenuItem monoColouredToolStripMenuItem;
         private ToolStripMenuItem multiColouredToolStripMenuItem;
+        private ToolStripMenuItem processOnButtonClickToolStripMenuItem;
+        private Button findAndReplaceButton;
     }
 }
