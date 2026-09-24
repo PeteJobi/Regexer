@@ -248,8 +248,9 @@ namespace RegexerUIV2
                 MessageBox.Show("Template invalid");
                 return;
             }
-            findTextbox.Text = template[0];
+            findTextbox.Clear();
             replaceTextbox.Text = template[1];
+            findTextbox.Text = template[0];
         }
 
         private void ClearMatchDataGrids()
@@ -597,8 +598,8 @@ namespace RegexerUIV2
 
         private void clearPatternsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            findTextbox.Text = string.Empty;
-            replaceTextbox.Text = string.Empty;
+            findTextbox.Clear();
+            replaceTextbox.Clear();
         }
 
         private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)
