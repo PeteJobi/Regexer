@@ -18,6 +18,7 @@ namespace RegexerV2
         private readonly Dictionary<string, PatternData> patternMap = new();
         private readonly Structure[] FindStructureArray = [FindStructure];
         private readonly Structure[] ReplaceStructureArray = [ReplaceStructure];
+        public static readonly RegexerResult CancelledResult = new() { Output = "Cancelled" };
 
         public Regexer()
         {
@@ -58,24 +59,22 @@ namespace RegexerV2
 
         public void SetExactWhiteSpace(bool exactWhiteSpace) => _exactWhiteSpace = exactWhiteSpace;
 
-        public async Task<RegexerResult> AutoRegex(string input, string find, string replace, CancellationToken cancellationToken)
+        public async Task<RegexerResult> AutoRegexAsync(string input, string find, string replace, CancellationToken cancellationToken)
         {
-            return await await Task.WhenAny(Cancel(), Task.Run(() => AutoRegex(input, find, replace), cancellationToken));
-
-            async Task<RegexerResult> Cancel()
+            try
             {
-                try
-                {
-                    await Task.Delay(-1, cancellationToken);
-                }
-                catch (TaskCanceledException) { }
-                return new RegexerResult { Output = "Cancelled" };
+                return await Task.Run(() => AutoRegexInner(input, find, replace, cancellationToken), cancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+                return CancelledResult;
             }
         }
 
-        public RegexerResult AutoRegex(string input, string find, string replace)
+        private RegexerResult AutoRegexInner(string input, string find, string replace, CancellationToken cancellationToken)
         {
             var patternStructure = ParsePattern(find, false).ToArray();
+            cancellationToken.ThrowIfCancellationRequested();
 
             patternBuilder.Clear();
             patternMap.Clear();
@@ -84,9 +83,11 @@ namespace RegexerV2
             if (hasNewLine || hasMl) patternBuilder.Insert(0, $@"(?<=(?:^|\n))(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
             find = patternBuilder.ToString();
             var matches = Regex.Matches(input, find, RegexOptions.None, _regexTimeout);
+            cancellationToken.ThrowIfCancellationRequested();
             if (matches.Count == 0) return new RegexerResult { Output = input };
 
-            patternStructure = ParsePattern(replace, true).ToArray();
+            patternStructure = [.. ParsePattern(replace, true)];
+            cancellationToken.ThrowIfCancellationRequested();
 
             patternBuilder.Clear();
 
@@ -95,6 +96,7 @@ namespace RegexerV2
             var results = new RegexerMatchPair[matches.Count];
             for (var i = 0; i < matches.Count; i++)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 var prefixSpaceLength = 0;
                 patternBuilder.Append(input.AsSpan(lastInputMatchEnd, matches[i].Index - lastInputMatchEnd));
                 if (hasNewLine || hasMl)
@@ -105,11 +107,12 @@ namespace RegexerV2
                 outputOffset += matches[i].Index - lastInputMatchEnd;
                 var outputIndieMatches = new List<IndividualMatch>();
                 var length = prefixSpaceLength + ProcessReplaceFullStructure(replace, patternStructure, matches[i], i, outputIndieMatches, outputOffset + prefixSpaceLength);
+                cancellationToken.ThrowIfCancellationRequested();
                 results[i] = new RegexerMatchPair
                 {
                     InputMatch = new RegexerMatch(matches[i].Index, matches[i].Length, matches[i].Value)
                     {
-                        IndividualMatches = GetInputIndividualMatches(matches[i])
+                        IndividualMatches = GetInputIndividualMatches(matches[i], cancellationToken)
                     },
                     OutputMatch = new RegexerMatch(outputOffset, length, patternBuilder.ToString(outputOffset, length))
                     {
@@ -137,6 +140,8 @@ namespace RegexerV2
             //}
             //return result;
         }
+
+        public RegexerResult AutoRegex(string input, string find, string replace) => AutoRegexInner(input, find, replace, CancellationToken.None);
 
         private void ProcessFindFullStructure(string pattern, IEnumerable<Token> structure)
         {
@@ -885,9 +890,10 @@ namespace RegexerV2
             return totalLength;
         }
 
-        private List<IndividualMatch> GetInputIndividualMatches(Match match)
+        private List<IndividualMatch> GetInputIndividualMatches(Match match, CancellationToken cancellationToken)
         {
             var individualMatches = new List<IndividualMatch>();
+            cancellationToken.ThrowIfCancellationRequested();
             foreach (var label in patternMap.Keys)
             {
                 var n = GetAlphabeticalOrderIndex(individualMatches, l => l.Label, label);
@@ -911,7 +917,7 @@ namespace RegexerV2
                     captures.Add(new MatchData(matchCaptures[i].Index, matchCaptures[i].Length, matchCaptures[i].Value));
                 }
                 individualMatches.Insert(n.Index, new IndividualMatch(label, captures));
-
+                cancellationToken.ThrowIfCancellationRequested();
             }
 
             return individualMatches;

@@ -104,8 +104,8 @@ namespace RegexerUIV2
 
         public async Task FindAndReplace()
         {
-            //Debug.WriteLine($"{inputTextbox.Height}...{inputTextbox.CharHeight}...{inputTextbox.TextHeight}...{inputTextbox.LinesCount}");
-            await tokenSource.CancelAsync();
+            // ReSharper disable once MethodHasAsyncOverload
+            tokenSource.Cancel();
             tokenSource.Dispose();
             tokenSource = new CancellationTokenSource();
             if (inputTextbox.Text == string.Empty || findTextbox.Text == string.Empty)
@@ -123,8 +123,8 @@ namespace RegexerUIV2
 
             try
             {
-                var result = await regexer.AutoRegex(inputTextbox.Text, findTextbox.Text, replaceTextbox.Text, tokenSource.Token);
-                if (result.Output == "Cancelled") return;
+                var result = await regexer.AutoRegexAsync(inputTextbox.Text, findTextbox.Text, replaceTextbox.Text, tokenSource.Token);
+                if (result == Regexer.CancelledResult) return;
 
                 var scrollPositionX = outputTextbox.HorizontalScroll.Value;
                 var scrollPositionY = outputTextbox.VerticalScroll.Value;

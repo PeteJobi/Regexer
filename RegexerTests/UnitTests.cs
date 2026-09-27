@@ -33,7 +33,7 @@ namespace RegexerTests
         [MemberData(nameof(TestData), true)]
         public async Task TestV2(string testFolder, string input, string find, string replace, string output, RegexerMatchPair[]? matches)
         {
-            var result = await regexerV2.AutoRegex(input, find, replace, CancellationToken.None);
+            var result = await regexerV2.AutoRegexAsync(input, find, replace, CancellationToken.None);
             //var x = JsonConvert.SerializeObject(result.Matches);
             Assert.NotNull(result);
             Assert.Equal(output, result.Output);
