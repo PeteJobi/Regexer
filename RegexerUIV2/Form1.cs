@@ -11,6 +11,7 @@ namespace RegexerUIV2
 {
     public partial class RegexerForm : Form
     {
+        private const int MatchesTabIndex = 1;
         private readonly Regexer regexer;
         private string currentFileName;
         private CancellationTokenSource tokenSource;
@@ -34,6 +35,8 @@ namespace RegexerUIV2
             Trimming = StringTrimming.EllipsisCharacter,
             FormatFlags = StringFormatFlags.NoWrap
         };
+        private RegexerMatchPair[] _regexerMatchPairs = [];
+        private bool _matchesTabCanBeStyled;
 
 
         public RegexerForm()
@@ -136,32 +139,30 @@ namespace RegexerUIV2
 
                 if (result.Matches != null)
                 {
-                    inputMatchesTextbox.Text = string.Join('\n', result.Matches.Select(m => m.InputMatch.Text));
-                    outputMatchesTextbox.Text = string.Join('\n', result.Matches.Select(m => m.OutputMatch.Text));
 
-                    var lastInputMatchEndIndex = 0;
-                    var lastOutputMatchEndIndex = 0;
-                    var alternate = false;
                     foreach (var matchPair in result.Matches)
                     {
                         var matchRange = inputTextbox.GetRange(matchPair.InputMatch.Index, matchPair.InputMatch.Index + matchPair.InputMatch.Length);
                         (Range inpRange, Range? outRange) pairRanges = (matchRange, null);
                         matchRange.SetStyle(FctbManager.BaseStyleIndex);
-                        alternate = !alternate;
-                        var inputMatchRange = inputMatchesTextbox.GetRange(lastInputMatchEndIndex, lastInputMatchEndIndex += matchPair.InputMatch.Length + 2);
-                        inputMatchLineBackgroundData.AddRange(Enumerable.Repeat(alternate, inputMatchRange.End.iLine - inputMatchRange.Start.iLine));
 
                         matchRange = outputTextbox.GetRange(matchPair.OutputMatch.Index, matchPair.OutputMatch.Index + matchPair.OutputMatch.Length);
                         matchRange.SetStyle(FctbManager.BaseStyleIndex);
                         pairRanges.outRange = matchRange;
-                        var outputMatchRange = outputMatchesTextbox.GetRange(lastOutputMatchEndIndex, lastOutputMatchEndIndex += matchPair.OutputMatch.Length + 2);
-                        outputMatchLineBackgroundData.AddRange(Enumerable.Repeat(alternate, outputMatchRange.End.iLine - outputMatchRange.Start.iLine));
 
                         matchRanges.Add(pairRanges);
                     }
-                    inputMatchLineBackgroundData.Add(alternate);
-                    outputMatchLineBackgroundData.Add(alternate);
                     fctbManager.StyleMatches(inputTextbox, outputTextbox, result);
+
+                    _regexerMatchPairs = result.Matches;
+
+                    inputMatchesTextbox.Text = string.Join(Environment.NewLine, result.Matches.Select(m => m.InputMatch.Text));
+                    outputMatchesTextbox.Text = string.Join(Environment.NewLine, result.Matches.Select(m => m.OutputMatch.Text));
+
+                    _matchesTabCanBeStyled = true;
+                    if (inputTabs.SelectedIndex == MatchesTabIndex || outputTabs.SelectedIndex == MatchesTabIndex)
+                        _ = StyleMatchesTab(tokenSource.Token);
+
                     fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView, result, limitSubmatchesToolStripCheckBox.Checked);
                 }
                 if (matchRanges.Count > 0)
@@ -280,6 +281,39 @@ namespace RegexerUIV2
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private async Task StyleMatchesTab(CancellationToken cancellationToken)
+        {
+            if(!_matchesTabCanBeStyled) return;
+            _matchesTabCanBeStyled = false;
+            const int batchSize = 500;
+            var batches = _regexerMatchPairs.Chunk(batchSize);
+            var lastInputMatchEndIndex = 0;
+            var lastOutputMatchEndIndex = 0;
+            var alternate = false;
+
+            await Task.Run(async () =>
+            {
+                foreach (var batch in batches)
+                {
+                    foreach (var matchPair in batch)
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+                        alternate = !alternate;
+                        var inputMatchRange = inputMatchesTextbox.GetRange(lastInputMatchEndIndex, lastInputMatchEndIndex += matchPair.InputMatch.Length + 2);
+                        inputMatchLineBackgroundData.AddRange(Enumerable.Repeat(alternate, inputMatchRange.End.iLine - inputMatchRange.Start.iLine));
+
+                        var outputMatchRange = outputMatchesTextbox.GetRange(lastOutputMatchEndIndex, lastOutputMatchEndIndex += matchPair.OutputMatch.Length + 2);
+                        outputMatchLineBackgroundData.AddRange(Enumerable.Repeat(alternate, outputMatchRange.End.iLine - outputMatchRange.Start.iLine));
+                    }
+
+                    if(_regexerMatchPairs.Length > batchSize) await Task.Delay(1000, cancellationToken);
+                }
+                Debug.WriteLine(inputMatchLineBackgroundData.Count);
+                inputMatchLineBackgroundData.Add(alternate);
+                outputMatchLineBackgroundData.Add(alternate);
+            }, cancellationToken);
         }
 
         private async void inputTextbox_TextChanged(object? sender, EventArgs e)
@@ -472,11 +506,13 @@ namespace RegexerUIV2
         private void inputTabs_Selected(object sender, TabControlEventArgs e)
         {
             if (syncTabsToolStripCheckBox.Checked) outputTabs.SelectTab(e.TabPageIndex);
+            if(e.TabPageIndex == MatchesTabIndex) _ = StyleMatchesTab(tokenSource.Token);
         }
 
         private void outputTabs_Selected(object sender, TabControlEventArgs e)
         {
             if (syncTabsToolStripCheckBox.Checked) inputTabs.SelectTab(e.TabPageIndex);
+            if(e.TabPageIndex == MatchesTabIndex) _ = StyleMatchesTab(tokenSource.Token);
         }
 
         private void IndieMatchesDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
