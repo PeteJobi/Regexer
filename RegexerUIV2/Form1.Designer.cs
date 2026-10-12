@@ -60,7 +60,6 @@
             wordWrapToolStripCheckBox = new ToolStripMenuItem();
             lineNumbersToolStripCheckbox = new ToolStripMenuItem();
             exactWhitespaceToolStripCheckbox = new ToolStripMenuItem();
-            limitSubmatchesToolStripCheckBox = new ToolStripMenuItem();
             suggestionModeToolStripMenuItem = new ToolStripMenuItem();
             suggestOnCommandToolStripMenuItem = new ToolStripMenuItem();
             alwaysSuggestToolStripMenuItem = new ToolStripMenuItem();
@@ -342,13 +341,13 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, toolStripMenuItem2 });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(125, 24);
+            menuStrip1.Size = new Size(245, 24);
             menuStrip1.TabIndex = 3;
             menuStrip1.Text = "menuStrip1";
             // 
             // toolStripMenuItem2
             // 
-            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { processOnButtonClickToolStripMenuItem, syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, exactWhitespaceToolStripCheckbox, limitSubmatchesToolStripCheckBox, suggestionModeToolStripMenuItem, highlightModeToolStripMenuItem });
+            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { processOnButtonClickToolStripMenuItem, syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, exactWhitespaceToolStripCheckbox, suggestionModeToolStripMenuItem, highlightModeToolStripMenuItem });
             toolStripMenuItem2.Name = "toolStripMenuItem2";
             toolStripMenuItem2.Size = new Size(80, 20);
             toolStripMenuItem2.Text = "Preferences";
@@ -357,7 +356,7 @@
             // 
             processOnButtonClickToolStripMenuItem.CheckOnClick = true;
             processOnButtonClickToolStripMenuItem.Name = "processOnButtonClickToolStripMenuItem";
-            processOnButtonClickToolStripMenuItem.Size = new Size(201, 22);
+            processOnButtonClickToolStripMenuItem.Size = new Size(197, 22);
             processOnButtonClickToolStripMenuItem.Text = "Process on button click";
             processOnButtonClickToolStripMenuItem.CheckedChanged += processOnButtonClickToolStripMenuItem_CheckedChanged;
             // 
@@ -366,7 +365,7 @@
             syncTabsToolStripCheckBox.Checked = true;
             syncTabsToolStripCheckBox.CheckState = CheckState.Checked;
             syncTabsToolStripCheckBox.Name = "syncTabsToolStripCheckBox";
-            syncTabsToolStripCheckBox.Size = new Size(201, 22);
+            syncTabsToolStripCheckBox.Size = new Size(197, 22);
             syncTabsToolStripCheckBox.Text = "Sync tabs";
             // 
             // syncScrollToolStripCheckBox
@@ -375,14 +374,14 @@
             syncScrollToolStripCheckBox.CheckOnClick = true;
             syncScrollToolStripCheckBox.CheckState = CheckState.Checked;
             syncScrollToolStripCheckBox.Name = "syncScrollToolStripCheckBox";
-            syncScrollToolStripCheckBox.Size = new Size(201, 22);
+            syncScrollToolStripCheckBox.Size = new Size(197, 22);
             syncScrollToolStripCheckBox.Text = "Sync scroll";
             // 
             // wordWrapToolStripCheckBox
             // 
             wordWrapToolStripCheckBox.CheckOnClick = true;
             wordWrapToolStripCheckBox.Name = "wordWrapToolStripCheckBox";
-            wordWrapToolStripCheckBox.Size = new Size(201, 22);
+            wordWrapToolStripCheckBox.Size = new Size(197, 22);
             wordWrapToolStripCheckBox.Text = "Word wrap";
             wordWrapToolStripCheckBox.Click += wordWrapToolStripCheckBox_Click;
             // 
@@ -390,7 +389,7 @@
             // 
             lineNumbersToolStripCheckbox.CheckOnClick = true;
             lineNumbersToolStripCheckbox.Name = "lineNumbersToolStripCheckbox";
-            lineNumbersToolStripCheckbox.Size = new Size(201, 22);
+            lineNumbersToolStripCheckbox.Size = new Size(197, 22);
             lineNumbersToolStripCheckbox.Text = "Line numbers";
             lineNumbersToolStripCheckbox.Click += lineNumbersToolStripCheckbox_Click;
             // 
@@ -398,31 +397,21 @@
             // 
             exactWhitespaceToolStripCheckbox.CheckOnClick = true;
             exactWhitespaceToolStripCheckbox.Name = "exactWhitespaceToolStripCheckbox";
-            exactWhitespaceToolStripCheckbox.Size = new Size(201, 22);
+            exactWhitespaceToolStripCheckbox.Size = new Size(197, 22);
             exactWhitespaceToolStripCheckbox.Text = "Exact whitespace";
             exactWhitespaceToolStripCheckbox.CheckedChanged += exactWhitespaceCheckBox_CheckedChanged;
-            // 
-            // limitSubmatchesToolStripCheckBox
-            // 
-            limitSubmatchesToolStripCheckBox.Checked = true;
-            limitSubmatchesToolStripCheckBox.CheckOnClick = true;
-            limitSubmatchesToolStripCheckBox.CheckState = CheckState.Checked;
-            limitSubmatchesToolStripCheckBox.Name = "limitSubmatchesToolStripCheckBox";
-            limitSubmatchesToolStripCheckBox.Size = new Size(201, 22);
-            limitSubmatchesToolStripCheckBox.Text = "Limit sub-matches rows";
-            limitSubmatchesToolStripCheckBox.Click += limitSubmatchesToolStripCheckBox_Click;
             // 
             // suggestionModeToolStripMenuItem
             // 
             suggestionModeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { suggestOnCommandToolStripMenuItem, alwaysSuggestToolStripMenuItem });
             suggestionModeToolStripMenuItem.Name = "suggestionModeToolStripMenuItem";
-            suggestionModeToolStripMenuItem.Size = new Size(201, 22);
+            suggestionModeToolStripMenuItem.Size = new Size(197, 22);
             suggestionModeToolStripMenuItem.Text = "Suggestion mode";
             // 
             // suggestOnCommandToolStripMenuItem
             // 
             suggestOnCommandToolStripMenuItem.Name = "suggestOnCommandToolStripMenuItem";
-            suggestOnCommandToolStripMenuItem.Size = new Size(148, 22);
+            suggestOnCommandToolStripMenuItem.Size = new Size(180, 22);
             suggestOnCommandToolStripMenuItem.Text = "On command";
             suggestOnCommandToolStripMenuItem.ToolTipText = "Press CTRL + SPACE to show suggestions if there are any";
             suggestOnCommandToolStripMenuItem.Click += suggestOnCommandToolStripMenuItem_Click;
@@ -432,7 +421,7 @@
             alwaysSuggestToolStripMenuItem.Checked = true;
             alwaysSuggestToolStripMenuItem.CheckState = CheckState.Checked;
             alwaysSuggestToolStripMenuItem.Name = "alwaysSuggestToolStripMenuItem";
-            alwaysSuggestToolStripMenuItem.Size = new Size(148, 22);
+            alwaysSuggestToolStripMenuItem.Size = new Size(180, 22);
             alwaysSuggestToolStripMenuItem.Text = "Always";
             alwaysSuggestToolStripMenuItem.Click += alwaysSuggestToolStripMenuItem_Click;
             // 
@@ -440,7 +429,7 @@
             // 
             highlightModeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { monoColouredToolStripMenuItem, multiColouredToolStripMenuItem });
             highlightModeToolStripMenuItem.Name = "highlightModeToolStripMenuItem";
-            highlightModeToolStripMenuItem.Size = new Size(201, 22);
+            highlightModeToolStripMenuItem.Size = new Size(197, 22);
             highlightModeToolStripMenuItem.Text = "Highlight mode";
             // 
             // monoColouredToolStripMenuItem
@@ -463,7 +452,7 @@
             // 
             toolStrip1.Dock = DockStyle.None;
             toolStrip1.Items.AddRange(new ToolStripItem[] { templatesComboBox, saveTemplateBut, deleteTemplateBut, toolStripSeparator1, prevBut, nextBut });
-            toolStrip1.Location = new Point(125, 0);
+            toolStrip1.Location = new Point(245, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(415, 24);
             toolStrip1.TabIndex = 4;
@@ -535,7 +524,7 @@
             // 
             matchNavLabel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             matchNavLabel.AutoSize = true;
-            matchNavLabel.Location = new Point(543, 0);
+            matchNavLabel.Location = new Point(663, 0);
             matchNavLabel.Name = "matchNavLabel";
             matchNavLabel.Size = new Size(38, 24);
             matchNavLabel.TabIndex = 5;
@@ -623,7 +612,6 @@
         private Label matchNavLabel;
         private ToolStripMenuItem wordWrapToolStripCheckBox;
         private ToolStripMenuItem lineNumbersToolStripCheckbox;
-        private ToolStripMenuItem limitSubmatchesToolStripCheckBox;
         private ToolStripMenuItem suggestionModeToolStripMenuItem;
         private ToolStripMenuItem alwaysSuggestToolStripMenuItem;
         private ToolStripMenuItem suggestOnCommandToolStripMenuItem;
