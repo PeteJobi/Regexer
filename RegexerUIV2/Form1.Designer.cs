@@ -192,7 +192,7 @@
             outputDataGridView.Location = new Point(0, 0);
             outputDataGridView.Name = "outputDataGridView";
             outputDataGridView.ReadOnly = true;
-            outputDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            outputDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             outputDataGridView.Size = new Size(414, 629);
             outputDataGridView.TabIndex = 0;
             outputDataGridView.RowHeadersWidthChanged += outputDataGridView_RowHeadersWidthChanged;
@@ -284,7 +284,7 @@
             inputDataGridView.Location = new Point(0, 0);
             inputDataGridView.Name = "inputDataGridView";
             inputDataGridView.ReadOnly = true;
-            inputDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            inputDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             inputDataGridView.Size = new Size(413, 629);
             inputDataGridView.TabIndex = 0;
             inputDataGridView.RowHeadersWidthChanged += inputDataGridView_RowHeadersWidthChanged;
