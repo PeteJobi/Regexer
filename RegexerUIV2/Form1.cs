@@ -12,6 +12,7 @@ namespace RegexerUIV2
     public partial class RegexerForm : Form
     {
         private const int MatchesTabIndex = 1;
+        private const int IndieMatchesTabIndex = 2;
         private readonly Regexer regexer;
         private string currentFileName;
         private CancellationTokenSource tokenSource;
@@ -163,7 +164,9 @@ namespace RegexerUIV2
                     if (inputTabs.SelectedIndex == MatchesTabIndex || outputTabs.SelectedIndex == MatchesTabIndex)
                         _ = StyleMatchesTab(tokenSource.Token);
 
-                    fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView, result, limitSubmatchesToolStripCheckBox.Checked);
+                    fctbManager.SetIndieMatchesTabCanBeStyled(true);
+                    if (inputTabs.SelectedIndex == IndieMatchesTabIndex || outputTabs.SelectedIndex == IndieMatchesTabIndex)
+                        _ = fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView, _regexerMatchPairs, tokenSource.Token);
                 }
                 if (matchRanges.Count > 0)
                 {
@@ -266,6 +269,7 @@ namespace RegexerUIV2
         private void Reset()
         {
             outputTextbox.Text = inputMatchesTextbox.Text = outputMatchesTextbox.Text = string.Empty;
+            _regexerMatchPairs = [];
             matchRanges.Clear();
             inputMatchLineBackgroundData.Clear();
             outputMatchLineBackgroundData.Clear();
@@ -506,13 +510,25 @@ namespace RegexerUIV2
         private void inputTabs_Selected(object sender, TabControlEventArgs e)
         {
             if (syncTabsToolStripCheckBox.Checked) outputTabs.SelectTab(e.TabPageIndex);
-            if(e.TabPageIndex == MatchesTabIndex) _ = StyleMatchesTab(tokenSource.Token);
+            _ = e.TabPageIndex switch
+            {
+                MatchesTabIndex => StyleMatchesTab(tokenSource.Token),
+                IndieMatchesTabIndex => fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView,
+                    _regexerMatchPairs, tokenSource.Token),
+                _ => null
+            };
         }
 
         private void outputTabs_Selected(object sender, TabControlEventArgs e)
         {
             if (syncTabsToolStripCheckBox.Checked) inputTabs.SelectTab(e.TabPageIndex);
-            if(e.TabPageIndex == MatchesTabIndex) _ = StyleMatchesTab(tokenSource.Token);
+            _ = e.TabPageIndex switch
+            {
+                MatchesTabIndex => StyleMatchesTab(tokenSource.Token),
+                IndieMatchesTabIndex => fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView,
+                    _regexerMatchPairs, tokenSource.Token),
+                _ => null
+            };
         }
 
         private void IndieMatchesDataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)

@@ -60,6 +60,7 @@ namespace RegexerUIV2
         private List<SyntaxStructure.SuggestionToken> _suggestionTokens = [];
         private bool _showSuggestionsOnCommand;
         private bool _monoColouredHighlight;
+        private bool _indieMatchesTabCanBeStyled;
 
         public void SetupTextBoxStyles(FastColoredTextBox inputTextBox, FastColoredTextBox outputTextBox)
         {
@@ -272,14 +273,18 @@ namespace RegexerUIV2
             }
         }
 
-        public void PopulateSubMatches(DataGridView inputGrid, DataGridView outputGrid, RegexerResult result, bool limit)
+        public void SetIndieMatchesTabCanBeStyled(bool canBeStyled) => _indieMatchesTabCanBeStyled = canBeStyled;
+        public async Task PopulateSubMatches(DataGridView inputGrid, DataGridView outputGrid, RegexerMatchPair[] matchPairs, CancellationToken cancellationToken)
         {
+            if (!_indieMatchesTabCanBeStyled) return;
+            _indieMatchesTabCanBeStyled = false;
             _labelStyleBrushes.Clear();
 
-            for (var i = 0; i < result.Matches[0].InputMatch.IndividualMatches.Count; i++)
+            for (var i = 0; i < matchPairs[0].InputMatch.IndividualMatches.Count; i++)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 if (i == IndividualMatchStyles.Length) i = 0;
-                var match = result.Matches[0].InputMatch.IndividualMatches[i];
+                var match = matchPairs[0].InputMatch.IndividualMatches[i];
                 inputGrid.Columns.Add(match.Label, match.Label);
                 outputGrid.Columns.Add(match.Label, match.Label);
                 var brush = _monoColouredHighlight ? (SolidBrush)Brushes.Black : (SolidBrush)IndividualMatchStyles[i].ForeBrush;
@@ -288,33 +293,44 @@ namespace RegexerUIV2
                 _labelStyleBrushes.Add(match.Label, brush);
             }
 
-            //inputGrid.RowHeadersVisible = false; //Disabling and re-enabling this after the for-loop saves performance, but it's not needed with the limit
-            //TODO: find a way to save performance without limiting the number of rows. Take a look at https://stackoverflow.com/questions/10226992/slow-performance-in-populating-datagridview-with-large-data, https://10tec.com/articles/why-datagridview-slow.aspx
-            var rowCount = limit ? Math.Min(result.Matches.Length, 20) : result.Matches.Length;
-            for (var i = 0; i < rowCount; i++)
-            {
-                var matchPair = result.Matches[i];
-                SolidBrush brush;
-                if (matchPair.InputMatch.IndividualMatches.Count == 0) continue;
-                var dataGridRow = inputGrid.Rows[inputGrid.Rows.Add()];
-                dataGridRow.HeaderCell.Value = (dataGridRow.Index + 1).ToString();
-                foreach (var individualMatch in matchPair.InputMatch.IndividualMatches)
-                {
-                    brush = _labelStyleBrushes[individualMatch.Label];
-                    dataGridRow.Cells[individualMatch.Label].Value = new CellMatchData(individualMatch.Captures, brush);
-                }
+            const int batchSize = 500;
+            var batches = matchPairs.Chunk(batchSize);
 
-                if (matchPair.OutputMatch != null)
+            //inputGrid.RowHeadersVisible = false; //Disabling and re-enabling this after the population saves performance, if RowHeadersWidthSizeMode is set to AutoSizeToAllHeaders. It's currently set to AutoSizeToDisplayedHeaders.
+            //outputGrid.RowHeadersVisible = false;
+            await Task.Run(async () =>
+            {
+                foreach (var batch in batches)
                 {
-                    dataGridRow = outputGrid.Rows[outputGrid.Rows.Add()];
-                    dataGridRow.HeaderCell.Value = (dataGridRow.Index + 1).ToString();
-                    foreach (var individualMatch in matchPair.OutputMatch.IndividualMatches)
+                    foreach (var matchPair in batch)
                     {
-                        brush = _labelStyleBrushes[individualMatch.Label];
-                        dataGridRow.Cells[individualMatch.Label].Value = new CellMatchData(individualMatch.Captures, brush);
+                        SolidBrush brush;
+                        if (matchPair.InputMatch.IndividualMatches.Count == 0) continue;
+                        inputGrid.BeginInvoke(() =>
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
+                            var dataGridRow = inputGrid.Rows[inputGrid.Rows.Add()];
+                            dataGridRow.HeaderCell.Value = (dataGridRow.Index + 1).ToString();
+                            foreach (var individualMatch in matchPair.InputMatch.IndividualMatches)
+                            {
+                                brush = _labelStyleBrushes[individualMatch.Label];
+                                dataGridRow.Cells[individualMatch.Label].Value = new CellMatchData(individualMatch.Captures, brush);
+                            }
+
+                            dataGridRow = outputGrid.Rows[outputGrid.Rows.Add()];
+                            dataGridRow.HeaderCell.Value = (dataGridRow.Index + 1).ToString();
+                            foreach (var individualMatch in matchPair.OutputMatch.IndividualMatches)
+                            {
+                                brush = _labelStyleBrushes[individualMatch.Label];
+                                dataGridRow.Cells[individualMatch.Label].Value = new CellMatchData(individualMatch.Captures, brush);
+                            }
+                        });
                     }
+                    if (matchPairs.Length > batchSize) await Task.Delay(1000, cancellationToken);
                 }
-            }
+            }, cancellationToken);
+            //inputGrid.RowHeadersVisible = true;
+            //outputGrid.RowHeadersVisible = true;
         }
 
         public void ClearMatchStyles(FastColoredTextBox inputTextbox, FastColoredTextBox outputTextbox)
