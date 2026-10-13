@@ -61,6 +61,7 @@ namespace RegexerUIV2
         private bool _showSuggestionsOnCommand;
         private bool _monoColouredHighlight;
         private bool _indieMatchesTabCanBeStyled;
+        private bool _mainTabCanBeStyled;
 
         public void SetupTextBoxStyles(FastColoredTextBox inputTextBox, FastColoredTextBox outputTextBox)
         {
@@ -215,18 +216,22 @@ namespace RegexerUIV2
             }
         }
 
-        public void StyleMatches(FastColoredTextBox inputTextbox, FastColoredTextBox outputTextbox, RegexerResult result)
+        public void SetMainTabCanBeStyled(bool canBeStyled) => _mainTabCanBeStyled = canBeStyled;
+        public async Task StyleMatches(FastColoredTextBox inputTextbox, FastColoredTextBox outputTextbox, RegexerMatchPair[] matchPairs, List<(Range inpRange, Range outRange)> matchRanges, CancellationToken cancellationToken)
         {
-            if (result.Matches == null || _monoColouredHighlight) return;
+            if (!_mainTabCanBeStyled) return;
+            _mainTabCanBeStyled = false;
+
             _labelStyleIndices.Clear();
             _findStylingOrder.Clear();
             _replaceStylingOrder.Clear();
 
-            for (var i = 0; i < result.Matches[0].InputMatch.IndividualMatches.Count; i++)
+            for (var i = 0; i < matchPairs[0].InputMatch.IndividualMatches.Count; i++)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 if (i == IndividualMatchStyles.Length) i = 0;
-                var findMatch = result.Matches[0].InputMatch.IndividualMatches[i];
-                var replaceMatches = result.Matches[0].OutputMatch.IndividualMatches;
+                var findMatch = matchPairs[0].InputMatch.IndividualMatches[i];
+                var replaceMatches = matchPairs[0].OutputMatch.IndividualMatches;
                 _labelStyleIndices.Add(findMatch.Label, Range.ToStyleIndex(i + 1));
                 if(_patternUmLabels.Contains(findMatch.Label))
                 {
@@ -242,35 +247,57 @@ namespace RegexerUIV2
                 }
             }
 
-            for (var i = 0; i < result.Matches.Length; i++)
-            {
-                var matchPair = result.Matches[i];
-                Range matchRange;
-                StyleIndex styleIndex;
-                if (matchPair.InputMatch.IndividualMatches.Count == 0) continue;
-                foreach (var index in _findStylingOrder)
-                {
-                    var individualMatch = matchPair.InputMatch.IndividualMatches[index];
-                    styleIndex = _labelStyleIndices[individualMatch.Label];
-                    foreach (var capture in individualMatch.Captures)
-                    {
-                        matchRange = inputTextbox.GetRange(capture.Index, capture.Index + capture.Length);
-                        matchRange.SetStyle(styleIndex);
-                    }
-                }
+            const int batchSize = 500;
+            var batches = matchPairs.Chunk(batchSize);
 
-                foreach (var index in _replaceStylingOrder)
+            await Task.Run(async () =>
+            {
+                foreach (var batch in batches)
                 {
-                    //if()
-                    var individualMatch = matchPair.OutputMatch.IndividualMatches[index];
-                    styleIndex = _labelStyleIndices[individualMatch.Label];
-                    foreach (var capture in individualMatch.Captures)
+                    foreach (var matchPair in batch)
                     {
-                        matchRange = outputTextbox.GetRange(capture.Index, capture.Index + capture.Length);
-                        matchRange.SetStyle(styleIndex);
+                        cancellationToken.ThrowIfCancellationRequested();
+                        var matchRange = inputTextbox.GetRange(matchPair.InputMatch.Index, matchPair.InputMatch.Index + matchPair.InputMatch.Length);
+                        (Range inpRange, Range outRange) pairRanges = (matchRange, null!);
+                        matchRange.SetStyle(BaseStyleIndex);
+
+                        matchRange = outputTextbox.GetRange(matchPair.OutputMatch.Index, matchPair.OutputMatch.Index + matchPair.OutputMatch.Length);
+                        matchRange.SetStyle(BaseStyleIndex);
+                        pairRanges.outRange = matchRange;
+
+                        matchRanges.Add(pairRanges);
+
+                        if (_monoColouredHighlight) continue;
+
+                        StyleIndex styleIndex;
+                        if (matchPair.InputMatch.IndividualMatches.Count == 0) continue;
+                        foreach (var index in _findStylingOrder)
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
+                            var individualMatch = matchPair.InputMatch.IndividualMatches[index];
+                            styleIndex = _labelStyleIndices[individualMatch.Label];
+                            foreach (var capture in individualMatch.Captures)
+                            {
+                                matchRange = inputTextbox.GetRange(capture.Index, capture.Index + capture.Length);
+                                matchRange.SetStyle(styleIndex);
+                            }
+                        }
+
+                        foreach (var index in _replaceStylingOrder)
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
+                            var individualMatch = matchPair.OutputMatch.IndividualMatches[index];
+                            styleIndex = _labelStyleIndices[individualMatch.Label];
+                            foreach (var capture in individualMatch.Captures)
+                            {
+                                matchRange = outputTextbox.GetRange(capture.Index, capture.Index + capture.Length);
+                                matchRange.SetStyle(styleIndex);
+                            }
+                        }
                     }
+                    if (matchPairs.Length > batchSize) await Task.Delay(1000, cancellationToken);
                 }
-            }
+            }, cancellationToken);
         }
 
         public void SetIndieMatchesTabCanBeStyled(bool canBeStyled) => _indieMatchesTabCanBeStyled = canBeStyled;

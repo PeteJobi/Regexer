@@ -11,6 +11,7 @@ namespace RegexerUIV2
 {
     public partial class RegexerForm : Form
     {
+        private const int MainTabIndex = 0;
         private const int MatchesTabIndex = 1;
         private const int IndieMatchesTabIndex = 2;
         private readonly Regexer regexer;
@@ -24,7 +25,7 @@ namespace RegexerUIV2
         private FastColoredTextBox findTextbox;
         private FastColoredTextBox replaceTextbox;
         private int currentMatchRange;
-        private readonly List<(Range inpRange, Range? outRange)> matchRanges = new();
+        private readonly List<(Range inpRange, Range outRange)> matchRanges = new();
         private readonly FctbManager fctbManager = new();
         private readonly List<bool> inputMatchLineBackgroundData = new();
         private readonly List<bool> outputMatchLineBackgroundData = new();
@@ -145,22 +146,11 @@ namespace RegexerUIV2
 
                 if (result.Matches != null)
                 {
-
-                    foreach (var matchPair in result.Matches)
-                    {
-                        var matchRange = inputTextbox.GetRange(matchPair.InputMatch.Index, matchPair.InputMatch.Index + matchPair.InputMatch.Length);
-                        (Range inpRange, Range? outRange) pairRanges = (matchRange, null);
-                        matchRange.SetStyle(FctbManager.BaseStyleIndex);
-
-                        matchRange = outputTextbox.GetRange(matchPair.OutputMatch.Index, matchPair.OutputMatch.Index + matchPair.OutputMatch.Length);
-                        matchRange.SetStyle(FctbManager.BaseStyleIndex);
-                        pairRanges.outRange = matchRange;
-
-                        matchRanges.Add(pairRanges);
-                    }
-                    fctbManager.StyleMatches(inputTextbox, outputTextbox, result);
-
                     _regexerMatchPairs = result.Matches;
+
+                    fctbManager.SetMainTabCanBeStyled(true);
+                    if(inputTabs.SelectedIndex == MainTabIndex || outputTabs.SelectedIndex == MainTabIndex)
+                        _ = fctbManager.StyleMatches(inputTextbox, outputTextbox, _regexerMatchPairs, matchRanges, tokenSource.Token);
 
                     inputMatchesTextbox.Text = string.Join(Environment.NewLine, result.Matches.Select(m => m.InputMatch.Text));
                     outputMatchesTextbox.Text = string.Join(Environment.NewLine, result.Matches.Select(m => m.OutputMatch.Text));
@@ -173,11 +163,11 @@ namespace RegexerUIV2
                     if (inputTabs.SelectedIndex == IndieMatchesTabIndex || outputTabs.SelectedIndex == IndieMatchesTabIndex)
                         _ = fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView, _regexerMatchPairs, tokenSource.Token);
                 }
-                if (matchRanges.Count > 0)
+                if (_regexerMatchPairs.Length > 0)
                 {
                     currentMatchRange = -1;
                     prevBut.Enabled = nextBut.Enabled = matchNavLabel.Visible = true;
-                    matchNavLabel.Text = $"{matchRanges.Count} matches";
+                    matchNavLabel.Text = $"{_regexerMatchPairs.Length} matches";
                 }
                 else
                 {
@@ -425,7 +415,7 @@ namespace RegexerUIV2
 
         private void UpdateMatchNavLabel()
         {
-            matchNavLabel.Text = $"{currentMatchRange + 1} of {matchRanges.Count} matches";
+            matchNavLabel.Text = $"{currentMatchRange + 1} of {_regexerMatchPairs.Length} matches";
         }
 
         private void wordWrapToolStripCheckBox_Click(object sender, EventArgs e)
@@ -442,11 +432,6 @@ namespace RegexerUIV2
             outputTextbox.ShowLineNumbers = lineNumbersToolStripCheckbox.Checked;
             inputMatchesTextbox.ShowLineNumbers = lineNumbersToolStripCheckbox.Checked;
             outputMatchesTextbox.ShowLineNumbers = lineNumbersToolStripCheckbox.Checked;
-        }
-
-        private async void limitSubmatchesToolStripCheckBox_Click(object sender, EventArgs e)
-        {
-            if (!limitSubmatchesToolStripCheckBox.Checked) await FindAndReplace();
         }
 
         private void InputMatchesTextbox_PaintLine(object? sender, PaintLineEventArgs e)
@@ -533,9 +518,9 @@ namespace RegexerUIV2
             if (syncTabsToolStripCheckBox.Checked) outputTabs.SelectTab(e.TabPageIndex);
             _ = e.TabPageIndex switch
             {
+                MainTabIndex => fctbManager.StyleMatches(inputTextbox, outputTextbox, _regexerMatchPairs, matchRanges, tokenSource.Token),
                 MatchesTabIndex => StyleMatchesTab(tokenSource.Token),
-                IndieMatchesTabIndex => fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView,
-                    _regexerMatchPairs, tokenSource.Token),
+                IndieMatchesTabIndex => fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView, _regexerMatchPairs, tokenSource.Token),
                 _ => null
             };
         }
@@ -545,9 +530,9 @@ namespace RegexerUIV2
             if (syncTabsToolStripCheckBox.Checked) inputTabs.SelectTab(e.TabPageIndex);
             _ = e.TabPageIndex switch
             {
+                MainTabIndex => fctbManager.StyleMatches(inputTextbox, outputTextbox, _regexerMatchPairs, matchRanges, tokenSource.Token),
                 MatchesTabIndex => StyleMatchesTab(tokenSource.Token),
-                IndieMatchesTabIndex => fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView,
-                    _regexerMatchPairs, tokenSource.Token),
+                IndieMatchesTabIndex => fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView, _regexerMatchPairs, tokenSource.Token),
                 _ => null
             };
         }
