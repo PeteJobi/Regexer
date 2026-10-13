@@ -130,6 +130,7 @@
             loadingProgressBar.Location = new Point(194, 7);
             loadingProgressBar.Name = "loadingProgressBar";
             loadingProgressBar.Size = new Size(228, 10);
+            loadingProgressBar.Style = ProgressBarStyle.Marquee;
             loadingProgressBar.TabIndex = 10;
             // 
             // outputTabs
@@ -341,7 +342,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, toolStripMenuItem2 });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(245, 24);
+            menuStrip1.Size = new Size(125, 24);
             menuStrip1.TabIndex = 3;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -411,7 +412,7 @@
             // suggestOnCommandToolStripMenuItem
             // 
             suggestOnCommandToolStripMenuItem.Name = "suggestOnCommandToolStripMenuItem";
-            suggestOnCommandToolStripMenuItem.Size = new Size(180, 22);
+            suggestOnCommandToolStripMenuItem.Size = new Size(148, 22);
             suggestOnCommandToolStripMenuItem.Text = "On command";
             suggestOnCommandToolStripMenuItem.ToolTipText = "Press CTRL + SPACE to show suggestions if there are any";
             suggestOnCommandToolStripMenuItem.Click += suggestOnCommandToolStripMenuItem_Click;
@@ -421,7 +422,7 @@
             alwaysSuggestToolStripMenuItem.Checked = true;
             alwaysSuggestToolStripMenuItem.CheckState = CheckState.Checked;
             alwaysSuggestToolStripMenuItem.Name = "alwaysSuggestToolStripMenuItem";
-            alwaysSuggestToolStripMenuItem.Size = new Size(180, 22);
+            alwaysSuggestToolStripMenuItem.Size = new Size(148, 22);
             alwaysSuggestToolStripMenuItem.Text = "Always";
             alwaysSuggestToolStripMenuItem.Click += alwaysSuggestToolStripMenuItem_Click;
             // 
@@ -452,7 +453,7 @@
             // 
             toolStrip1.Dock = DockStyle.None;
             toolStrip1.Items.AddRange(new ToolStripItem[] { templatesComboBox, saveTemplateBut, deleteTemplateBut, toolStripSeparator1, prevBut, nextBut });
-            toolStrip1.Location = new Point(245, 0);
+            toolStrip1.Location = new Point(125, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(415, 24);
             toolStrip1.TabIndex = 4;
@@ -524,7 +525,7 @@
             // 
             matchNavLabel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             matchNavLabel.AutoSize = true;
-            matchNavLabel.Location = new Point(663, 0);
+            matchNavLabel.Location = new Point(543, 0);
             matchNavLabel.Name = "matchNavLabel";
             matchNavLabel.Size = new Size(38, 24);
             matchNavLabel.TabIndex = 5;
