@@ -114,7 +114,7 @@ namespace RegexerUIV2
             tokenSource = new CancellationTokenSource();
             if (inputTextbox.Text == string.Empty || findTextbox.Text == string.Empty)
             {
-                prevBut.Enabled = nextBut.Enabled = matchNavLabel.Visible = false;
+                ResetNav();
                 Reset();
                 return;
             }
@@ -211,6 +211,7 @@ namespace RegexerUIV2
             {
                 await Task.Delay(TimeSpan.FromSeconds(1), token);
                 loadingProgressBar.Visible = true;
+                ResetNav();
                 await Task.Delay(-1, token);
             }
             catch (TaskCanceledException)
@@ -277,6 +278,8 @@ namespace RegexerUIV2
             ClearMatchDataGrids();
         }
 
+        private void ResetNav() => prevBut.Enabled = nextBut.Enabled = matchNavLabel.Visible = false;
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (processOnButtonClickToolStripMenuItem.Checked && keyData == Keys.F3)
@@ -323,6 +326,7 @@ namespace RegexerUIV2
         private async void inputTextbox_TextChanged(object? sender, EventArgs e)
         {
             if (!processOnButtonClickToolStripMenuItem.Checked) await FindAndReplace();
+            else ResetNav();
         }
 
         private async void findTextbox_TextChanged(object? sender, TextChangedEventArgs e)
@@ -330,12 +334,14 @@ namespace RegexerUIV2
             fctbManager.HighlightAndSuggest(findTextbox, false);
             saveTemplateBut.Enabled = findTextbox.Text != string.Empty;
             if (!processOnButtonClickToolStripMenuItem.Checked) await FindAndReplace();
+            else ResetNav();
         }
 
         private async void replaceTextbox_TextChanged(object? sender, TextChangedEventArgs e)
         {
             fctbManager.HighlightAndSuggest(replaceTextbox, true);
             if (!processOnButtonClickToolStripMenuItem.Checked) await FindAndReplace();
+            else ResetNav();
         }
 
         private async void templatesComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -372,6 +378,11 @@ namespace RegexerUIV2
         private void outToInBut_Click(object sender, EventArgs e)
         {
             inputTextbox.Text = outputTextbox.Text;
+            if(processOnButtonClickToolStripMenuItem.Checked)
+            {
+                Reset();
+                ResetNav();
+            }
         }
 
         private void deleteTemplateBut_Click(object sender, EventArgs e)
@@ -670,6 +681,7 @@ namespace RegexerUIV2
             inputTextbox.Text = string.Empty;
             findTextbox.Text = string.Empty;
             replaceTextbox.Text = string.Empty;
+            if(processOnButtonClickToolStripMenuItem.Checked) _ = FindAndReplace(); //Basically just calls Reset() and cancels any ongoing processing
         }
 
         private async void exactWhitespaceCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -716,9 +728,10 @@ namespace RegexerUIV2
 
         private void outputDataGridView_RowHeadersWidthChanged(object sender, EventArgs e) => outputDataGridView_ColumnWidthChanged(outputDataGridView, null!);
 
-        private void processOnButtonClickToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        private async void processOnButtonClickToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             findAndReplaceButton.Visible = processOnButtonClickToolStripMenuItem.Checked;
+            if(!processOnButtonClickToolStripMenuItem.Checked) await FindAndReplace();
         }
 
         private async void findAndReplaceButton_Click(object sender, EventArgs e) => await FindAndReplace();
