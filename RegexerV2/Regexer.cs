@@ -19,6 +19,7 @@ namespace RegexerV2
         private readonly Structure[] FindStructureArray = [FindStructure];
         private readonly Structure[] ReplaceStructureArray = [ReplaceStructure];
         public static readonly RegexerResult CancelledResult = new() { Output = "Cancelled" };
+        public static readonly RegexerResult NoMatchesResult = new() { Output = "No matches found" };
 
         public Regexer()
         {
@@ -84,7 +85,7 @@ namespace RegexerV2
             find = patternBuilder.ToString();
             var matches = Regex.Matches(input, find, RegexOptions.None, _regexTimeout);
             cancellationToken.ThrowIfCancellationRequested();
-            if (matches.Count == 0) return new RegexerResult { Output = input };
+            if (matches.Count == 0) return NoMatchesResult;
 
             patternStructure = [.. ParsePattern(replace, true)];
             cancellationToken.ThrowIfCancellationRequested();

@@ -129,6 +129,11 @@ namespace RegexerUIV2
             {
                 var result = await regexer.AutoRegexAsync(inputTextbox.Text, findTextbox.Text, replaceTextbox.Text, tokenSource.Token);
                 if (result == Regexer.CancelledResult) return;
+                if(result == Regexer.NoMatchesResult)
+                {
+                    SetErrorMessage(result.Output);
+                    return;
+                }
 
                 var scrollPositionX = outputTextbox.HorizontalScroll.Value;
                 var scrollPositionY = outputTextbox.VerticalScroll.Value;
@@ -181,27 +186,32 @@ namespace RegexerUIV2
             }
             catch (RegexMatchTimeoutException ex)
             {
-                outputTextbox.Text = ex.ToString();
-                outputTextbox.Range.SetStyle(FctbManager.ErrorStyleIndex);
+                SetErrorMessage(ex.ToString());
             }
             catch (RegexParseException ex)
             {
-                outputTextbox.Text = ex.ToString();
-                outputTextbox.Range.SetStyle(FctbManager.ErrorStyleIndex);
+                SetErrorMessage(ex.ToString());
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                outputTextbox.Text = ex.ToString();
-                outputTextbox.Range.SetStyle(FctbManager.ErrorStyleIndex);
+                SetErrorMessage(ex.ToString());
             }
             catch (ArithmeticException ex)
             {
-                outputTextbox.Text = ex.ToString();
-                outputTextbox.Range.SetStyle(FctbManager.ErrorStyleIndex);
+                SetErrorMessage(ex.ToString());
             }
             finally
             {
-                delayTokenSource?.Cancel();
+                // ReSharper disable once MethodHasAsyncOverload
+                delayTokenSource.Cancel();
+            }
+
+            void SetErrorMessage(string message)
+            {
+                ResetNav();
+                Reset();
+                outputTextbox.Text = message;
+                outputTextbox.Range.SetStyle(FctbManager.ErrorStyleIndex);
             }
         }
 
@@ -217,7 +227,7 @@ namespace RegexerUIV2
             catch (TaskCanceledException)
             {
                 loadingProgressBar.Visible = false;
-                delayTokenSource.Dispose();
+                delayTokenSource!.Dispose();
                 delayTokenSource = null;
             }
         }
