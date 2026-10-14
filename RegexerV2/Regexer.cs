@@ -12,12 +12,10 @@ namespace RegexerV2
         private bool _exactWhiteSpace;
         private readonly TimeSpan _regexTimeout;
         private bool hasNewLine, hasMl;
-        private readonly SyntaxParser parser = new();
+        private readonly Parser _parser = new();
         private const string PrefixSpaceLabel = "__space__";
         private readonly StringBuilder patternBuilder = new();
         private readonly Dictionary<string, PatternData> patternMap = new();
-        private readonly Structure[] FindStructureArray = [FindStructure];
-        private readonly Structure[] ReplaceStructureArray = [ReplaceStructure];
         public static readonly RegexerResult CancelledResult = new("Cancelled");
         public static readonly RegexerResult NoMatchesResult = new("No matches found");
 
@@ -31,31 +29,6 @@ namespace RegexerV2
         {
             _regexTimeout = regexTimeout;
             SetupCyclicRelationships();
-        }
-
-        public IEnumerable<Token> ParsePatternOriginal(string pattern, bool isReplace)
-        {
-            return parser.ParsePattern(pattern, 0, isReplace ? ReplaceStructureArray : FindStructureArray, 0)!;
-        }
-
-        public IEnumerable<Token> ParsePattern(string pattern, bool isReplace)
-        {
-            return parser.ParsePatternWithSuggestions(pattern, 0, pattern.Length, 0, isReplace ? ReplaceStructureArray : FindStructureArray, 0, false).AlreadyTyped!;
-        }
-
-        public IEnumerable<Token> ParsePattern(string pattern, int patternStart, int patternEnd, bool isReplace)
-        {
-            return parser.ParsePatternWithSuggestions(pattern, patternStart, patternEnd, patternStart, isReplace ? ReplaceStructureArray : FindStructureArray, 0, false).AlreadyTyped!;
-        }
-
-        public (IEnumerable<Token>? AlreadyTyped, List<SuggestionToken> Suggestions) ParsePatternWithSuggestions(string pattern, bool isReplace)
-        {
-            return parser.ParsePatternWithSuggestions(pattern, 0, pattern.Length, 0, isReplace ? ReplaceStructureArray : FindStructureArray, 0, true);
-        }
-
-        public (IEnumerable<Token>? AlreadyTyped, List<SuggestionToken> Suggestions) ParsePatternWithSuggestions(string pattern, int patternStart, int patternEnd, bool isReplace)
-        {
-            return parser.ParsePatternWithSuggestions(pattern, patternStart, patternEnd, patternStart, isReplace ? ReplaceStructureArray : FindStructureArray, 0, true);
         }
 
         public void SetExactWhiteSpace(bool exactWhiteSpace) => _exactWhiteSpace = exactWhiteSpace;
@@ -74,7 +47,7 @@ namespace RegexerV2
 
         private RegexerResult AutoRegexInner(string input, string find, string replace, CancellationToken cancellationToken)
         {
-            var patternStructure = ParsePattern(find, false).ToArray();
+            var patternStructure = _parser.ParsePattern(find, false).ToArray();
             cancellationToken.ThrowIfCancellationRequested();
 
             patternBuilder.Clear();
@@ -88,7 +61,7 @@ namespace RegexerV2
             cancellationToken.ThrowIfCancellationRequested();
             if (matches.Count == 0) return NoMatchesResult;
 
-            patternStructure = [.. ParsePattern(replace, true)];
+            patternStructure = [.. _parser.ParsePattern(replace, true)];
             cancellationToken.ThrowIfCancellationRequested();
 
             patternBuilder.Clear();
@@ -968,6 +941,39 @@ namespace RegexerV2
             public bool IsDigit { get; set; }
             public bool IsMultiLine { get; set; }
             public bool IsMultiMatch { get; set; }
+        }
+
+        public class Parser
+        {
+            private readonly SyntaxParser _parser = new();
+            private readonly Structure[] _findStructureArray = [FindStructure];
+            private readonly Structure[] _replaceStructureArray = [ReplaceStructure];
+
+            public IEnumerable<Token> ParsePatternOriginal(string pattern, bool isReplace)
+            {
+                //Will be phased out in the future, use ParsePattern or ParsePatternWithSuggestions instead
+                return _parser.ParsePattern(pattern, 0, isReplace ? _replaceStructureArray : _findStructureArray, 0)!;
+            }
+
+            public IEnumerable<Token> ParsePattern(string pattern, bool isReplace)
+            {
+                return _parser.ParsePatternWithSuggestions(pattern, 0, pattern.Length, 0, isReplace ? _replaceStructureArray : _findStructureArray, 0, false).AlreadyTyped!;
+            }
+
+            public IEnumerable<Token> ParsePattern(string pattern, int patternStart, int patternEnd, bool isReplace)
+            {
+                return _parser.ParsePatternWithSuggestions(pattern, patternStart, patternEnd, patternStart, isReplace ? _replaceStructureArray : _findStructureArray, 0, false).AlreadyTyped!;
+            }
+
+            public (IEnumerable<Token>? AlreadyTyped, List<SuggestionToken> Suggestions) ParsePatternWithSuggestions(string pattern, bool isReplace)
+            {
+                return _parser.ParsePatternWithSuggestions(pattern, 0, pattern.Length, 0, isReplace ? _replaceStructureArray : _findStructureArray, 0, true);
+            }
+
+            public (IEnumerable<Token>? AlreadyTyped, List<SuggestionToken> Suggestions) ParsePatternWithSuggestions(string pattern, int patternStart, int patternEnd, bool isReplace)
+            {
+                return _parser.ParsePatternWithSuggestions(pattern, patternStart, patternEnd, patternStart, isReplace ? _replaceStructureArray : _findStructureArray, 0, true);
+            }
         }
     }
     public class RegexerResult(string output)

@@ -49,7 +49,7 @@ namespace RegexerUIV2
             //new (new SolidBrush(Color.FromArgb(34, 139, 34)), BaseBrush, FontStyle.Bold),      // Forest Green
         ];
 
-        private readonly Regexer _regexer = new (TimeSpan.Zero); //Regex actually never gets used, so these constructor arguments don't matter.
+        private readonly Regexer.Parser _regexerParser = new ();
         private readonly Dictionary<Style, StyleIndex> _allStyles = new();
         private readonly HashSet<string> _patternLabels = new();
         private readonly HashSet<string> _patternUmLabels = new();
@@ -130,14 +130,14 @@ namespace RegexerUIV2
             IEnumerable<SyntaxStructure.Token>? tokens;
             if (textBox.Range.End == textBox.Selection.End)
             {
-                (tokens, _suggestionTokens) = _regexer.ParsePatternWithSuggestions(textBox.Text, isReplacePattern);
+                (tokens, _suggestionTokens) = _regexerParser.ParsePatternWithSuggestions(textBox.Text, isReplacePattern);
             }
             else
             {
-                tokens = _regexer.ParsePattern(textBox.Text, isReplacePattern);
+                tokens = _regexerParser.ParsePattern(textBox.Text, isReplacePattern);
                 var fragmentBeforeCursor = textBox.Range.GetIntersectionWith(new Range(textBox, textBox.Range.Start, textBox.Selection.End));
                 _suggestionTokens = fragmentBeforeCursor.Length == 0 ? []
-                    : _regexer.ParsePatternWithSuggestions(textBox.Text, 0, fragmentBeforeCursor.Length, isReplacePattern).Suggestions;
+                    : _regexerParser.ParsePatternWithSuggestions(textBox.Text, 0, fragmentBeforeCursor.Length, isReplacePattern).Suggestions;
             }
             HighlightPatternSyntax(textBox, tokens!, isReplacePattern);
         }
