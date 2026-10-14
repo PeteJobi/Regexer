@@ -81,7 +81,8 @@ namespace RegexerV2
             patternMap.Clear();
             hasNewLine = hasMl = false;
             ProcessFindFullStructure(find, patternStructure);
-            if (hasNewLine || hasMl) patternBuilder.Insert(0, $@"(?<=(?:^|\n))(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
+            //if (hasNewLine || hasMl) patternBuilder.Insert(0, $@"(?<=(?:^|\n))(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
+            if (hasNewLine || hasMl) patternBuilder.Insert(0, $@"(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
             find = patternBuilder.ToString();
             var matches = Regex.Matches(input, find, RegexOptions.None, _regexTimeout);
             cancellationToken.ThrowIfCancellationRequested();
