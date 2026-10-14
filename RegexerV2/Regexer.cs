@@ -18,8 +18,8 @@ namespace RegexerV2
         private readonly Dictionary<string, PatternData> patternMap = new();
         private readonly Structure[] FindStructureArray = [FindStructure];
         private readonly Structure[] ReplaceStructureArray = [ReplaceStructure];
-        public static readonly RegexerResult CancelledResult = new() { Output = "Cancelled" };
-        public static readonly RegexerResult NoMatchesResult = new() { Output = "No matches found" };
+        public static readonly RegexerResult CancelledResult = new("Cancelled");
+        public static readonly RegexerResult NoMatchesResult = new("No matches found");
 
         public Regexer()
         {
@@ -125,7 +125,7 @@ namespace RegexerV2
                 outputOffset += length;
             }
             patternBuilder.Append(input.AsSpan(lastInputMatchEnd));
-            return new RegexerResult { Output = patternBuilder.ToString(), Matches = results };
+            return new RegexerResult(patternBuilder.ToString()) { Matches = results };
             //var result = new RegexerResult { Output = patternBuilder.ToString(), Matches = results };
             //Debug.WriteLine($"Output: {result.Output}");
             //foreach (var pair in result.Matches)
@@ -970,45 +970,37 @@ namespace RegexerV2
             public bool IsMultiMatch { get; set; }
         }
     }
-    public class RegexerResult
+    public class RegexerResult(string output)
     {
-        public string Output { get; set; }
+        public string Output { get; set; } = output;
         public RegexerMatchPair[]? Matches { get; set; }
     }
 
     public class RegexerMatchPair
     {
-        public RegexerMatch InputMatch { get; set; }
-        public RegexerMatch OutputMatch { get; set; }
+        public required RegexerMatch InputMatch { get; set; }
+        public required RegexerMatch OutputMatch { get; set; }
     }
 
-    public class MatchData
+    public class MatchData(int index, int length, string text)
     {
-        public MatchData(int index, int length, string text)
-        {
-            Index = index;
-            Length = length;
-            Text = text;
-        }
+        public int Index { get; set; } = index;
+        public int Length { get; set; } = length;
+        public string Text { get; set; } = text;
 
-        public int Index { get; set; }
-        public int Length { get; set; }
-        public string Text { get; set; }
         public override string ToString()
         {
             return $"{Index}, {Length}, {Text}";
         }
     }
 
-    public class RegexerMatch : MatchData
+    public class RegexerMatch(int index, int length, string text) : MatchData(index, length, text)
     {
-        public RegexerMatch(int index, int length, string text) : base(index, length, text) { }
-
-        public List<IndividualMatch> IndividualMatches { get; set; }
+        public required List<IndividualMatch> IndividualMatches { get; set; }
 
         public override string ToString()
         {
-            return $"{Index}, {Length}, {(IndividualMatches == null ? "<null>" : string.Join(", ", IndividualMatches.Select(i => $"<{i?.ToString() ?? "null"}>")))}";
+            return $"{Index}, {Length}, {string.Join(", ", IndividualMatches.Select(i => $"<{i}>"))}";
         }
     }
 
