@@ -133,6 +133,7 @@ namespace RegexerUIV2
                 if(result == Regexer.NoMatchesResult)
                 {
                     SetErrorMessage(result.Output);
+                    ResetNav();
                     return;
                 }
 
@@ -163,17 +164,7 @@ namespace RegexerUIV2
                     if (inputTabs.SelectedIndex == IndieMatchesTabIndex || outputTabs.SelectedIndex == IndieMatchesTabIndex)
                         _ = fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView, _regexerMatchPairs, tokenSource.Token);
                 }
-                if (_regexerMatchPairs.Length > 0)
-                {
-                    currentMatchRange = -1;
-                    prevBut.Enabled = nextBut.Enabled = matchNavLabel.Visible = true;
-                    matchNavLabel.Text = $"{_regexerMatchPairs.Length} matches";
                 }
-                else
-                {
-                    prevBut.Enabled = nextBut.Enabled = matchNavLabel.Visible = false;
-                }
-            }
             catch (RegexMatchTimeoutException ex)
             {
                 SetErrorMessage(ex.ToString());
@@ -194,11 +185,18 @@ namespace RegexerUIV2
             {
                 // ReSharper disable once MethodHasAsyncOverload
                 delayTokenSource.Cancel();
+                if (_regexerMatchPairs.Length > 0)
+                {
+                    currentMatchRange = -1;
+                    prevBut.Enabled = nextBut.Enabled = matchNavLabel.Visible = true;
+                    matchNavLabel.Text = $"{_regexerMatchPairs.Length} matches";
+                }
+                else
+                    ResetNav();
             }
 
             void SetErrorMessage(string message)
             {
-                ResetNav();
                 Reset();
                 outputTextbox.Text = message;
                 outputTextbox.Range.SetStyle(FctbManager.ErrorStyleIndex);
