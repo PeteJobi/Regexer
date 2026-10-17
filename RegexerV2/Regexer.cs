@@ -57,7 +57,15 @@ namespace RegexerV2
             //if (hasNewLine || hasMl) patternBuilder.Insert(0, $@"(?<=(?:^|\n))(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
             if (hasNewLine || hasMl) patternBuilder.Insert(0, $@"(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
             find = patternBuilder.ToString();
-            var matches = Regex.Matches(input, find, RegexOptions.None, _regexTimeout);
+            MatchCollection matches;
+            try
+            {
+                matches = Regex.Matches(input, find, RegexOptions.None, _regexTimeout);
+            }catch(RegexMatchTimeoutException)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                throw;
+            }
             cancellationToken.ThrowIfCancellationRequested();
             if (matches.Count == 0) return NoMatchesResult;
 
