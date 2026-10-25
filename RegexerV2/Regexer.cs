@@ -57,17 +57,16 @@ namespace RegexerV2
             //if (hasNewLine || hasMl) patternBuilder.Insert(0, $@"(?<=(?:^|\n))(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
             if (hasNewLine || hasMl) patternBuilder.Insert(0, $@"(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
             find = patternBuilder.ToString();
-            MatchCollection matches;
+            var matches = Regex.Matches(input, find, RegexOptions.None, _regexTimeout);
             try
             {
-                matches = Regex.Matches(input, find, RegexOptions.None, _regexTimeout);
+                if (matches.Count == 0) return NoMatchesResult;
             }catch(RegexMatchTimeoutException)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 throw;
             }
             cancellationToken.ThrowIfCancellationRequested();
-            if (matches.Count == 0) return NoMatchesResult;
 
             patternStructure = [.. _parser.ParsePattern(replace, true)];
             cancellationToken.ThrowIfCancellationRequested();
@@ -627,7 +626,7 @@ namespace RegexerV2
                                             length += spreadCapture.Length;
                                             break;
                                         default:
-                                            throw new ArgumentOutOfRangeException();
+                                            throw new NotImplementedException($"Unsupported Token type '{token.Name}'");
                                     }
                                 }
                             }
