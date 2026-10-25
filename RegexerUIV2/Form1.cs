@@ -126,16 +126,27 @@ namespace RegexerUIV2
                 _ = ShowDelay(delayTokenSource.Token);
             }
 
+            await GetAndProcessResults(tokenSource.Token);
+            return;
+
+            async Task GetAndProcessResults(CancellationToken cancellationToken)
+            {
+                var cancelled = false;
             try
             {
-                var result = await regexer.AutoRegexAsync(inputTextbox.Text, findTextbox.Text, replaceTextbox.Text, tokenSource.Token);
-                if (result == Regexer.CancelledResult) return;
-                if(result == Regexer.NoMatchesResult)
+                    var result = await regexer.AutoRegexAsync(inputTextbox.Text, findTextbox.Text, replaceTextbox.Text,
+                        cancellationToken);
+                    if (result == Regexer.CancelledResult)
                 {
-                    SetErrorMessage(result.Output);
-                    ResetNav();
+                        cancelled = true;
                     return;
                 }
+
+                    if (result == Regexer.NoMatchesResult)
+                    {
+                        SetErrorMessage(result.Output);
+                        return; //finally block will still execute to cancel the delay and reset nav
+                    }
 
                 var scrollPositionX = outputTextbox.HorizontalScroll.Value;
                 var scrollPositionY = outputTextbox.VerticalScroll.Value;
@@ -150,19 +161,24 @@ namespace RegexerUIV2
                     _regexerMatchPairs = result.Matches;
 
                     fctbManager.SetMainTabCanBeStyled(true);
-                    if(inputTabs.SelectedIndex == MainTabIndex || outputTabs.SelectedIndex == MainTabIndex)
-                        _ = fctbManager.StyleMatches(inputTextbox, outputTextbox, _regexerMatchPairs, matchRanges, tokenSource.Token);
+                        if (inputTabs.SelectedIndex == MainTabIndex || outputTabs.SelectedIndex == MainTabIndex)
+                            _ = fctbManager.StyleMatches(inputTextbox, outputTextbox, _regexerMatchPairs, matchRanges,
+                                cancellationToken);
 
-                    inputMatchesTextbox.Text = string.Join(Environment.NewLine, result.Matches.Select(m => m.InputMatch.Text));
-                    outputMatchesTextbox.Text = string.Join(Environment.NewLine, result.Matches.Select(m => m.OutputMatch.Text));
+                        inputMatchesTextbox.Text = string.Join(Environment.NewLine,
+                            result.Matches.Select(m => m.InputMatch.Text));
+                        outputMatchesTextbox.Text = string.Join(Environment.NewLine,
+                            result.Matches.Select(m => m.OutputMatch.Text));
 
                     _matchesTabCanBeStyled = true;
                     if (inputTabs.SelectedIndex == MatchesTabIndex || outputTabs.SelectedIndex == MatchesTabIndex)
-                        _ = StyleMatchesTab(tokenSource.Token);
+                            _ = StyleMatchesTab(cancellationToken);
 
                     fctbManager.SetIndieMatchesTabCanBeStyled(true);
-                    if (inputTabs.SelectedIndex == IndieMatchesTabIndex || outputTabs.SelectedIndex == IndieMatchesTabIndex)
-                        _ = fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView, _regexerMatchPairs, tokenSource.Token);
+                        if (inputTabs.SelectedIndex == IndieMatchesTabIndex ||
+                            outputTabs.SelectedIndex == IndieMatchesTabIndex)
+                            _ = fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView,
+                                _regexerMatchPairs, cancellationToken);
                 }
                 }
             catch (RegexMatchTimeoutException ex)
@@ -183,6 +199,8 @@ namespace RegexerUIV2
             }
             finally
             {
+                    if(!cancelled)
+                    {
                 // ReSharper disable once MethodHasAsyncOverload
                 delayTokenSource.Cancel();
                 if (_regexerMatchPairs.Length > 0)
@@ -193,6 +211,8 @@ namespace RegexerUIV2
                 }
                 else
                     ResetNav();
+            }
+                }
             }
 
             void SetErrorMessage(string message)
