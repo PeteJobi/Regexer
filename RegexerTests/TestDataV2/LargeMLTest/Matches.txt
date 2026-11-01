@@ -1,0 +1,806 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 7508,
+              "Length": 110,
+              "Text": "updClassDispatch({ type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.RELOAD_CLASS, classId: classe.id })"
+            },
+            {
+              "Index": 7636,
+              "Length": 27,
+              "Text": "console.log(\"Unsubscribed\")"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": []
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": []
+        },
+        {
+          "Label": "meGet",
+          "Captures": []
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 7445,
+              "Length": 15,
+              "Text": "method: \"POST\","
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 7743,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": []
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 7333,
+              "Length": 97,
+              "Text": "Strings.URL_CLASS + (isSubbing ? \"subscribeToCourse\" : \"unsubscribeFromCourse\") + `/${course.id}`"
+            }
+          ]
+        }
+      ],
+      "Index": 7298,
+      "Length": 516,
+      "Text": "        $.ajax({\r\n            url: Strings.URL_CLASS + (isSubbing ? \"subscribeToCourse\" : \"unsubscribeFromCourse\") + `/${course.id}`,\r\n            method: \"POST\",\r\n            success: () => {\r\n                updClassDispatch({ type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.RELOAD_CLASS, classId: classe.id })\r\n                console.log(\"Unsubscribed\")\r\n            },\r\n            error: (xhr, status, error) => {\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 7783,
+              "Length": 110,
+              "Text": "updClassDispatch({ type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.RELOAD_CLASS, classId: classe.id })"
+            },
+            {
+              "Index": 7907,
+              "Length": 27,
+              "Text": "console.log(\"Unsubscribed\")"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 7426,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 7440,
+              "Length": 15,
+              "Text": "method: \"post\","
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 7640,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 7326,
+              "Length": 97,
+              "Text": "Strings.URL_CLASS + (isSubbing ? \"subscribeToCourse\" : \"unsubscribeFromCourse\") + `/${course.id}`"
+            }
+          ]
+        }
+      ],
+      "Index": 7298,
+      "Length": 648,
+      "Text": "        Functions.fetchCall(Strings.URL_CLASS + (isSubbing ? \"subscribeToCourse\" : \"unsubscribeFromCourse\") + `/${course.id}`, {\r\n            method: \"post\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        }).then((response) => {\r\n            if(!response.ok) return\r\n            updClassDispatch({ type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.RELOAD_CLASS, classId: classe.id })\r\n            console.log(\"Unsubscribed\")\r\n        })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 9557,
+              "Length": 19,
+              "Text": "console.log(\"Left\")"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 9459,
+              "Length": 21,
+              "Text": " // api/Class/leave/5"
+            }
+          ]
+        },
+        {
+          "Label": "dat",
+          "Captures": []
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": []
+        },
+        {
+          "Label": "meGet",
+          "Captures": []
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 9494,
+              "Length": 15,
+              "Text": "method: \"POST\","
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 9656,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": []
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 9418,
+              "Length": 40,
+              "Text": "Strings.URL_CLASS + `leave/${classe.id}`"
+            }
+          ]
+        }
+      ],
+      "Index": 9383,
+      "Length": 344,
+      "Text": "        $.ajax({\r\n            url: Strings.URL_CLASS + `leave/${classe.id}`, // api/Class/leave/5\r\n            method: \"POST\",\r\n            success: () => {\r\n                console.log(\"Left\")\r\n            },\r\n            error: (xhr, status, error) => {\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 9964,
+              "Length": 19,
+              "Text": "console.log(\"Left\")"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 9586,
+              "Length": 21,
+              "Text": " // api/Class/leave/5"
+            }
+          ]
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 9621,
+              "Length": 15,
+              "Text": "method: \"post\","
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 9821,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 9543,
+              "Length": 40,
+              "Text": "Strings.URL_CLASS + `leave/${classe.id}`"
+            }
+          ]
+        }
+      ],
+      "Index": 9515,
+      "Length": 480,
+      "Text": "        Functions.fetchCall(Strings.URL_CLASS + `leave/${classe.id}`, { // api/Class/leave/5\r\n            method: \"post\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        }).then((response) => {\r\n            if(!response.ok) return\r\n            console.log(\"Left\")\r\n        })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 11104,
+              "Length": 32,
+              "Text": "if (!hasMounted.current) return;"
+            },
+            {
+              "Index": 11154,
+              "Length": 19,
+              "Text": "setIsLoading(false)"
+            },
+            {
+              "Index": 11191,
+              "Length": 19,
+              "Text": "updCourseDispatch({"
+            },
+            {
+              "Index": 11228,
+              "Length": 76,
+              "Text": "    type: Strings.UPDATE_COURSE_PARAMS, courseAction: Strings.DELETE_COURSE,"
+            },
+            {
+              "Index": 11322,
+              "Length": 48,
+              "Text": "    courseId: course.id, classId: course.classId"
+            },
+            {
+              "Index": 11388,
+              "Length": 2,
+              "Text": "})"
+            },
+            {
+              "Index": 11408,
+              "Length": 96,
+              "Text": "if(pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 10957,
+              "Length": 22,
+              "Text": " // api/Class/Course/5"
+            }
+          ]
+        },
+        {
+          "Label": "dat",
+          "Captures": []
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 11039,
+              "Length": 17,
+              "Text": "method: \"DELETE\","
+            }
+          ]
+        },
+        {
+          "Label": "meGet",
+          "Captures": []
+        },
+        {
+          "Label": "mePost",
+          "Captures": []
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 11584,
+              "Length": 50,
+              "Text": "console.log(xhr.responseText, \"fa\", error, status)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": []
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 10915,
+              "Length": 41,
+              "Text": "Strings.URL_CLASS + \"course/\" + course.id"
+            }
+          ]
+        }
+      ],
+      "Index": 10880,
+      "Length": 781,
+      "Text": "        $.ajax({\r\n            url: Strings.URL_CLASS + \"course/\" + course.id, // api/Class/Course/5\r\n            contentType: \"application/json\",\r\n            method: \"DELETE\",\r\n            success: () => {\r\n                if (!hasMounted.current) return;\r\n                setIsLoading(false)\r\n                updCourseDispatch({\r\n                    type: Strings.UPDATE_COURSE_PARAMS, courseAction: Strings.DELETE_COURSE,\r\n                    courseId: course.id, classId: course.classId\r\n                })\r\n                if(pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })\r\n            },\r\n            error: (xhr, status, error) => {\r\n                console.log(xhr.responseText, \"fa\", error, status)\r\n            }\r\n        })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 11607,
+              "Length": 32,
+              "Text": "if (!hasMounted.current) return;"
+            },
+            {
+              "Index": 11653,
+              "Length": 19,
+              "Text": "setIsLoading(false)"
+            },
+            {
+              "Index": 11686,
+              "Length": 19,
+              "Text": "updCourseDispatch({"
+            },
+            {
+              "Index": 11719,
+              "Length": 76,
+              "Text": "    type: Strings.UPDATE_COURSE_PARAMS, courseAction: Strings.DELETE_COURSE,"
+            },
+            {
+              "Index": 11809,
+              "Length": 48,
+              "Text": "    courseId: course.id, classId: course.classId"
+            },
+            {
+              "Index": 11871,
+              "Length": 2,
+              "Text": "})"
+            },
+            {
+              "Index": 11887,
+              "Length": 96,
+              "Text": "if(pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 11220,
+              "Length": 22,
+              "Text": " // api/Class/Course/5"
+            }
+          ]
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 11256,
+              "Length": 17,
+              "Text": "method: \"delete\","
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 11458,
+              "Length": 50,
+              "Text": "console.log(xhr.responseText, \"fa\", error, status)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 11176,
+              "Length": 41,
+              "Text": "Strings.URL_CLASS + \"course/\" + course.id"
+            }
+          ]
+        }
+      ],
+      "Index": 11148,
+      "Length": 847,
+      "Text": "        Functions.fetchCall(Strings.URL_CLASS + \"course/\" + course.id, { // api/Class/Course/5\r\n            method: \"delete\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, \"fa\", error, status)\r\n            }\r\n        }).then((response) => {\r\n            if(!response.ok) return\r\n            if (!hasMounted.current) return;\r\n            setIsLoading(false)\r\n            updCourseDispatch({\r\n                type: Strings.UPDATE_COURSE_PARAMS, courseAction: Strings.DELETE_COURSE,\r\n                courseId: course.id, classId: course.classId\r\n            })\r\n            if(pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })\r\n        })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 11956,
+              "Length": 32,
+              "Text": "if (!hasMounted.current) return;"
+            },
+            {
+              "Index": 12006,
+              "Length": 19,
+              "Text": "setIsLoading(false)"
+            },
+            {
+              "Index": 12043,
+              "Length": 18,
+              "Text": "updClassDispatch({"
+            },
+            {
+              "Index": 12079,
+              "Length": 73,
+              "Text": "    type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.DELETE_CLASS,"
+            },
+            {
+              "Index": 12170,
+              "Length": 22,
+              "Text": "    classId: classe.id"
+            },
+            {
+              "Index": 12210,
+              "Length": 2,
+              "Text": "})"
+            },
+            {
+              "Index": 12230,
+              "Length": 97,
+              "Text": "if (pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 11811,
+              "Length": 20,
+              "Text": " // api/Class/Course"
+            }
+          ]
+        },
+        {
+          "Label": "dat",
+          "Captures": []
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 11891,
+              "Length": 17,
+              "Text": "method: \"DELETE\","
+            }
+          ]
+        },
+        {
+          "Label": "meGet",
+          "Captures": []
+        },
+        {
+          "Label": "mePost",
+          "Captures": []
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 12407,
+              "Length": 50,
+              "Text": "console.log(xhr.responseText, \"fa\", error, status)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": []
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 11770,
+              "Length": 40,
+              "Text": "Strings.URL_CLASS + \"class/\" + classe.id"
+            }
+          ]
+        }
+      ],
+      "Index": 11735,
+      "Length": 749,
+      "Text": "        $.ajax({\r\n            url: Strings.URL_CLASS + \"class/\" + classe.id, // api/Class/Course\r\n            contentType: \"application/json\",\r\n            method: \"DELETE\",\r\n            success: () => {\r\n                if (!hasMounted.current) return;\r\n                setIsLoading(false)\r\n                updClassDispatch({\r\n                    type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.DELETE_CLASS,\r\n                    classId: classe.id\r\n                })\r\n                if (pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })\r\n            },\r\n            error: (xhr, status, error) => {\r\n                console.log(xhr.responseText, \"fa\", error, status)\r\n            }\r\n        })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 12525,
+              "Length": 32,
+              "Text": "if (!hasMounted.current) return;"
+            },
+            {
+              "Index": 12571,
+              "Length": 19,
+              "Text": "setIsLoading(false)"
+            },
+            {
+              "Index": 12604,
+              "Length": 18,
+              "Text": "updClassDispatch({"
+            },
+            {
+              "Index": 12636,
+              "Length": 73,
+              "Text": "    type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.DELETE_CLASS,"
+            },
+            {
+              "Index": 12723,
+              "Length": 22,
+              "Text": "    classId: classe.id"
+            },
+            {
+              "Index": 12759,
+              "Length": 2,
+              "Text": "})"
+            },
+            {
+              "Index": 12775,
+              "Length": 97,
+              "Text": "if (pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 12140,
+              "Length": 20,
+              "Text": " // api/Class/Course"
+            }
+          ]
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 12174,
+              "Length": 17,
+              "Text": "method: \"delete\","
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 12376,
+              "Length": 50,
+              "Text": "console.log(xhr.responseText, \"fa\", error, status)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 12097,
+              "Length": 40,
+              "Text": "Strings.URL_CLASS + \"class/\" + classe.id"
+            }
+          ]
+        }
+      ],
+      "Index": 12069,
+      "Length": 815,
+      "Text": "        Functions.fetchCall(Strings.URL_CLASS + \"class/\" + classe.id, { // api/Class/Course\r\n            method: \"delete\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, \"fa\", error, status)\r\n            }\r\n        }).then((response) => {\r\n            if(!response.ok) return\r\n            if (!hasMounted.current) return;\r\n            setIsLoading(false)\r\n            updClassDispatch({\r\n                type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.DELETE_CLASS,\r\n                classId: classe.id\r\n            })\r\n            if (pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })\r\n        })"
+    }
+  }
+]

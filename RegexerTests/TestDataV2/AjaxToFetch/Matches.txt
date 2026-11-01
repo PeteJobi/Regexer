@@ -1,26 +1,476 @@
 ﻿[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 198,
+              "Length": 18,
+              "Text": "updClassDispatch({"
+            },
+            {
+              "Index": 226,
+              "Length": 38,
+              "Text": "    type: Strings.UPDATE_CLASS_PARAMS,"
+            },
+            {
+              "Index": 274,
+              "Length": 36,
+              "Text": "    classAction: Strings.EDIT_CLASS,"
+            },
+            {
+              "Index": 320,
+              "Length": 23,
+              "Text": "    classId: classe.id,"
+            },
+            {
+              "Index": 353,
+              "Length": 17,
+              "Text": "    class: classe"
+            },
+            {
+              "Index": 380,
+              "Length": 2,
+              "Text": "})"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 64,
+              "Length": 23,
+              "Text": " // api/Class/joinClass"
+            }
+          ]
+        },
+        {
+          "Label": "cont",
+          "Captures": [
+            {
+              "Index": 93,
+              "Length": 32,
+              "Text": "contentType: \"application/json\","
+            }
+          ]
+        },
+        {
+          "Label": "ident",
+          "Captures": [
+            {
+              "Index": 162,
+              "Length": 6,
+              "Text": "classe"
+            }
+          ]
+        },
+        {
+          "Label": "me",
+          "Captures": [
+            {
+              "Index": 131,
+              "Length": 15,
+              "Text": "method: \"POST\","
+            }
+          ]
+        },
+        {
+          "Label": "met",
+          "Captures": [
+            {
+              "Index": 140,
+              "Length": 4,
+              "Text": "POST"
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 438,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            },
+            {
+              "Index": 492,
+              "Length": 4,
+              "Text": "yo()"
+            }
+          ]
+        },
+        {
+          "Label": "query",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 170,
+              "Length": 12,
+              "Text": "Types.IClass"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 19,
+              "Length": 44,
+              "Text": "Strings.URL_CLASS + \"joinClass/\" + classe.id"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 507,
       "Text": "$.ajax({\r\n    url: Strings.URL_CLASS + \"joinClass/\" + classe.id, // api/Class/joinClass\r\n    contentType: \"application/json\",\r\n    method: \"POST\",\r\n    success: (classe: Types.IClass) => {\r\n        updClassDispatch({\r\n            type: Strings.UPDATE_CLASS_PARAMS,\r\n            classAction: Strings.EDIT_CLASS,\r\n            classId: classe.id,\r\n            class: classe\r\n        })\r\n    },\r\n    error: (xhr, status, error) => {\r\n        console.log(xhr.responseText, status, error)\r\n        yo()\r\n    }\r\n})"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 373,
+              "Length": 18,
+              "Text": "updClassDispatch({"
+            },
+            {
+              "Index": 397,
+              "Length": 38,
+              "Text": "    type: Strings.UPDATE_CLASS_PARAMS,"
+            },
+            {
+              "Index": 441,
+              "Length": 36,
+              "Text": "    classAction: Strings.EDIT_CLASS,"
+            },
+            {
+              "Index": 483,
+              "Length": 23,
+              "Text": "    classId: classe.id,"
+            },
+            {
+              "Index": 512,
+              "Length": 17,
+              "Text": "    class: classe"
+            },
+            {
+              "Index": 535,
+              "Length": 2,
+              "Text": "})"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 82,
+              "Length": 23,
+              "Text": " // api/Class/joinClass"
+            }
+          ]
+        },
+        {
+          "Label": "ident",
+          "Captures": [
+            {
+              "Index": 343,
+              "Length": 6,
+              "Text": "classe"
+            }
+          ]
+        },
+        {
+          "Label": "met",
+          "Captures": [
+            {
+              "Index": 120,
+              "Length": 4,
+              "Text": "POST"
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 210,
+              "Length": 45,
+              "Text": "console.log(xhr.responseText, status, error);"
+            },
+            {
+              "Index": 265,
+              "Length": 5,
+              "Text": "yo();"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 20,
+              "Length": 12,
+              "Text": "Types.IClass"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 34,
+              "Length": 44,
+              "Text": "Strings.URL_CLASS + \"joinClass/\" + classe.id"
+            }
+          ]
+        }
+      ],
       "Index": 0,
-      "Length": 547,
-      "Text": "Functions.fetchCall<Types.IClass>(Strings.URL_CLASS + \"joinClass/\" + classe.id, {  // api/Class/joinClass\r\n    method: \"POST\",\r\n    notOk: (status, responseText, noConnection, noConnectionString) => {\r\n        console.log(xhr.responseText, status, error);\r\n        yo();\r\n    }\r\n}).then((response) => {\r\n    if(!response.ok) return\r\n    const classe = response.result\r\n    updClassDispatch({,\r\n        type: Strings.UPDATE_CLASS_PARAMS,,\r\n        classAction: Strings.EDIT_CLASS,,\r\n        classId: classe.id,,\r\n        class: classe,\r\n    }),\r\n})"
+      "Length": 541,
+      "Text": "Functions.fetchCall<Types.IClass>(Strings.URL_CLASS + \"joinClass/\" + classe.id, {  // api/Class/joinClass\r\n    method: \"POST\",\r\n    notOk: (status, responseText, noConnection, noConnectionString) => {\r\n        console.log(xhr.responseText, status, error);\r\n        yo();\r\n    }\r\n}).then((response) => {\r\n    if(!response.ok) return\r\n    const classe = response.result\r\n    updClassDispatch({\r\n        type: Strings.UPDATE_CLASS_PARAMS,\r\n        classAction: Strings.EDIT_CLASS,\r\n        classId: classe.id,\r\n        class: classe\r\n    })\r\n})"
     }
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 719,
+              "Length": 18,
+              "Text": "updClassDispatch({"
+            },
+            {
+              "Index": 751,
+              "Length": 38,
+              "Text": "    type: Strings.UPDATE_CLASS_PARAMS,"
+            },
+            {
+              "Index": 803,
+              "Length": 36,
+              "Text": "    classAction: Strings.EDIT_CLASS,"
+            },
+            {
+              "Index": 853,
+              "Length": 23,
+              "Text": "    classId: classe.id,"
+            },
+            {
+              "Index": 890,
+              "Length": 17,
+              "Text": "    class: classe"
+            },
+            {
+              "Index": 921,
+              "Length": 2,
+              "Text": "})"
+            },
+            {
+              "Index": 937,
+              "Length": 6,
+              "Text": "ibad()"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "cont",
+          "Captures": [
+            {
+              "Index": 602,
+              "Length": 32,
+              "Text": "contentType: \"application/json\","
+            }
+          ]
+        },
+        {
+          "Label": "ident",
+          "Captures": [
+            {
+              "Index": 679,
+              "Length": 6,
+              "Text": "classe"
+            }
+          ]
+        },
+        {
+          "Label": "me",
+          "Captures": [
+            {
+              "Index": 644,
+              "Length": 15,
+              "Text": "method: \"POST\","
+            }
+          ]
+        },
+        {
+          "Label": "met",
+          "Captures": [
+            {
+              "Index": 653,
+              "Length": 4,
+              "Text": "POST"
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 1011,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "query",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 687,
+              "Length": 12,
+              "Text": "Types.IClass"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 547,
+              "Length": 44,
+              "Text": "Strings.URL_CLASS + \"joinClass/\" + classe.id"
+            }
+          ]
+        }
+      ],
       "Index": 520,
       "Length": 554,
       "Text": "    $.ajax({\r\n        url: Strings.URL_CLASS + \"joinClass/\" + classe.id,\r\n        contentType: \"application/json\",\r\n        method: \"POST\",\r\n        success: (classe: Types.IClass) => {\r\n            updClassDispatch({\r\n                type: Strings.UPDATE_CLASS_PARAMS,\r\n                classAction: Strings.EDIT_CLASS,\r\n                classId: classe.id,\r\n                class: classe\r\n            })\r\n            ibad()\r\n        },\r\n        error: (xhr, status, error) => {\r\n            console.log(xhr.responseText, status, error)\r\n        }\r\n    })"
     },
     "OutputMatch": {
-      "Index": 560,
-      "Length": 586,
-      "Text": "    Functions.fetchCall<Types.IClass>(Strings.URL_CLASS + \"joinClass/\" + classe.id, { \r\n        method: \"POST\",\r\n        notOk: (status, responseText, noConnection, noConnectionString) => {\r\n            console.log(xhr.responseText, status, error);\r\n        }\r\n    }).then((response) => {\r\n        if(!response.ok) return\r\n        const classe = response.result\r\n        updClassDispatch({,\r\n            type: Strings.UPDATE_CLASS_PARAMS,,\r\n            classAction: Strings.EDIT_CLASS,,\r\n            classId: classe.id,,\r\n            class: classe,\r\n        }),\r\n        ibad(),\r\n    })"
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 925,
+              "Length": 18,
+              "Text": "updClassDispatch({"
+            },
+            {
+              "Index": 953,
+              "Length": 38,
+              "Text": "    type: Strings.UPDATE_CLASS_PARAMS,"
+            },
+            {
+              "Index": 1001,
+              "Length": 36,
+              "Text": "    classAction: Strings.EDIT_CLASS,"
+            },
+            {
+              "Index": 1047,
+              "Length": 23,
+              "Text": "    classId: classe.id,"
+            },
+            {
+              "Index": 1080,
+              "Length": 17,
+              "Text": "    class: classe"
+            },
+            {
+              "Index": 1107,
+              "Length": 2,
+              "Text": "})"
+            },
+            {
+              "Index": 1119,
+              "Length": 6,
+              "Text": "ibad()"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 640,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "ident",
+          "Captures": [
+            {
+              "Index": 891,
+              "Length": 6,
+              "Text": "classe"
+            }
+          ]
+        },
+        {
+          "Label": "met",
+          "Captures": [
+            {
+              "Index": 659,
+              "Length": 4,
+              "Text": "POST"
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 757,
+              "Length": 45,
+              "Text": "console.log(xhr.responseText, status, error);"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 578,
+              "Length": 12,
+              "Text": "Types.IClass"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 592,
+              "Length": 44,
+              "Text": "Strings.URL_CLASS + \"joinClass/\" + classe.id"
+            }
+          ]
+        }
+      ],
+      "Index": 554,
+      "Length": 579,
+      "Text": "    Functions.fetchCall<Types.IClass>(Strings.URL_CLASS + \"joinClass/\" + classe.id, { \r\n        method: \"POST\",\r\n        notOk: (status, responseText, noConnection, noConnectionString) => {\r\n            console.log(xhr.responseText, status, error);\r\n        }\r\n    }).then((response) => {\r\n        if(!response.ok) return\r\n        const classe = response.result\r\n        updClassDispatch({\r\n            type: Strings.UPDATE_CLASS_PARAMS,\r\n            classAction: Strings.EDIT_CLASS,\r\n            classId: classe.id,\r\n            class: classe\r\n        })\r\n        ibad()\r\n    })"
     }
   }
 ]

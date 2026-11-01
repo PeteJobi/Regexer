@@ -1,11 +1,35 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 1,
+              "Text": "m"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 1,
       "Text": "m"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 1,
+              "Text": "m"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 2,
       "Text": "m,"
@@ -13,11 +37,35 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 1,
+              "Length": 1,
+              "Text": "a"
+            }
+          ]
+        }
+      ],
       "Index": 1,
       "Length": 1,
       "Text": "a"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 2,
+              "Length": 1,
+              "Text": "a"
+            }
+          ]
+        }
+      ],
       "Index": 2,
       "Length": 2,
       "Text": "a,"
@@ -25,11 +73,35 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 2,
+              "Length": 1,
+              "Text": "d"
+            }
+          ]
+        }
+      ],
       "Index": 2,
       "Length": 1,
       "Text": "d"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 4,
+              "Length": 1,
+              "Text": "d"
+            }
+          ]
+        }
+      ],
       "Index": 4,
       "Length": 2,
       "Text": "d,"
@@ -37,11 +109,35 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 3,
+              "Length": 1,
+              "Text": "a"
+            }
+          ]
+        }
+      ],
       "Index": 3,
       "Length": 1,
       "Text": "a"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 6,
+              "Length": 1,
+              "Text": "a"
+            }
+          ]
+        }
+      ],
       "Index": 6,
       "Length": 2,
       "Text": "a,"
@@ -49,11 +145,35 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 4,
+              "Length": 1,
+              "Text": "m"
+            }
+          ]
+        }
+      ],
       "Index": 4,
       "Length": 1,
       "Text": "m"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 8,
+              "Length": 1,
+              "Text": "m"
+            }
+          ]
+        }
+      ],
       "Index": 8,
       "Length": 2,
       "Text": "m,"

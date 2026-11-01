@@ -1,26 +1,134 @@
-﻿[
+[
   {
     "InputMatch": {
-      "Index": 17,
-      "Length": 23,
-      "Text": " (Abeeb, Tosin, Ishola)"
+      "IndividualMatches": [
+        {
+          "Label": "names",
+          "Captures": [
+            {
+              "Index": 19,
+              "Length": 5,
+              "Text": "Abeeb"
+            },
+            {
+              "Index": 26,
+              "Length": 5,
+              "Text": "Tosin"
+            },
+            {
+              "Index": 33,
+              "Length": 6,
+              "Text": "Ishola"
+            }
+          ]
+        }
+      ],
+      "Index": 18,
+      "Length": 22,
+      "Text": "(Abeeb, Tosin, Ishola)"
     },
     "OutputMatch": {
-      "Index": 17,
-      "Length": 29,
-      "Text": " (Abeeb and Tosin and Ishola)"
+      "IndividualMatches": [
+        {
+          "Label": "names",
+          "Captures": [
+            {
+              "Index": 19,
+              "Length": 5,
+              "Text": "Abeeb"
+            },
+            {
+              "Index": 29,
+              "Length": 5,
+              "Text": "Tosin"
+            },
+            {
+              "Index": 39,
+              "Length": 6,
+              "Text": "Ishola"
+            }
+          ]
+        }
+      ],
+      "Index": 18,
+      "Length": 28,
+      "Text": "(Abeeb and Tosin and Ishola)"
     }
   },
   {
     "InputMatch": {
-      "Index": 123,
-      "Length": 41,
-      "Text": " (Apple, Meta, Google, Amazon, Microsoft)"
+      "IndividualMatches": [
+        {
+          "Label": "names",
+          "Captures": [
+            {
+              "Index": 125,
+              "Length": 5,
+              "Text": "Apple"
+            },
+            {
+              "Index": 132,
+              "Length": 4,
+              "Text": "Meta"
+            },
+            {
+              "Index": 138,
+              "Length": 6,
+              "Text": "Google"
+            },
+            {
+              "Index": 146,
+              "Length": 6,
+              "Text": "Amazon"
+            },
+            {
+              "Index": 154,
+              "Length": 9,
+              "Text": "Microsoft"
+            }
+          ]
+        }
+      ],
+      "Index": 124,
+      "Length": 40,
+      "Text": "(Apple, Meta, Google, Amazon, Microsoft)"
     },
     "OutputMatch": {
-      "Index": 129,
-      "Length": 53,
-      "Text": " (Apple and Meta and Google and Amazon and Microsoft)"
+      "IndividualMatches": [
+        {
+          "Label": "names",
+          "Captures": [
+            {
+              "Index": 131,
+              "Length": 5,
+              "Text": "Apple"
+            },
+            {
+              "Index": 141,
+              "Length": 4,
+              "Text": "Meta"
+            },
+            {
+              "Index": 150,
+              "Length": 6,
+              "Text": "Google"
+            },
+            {
+              "Index": 161,
+              "Length": 6,
+              "Text": "Amazon"
+            },
+            {
+              "Index": 172,
+              "Length": 9,
+              "Text": "Microsoft"
+            }
+          ]
+        }
+      ],
+      "Index": 130,
+      "Length": 52,
+      "Text": "(Apple and Meta and Google and Amazon and Microsoft)"
     }
   }
 ]

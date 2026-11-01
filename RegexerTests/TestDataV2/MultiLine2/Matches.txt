@@ -1,0 +1,94 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 5,
+              "Text": "line1"
+            },
+            {
+              "Index": 7,
+              "Length": 5,
+              "Text": "line2"
+            },
+            {
+              "Index": 14,
+              "Length": 5,
+              "Text": "line3"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 19,
+      "Text": "line1\r\nline2\r\nline3"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 9,
+              "Text": "--line1--"
+            },
+            {
+              "Index": 11,
+              "Length": 9,
+              "Text": "--line2--"
+            },
+            {
+              "Index": 22,
+              "Length": 9,
+              "Text": "--line3--"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 31,
+      "Text": "--line1--\r\n--line2--\r\n--line3--"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 19,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        }
+      ],
+      "Index": 19,
+      "Length": 0,
+      "Text": ""
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 31,
+              "Length": 4,
+              "Text": "----"
+            }
+          ]
+        }
+      ],
+      "Index": 31,
+      "Length": 4,
+      "Text": "----"
+    }
+  }
+]

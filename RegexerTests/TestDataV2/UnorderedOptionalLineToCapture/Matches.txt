@@ -1,11 +1,149 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adding",
+          "Captures": [
+            {
+              "Index": 55,
+              "Length": 17,
+              "Text": "isEditing: false,"
+            }
+          ]
+        },
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 29,
+              "Length": 8,
+              "Text": "age: 12,"
+            }
+          ]
+        },
+        {
+          "Label": "editing",
+          "Captures": []
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 13,
+              "Length": 12,
+              "Text": "name: Peter,"
+            }
+          ]
+        },
+        {
+          "Label": "userAge",
+          "Captures": [
+            {
+              "Index": 34,
+              "Length": 2,
+              "Text": "12"
+            }
+          ]
+        },
+        {
+          "Label": "userName",
+          "Captures": [
+            {
+              "Index": 19,
+              "Length": 5,
+              "Text": "Peter"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 92,
       "Text": "saveUser(\r\n  name: Peter,\r\n  age: 12,\r\n  gender: M,\r\n  isEditing: false,\r\n  status: alive\r\n)"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adding",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 8,
+              "Text": "addUser{"
+            }
+          ]
+        },
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 38,
+              "Length": 16,
+              "Text": "User's age is 12"
+            },
+            {
+              "Index": 59,
+              "Length": 21,
+              "Text": "Peter is 12 years old"
+            },
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "editing",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 13,
+              "Length": 20,
+              "Text": "User's name is Peter"
+            }
+          ]
+        },
+        {
+          "Label": "userAge",
+          "Captures": [
+            {
+              "Index": 52,
+              "Length": 2,
+              "Text": "12"
+            },
+            {
+              "Index": 68,
+              "Length": 2,
+              "Text": "12"
+            }
+          ]
+        },
+        {
+          "Label": "userName",
+          "Captures": [
+            {
+              "Index": 28,
+              "Length": 5,
+              "Text": "Peter"
+            },
+            {
+              "Index": 59,
+              "Length": 5,
+              "Text": "Peter"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 83,
       "Text": "addUser{\r\n   User's name is Peter\r\n   User's age is 12\r\n   Peter is 12 years old\r\n}"
@@ -13,11 +151,149 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adding",
+          "Captures": []
+        },
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 109,
+              "Length": 7,
+              "Text": "age: 9,"
+            }
+          ]
+        },
+        {
+          "Label": "editing",
+          "Captures": [
+            {
+              "Index": 150,
+              "Length": 16,
+              "Text": "isEditing: true,"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 134,
+              "Length": 12,
+              "Text": "name: Bossa,"
+            }
+          ]
+        },
+        {
+          "Label": "userAge",
+          "Captures": [
+            {
+              "Index": 114,
+              "Length": 1,
+              "Text": "9"
+            }
+          ]
+        },
+        {
+          "Label": "userName",
+          "Captures": [
+            {
+              "Index": 140,
+              "Length": 5,
+              "Text": "Bossa"
+            }
+          ]
+        }
+      ],
       "Index": 96,
       "Length": 90,
       "Text": "saveUser(\r\n  age: 9,\r\n  gender: F,\r\n  name: Bossa,\r\n  isEditing: true,\r\n  status: alive\r\n)"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adding",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 126,
+              "Length": 15,
+              "Text": "User's age is 9"
+            },
+            {
+              "Index": 146,
+              "Length": 20,
+              "Text": "Bossa is 9 years old"
+            },
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "editing",
+          "Captures": [
+            {
+              "Index": 87,
+              "Length": 9,
+              "Text": "editUser{"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 101,
+              "Length": 20,
+              "Text": "User's name is Bossa"
+            }
+          ]
+        },
+        {
+          "Label": "userAge",
+          "Captures": [
+            {
+              "Index": 140,
+              "Length": 1,
+              "Text": "9"
+            },
+            {
+              "Index": 155,
+              "Length": 1,
+              "Text": "9"
+            }
+          ]
+        },
+        {
+          "Label": "userName",
+          "Captures": [
+            {
+              "Index": 116,
+              "Length": 5,
+              "Text": "Bossa"
+            },
+            {
+              "Index": 146,
+              "Length": 5,
+              "Text": "Bossa"
+            }
+          ]
+        }
+      ],
       "Index": 87,
       "Length": 82,
       "Text": "editUser{\r\n   User's name is Bossa\r\n   User's age is 9\r\n   Bossa is 9 years old\r\n}"
@@ -25,11 +301,149 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adding",
+          "Captures": [
+            {
+              "Index": 231,
+              "Length": 17,
+              "Text": "isEditing: false,"
+            }
+          ]
+        },
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 219,
+              "Length": 8,
+              "Text": "age: 30,"
+            }
+          ]
+        },
+        {
+          "Label": "editing",
+          "Captures": []
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 203,
+              "Length": 12,
+              "Text": "name: Judas,"
+            }
+          ]
+        },
+        {
+          "Label": "userAge",
+          "Captures": [
+            {
+              "Index": 224,
+              "Length": 2,
+              "Text": "30"
+            }
+          ]
+        },
+        {
+          "Label": "userName",
+          "Captures": [
+            {
+              "Index": 209,
+              "Length": 5,
+              "Text": "Judas"
+            }
+          ]
+        }
+      ],
       "Index": 190,
       "Length": 78,
       "Text": "saveUser(\r\n  name: Judas,\r\n  age: 30,\r\n  isEditing: false,\r\n  status: alive\r\n)"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adding",
+          "Captures": [
+            {
+              "Index": 173,
+              "Length": 8,
+              "Text": "addUser{"
+            }
+          ]
+        },
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 211,
+              "Length": 16,
+              "Text": "User's age is 30"
+            },
+            {
+              "Index": 232,
+              "Length": 21,
+              "Text": "Judas is 30 years old"
+            },
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "editing",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 186,
+              "Length": 20,
+              "Text": "User's name is Judas"
+            }
+          ]
+        },
+        {
+          "Label": "userAge",
+          "Captures": [
+            {
+              "Index": 225,
+              "Length": 2,
+              "Text": "30"
+            },
+            {
+              "Index": 241,
+              "Length": 2,
+              "Text": "30"
+            }
+          ]
+        },
+        {
+          "Label": "userName",
+          "Captures": [
+            {
+              "Index": 201,
+              "Length": 5,
+              "Text": "Judas"
+            },
+            {
+              "Index": 232,
+              "Length": 5,
+              "Text": "Judas"
+            }
+          ]
+        }
+      ],
       "Index": 173,
       "Length": 83,
       "Text": "addUser{\r\n   User's name is Judas\r\n   User's age is 30\r\n   Judas is 30 years old\r\n}"
@@ -37,14 +451,129 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adding",
+          "Captures": []
+        },
+        {
+          "Label": "age",
+          "Captures": []
+        },
+        {
+          "Label": "editing",
+          "Captures": [
+            {
+              "Index": 301,
+              "Length": 16,
+              "Text": "isEditing: true,"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 285,
+              "Length": 12,
+              "Text": "name: Paula,"
+            }
+          ]
+        },
+        {
+          "Label": "userAge",
+          "Captures": []
+        },
+        {
+          "Label": "userName",
+          "Captures": [
+            {
+              "Index": 291,
+              "Length": 5,
+              "Text": "Paula"
+            }
+          ]
+        }
+      ],
       "Index": 272,
       "Length": 65,
       "Text": "saveUser(\r\n  name: Paula,\r\n  isEditing: true,\r\n  status: alive\r\n)"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adding",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            },
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            },
+            {
+              "Index": 299,
+              "Length": 22,
+              "Text": "Paula's age is unknown"
+            }
+          ]
+        },
+        {
+          "Label": "editing",
+          "Captures": [
+            {
+              "Index": 260,
+              "Length": 9,
+              "Text": "editUser{"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 274,
+              "Length": 20,
+              "Text": "User's name is Paula"
+            }
+          ]
+        },
+        {
+          "Label": "userAge",
+          "Captures": []
+        },
+        {
+          "Label": "userName",
+          "Captures": [
+            {
+              "Index": 289,
+              "Length": 5,
+              "Text": "Paula"
+            },
+            {
+              "Index": 299,
+              "Length": 5,
+              "Text": "Paula"
+            }
+          ]
+        }
+      ],
       "Index": 260,
-      "Length": 61,
-      "Text": "editUser{\r\n   User's name is Paula\r\n   Paula is  years old\r\n}"
+      "Length": 64,
+      "Text": "editUser{\r\n   User's name is Paula\r\n   Paula's age is unknown\r\n}"
     }
   }
 ]

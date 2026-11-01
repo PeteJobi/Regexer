@@ -1,0 +1,368 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "condition",
+          "Captures": [
+            {
+              "Index": 130,
+              "Length": 5,
+              "Text": "i < 5"
+            }
+          ]
+        },
+        {
+          "Label": "increment",
+          "Captures": [
+            {
+              "Index": 232,
+              "Length": 3,
+              "Text": "i++"
+            }
+          ]
+        },
+        {
+          "Label": "init",
+          "Captures": [
+            {
+              "Index": 104,
+              "Length": 9,
+              "Text": "int i = 0"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 87,
+              "Length": 5,
+              "Text": "Print"
+            }
+          ]
+        },
+        {
+          "Label": "otherActions",
+          "Captures": [
+            {
+              "Index": 149,
+              "Length": 40,
+              "Text": "Console.WriteLine($\"Value of i is {i}\");"
+            },
+            {
+              "Index": 201,
+              "Length": 19,
+              "Text": "DoSomethingElse(i);"
+            }
+          ]
+        },
+        {
+          "Label": "otherLines",
+          "Captures": [
+            {
+              "Index": 255,
+              "Length": 8,
+              "Text": "return i"
+            }
+          ]
+        },
+        {
+          "Label": "params",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 83,
+              "Length": 3,
+              "Text": "int"
+            }
+          ]
+        }
+      ],
+      "Index": 72,
+      "Length": 198,
+      "Text": "    public int Print(){\r\n       int i = 0;\r\n       while (i < 5){\r\n          Console.WriteLine($\"Value of i is {i}\");\r\n          DoSomethingElse(i);\r\n          i++;\r\n       }\r\n       return i\r\n    }"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "condition",
+          "Captures": [
+            {
+              "Index": 126,
+              "Length": 5,
+              "Text": "i < 5"
+            }
+          ]
+        },
+        {
+          "Label": "increment",
+          "Captures": [
+            {
+              "Index": 133,
+              "Length": 3,
+              "Text": "i++"
+            }
+          ]
+        },
+        {
+          "Label": "init",
+          "Captures": [
+            {
+              "Index": 115,
+              "Length": 9,
+              "Text": "int i = 0"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 88,
+              "Length": 5,
+              "Text": "Print"
+            }
+          ]
+        },
+        {
+          "Label": "otherActions",
+          "Captures": [
+            {
+              "Index": 159,
+              "Length": 40,
+              "Text": "Console.WriteLine($\"Value of i is {i}\");"
+            },
+            {
+              "Index": 211,
+              "Length": 19,
+              "Text": "DoSomethingElse(i);"
+            }
+          ]
+        },
+        {
+          "Label": "otherLines",
+          "Captures": [
+            {
+              "Index": 249,
+              "Length": 8,
+              "Text": "return i"
+            }
+          ]
+        },
+        {
+          "Label": "params",
+          "Captures": [
+            {
+              "Index": 94,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 84,
+              "Length": 3,
+              "Text": "int"
+            }
+          ]
+        }
+      ],
+      "Index": 72,
+      "Length": 192,
+      "Text": "    private int Print()\r\n    {\r\n       for(int i = 0; i < 5; i++)\r\n       {\r\n          Console.WriteLine($\"Value of i is {i}\");\r\n          DoSomethingElse(i);\r\n       }\r\n       return i\r\n    }"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "condition",
+          "Captures": [
+            {
+              "Index": 406,
+              "Length": 7,
+              "Text": "n < max"
+            }
+          ]
+        },
+        {
+          "Label": "increment",
+          "Captures": [
+            {
+              "Index": 479,
+              "Length": 3,
+              "Text": "n++"
+            }
+          ]
+        },
+        {
+          "Label": "init",
+          "Captures": [
+            {
+              "Index": 380,
+              "Length": 9,
+              "Text": "int n = 0"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 354,
+              "Length": 7,
+              "Text": "SumUpTo"
+            }
+          ]
+        },
+        {
+          "Label": "otherActions",
+          "Captures": [
+            {
+              "Index": 427,
+              "Length": 40,
+              "Text": "max += n;   // accumulate into parameter"
+            }
+          ]
+        },
+        {
+          "Label": "otherLines",
+          "Captures": [
+            {
+              "Index": 502,
+              "Length": 34,
+              "Text": "Console.WriteLine(max.ToString());"
+            },
+            {
+              "Index": 545,
+              "Length": 11,
+              "Text": "return max;"
+            }
+          ]
+        },
+        {
+          "Label": "params",
+          "Captures": [
+            {
+              "Index": 362,
+              "Length": 7,
+              "Text": "int max"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 350,
+              "Length": 3,
+              "Text": "int"
+            }
+          ]
+        }
+      ],
+      "Index": 339,
+      "Length": 224,
+      "Text": "    public int SumUpTo(int max){\r\n       int n = 0;\r\n       while (n < max){\r\n          max += n;   // accumulate into parameter\r\n          n++;\r\n       }\r\n       Console.WriteLine(max.ToString());\r\n       return max;\r\n    }"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "condition",
+          "Captures": [
+            {
+              "Index": 396,
+              "Length": 7,
+              "Text": "n < max"
+            }
+          ]
+        },
+        {
+          "Label": "increment",
+          "Captures": [
+            {
+              "Index": 405,
+              "Length": 3,
+              "Text": "n++"
+            }
+          ]
+        },
+        {
+          "Label": "init",
+          "Captures": [
+            {
+              "Index": 385,
+              "Length": 9,
+              "Text": "int n = 0"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 349,
+              "Length": 7,
+              "Text": "SumUpTo"
+            }
+          ]
+        },
+        {
+          "Label": "otherActions",
+          "Captures": [
+            {
+              "Index": 431,
+              "Length": 40,
+              "Text": "max += n;   // accumulate into parameter"
+            }
+          ]
+        },
+        {
+          "Label": "otherLines",
+          "Captures": [
+            {
+              "Index": 490,
+              "Length": 34,
+              "Text": "Console.WriteLine(max.ToString());"
+            },
+            {
+              "Index": 533,
+              "Length": 11,
+              "Text": "return max;"
+            }
+          ]
+        },
+        {
+          "Label": "params",
+          "Captures": [
+            {
+              "Index": 357,
+              "Length": 7,
+              "Text": "int max"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 345,
+              "Length": 3,
+              "Text": "int"
+            }
+          ]
+        }
+      ],
+      "Index": 333,
+      "Length": 218,
+      "Text": "    private int SumUpTo(int max)\r\n    {\r\n       for(int n = 0; n < max; n++)\r\n       {\r\n          max += n;   // accumulate into parameter\r\n       }\r\n       Console.WriteLine(max.ToString());\r\n       return max;\r\n    }"
+    }
+  }
+]

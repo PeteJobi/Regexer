@@ -1,11 +1,35 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 6,
+              "Text": "Tasty!"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 6,
       "Text": "Tasty!"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 42,
+              "Text": "Tasty!...Tasty!...Tasty!...Tasty!...Tasty!"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 42,
       "Text": "Tasty!...Tasty!...Tasty!...Tasty!...Tasty!"

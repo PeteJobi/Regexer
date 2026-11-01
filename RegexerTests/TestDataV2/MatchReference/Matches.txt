@@ -1,0 +1,114 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "hubby",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 3,
+              "Text": "Ade"
+            }
+          ]
+        },
+        {
+          "Label": "wifey",
+          "Captures": [
+            {
+              "Index": 10,
+              "Length": 4,
+              "Text": "Sade"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 38,
+      "Text": "Ade loves Sade just as Sade loves Ade."
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "hubby",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 3,
+              "Text": "Ade"
+            }
+          ]
+        },
+        {
+          "Label": "wifey",
+          "Captures": [
+            {
+              "Index": 8,
+              "Length": 4,
+              "Text": "Sade"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 29,
+      "Text": "Ade and Sade are now married."
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "hubby",
+          "Captures": [
+            {
+              "Index": 40,
+              "Length": 7,
+              "Text": "Patrick"
+            }
+          ]
+        },
+        {
+          "Label": "wifey",
+          "Captures": [
+            {
+              "Index": 54,
+              "Length": 6,
+              "Text": "Jenner"
+            }
+          ]
+        }
+      ],
+      "Index": 40,
+      "Length": 50,
+      "Text": "Patrick loves Jenner just as Jenner loves Patrick."
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "hubby",
+          "Captures": [
+            {
+              "Index": 31,
+              "Length": 7,
+              "Text": "Patrick"
+            }
+          ]
+        },
+        {
+          "Label": "wifey",
+          "Captures": [
+            {
+              "Index": 43,
+              "Length": 6,
+              "Text": "Jenner"
+            }
+          ]
+        }
+      ],
+      "Index": 31,
+      "Length": 35,
+      "Text": "Patrick and Jenner are now married."
+    }
+  }
+]

@@ -1,1 +1,2 @@
-﻿<input [[m|{[\s<ml>]+}|[[key]]="[[value]]"]]/>
+﻿<input [[m|{[\s
+]+}|[[key]]="[[value]]"]]/>

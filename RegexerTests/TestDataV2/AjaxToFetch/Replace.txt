@@ -6,5 +6,5 @@
 }).then((response) => {
     if(!response.ok) return
     const [[ident]] = response.result
-    [[act|ml]],
+    [[act|ml]]
 })

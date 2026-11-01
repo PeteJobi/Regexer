@@ -1,11 +1,49 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "word",
+          "Captures": [
+            {
+              "Index": 1,
+              "Length": 5,
+              "Text": "madam"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 8,
       "Text": "\"madam.\""
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 8,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "word",
+          "Captures": [
+            {
+              "Index": 1,
+              "Length": 5,
+              "Text": "madam"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 8,
       "Text": "(madam):"
@@ -13,11 +51,55 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 16,
+              "Length": 17,
+              "Text": " //huge and leafy"
+            }
+          ]
+        },
+        {
+          "Label": "word",
+          "Captures": [
+            {
+              "Index": 11,
+              "Length": 4,
+              "Text": "tree"
+            }
+          ]
+        }
+      ],
       "Index": 10,
       "Length": 24,
       "Text": "\"tree. //huge and leafy\""
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 17,
+              "Length": 17,
+              "Text": " //huge and leafy"
+            }
+          ]
+        },
+        {
+          "Label": "word",
+          "Captures": [
+            {
+              "Index": 11,
+              "Length": 4,
+              "Text": "tree"
+            }
+          ]
+        }
+      ],
       "Index": 10,
       "Length": 24,
       "Text": "(tree): //huge and leafy"
@@ -25,11 +107,49 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "word",
+          "Captures": [
+            {
+              "Index": 37,
+              "Length": 3,
+              "Text": "mud"
+            }
+          ]
+        }
+      ],
       "Index": 36,
       "Length": 6,
       "Text": "\"mud.\""
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 42,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "word",
+          "Captures": [
+            {
+              "Index": 37,
+              "Length": 3,
+              "Text": "mud"
+            }
+          ]
+        }
+      ],
       "Index": 36,
       "Length": 6,
       "Text": "(mud):"
@@ -37,11 +157,55 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 50,
+              "Length": 16,
+              "Text": " //deep and wide"
+            }
+          ]
+        },
+        {
+          "Label": "word",
+          "Captures": [
+            {
+              "Index": 45,
+              "Length": 4,
+              "Text": "well"
+            }
+          ]
+        }
+      ],
       "Index": 44,
       "Length": 23,
       "Text": "\"well. //deep and wide\""
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 51,
+              "Length": 16,
+              "Text": " //deep and wide"
+            }
+          ]
+        },
+        {
+          "Label": "word",
+          "Captures": [
+            {
+              "Index": 45,
+              "Length": 4,
+              "Text": "well"
+            }
+          ]
+        }
+      ],
       "Index": 44,
       "Length": 23,
       "Text": "(well): //deep and wide"

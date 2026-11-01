@@ -1,11 +1,35 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 9,
+              "Length": 24,
+              "Text": "<content>Hello</content>"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 41,
       "Text": "<tag>\r\n  <content>Hello</content>\r\n</tag>"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 13,
+              "Length": 24,
+              "Text": "<content>Hello</content>"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 49,
       "Text": "<new-tag>\r\n  <content>Hello</content>\r\n</new-tag>"

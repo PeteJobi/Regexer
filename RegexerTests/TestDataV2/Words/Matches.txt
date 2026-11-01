@@ -1,11 +1,35 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 1,
+              "Length": 5,
+              "Text": "madam"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 7,
       "Text": "(madam)"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 1,
+              "Length": 5,
+              "Text": "madam"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 7,
       "Text": "{madam}"

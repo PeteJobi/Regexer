@@ -1,11 +1,195 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 13,
+              "Length": 4,
+              "Text": "name"
+            },
+            {
+              "Index": 29,
+              "Length": 3,
+              "Text": "age"
+            },
+            {
+              "Index": 41,
+              "Length": 6,
+              "Text": "gender"
+            },
+            {
+              "Index": 55,
+              "Length": 9,
+              "Text": "isEditing"
+            },
+            {
+              "Index": 76,
+              "Length": 6,
+              "Text": "status"
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 13,
+              "Length": 11,
+              "Text": "name: Peter"
+            },
+            {
+              "Index": 29,
+              "Length": 7,
+              "Text": "age: 12"
+            },
+            {
+              "Index": 41,
+              "Length": 9,
+              "Text": "gender: M"
+            },
+            {
+              "Index": 55,
+              "Length": 16,
+              "Text": "isEditing: false"
+            },
+            {
+              "Index": 76,
+              "Length": 13,
+              "Text": "status: alive"
+            }
+          ]
+        },
+        {
+          "Label": "value",
+          "Captures": [
+            {
+              "Index": 19,
+              "Length": 5,
+              "Text": "Peter"
+            },
+            {
+              "Index": 34,
+              "Length": 2,
+              "Text": "12"
+            },
+            {
+              "Index": 49,
+              "Length": 1,
+              "Text": "M"
+            },
+            {
+              "Index": 66,
+              "Length": 5,
+              "Text": "false"
+            },
+            {
+              "Index": 84,
+              "Length": 5,
+              "Text": "alive"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 92,
       "Text": "saveUser(\r\n  name: Peter,\r\n  age: 12,\r\n  gender: M,\r\n  isEditing: false,\r\n  status: alive\r\n)"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 15,
+              "Length": 4,
+              "Text": "name"
+            },
+            {
+              "Index": 36,
+              "Length": 3,
+              "Text": "age"
+            },
+            {
+              "Index": 53,
+              "Length": 6,
+              "Text": "gender"
+            },
+            {
+              "Index": 72,
+              "Length": 9,
+              "Text": "isEditing"
+            },
+            {
+              "Index": 98,
+              "Length": 6,
+              "Text": "status"
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 14,
+              "Length": 16,
+              "Text": "\"name\" = \"Peter\""
+            },
+            {
+              "Index": 35,
+              "Length": 12,
+              "Text": "\"age\" = \"12\""
+            },
+            {
+              "Index": 52,
+              "Length": 14,
+              "Text": "\"gender\" = \"M\""
+            },
+            {
+              "Index": 71,
+              "Length": 21,
+              "Text": "\"isEditing\" = \"false\""
+            },
+            {
+              "Index": 97,
+              "Length": 18,
+              "Text": "\"status\" = \"alive\""
+            }
+          ]
+        },
+        {
+          "Label": "value",
+          "Captures": [
+            {
+              "Index": 24,
+              "Length": 5,
+              "Text": "Peter"
+            },
+            {
+              "Index": 44,
+              "Length": 2,
+              "Text": "12"
+            },
+            {
+              "Index": 64,
+              "Length": 1,
+              "Text": "M"
+            },
+            {
+              "Index": 86,
+              "Length": 5,
+              "Text": "false"
+            },
+            {
+              "Index": 109,
+              "Length": 5,
+              "Text": "alive"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 118,
       "Text": "saveUser{ \r\n  \"name\" = \"Peter\",\r\n  \"age\" = \"12\",\r\n  \"gender\" = \"M\",\r\n  \"isEditing\" = \"false\",\r\n  \"status\" = \"alive\"\r\n}"
@@ -13,11 +197,195 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 109,
+              "Length": 3,
+              "Text": "age"
+            },
+            {
+              "Index": 120,
+              "Length": 6,
+              "Text": "gender"
+            },
+            {
+              "Index": 134,
+              "Length": 4,
+              "Text": "name"
+            },
+            {
+              "Index": 150,
+              "Length": 9,
+              "Text": "isEditing"
+            },
+            {
+              "Index": 170,
+              "Length": 6,
+              "Text": "status"
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 109,
+              "Length": 6,
+              "Text": "age: 9"
+            },
+            {
+              "Index": 120,
+              "Length": 9,
+              "Text": "gender: F"
+            },
+            {
+              "Index": 134,
+              "Length": 11,
+              "Text": "name: Bossa"
+            },
+            {
+              "Index": 150,
+              "Length": 15,
+              "Text": "isEditing: true"
+            },
+            {
+              "Index": 170,
+              "Length": 13,
+              "Text": "status: alive"
+            }
+          ]
+        },
+        {
+          "Label": "value",
+          "Captures": [
+            {
+              "Index": 114,
+              "Length": 1,
+              "Text": "9"
+            },
+            {
+              "Index": 128,
+              "Length": 1,
+              "Text": "F"
+            },
+            {
+              "Index": 140,
+              "Length": 5,
+              "Text": "Bossa"
+            },
+            {
+              "Index": 161,
+              "Length": 4,
+              "Text": "true"
+            },
+            {
+              "Index": 178,
+              "Length": 5,
+              "Text": "alive"
+            }
+          ]
+        }
+      ],
       "Index": 96,
       "Length": 90,
       "Text": "saveUser(\r\n  age: 9,\r\n  gender: F,\r\n  name: Bossa,\r\n  isEditing: true,\r\n  status: alive\r\n)"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 137,
+              "Length": 3,
+              "Text": "age"
+            },
+            {
+              "Index": 153,
+              "Length": 6,
+              "Text": "gender"
+            },
+            {
+              "Index": 172,
+              "Length": 4,
+              "Text": "name"
+            },
+            {
+              "Index": 193,
+              "Length": 9,
+              "Text": "isEditing"
+            },
+            {
+              "Index": 218,
+              "Length": 6,
+              "Text": "status"
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 136,
+              "Length": 11,
+              "Text": "\"age\" = \"9\""
+            },
+            {
+              "Index": 152,
+              "Length": 14,
+              "Text": "\"gender\" = \"F\""
+            },
+            {
+              "Index": 171,
+              "Length": 16,
+              "Text": "\"name\" = \"Bossa\""
+            },
+            {
+              "Index": 192,
+              "Length": 20,
+              "Text": "\"isEditing\" = \"true\""
+            },
+            {
+              "Index": 217,
+              "Length": 18,
+              "Text": "\"status\" = \"alive\""
+            }
+          ]
+        },
+        {
+          "Label": "value",
+          "Captures": [
+            {
+              "Index": 145,
+              "Length": 1,
+              "Text": "9"
+            },
+            {
+              "Index": 164,
+              "Length": 1,
+              "Text": "F"
+            },
+            {
+              "Index": 181,
+              "Length": 5,
+              "Text": "Bossa"
+            },
+            {
+              "Index": 207,
+              "Length": 4,
+              "Text": "true"
+            },
+            {
+              "Index": 229,
+              "Length": 5,
+              "Text": "alive"
+            }
+          ]
+        }
+      ],
       "Index": 122,
       "Length": 116,
       "Text": "saveUser{ \r\n  \"age\" = \"9\",\r\n  \"gender\" = \"F\",\r\n  \"name\" = \"Bossa\",\r\n  \"isEditing\" = \"true\",\r\n  \"status\" = \"alive\"\r\n}"
@@ -25,11 +393,165 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 203,
+              "Length": 4,
+              "Text": "name"
+            },
+            {
+              "Index": 219,
+              "Length": 3,
+              "Text": "age"
+            },
+            {
+              "Index": 231,
+              "Length": 9,
+              "Text": "isEditing"
+            },
+            {
+              "Index": 252,
+              "Length": 6,
+              "Text": "status"
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 203,
+              "Length": 11,
+              "Text": "name: Judas"
+            },
+            {
+              "Index": 219,
+              "Length": 7,
+              "Text": "age: 30"
+            },
+            {
+              "Index": 231,
+              "Length": 16,
+              "Text": "isEditing: false"
+            },
+            {
+              "Index": 252,
+              "Length": 13,
+              "Text": "status: alive"
+            }
+          ]
+        },
+        {
+          "Label": "value",
+          "Captures": [
+            {
+              "Index": 209,
+              "Length": 5,
+              "Text": "Judas"
+            },
+            {
+              "Index": 224,
+              "Length": 2,
+              "Text": "30"
+            },
+            {
+              "Index": 242,
+              "Length": 5,
+              "Text": "false"
+            },
+            {
+              "Index": 260,
+              "Length": 5,
+              "Text": "alive"
+            }
+          ]
+        }
+      ],
       "Index": 190,
       "Length": 78,
       "Text": "saveUser(\r\n  name: Judas,\r\n  age: 30,\r\n  isEditing: false,\r\n  status: alive\r\n)"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 257,
+              "Length": 4,
+              "Text": "name"
+            },
+            {
+              "Index": 278,
+              "Length": 3,
+              "Text": "age"
+            },
+            {
+              "Index": 295,
+              "Length": 9,
+              "Text": "isEditing"
+            },
+            {
+              "Index": 321,
+              "Length": 6,
+              "Text": "status"
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 256,
+              "Length": 16,
+              "Text": "\"name\" = \"Judas\""
+            },
+            {
+              "Index": 277,
+              "Length": 12,
+              "Text": "\"age\" = \"30\""
+            },
+            {
+              "Index": 294,
+              "Length": 21,
+              "Text": "\"isEditing\" = \"false\""
+            },
+            {
+              "Index": 320,
+              "Length": 18,
+              "Text": "\"status\" = \"alive\""
+            }
+          ]
+        },
+        {
+          "Label": "value",
+          "Captures": [
+            {
+              "Index": 266,
+              "Length": 5,
+              "Text": "Judas"
+            },
+            {
+              "Index": 286,
+              "Length": 2,
+              "Text": "30"
+            },
+            {
+              "Index": 309,
+              "Length": 5,
+              "Text": "false"
+            },
+            {
+              "Index": 332,
+              "Length": 5,
+              "Text": "alive"
+            }
+          ]
+        }
+      ],
       "Index": 242,
       "Length": 99,
       "Text": "saveUser{ \r\n  \"name\" = \"Judas\",\r\n  \"age\" = \"30\",\r\n  \"isEditing\" = \"false\",\r\n  \"status\" = \"alive\"\r\n}"
@@ -37,11 +559,135 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 285,
+              "Length": 4,
+              "Text": "name"
+            },
+            {
+              "Index": 301,
+              "Length": 9,
+              "Text": "isEditing"
+            },
+            {
+              "Index": 321,
+              "Length": 6,
+              "Text": "status"
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 285,
+              "Length": 11,
+              "Text": "name: Paula"
+            },
+            {
+              "Index": 301,
+              "Length": 15,
+              "Text": "isEditing: true"
+            },
+            {
+              "Index": 321,
+              "Length": 13,
+              "Text": "status: alive"
+            }
+          ]
+        },
+        {
+          "Label": "value",
+          "Captures": [
+            {
+              "Index": 291,
+              "Length": 5,
+              "Text": "Paula"
+            },
+            {
+              "Index": 312,
+              "Length": 4,
+              "Text": "true"
+            },
+            {
+              "Index": 329,
+              "Length": 5,
+              "Text": "alive"
+            }
+          ]
+        }
+      ],
       "Index": 272,
       "Length": 65,
       "Text": "saveUser(\r\n  name: Paula,\r\n  isEditing: true,\r\n  status: alive\r\n)"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 360,
+              "Length": 4,
+              "Text": "name"
+            },
+            {
+              "Index": 381,
+              "Length": 9,
+              "Text": "isEditing"
+            },
+            {
+              "Index": 406,
+              "Length": 6,
+              "Text": "status"
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 359,
+              "Length": 16,
+              "Text": "\"name\" = \"Paula\""
+            },
+            {
+              "Index": 380,
+              "Length": 20,
+              "Text": "\"isEditing\" = \"true\""
+            },
+            {
+              "Index": 405,
+              "Length": 18,
+              "Text": "\"status\" = \"alive\""
+            }
+          ]
+        },
+        {
+          "Label": "value",
+          "Captures": [
+            {
+              "Index": 369,
+              "Length": 5,
+              "Text": "Paula"
+            },
+            {
+              "Index": 395,
+              "Length": 4,
+              "Text": "true"
+            },
+            {
+              "Index": 417,
+              "Length": 5,
+              "Text": "alive"
+            }
+          ]
+        }
+      ],
       "Index": 345,
       "Length": 81,
       "Text": "saveUser{ \r\n  \"name\" = \"Paula\",\r\n  \"isEditing\" = \"true\",\r\n  \"status\" = \"alive\"\r\n}"

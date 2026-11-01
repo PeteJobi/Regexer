@@ -1,11 +1,55 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 7,
+              "Length": 2,
+              "Text": "12"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 5,
+              "Text": "Peter"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 10,
       "Text": "Peter, 12."
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 18,
+              "Length": 2,
+              "Text": "12"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 6,
+              "Length": 5,
+              "Text": "Peter"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 20,
       "Text": "Name: Peter, Age: 12"
@@ -13,11 +57,55 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 31,
+              "Length": 2,
+              "Text": "30"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 24,
+              "Length": 5,
+              "Text": "Judas"
+            }
+          ]
+        }
+      ],
       "Index": 24,
       "Length": 10,
       "Text": "Judas, 30."
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 52,
+              "Length": 2,
+              "Text": "30"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 40,
+              "Length": 5,
+              "Text": "Judas"
+            }
+          ]
+        }
+      ],
       "Index": 34,
       "Length": 20,
       "Text": "Name: Judas, Age: 30"
@@ -25,11 +113,49 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "age",
+          "Captures": []
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 36,
+              "Length": 5,
+              "Text": "Macon"
+            }
+          ]
+        }
+      ],
       "Index": 36,
       "Length": 8,
       "Text": "Macon, ."
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 74,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 62,
+              "Length": 5,
+              "Text": "Macon"
+            }
+          ]
+        }
+      ],
       "Index": 56,
       "Length": 18,
       "Text": "Name: Macon, Age: "
@@ -37,11 +163,55 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 69,
+              "Length": 1,
+              "Text": "9"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 62,
+              "Length": 5,
+              "Text": "Bossa"
+            }
+          ]
+        }
+      ],
       "Index": 62,
       "Length": 9,
       "Text": "Bossa, 9."
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "age",
+          "Captures": [
+            {
+              "Index": 110,
+              "Length": 1,
+              "Text": "9"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 98,
+              "Length": 5,
+              "Text": "Bossa"
+            }
+          ]
+        }
+      ],
       "Index": 92,
       "Length": 19,
       "Text": "Name: Bossa, Age: 9"

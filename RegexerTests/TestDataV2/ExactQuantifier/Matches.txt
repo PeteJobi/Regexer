@@ -1,14 +1,78 @@
-﻿[
+[
   {
     "InputMatch": {
-      "Index": 0,
-      "Length": 5,
-      "Text": "madam"
+      "IndividualMatches": [
+        {
+          "Label": "first",
+          "Captures": [
+            {
+              "Index": 14,
+              "Length": 3,
+              "Text": "816"
+            }
+          ]
+        },
+        {
+          "Label": "second",
+          "Captures": [
+            {
+              "Index": 17,
+              "Length": 3,
+              "Text": "012"
+            }
+          ]
+        },
+        {
+          "Label": "third",
+          "Captures": [
+            {
+              "Index": 20,
+              "Length": 4,
+              "Text": "0004"
+            }
+          ]
+        }
+      ],
+      "Index": 13,
+      "Length": 11,
+      "Text": "08160120004"
     },
     "OutputMatch": {
-      "Index": 0,
-      "Length": 6,
-      "Text": "madam,"
+      "IndividualMatches": [
+        {
+          "Label": "first",
+          "Captures": [
+            {
+              "Index": 20,
+              "Length": 3,
+              "Text": "816"
+            }
+          ]
+        },
+        {
+          "Label": "second",
+          "Captures": [
+            {
+              "Index": 24,
+              "Length": 3,
+              "Text": "012"
+            }
+          ]
+        },
+        {
+          "Label": "third",
+          "Captures": [
+            {
+              "Index": 28,
+              "Length": 4,
+              "Text": "0004"
+            }
+          ]
+        }
+      ],
+      "Index": 13,
+      "Length": 19,
+      "Text": "(+234)-816-012-0004"
     }
   }
 ]

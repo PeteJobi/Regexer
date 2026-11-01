@@ -1,11 +1,55 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 44,
+              "Length": 4,
+              "Text": "ages"
+            }
+          ]
+        },
+        {
+          "Label": "nums",
+          "Captures": [
+            {
+              "Index": 51,
+              "Length": 14,
+              "Text": "\r\n45\r\n18\r\n23\r\n"
+            }
+          ]
+        }
+      ],
       "Index": 44,
       "Length": 22,
       "Text": "ages: {\r\n45\r\n18\r\n23\r\n}"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 44,
+              "Length": 4,
+              "Text": "ages"
+            }
+          ]
+        },
+        {
+          "Label": "nums",
+          "Captures": [
+            {
+              "Index": 49,
+              "Length": 14,
+              "Text": "\r\n45\r\n18\r\n23\r\n"
+            }
+          ]
+        }
+      ],
       "Index": 44,
       "Length": 19,
       "Text": "ages:\r\n45\r\n18\r\n23\r\n"

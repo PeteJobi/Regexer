@@ -1,11 +1,55 @@
 ﻿[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 5,
+              "Text": "peter"
+            }
+          ]
+        },
+        {
+          "Label": "place",
+          "Captures": [
+            {
+              "Index": 14,
+              "Length": 6,
+              "Text": "school"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 21,
       "Text": "peter went to school."
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 5,
+              "Text": "Peter"
+            }
+          ]
+        },
+        {
+          "Label": "place",
+          "Captures": [
+            {
+              "Index": 14,
+              "Length": 6,
+              "Text": "SCHOOL"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 21,
       "Text": "Peter went to SCHOOL."
@@ -13,11 +57,55 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 23,
+              "Length": 7,
+              "Text": "jackson"
+            }
+          ]
+        },
+        {
+          "Label": "place",
+          "Captures": [
+            {
+              "Index": 39,
+              "Length": 5,
+              "Text": "class"
+            }
+          ]
+        }
+      ],
       "Index": 23,
       "Length": 22,
       "Text": "jackson went to class."
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 23,
+              "Length": 7,
+              "Text": "Jackson"
+            }
+          ]
+        },
+        {
+          "Label": "place",
+          "Captures": [
+            {
+              "Index": 39,
+              "Length": 5,
+              "Text": "CLASS"
+            }
+          ]
+        }
+      ],
       "Index": 23,
       "Length": 22,
       "Text": "Jackson went to CLASS."

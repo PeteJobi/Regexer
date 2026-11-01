@@ -1,11 +1,99 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "_class",
+          "Captures": [
+            {
+              "Index": 23,
+              "Length": 4,
+              "Text": "name"
+            }
+          ]
+        },
+        {
+          "Label": "_id",
+          "Captures": []
+        },
+        {
+          "Label": "_length",
+          "Captures": []
+        },
+        {
+          "Label": "_type",
+          "Captures": []
+        },
+        {
+          "Label": "class",
+          "Captures": [
+            {
+              "Index": 16,
+              "Length": 12,
+              "Text": "class=\"name\""
+            }
+          ]
+        },
+        {
+          "Label": "id",
+          "Captures": []
+        },
+        {
+          "Label": "length",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        }
+      ],
       "Index": 0,
       "Length": 30,
       "Text": "<input disabled class=\"name\"/>"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "class",
+          "Captures": [
+            {
+              "Index": 7,
+              "Length": 12,
+              "Text": "class=\"name\""
+            }
+          ]
+        },
+        {
+          "Label": "id",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "length",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 21,
       "Text": "<input class=\"name\"/>"
@@ -13,11 +101,123 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "_class",
+          "Captures": [
+            {
+              "Index": 77,
+              "Length": 4,
+              "Text": "name"
+            }
+          ]
+        },
+        {
+          "Label": "_id",
+          "Captures": [
+            {
+              "Index": 43,
+              "Length": 4,
+              "Text": "name"
+            }
+          ]
+        },
+        {
+          "Label": "_length",
+          "Captures": []
+        },
+        {
+          "Label": "_type",
+          "Captures": [
+            {
+              "Index": 55,
+              "Length": 4,
+              "Text": "text"
+            }
+          ]
+        },
+        {
+          "Label": "class",
+          "Captures": [
+            {
+              "Index": 70,
+              "Length": 12,
+              "Text": "class=\"name\""
+            }
+          ]
+        },
+        {
+          "Label": "id",
+          "Captures": [
+            {
+              "Index": 39,
+              "Length": 9,
+              "Text": "id=\"name\""
+            }
+          ]
+        },
+        {
+          "Label": "length",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 49,
+              "Length": 11,
+              "Text": "type=\"text\""
+            }
+          ]
+        }
+      ],
       "Index": 32,
       "Length": 52,
       "Text": "<input id=\"name\" type=\"text\" disabled class=\"name\"/>"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "class",
+          "Captures": [
+            {
+              "Index": 40,
+              "Length": 12,
+              "Text": "class=\"name\""
+            }
+          ]
+        },
+        {
+          "Label": "id",
+          "Captures": [
+            {
+              "Index": 30,
+              "Length": 9,
+              "Text": "id=\"name\""
+            }
+          ]
+        },
+        {
+          "Label": "length",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 53,
+              "Length": 11,
+              "Text": "type=\"text\""
+            }
+          ]
+        }
+      ],
       "Index": 23,
       "Length": 43,
       "Text": "<input id=\"name\" class=\"name\" type=\"text\"/>"
@@ -25,11 +225,135 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "_class",
+          "Captures": [
+            {
+              "Index": 126,
+              "Length": 3,
+              "Text": "big"
+            }
+          ]
+        },
+        {
+          "Label": "_id",
+          "Captures": [
+            {
+              "Index": 111,
+              "Length": 6,
+              "Text": "submit"
+            }
+          ]
+        },
+        {
+          "Label": "_length",
+          "Captures": [
+            {
+              "Index": 148,
+              "Length": 1,
+              "Text": "5"
+            }
+          ]
+        },
+        {
+          "Label": "_type",
+          "Captures": [
+            {
+              "Index": 99,
+              "Length": 6,
+              "Text": "button"
+            }
+          ]
+        },
+        {
+          "Label": "class",
+          "Captures": [
+            {
+              "Index": 119,
+              "Length": 11,
+              "Text": "class=\"big\""
+            }
+          ]
+        },
+        {
+          "Label": "id",
+          "Captures": [
+            {
+              "Index": 107,
+              "Length": 11,
+              "Text": "id=\"submit\""
+            }
+          ]
+        },
+        {
+          "Label": "length",
+          "Captures": [
+            {
+              "Index": 136,
+              "Length": 14,
+              "Text": "max-length=\"5\""
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 93,
+              "Length": 13,
+              "Text": "type=\"button\""
+            }
+          ]
+        }
+      ],
       "Index": 86,
       "Length": 75,
       "Text": "<input type=\"button\" id=\"submit\" class=\"big\"\r\n    max-length=\"5\" disabled/>"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "class",
+          "Captures": [
+            {
+              "Index": 87,
+              "Length": 11,
+              "Text": "class=\"big\""
+            }
+          ]
+        },
+        {
+          "Label": "id",
+          "Captures": [
+            {
+              "Index": 75,
+              "Length": 11,
+              "Text": "id=\"submit\""
+            }
+          ]
+        },
+        {
+          "Label": "length",
+          "Captures": [
+            {
+              "Index": 113,
+              "Length": 14,
+              "Text": "max-length=\"5\""
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 99,
+              "Length": 13,
+              "Text": "type=\"button\""
+            }
+          ]
+        }
+      ],
       "Index": 68,
       "Length": 61,
       "Text": "<input id=\"submit\" class=\"big\" type=\"button\" max-length=\"5\"/>"

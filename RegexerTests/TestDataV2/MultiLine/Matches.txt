@@ -1,11 +1,70 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bar",
+          "Captures": [
+            {
+              "Index": 1,
+              "Length": 3,
+              "Text": "tag"
+            }
+          ]
+        },
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 9,
+              "Length": 24,
+              "Text": "<content>Hello</content>"
+            },
+            {
+              "Index": 37,
+              "Length": 21,
+              "Text": "<content>Hi</content>"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 66,
       "Text": "<tag>\r\n  <content>Hello</content>\r\n  <content>Hi</content>\r\n</tag>"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bar",
+          "Captures": [
+            {
+              "Index": 5,
+              "Length": 3,
+              "Text": "tag"
+            },
+            {
+              "Index": 84,
+              "Length": 3,
+              "Text": "tag"
+            }
+          ]
+        },
+        {
+          "Label": "foo",
+          "Captures": [
+            {
+              "Index": 13,
+              "Length": 31,
+              "Text": "<p><content>Hello</content></p>"
+            },
+            {
+              "Index": 48,
+              "Length": 28,
+              "Text": "<p><content>Hi</content></p>"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 88,
       "Text": "<new-tag>\r\n  <p><content>Hello</content></p>\r\n  <p><content>Hi</content></p>\r\n</new-tag>"

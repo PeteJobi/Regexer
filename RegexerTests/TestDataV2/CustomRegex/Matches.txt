@@ -1,11 +1,55 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "items",
+          "Captures": [
+            {
+              "Index": 11,
+              "Length": 6,
+              "Text": "apples"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 3,
+              "Text": "Ade"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 18,
       "Text": "Ade has 50 apples."
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "items",
+          "Captures": [
+            {
+              "Index": 20,
+              "Length": 6,
+              "Text": "apples"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 7,
+              "Length": 3,
+              "Text": "Ade"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 26,
       "Text": "-Name: Ade\r\n-Items: apples"
@@ -13,11 +57,55 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "items",
+          "Captures": [
+            {
+              "Index": 54,
+              "Length": 7,
+              "Text": "oranges"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 42,
+              "Length": 4,
+              "Text": "Bose"
+            }
+          ]
+        }
+      ],
       "Index": 42,
       "Length": 20,
       "Text": "Bose had 70 oranges?"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "items",
+          "Captures": [
+            {
+              "Index": 71,
+              "Length": 7,
+              "Text": "oranges"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 57,
+              "Length": 4,
+              "Text": "Bose"
+            }
+          ]
+        }
+      ],
       "Index": 50,
       "Length": 28,
       "Text": "-Name: Bose\r\n-Items: oranges"
@@ -25,11 +113,55 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "items",
+          "Captures": [
+            {
+              "Index": 98,
+              "Length": 4,
+              "Text": "caps"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 85,
+              "Length": 5,
+              "Text": "Shola"
+            }
+          ]
+        }
+      ],
       "Index": 85,
       "Length": 18,
       "Text": "Shola had 15 caps!"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "items",
+          "Captures": [
+            {
+              "Index": 123,
+              "Length": 4,
+              "Text": "caps"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 108,
+              "Length": 5,
+              "Text": "Shola"
+            }
+          ]
+        }
+      ],
       "Index": 101,
       "Length": 26,
       "Text": "-Name: Shola\r\n-Items: caps"

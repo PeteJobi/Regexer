@@ -1,11 +1,65 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "args",
+          "Captures": [
+            {
+              "Index": 196,
+              "Length": 9,
+              "Text": "int input"
+            }
+          ]
+        },
+        {
+          "Label": "lines",
+          "Captures": [
+            {
+              "Index": 217,
+              "Length": 12,
+              "Text": "input += 10;"
+            }
+          ]
+        },
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 188,
+              "Length": 7,
+              "Text": "Action3"
+            }
+          ]
+        },
+        {
+          "Label": "ret",
+          "Captures": [
+            {
+              "Index": 246,
+              "Length": 5,
+              "Text": "input"
+            }
+          ]
+        }
+      ],
       "Index": 179,
       "Length": 80,
       "Text": "    void Action3(int input){\r\n        input += 10;\r\n        return input;\r\n    }"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "name",
+          "Captures": [
+            {
+              "Index": 196,
+              "Length": 7,
+              "Text": "Action3"
+            }
+          ]
+        }
+      ],
       "Index": 179,
       "Length": 24,
       "Text": "    Void method: Action3"

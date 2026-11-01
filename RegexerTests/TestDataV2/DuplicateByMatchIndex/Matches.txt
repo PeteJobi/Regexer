@@ -1,11 +1,55 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adjective",
+          "Captures": [
+            {
+              "Index": 13,
+              "Length": 9,
+              "Text": "delicious"
+            }
+          ]
+        },
+        {
+          "Label": "food",
+          "Captures": [
+            {
+              "Index": 4,
+              "Length": 4,
+              "Text": "soup"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 23,
       "Text": "The soup was delicious!"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adjective",
+          "Captures": [
+            {
+              "Index": 13,
+              "Length": 9,
+              "Text": "delicious"
+            }
+          ]
+        },
+        {
+          "Label": "food",
+          "Captures": [
+            {
+              "Index": 4,
+              "Length": 4,
+              "Text": "soup"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 23,
       "Text": "The soup was delicious!"
@@ -13,11 +57,55 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adjective",
+          "Captures": [
+            {
+              "Index": 42,
+              "Length": 5,
+              "Text": "sweet"
+            }
+          ]
+        },
+        {
+          "Label": "food",
+          "Captures": [
+            {
+              "Index": 29,
+              "Length": 8,
+              "Text": "porridge"
+            }
+          ]
+        }
+      ],
       "Index": 25,
       "Length": 23,
       "Text": "The porridge was sweet!"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adjective",
+          "Captures": [
+            {
+              "Index": 42,
+              "Length": 10,
+              "Text": "sweetsweet"
+            }
+          ]
+        },
+        {
+          "Label": "food",
+          "Captures": [
+            {
+              "Index": 29,
+              "Length": 8,
+              "Text": "porridge"
+            }
+          ]
+        }
+      ],
       "Index": 25,
       "Length": 28,
       "Text": "The porridge was sweetsweet!"
@@ -25,11 +113,55 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adjective",
+          "Captures": [
+            {
+              "Index": 62,
+              "Length": 5,
+              "Text": "tasty"
+            }
+          ]
+        },
+        {
+          "Label": "food",
+          "Captures": [
+            {
+              "Index": 54,
+              "Length": 3,
+              "Text": "pap"
+            }
+          ]
+        }
+      ],
       "Index": 50,
       "Length": 18,
       "Text": "The pap was tasty!"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "adjective",
+          "Captures": [
+            {
+              "Index": 67,
+              "Length": 15,
+              "Text": "tastytastytasty"
+            }
+          ]
+        },
+        {
+          "Label": "food",
+          "Captures": [
+            {
+              "Index": 59,
+              "Length": 3,
+              "Text": "pap"
+            }
+          ]
+        }
+      ],
       "Index": 55,
       "Length": 28,
       "Text": "The pap was tastytastytasty!"

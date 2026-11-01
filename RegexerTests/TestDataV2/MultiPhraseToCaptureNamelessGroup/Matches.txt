@@ -1,11 +1,115 @@
-﻿[
+[
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 7,
+              "Length": 2,
+              "Text": "id"
+            },
+            {
+              "Index": 17,
+              "Length": 4,
+              "Text": "type"
+            },
+            {
+              "Index": 29,
+              "Length": 8,
+              "Text": "disabled"
+            },
+            {
+              "Index": 46,
+              "Length": 5,
+              "Text": "class"
+            }
+          ]
+        },
+        {
+          "Label": "value",
+          "Captures": [
+            {
+              "Index": 11,
+              "Length": 4,
+              "Text": "name"
+            },
+            {
+              "Index": 23,
+              "Length": 4,
+              "Text": "text"
+            },
+            {
+              "Index": 39,
+              "Length": 5,
+              "Text": "false"
+            },
+            {
+              "Index": 53,
+              "Length": 4,
+              "Text": "name"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 60,
       "Text": "<input id=\"name\" type=\"text\" disabled=\"false\" class=\"name\"/>"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 16,
+              "Length": 2,
+              "Text": "id"
+            },
+            {
+              "Index": 20,
+              "Length": 4,
+              "Text": "type"
+            },
+            {
+              "Index": 26,
+              "Length": 8,
+              "Text": "disabled"
+            },
+            {
+              "Index": 36,
+              "Length": 5,
+              "Text": "class"
+            }
+          ]
+        },
+        {
+          "Label": "value",
+          "Captures": [
+            {
+              "Index": 57,
+              "Length": 4,
+              "Text": "name"
+            },
+            {
+              "Index": 63,
+              "Length": 4,
+              "Text": "text"
+            },
+            {
+              "Index": 69,
+              "Length": 5,
+              "Text": "false"
+            },
+            {
+              "Index": 76,
+              "Length": 4,
+              "Text": "name"
+            }
+          ]
+        }
+      ],
       "Index": 0,
       "Length": 82,
       "Text": "<input Keys are id, type, disabled, class and Values are name, text, false, name/>"
@@ -13,11 +117,135 @@
   },
   {
     "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 69,
+              "Length": 4,
+              "Text": "type"
+            },
+            {
+              "Index": 83,
+              "Length": 2,
+              "Text": "id"
+            },
+            {
+              "Index": 95,
+              "Length": 5,
+              "Text": "class"
+            },
+            {
+              "Index": 112,
+              "Length": 10,
+              "Text": "max-length"
+            },
+            {
+              "Index": 127,
+              "Length": 8,
+              "Text": "disabled"
+            }
+          ]
+        },
+        {
+          "Label": "value",
+          "Captures": [
+            {
+              "Index": 75,
+              "Length": 6,
+              "Text": "button"
+            },
+            {
+              "Index": 87,
+              "Length": 6,
+              "Text": "submit"
+            },
+            {
+              "Index": 102,
+              "Length": 3,
+              "Text": "big"
+            },
+            {
+              "Index": 124,
+              "Length": 1,
+              "Text": "5"
+            },
+            {
+              "Index": 137,
+              "Length": 4,
+              "Text": "true"
+            }
+          ]
+        }
+      ],
       "Index": 62,
       "Length": 82,
       "Text": "<input type=\"button\" id=\"submit\" class=\"big\"\r\n    max-length=\"5\" disabled=\"true\"/>"
     },
     "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "key",
+          "Captures": [
+            {
+              "Index": 100,
+              "Length": 4,
+              "Text": "type"
+            },
+            {
+              "Index": 106,
+              "Length": 2,
+              "Text": "id"
+            },
+            {
+              "Index": 110,
+              "Length": 5,
+              "Text": "class"
+            },
+            {
+              "Index": 117,
+              "Length": 10,
+              "Text": "max-length"
+            },
+            {
+              "Index": 129,
+              "Length": 8,
+              "Text": "disabled"
+            }
+          ]
+        },
+        {
+          "Label": "value",
+          "Captures": [
+            {
+              "Index": 153,
+              "Length": 6,
+              "Text": "button"
+            },
+            {
+              "Index": 161,
+              "Length": 6,
+              "Text": "submit"
+            },
+            {
+              "Index": 169,
+              "Length": 3,
+              "Text": "big"
+            },
+            {
+              "Index": 174,
+              "Length": 1,
+              "Text": "5"
+            },
+            {
+              "Index": 177,
+              "Length": 4,
+              "Text": "true"
+            }
+          ]
+        }
+      ],
       "Index": 84,
       "Length": 99,
       "Text": "<input Keys are type, id, class, max-length, disabled and Values are button, submit, big, 5, true/>"
