@@ -993,6 +993,42 @@ namespace RegexerV2
     {
         public required RegexerMatch InputMatch { get; set; }
         public required RegexerMatch OutputMatch { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is not RegexerMatchPair pair) return false;
+            if (InputMatch.Index != pair.InputMatch.Index) return false;
+            if (InputMatch.Length != pair.InputMatch.Length) return false;
+            if (InputMatch.Text != pair.InputMatch.Text) return false;
+            if (OutputMatch.Index != pair.OutputMatch.Index) return false;
+            if (OutputMatch.Length != pair.OutputMatch.Length) return false;
+            if (OutputMatch.Text != pair.OutputMatch.Text) return false;
+            if (InputMatch.IndividualMatches.Count != pair.InputMatch.IndividualMatches.Count) return false;
+            if (OutputMatch.IndividualMatches.Count != pair.OutputMatch.IndividualMatches.Count) return false;
+            for (var i = 0; i < InputMatch.IndividualMatches.Count; i++)
+            {
+                if (InputMatch.IndividualMatches[i].Label != pair.InputMatch.IndividualMatches[i].Label) return false;
+                if (InputMatch.IndividualMatches[i].Captures.Count != pair.InputMatch.IndividualMatches[i].Captures.Count) return false;
+                for (var j = 0; j < InputMatch.IndividualMatches[i].Captures.Count; j++)
+                {
+                    if (InputMatch.IndividualMatches[i].Captures[j].Index != pair.InputMatch.IndividualMatches[i].Captures[j].Index) return false;
+                    if (InputMatch.IndividualMatches[i].Captures[j].Length != pair.InputMatch.IndividualMatches[i].Captures[j].Length) return false;
+                    if (InputMatch.IndividualMatches[i].Captures[j].Text != pair.InputMatch.IndividualMatches[i].Captures[j].Text) return false;
+                }
+            }
+            for (var i = 0; i < OutputMatch.IndividualMatches.Count; i++)
+            {
+                if (OutputMatch.IndividualMatches[i].Label != pair.OutputMatch.IndividualMatches[i].Label) return false;
+                if (OutputMatch.IndividualMatches[i].Captures.Count != pair.OutputMatch.IndividualMatches[i].Captures.Count) return false;
+                for (var j = 0; j < OutputMatch.IndividualMatches[i].Captures.Count; j++)
+                {
+                    if (OutputMatch.IndividualMatches[i].Captures[j].Index != pair.OutputMatch.IndividualMatches[i].Captures[j].Index) return false;
+                    if (OutputMatch.IndividualMatches[i].Captures[j].Length != pair.OutputMatch.IndividualMatches[i].Captures[j].Length) return false;
+                    if (OutputMatch.IndividualMatches[i].Captures[j].Text != pair.OutputMatch.IndividualMatches[i].Captures[j].Text) return false;
+                }
+            }
+            return true;
+        }
     }
 
     public class MatchData(int index, int length, string text)
@@ -1011,10 +1047,10 @@ namespace RegexerV2
     {
         public required List<IndividualMatch> IndividualMatches { get; set; }
 
-        public override string ToString()
-        {
-            return $"{Index}, {Length}, {string.Join(", ", IndividualMatches.Select(i => $"<{i}>"))}";
-        }
+        //public override string ToString()
+        //{
+        //    return $"{Index}, {Length}, {string.Join(", ", IndividualMatches.Select(i => $"<{i}>"))}";
+        //}
     }
 
     public class IndividualMatch(string label, List<MatchData> captures)
