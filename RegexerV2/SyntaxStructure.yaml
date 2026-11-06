@@ -1,0 +1,157 @@
+﻿# yaml-language-server: $schema=./SyntaxStructureSchema.json
+Common:
+  - &OpenerSymbol
+    ClassType: Symbol
+    Name: Opener
+    Value: "[["
+
+  - &CloserSymbol
+    ClassType: Symbol
+    Name: Closer
+    Value: "]]"
+
+  - &DemarcateSymbol
+    ClassType: Symbol
+    Name: Demarcate
+    Value: "|"
+
+  - &Label
+    ClassType: FreeText
+    Name: Label
+    Type: LABEL
+    MustNotBeEmpty: true
+    CannotContain: []
+
+  - &DemarcateAfterLabelSymbol
+    ClassType: Symbol
+    Name: Demarcate
+    SuggestionName: DemarcateAfterLabel
+    Value: "|"
+
+  - &LabelBeforeDemarcate
+    <<: *Label
+    CannotContain: [*DemarcateAfterLabelSymbol]
+
+  - &ml
+    ClassType: Modifier
+    Value: "ml"
+
+  - &u
+    ClassType: Modifier
+    Value: "u"
+
+  - &CloseAmountQuantifierSymbol
+    ClassType: Symbol
+    Value: ">"
+
+  - &HyphenSymbol
+    ClassType: Symbol
+    Value: "-"
+    
+  - &StartPlainTextSymbol
+    ClassType: Symbol
+    Value: "{"
+    
+  - &EndPlainTextSymbol
+    ClassType: Symbol
+    Value: "}"
+    
+  - &NewLineSymbol
+    ClassType: Symbol
+    Value: "\r\n"
+
+  - &SingleLineFreeText
+    ClassType: FreeText
+    Name: FreeText
+    Type: SINGLE_LINE_PRE_PATTERN_TEXT
+    CannotContain: [*CloserSymbol, *OpenerSymbol]
+    ProceedIfInvalidAfterEncountered: *CloserSymbol
+
+  - &SingleLineStructures
+    ClassType: Vary
+    Quantifier: ONE_OR_MORE
+    Content:
+      ClassType: And
+      Name: SingleLineStructure
+      Contents: 
+        - *SingleLineFreeText
+        - &ZeroOrOneAnyPatterns 
+          ClassType: Vary
+          Quantifier: ZERO_OR_ONE
+          ReturnNullIfNull: true
+          Content: &AnyPattern
+            ClassType: Or
+            Contents:
+              - &Pattern
+                ClassType: And
+                Name: Pattern
+                Contents:
+                  - *OpenerSymbol
+                  - ClassType: Or
+                    Contents:
+                      - <<: *Label
+                        CannotContain: [*CloserSymbol]
+                      - ClassType: And
+                        Contents:
+                          - ClassType: Or
+                            Contents:
+                              - ClassType: And
+                                Contents:
+                                  - *LabelBeforeDemarcate
+                                  - ClassType: Vary
+                                    Quantifier: ZERO_OR_ONE
+                                    Content: 
+                                      ClassType: And
+                                      Contents:
+                                        - *DemarcateAfterLabelSymbol
+                                        - ClassType: 
+
+              - &Unordered
+                ClassType: Vary
+                Quantifier: ONE_OR_MORE
+                Name: UnorderedGroup
+                Content:
+                  ClassType: And
+                  Contents:
+                    - ClassType: Whitespace
+                    - *OpenerSymbol
+                    - ClassType: Vary
+                      Quantifier: ZERO_OR_ONE
+                      Content:
+                        ClassType: And
+                        Contents:
+                          - *LabelBeforeDemarcate
+                          - *DemarcateAfterLabelSymbol
+                    - *u
+                    - *DemarcateSymbol
+                    - ClassType: CyclicRef
+                      Target: SingleLineStructures
+                    - *CloserSymbol
+
+  - &MultiLine
+    ClassType: And
+    Contents:
+      - ClassType: Whitespace
+        Type: START_OF_LINE
+      - *OpenerSymbol
+      - *LabelBeforeDemarcate
+      - *DemarcateAfterLabelSymbol
+      - *ml
+      - *CloserSymbol
+      - ClassType: Whitespace
+        Type: END_OF_LINE
+
+FindStructure:
+  ClassType: Vary
+  Quantifier: ZERO_OR_MORE
+  Content: 
+    ClassType: Or
+    Contents:
+      - *MultiLine
+      - ClassType: And
+        Contents:
+          - ClassType: FreeText
+            Type: PRE_PATTERN_TEXT
+            Name: FreeText
+            CannotContain: [*OpenerSymbol, *NewLineSymbol]
+          - *ZeroOrOneAnyPatterns

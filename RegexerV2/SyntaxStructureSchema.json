@@ -1,0 +1,275 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Structure",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["FindStructure"],
+  "properties": {
+    "Common": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Structure" }
+    },
+    "FindStructure": { "$ref": "#/$defs/Structure" },
+    "ReplaceStructure": { "$ref": "#/$defs/Structure" }
+  },
+  "$defs": {
+    "RootStructure": {
+      "oneOf": [
+        { "$ref": "#/$defs/Structure" },
+        {
+          "type": "object",
+          "patternProperties": { "^\\..*": {} }
+        }
+      ]
+    },
+    "Structure": {
+      "oneOf": [
+        { "$ref": "#/$defs/Vary" },
+        { "$ref": "#/$defs/And" },
+        { "$ref": "#/$defs/Or" },
+        { "$ref": "#/$defs/OneOrMoreNoRepeat" },
+        { "$ref": "#/$defs/Symbol" },
+        { "$ref": "#/$defs/Modifier" },
+        { "$ref": "#/$defs/FreeText" },
+        { "$ref": "#/$defs/Whitespace" },
+        { "$ref": "#/$defs/CyclicRef" }
+      ]
+    },
+    "StructureBase": {
+      "$anchor": "StructureBase",
+      "type": "object",
+      "required": ["ClassType"],
+      "properties": {
+        "Name": { "$ref": "#/$defs/TokenName" },
+        "SuggestionName": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/TokenName" }
+          ]
+        },
+        "ClassType": { "type": "string" }
+      }
+    },
+    "And": {
+      "$ref": "#StructureBase",
+      "type": "object",
+      "required": ["Contents"],
+      "properties": {
+        "ClassType": { "enum": ["And"] },
+        "Contents": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Structure" }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "Or": {
+      "$ref": "#StructureBase",
+      "type": "object",
+      "required": ["Contents"],
+      "properties": {
+        "ClassType": { "enum": ["Or"] },
+        "Contents": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Structure" }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "OneOrMoreNoRepeat": {
+      "$ref": "#StructureBase",
+      "type": "object",
+      "required": ["Contents"],
+      "properties": {
+        "ClassType": { "enum": ["OneOrMoreNoRepeat"] },
+        "Contents": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Structure" }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "Vary": {
+      "$ref": "#StructureBase",
+      "type": "object",
+      "required": ["Content", "Quantifier"],
+      "properties": {
+        "ClassType": { "enum": ["Vary"] },
+        "Content": { "$ref": "#/$defs/Structure" },
+        "Quantifier": { "$ref": "#/$defs/StructureQuantifier" },
+        "ReturnNullIfNull": { "type": "boolean" }
+      },
+      "unevaluatedProperties": false
+    },
+    "Symbol": {
+      "$ref": "#StructureBase",
+      "type": "object",
+      "required": ["Value"],
+      "properties": {
+        "ClassType": { "enum": ["Symbol"] },
+        "Value": { "type": "string" }
+      },
+      "unevaluatedProperties": false
+    },
+    "Modifier": {
+      "$ref": "#StructureBase",
+      "type": "object",
+      "required": ["Value"],
+      "properties": {
+        "ClassType": { "enum": ["Modifier"] },
+        "Value": { "type": "string" }
+      },
+      "unevaluatedProperties": false
+    },
+    "FreeText": {
+      "$ref": "#StructureBase",
+      "type": "object",
+      "required": ["Type", "CannotContain"],
+      "properties": {
+        "ClassType": { "enum": ["FreeText"] },
+        "Type": { "$ref": "#/$defs/FreeTextType" },
+        "CannotContain": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Symbol" }
+        },
+        "MustNotBeEmpty": { "type": "boolean" },
+        "ProceedIfInvalidAfterEncountered": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/Symbol" }
+          ]
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "Whitespace": {
+      "$ref": "#StructureBase",
+      "type": "object",
+      "properties": {
+        "ClassType": { "enum": ["Whitespace"] },
+        "Type": { "$ref": "#/$defs/WhitespaceType" }
+      },
+      "unevaluatedProperties": false
+    },
+    "CyclicRef": {
+      "$ref": "#StructureBase",
+      "type": "object",
+      "required": ["Target"],
+      "properties": {
+        "ClassType": { "enum": ["CyclicRef"] },
+        "Target": { "type": "string" }
+      },
+      "unevaluatedProperties": false
+    },
+    "StructureQuantifier": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "ZERO_OR_ONE",
+        "ZERO_OR_MORE",
+        "ONE_OR_MORE"
+      ],
+      "enum": [
+        "ZERO_OR_ONE",
+        "ZERO_OR_MORE",
+        "ONE_OR_MORE"
+      ]
+    },
+    "TokenName": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "None",
+        "FreeText",
+        "PlainText",
+        "Pattern",
+        "Label",
+        "RestrictionQuantifierNewLine",
+        "ExactAmountQuantifier",
+        "MaxAmountQuantifier",
+        "Optional",
+        "Modifier",
+        "MultiLine",
+        "Unordered",
+        "UnorderedGroup",
+        "Opener",
+        "Closer",
+        "Demarcate",
+        "SingleLineStructure",
+        "MatchMultiple",
+        "MatchMultipleReplace",
+        "MatchMultipleSpread",
+        "MatchMultipleMatch",
+        "Duplicate",
+        "DuplicateSeparator",
+        "Capitalize",
+        "Evaluate",
+        "DemarcateAfterLabel"
+      ],
+      "enum": [
+        "None",
+        "FreeText",
+        "PlainText",
+        "Pattern",
+        "Label",
+        "RestrictionQuantifierNewLine",
+        "ExactAmountQuantifier",
+        "MaxAmountQuantifier",
+        "Optional",
+        "Modifier",
+        "MultiLine",
+        "Unordered",
+        "UnorderedGroup",
+        "Opener",
+        "Closer",
+        "Demarcate",
+        "SingleLineStructure",
+        "MatchMultiple",
+        "MatchMultipleReplace",
+        "MatchMultipleSpread",
+        "MatchMultipleMatch",
+        "Duplicate",
+        "DuplicateSeparator",
+        "Capitalize",
+        "Evaluate",
+        "DemarcateAfterLabel"
+      ]
+    },
+    "FreeTextType": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "PRE_PATTERN_TEXT",
+        "SINGLE_LINE_PRE_PATTERN_TEXT",
+        "LABEL",
+        "PLAIN_TEXT",
+        "DIGITS",
+        "EXPRESSION_WITH_I",
+        "EXPRESSION_WITH_IM"
+      ],
+      "enum": [
+        "PRE_PATTERN_TEXT",
+        "SINGLE_LINE_PRE_PATTERN_TEXT",
+        "LABEL",
+        "PLAIN_TEXT",
+        "DIGITS",
+        "EXPRESSION_WITH_I",
+        "EXPRESSION_WITH_IM"
+      ]
+    },
+    "WhitespaceType": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "NONE",
+        "START_OF_LINE",
+        "END_OF_LINE"
+      ],
+      "enum": [
+        "NONE",
+        "START_OF_LINE",
+        "END_OF_LINE"
+      ]
+    }
+  }
+}
