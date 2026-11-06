@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using YamlDotNet.Core;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NodeDeserializers;
-using YamlDotNet.Serialization.ObjectFactories;
 
 namespace RegexerV2
 {
@@ -427,8 +423,6 @@ namespace RegexerV2
         public class OneOrMoreNoRepeat : Or;
         public class Vary(StructureQuantifier quantifier, Structure content) : Structure
         {
-            public Vary() : this(StructureQuantifier.ONE_OR_MORE, new Symbol(".")){}
-
             public Structure Content { get; set; } = content;
             public StructureQuantifier Quantifier { get; init; } = quantifier;
             public bool ReturnNullIfNull { get; set; }
@@ -441,22 +435,16 @@ namespace RegexerV2
         }
         public class Symbol(string value) : Structure
         {
-            public Symbol() : this(".") { }
-
             public string Value { get; set; } = value;
             public override string ToString() => Value;
         }
         public class Modifier(string value) : Structure
         {
-            public Modifier(): this("."){}
-
             public string Value { get; set; } = value;
             public override string ToString() => Value;
         }
         public class FreeText(FreeTextType type, params Symbol[] cannotContain) : Structure
         {
-            public FreeText() : this(FreeTextType.LABEL){}
-
             public FreeTextType Type { get; set; } = type;
             public Symbol[] CannotContain { get; set; } = cannotContain;
             public bool MustNotBeEmpty { get; set; }
@@ -475,10 +463,6 @@ namespace RegexerV2
         {
             public required Structure[] Contents { get; set; }
             public override string ToString() => Name == TokenName.SingleLineStructure ? nameof(SingleLineStructure) : string.Join<Structure>(", ", Contents);
-        }
-        internal class CyclicRef : Structure
-        {
-            public string Target { get; set; }
         }
 
         public enum TokenName
@@ -514,52 +498,8 @@ namespace RegexerV2
             public override string ToString() => $"({(Ancestors.Count > 0 ? $"{string.Join("->", Ancestors)}: " : "")}{Suggestion})";
         }
 
-        public class FullSyntax
-        {
-            public Structure FindStructure { get; set; }
-            public Structure ReplaceStructure { get; set; }
-            public Structure[] Common { get; set; }
-        }
-
-        internal class DeserializeData
-        {
-            public string? CurrentAnchor { get; set; }
-            public Dictionary<string, object> Anchors { get; set; } = new();
-        }
-
         public static void SetupCyclicRelationships()
         {
-            var deserializeData = new DeserializeData();
-            var deserializer = new DeserializerBuilder()
-                .IgnoreUnmatchedProperties()
-                .WithNodeDeserializer(
-                    inner => new ReferenceResolvingNodeDeserializer(inner, deserializeData),
-                    s => s.InsteadOf<ObjectNodeDeserializer>()
-                ).WithObjectFactory(new ReferenceCachingObjectFactory(new DefaultObjectFactory(), deserializeData))
-                .WithTypeDiscriminatingNodeDeserializer(o =>
-                {
-                    Dictionary<string, Type> TypeMapping = new()
-                    {
-                        { nameof(Vary), typeof(Vary) },
-                        { nameof(And), typeof(And) },
-                        { nameof(Or), typeof(Or) },
-                        { nameof(OneOrMoreNoRepeat), typeof(OneOrMoreNoRepeat) },
-                        { nameof(Symbol), typeof(Symbol) },
-                        { nameof(Modifier), typeof(Modifier) },
-                        { nameof(FreeText), typeof(FreeText) },
-                        { nameof(Whitespace), typeof(Whitespace) },
-                        { nameof(CyclicRef), typeof(CyclicRef) }
-                    };
-                    o.AddKeyValueTypeDiscriminator<Structure>("ClassType", TypeMapping);
-                }).Build();
-
-            var syntaxYaml = File.ReadAllText("SyntaxStructure.yaml");
-            using (var reader = new StringReader(syntaxYaml))
-            {
-                var mergingParser = new MergingParser(new Parser(reader));
-                var fullSyntax = deserializer.Deserialize<FullSyntax>(mergingParser);
-            }
-
             ZeroOrOneAnyPatterns.Content = AnyPattern;
             ZeroOrOneAnyPatternsReplace.Content = AnyPatternReplace;
         }

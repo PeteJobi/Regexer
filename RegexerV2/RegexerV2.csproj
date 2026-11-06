@@ -7,14 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="SyntaxStructure.yaml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="NCalc" Version="6.4.0" />
-    <PackageReference Include="YamlDotNet" Version="18.1.0" />
   </ItemGroup>
 
 </Project>
