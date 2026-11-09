@@ -156,16 +156,12 @@ namespace RegexerV2
                 case Whitespace whitespace:
                     {
                         var pos = index;
-                        if (whitespace.Type == WhitespaceType.START_OF_DOCUMENT && pos != 0) return null;
-                        if (whitespace.Type is WhitespaceType.START_OF_LINE or WhitespaceType.START_OF_LINE_NOT_DOCUMENT)
+                        if ((whitespace.Type == WhitespaceType.START_OF_DOCUMENT && pos != 0)
+                            || (whitespace.Type == WhitespaceType.START_OF_LINE_NOT_DOCUMENT && pos == 0)) return null;
+                        if (whitespace.Type is WhitespaceType.START_OF_LINE or WhitespaceType.START_OF_LINE_NOT_DOCUMENT or WhitespaceType.START_OF_DOCUMENT)
                         {
-                            if (whitespace.Type == WhitespaceType.START_OF_LINE_NOT_DOCUMENT && pos == 0) return null;
-                            if (pos != 0)
-                            {
-                                if(pos >= input.Length - 1) return null;
-                                if(input[pos] != '\r' || input[pos + 1] != '\n') return null;
-                                pos += 2;
-                            }
+                            if (pos >= input.Length - 1) return null;
+                            if (input[pos] == '\r' && input[pos + 1] == '\n') pos += 2;
                         }
                         while (pos < input.Length)
                         {
@@ -505,16 +501,12 @@ namespace RegexerV2
                 case Whitespace whitespace:
                     {
                         var pos = index;
-                        if (whitespace.Type == WhitespaceType.START_OF_DOCUMENT && pos != start) return (null, []);
-                        if (whitespace.Type is WhitespaceType.START_OF_LINE or WhitespaceType.START_OF_LINE_NOT_DOCUMENT)
+                        if ((whitespace.Type == WhitespaceType.START_OF_DOCUMENT && pos != start) 
+                            || (whitespace.Type == WhitespaceType.START_OF_LINE_NOT_DOCUMENT && pos == start)) return (null, []);
+                        if (whitespace.Type is WhitespaceType.START_OF_LINE or WhitespaceType.START_OF_LINE_NOT_DOCUMENT or WhitespaceType.START_OF_DOCUMENT)
                         {
-                            if(whitespace.Type == WhitespaceType.START_OF_LINE_NOT_DOCUMENT && pos == start) return (null, []);
-                            if (pos != start)
-                            {
-                                if(pos >= end - 1) return (null, []);
-                                if(input[pos] != '\r' || input[pos + 1] != '\n') return (null, []);
-                                pos += 2;
-                            }
+                            if(pos >= end - 1) return (null, []);
+                            if (input[pos] == '\r' && input[pos + 1] == '\n') pos += 2;
                         }
                         while (pos < end)
                         {
