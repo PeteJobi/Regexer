@@ -19,31 +19,19 @@ namespace RegexerV2
         private static readonly Vary ZeroOrOneAnyPatternsReplace = new(StructureQuantifier.ZERO_OR_ONE, AnyPatternReplace){ ReturnNullIfNull = true };
         internal static readonly FreeText SingleLineFreeText = new(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, CloserSymbol, OpenerSymbol){ Name = TokenName.FreeText, ProceedIfInvalidAfterEncountered = CloserSymbol };
 
-        private static readonly Vary SingleLineStructure = new(StructureQuantifier.ONE_OR_MORE, new And
+        private static readonly Vary SingleLineStructures = new(StructureQuantifier.ONE_OR_MORE, new And
         {
             Name = TokenName.SingleLineStructure,
             Contents = [SingleLineFreeText, ZeroOrOneAnyPatterns]
         });
 
-        private static readonly Vary SingleLineStructureReplace = new(StructureQuantifier.ONE_OR_MORE, new And
+        private static readonly Vary SingleLineStructuresReplace = new(StructureQuantifier.ONE_OR_MORE, new And
         {
             Name = TokenName.SingleLineStructure,
             Contents = [SingleLineFreeText, ZeroOrOneAnyPatternsReplace]
         });
 
-        private static readonly And MultiLine = new()
-        {
-            Name = TokenName.MultiLine,
-            Contents = [
-                new Whitespace{ Type = WhitespaceType.START_OF_LINE },
-                OpenerSymbol,
-                new FreeText(FreeTextType.LABEL, DemarcateAfterLabelSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
-                DemarcateAfterLabelSymbol,
-                new Modifier("ml"),
-                CloserSymbol,
-                new Whitespace{ Type = WhitespaceType.END_OF_LINE }
-            ]
-        };
+        private static readonly Or MultiLine = new() { Contents = [CreateMultiLine(true), CreateMultiLine(false)] };
 
         private static readonly And MultiLineReplace = new()
         {
@@ -76,7 +64,7 @@ namespace RegexerV2
                 }),
                 new Modifier("u"),
                 DemarcateSymbol,
-                SingleLineStructure,
+                SingleLineStructures,
                 CloserSymbol
             ]
         }){ Name = TokenName.UnorderedGroup };
@@ -97,7 +85,7 @@ namespace RegexerV2
                             Contents = [
                                 new Modifier("ui"),
                                 DemarcateSymbol,
-                                SingleLineStructure
+                                SingleLineStructures
                             ]
                         },
                         new And
@@ -108,7 +96,7 @@ namespace RegexerV2
                                 {
                                     Contents = [
                                         DemarcateSymbol,
-                                        SingleLineStructure
+                                        SingleLineStructures
                                     ]
                                 })
                             ]
@@ -241,7 +229,7 @@ namespace RegexerV2
                                             SuggestionName = TokenName.MatchMultipleMatch,
                                             Contents = [
                                                 DemarcateSymbol,
-                                                SingleLineStructure
+                                                SingleLineStructures
                                             ]
                                         })
                                     ]
@@ -280,7 +268,7 @@ namespace RegexerV2
                                             Contents = [new Modifier("oi"), new Modifier("o")]
                                         },
                                         DemarcateSymbol,
-                                        SingleLineStructureReplace
+                                        SingleLineStructuresReplace
                                     ]
                                 },
                                 new And
@@ -403,12 +391,46 @@ namespace RegexerV2
             ]
         });
 
+        public static void SetupCyclicRelationships()
+        {
+            ZeroOrOneAnyPatterns.Content = AnyPattern;
+            ZeroOrOneAnyPatternsReplace.Content = AnyPatternReplace;
+        }
+
+        private static And CreateMultiLine(bool startOfDocument) => new()
+        {
+            Name = TokenName.MultiLine,
+            Contents = [
+                new Whitespace{ Type = startOfDocument ? WhitespaceType.START_OF_DOCUMENT : WhitespaceType.START_OF_LINE_NOT_DOCUMENT },
+                OpenerSymbol,
+                new FreeText(FreeTextType.LABEL, DemarcateAfterLabelSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
+                DemarcateAfterLabelSymbol,
+                new Modifier("ml"),
+                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                {
+                    Contents = [
+                        DemarcateSymbol,
+                        new OneOrMoreNoRepeat
+                        {
+                            Name = TokenName.Quantifier,
+                            Contents = [
+                                ..startOfDocument ? Array.Empty<Structure>() : [new Modifier("o")], //Zero or more lines
+                                new Modifier("g") //Greedy
+                            ]
+                        }
+                    ]
+                }),
+                CloserSymbol,
+                new Whitespace{ Type = WhitespaceType.END_OF_LINE }
+            ]
+        };
+
         public enum FreeTextType
         {
             PRE_PATTERN_TEXT, SINGLE_LINE_PRE_PATTERN_TEXT, LABEL, PLAIN_TEXT, DIGITS, EXPRESSION_WITH_I, EXPRESSION_WITH_IM
         }
         public enum StructureQuantifier { ZERO_OR_ONE, ZERO_OR_MORE, ONE_OR_MORE }
-        public enum WhitespaceType { NONE, START_OF_LINE, END_OF_LINE }
+        public enum WhitespaceType { NONE, START_OF_DOCUMENT, START_OF_LINE, START_OF_LINE_NOT_DOCUMENT, END_OF_LINE }
 
         public class Structure
         {
@@ -418,7 +440,7 @@ namespace RegexerV2
         public class Or : Structure
         {
             public required Structure[] Contents { get; set; }
-            public override string ToString() => string.Join<Structure>(" or ", Contents);
+            public override string ToString() => $"({string.Join<Structure>(" or ", Contents)})";
         }
         public class OneOrMoreNoRepeat : Or;
         public class Vary(StructureQuantifier quantifier, Structure content) : Structure
@@ -431,7 +453,7 @@ namespace RegexerV2
                 StructureQuantifier.ZERO_OR_ONE => "?",
                 StructureQuantifier.ONE_OR_MORE => "+",
                 _ => "*"
-            }}({Content.ToString() ?? throw new InvalidOperationException()})";
+            }}({Content})";
         }
         public class Symbol(string value) : Structure
         {
@@ -456,19 +478,22 @@ namespace RegexerV2
             public WhitespaceType Type { get; set; }
             public override string ToString() => Type switch
             {
-                WhitespaceType.START_OF_LINE => "start of line", WhitespaceType.END_OF_LINE => "end of line", _ => "whitespace"
+                WhitespaceType.START_OF_LINE or WhitespaceType.START_OF_LINE_NOT_DOCUMENT => "start of line",
+                WhitespaceType.START_OF_DOCUMENT => "start of document",
+                WhitespaceType.END_OF_LINE => "end of line",
+                _ => "whitespace"
             };
         }
         public class And : Structure
         {
             public required Structure[] Contents { get; set; }
-            public override string ToString() => Name == TokenName.SingleLineStructure ? nameof(SingleLineStructure) : string.Join<Structure>(", ", Contents);
+            public override string ToString() => Name == TokenName.SingleLineStructure ? nameof(SingleLineStructures) : string.Join<Structure>(", ", Contents);
         }
 
         public enum TokenName
         {
             None, FreeText, PlainText, Pattern, Label, RestrictionQuantifierNewLine, ExactAmountQuantifier, MaxAmountQuantifier, Optional, Modifier, MultiLine, Unordered, UnorderedGroup, Opener, Closer, Demarcate, SingleLineStructure,
-            MatchMultiple, MatchMultipleReplace, MatchMultipleSpread, MatchMultipleMatch, Duplicate, DuplicateSeparator, Capitalize, Evaluate, DemarcateAfterLabel
+            MatchMultiple, MatchMultipleReplace, MatchMultipleSpread, MatchMultipleMatch, Duplicate, DuplicateSeparator, Capitalize, Evaluate, DemarcateAfterLabel, Quantifier
         }
         public class Token
         {
@@ -484,7 +509,7 @@ namespace RegexerV2
         }
         public class ComplexToken : Token
         {
-            public List<Token> Children { get; set; }
+            public required List<Token> Children { get; set; }
             public override string ToString() => $"({(Name != TokenName.None ? $"{Name}:" : "")}{Text} => {string.Join(", ", Children)})";
         }
 
@@ -496,12 +521,6 @@ namespace RegexerV2
             public string LabelFreeTextEnteredSoFar { get; set; } = string.Empty;
 
             public override string ToString() => $"({(Ancestors.Count > 0 ? $"{string.Join("->", Ancestors)}: " : "")}{Suggestion})";
-        }
-
-        public static void SetupCyclicRelationships()
-        {
-            ZeroOrOneAnyPatterns.Content = AnyPattern;
-            ZeroOrOneAnyPatternsReplace.Content = AnyPatternReplace;
         }
     }
 }

@@ -342,4 +342,22 @@
   <data name="CustomRegexExactCloseText" xml:space="preserve">
     <value>Close the amount range with &gt;</value>
   </data>
+  <data name="MultiLineQuantifierTitle" xml:space="preserve">
+    <value>Multi Line Quantifier</value>
+  </data>
+  <data name="MultiLineQuantifierText" xml:space="preserve">
+    <value>Specify how much (or how few) lines you want to capture. If not specified, it will capture only the number of lines necessary for a match, and won't capture empty lines.</value>
+  </data>
+  <data name="MultiLineOptionalTitle" xml:space="preserve">
+    <value>Optional/Empty Multi Line</value>
+  </data>
+  <data name="MultiLineOptionalText" xml:space="preserve">
+    <value>Match zero or more lines (rather than one or more)</value>
+  </data>
+  <data name="MultiLineGreedyTitle" xml:space="preserve">
+    <value>Greedy Multi Line</value>
+  </data>
+  <data name="MultiLineGreedyText" xml:space="preserve">
+    <value>Capture as many lines as possible in the match</value>
+  </data>
 </root>

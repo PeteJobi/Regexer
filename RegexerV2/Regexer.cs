@@ -687,13 +687,35 @@ namespace RegexerV2
             }
             patternMap.Add(label, new PatternData(label){ IsMultiLine = true });
 
+            var hasOptional = false;
+            var hasGreedy = false;
+            if (elements[6] is ComplexToken quantifierToken)
+            {
+                foreach (var modifier in quantifierToken.Children)
+                {
+                    switch (modifier.Text)
+                    {
+                        case "o": hasOptional = true; break;
+                        case "g": hasGreedy = true; break;
+                    }
+                }
+            }
+
             if (spaceStartIndexOffset == 0) //At start of pattern, no need to match a new line before the first line
             {
-                patternBuilder.Append($@"(?:{precedingSpace}(?<{label}Lines>[^\r\n]*)(?:{NewLineWithPrefixSpace()}{precedingSpace}(?<{label}Lines>[^\r\n]*))*)?");
+                var quantifier = hasGreedy ? "*" : "*?";
+                patternBuilder.Append($@"(?<=(?:^|\n)){precedingSpace}(?<{label}Lines>[^\r\n]*)(?:{NewLineWithPrefixSpace()}{precedingSpace}(?<{label}Lines>[^\r\n]*)){quantifier}");
             }
             else
             {
-                patternBuilder.Append($@"(?:{NewLineWithPrefixSpace()}{precedingSpace}(?<{label}Lines>[^\r\n]*))*?");
+                var quantifier = (hasOptional, hasGreedy) switch
+                {
+                    (true, false) => "*?",
+                    (false, true) => "+",
+                    (true, true) => "*",
+                    _ => "+?"
+                };
+                patternBuilder.Append($@"(?:{NewLineWithPrefixSpace()}{precedingSpace}(?<{label}Lines>[^\r\n]*)){quantifier}");
             }
 
             hasMl = true;

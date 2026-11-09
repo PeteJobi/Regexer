@@ -469,6 +469,9 @@ namespace RegexerUIV2
                                     case TokenName.Evaluate:
                                         allSuggestions.Add(new SuggestionItem("| <Expression>", "|", GetResource("ReplaceNumberTitle"), GetResource("ReplaceNumberText")));
                                         break;
+                                    case TokenName.MultiLine:
+                                        allSuggestions.Add(new SuggestionItem("| <Quantifier>", "|", GetResource("MultiLineQuantifierTitle"), GetResource("MultiLineQuantifierText")));
+                                        break;
                                     default:
                                         throw new ArgumentOutOfRangeException();
                                 }
@@ -579,7 +582,8 @@ namespace RegexerUIV2
                                     : new SuggestionItem("s <Whitespace>", "s", GetResource("CustomRegexSpaceTitle"), GetResource("CustomRegexSpaceText")));
                                 break;
                             case "g":
-                                allSuggestions.Add(new SuggestionItem("g <Greedy match>", "g", GetResource("CustomRegexGreedyTitle"), GetResource("CustomRegexGreedyText")));
+                                allSuggestions.Add(suggestionToken.Ancestors[^1] == TokenName.Quantifier ? new SuggestionItem("g <Greedy match>", "g", GetResource("MultiLineGreedyTitle"), GetResource("MultiLineGreedyText"))
+                                    : new SuggestionItem("g <Greedy match>", "g", GetResource("CustomRegexGreedyTitle"), GetResource("CustomRegexGreedyText")));
                                 break;
                             case "l":
                                 allSuggestions.Add(_isReplace
@@ -589,7 +593,8 @@ namespace RegexerUIV2
                             case "o":
                                 allSuggestions.Add(_isReplace
                                     ? new SuggestionItem("o <Replace text>", "o|", GetResource("ReplaceTitle"), GetResource("ReplaceText"))
-                                    : new SuggestionItem("o <Optional match>", "o]]", GetResource("CustomRegexOptionalTitle"), GetResource("CustomRegexOptionalText")));
+                                    : suggestionToken.Ancestors[^1] == TokenName.Quantifier ? new SuggestionItem("o <Optional match>", "o", GetResource("MultiLineOptionalTitle"), GetResource("MultiLineOptionalText"))
+                                        : new SuggestionItem("o <Optional match>", "o]]", GetResource("CustomRegexOptionalTitle"), GetResource("CustomRegexOptionalText")));
                                 break;
                             case "oi":
                                 allSuggestions.Add(new SuggestionItem("oi <Inverse replace text>", "oi|", GetResource("ReplaceInverseTitle"), GetResource("ReplaceInverseText")) { TextInsertionIndex = suggestionToken.PlacementIndex });

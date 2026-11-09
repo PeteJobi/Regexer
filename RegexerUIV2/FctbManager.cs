@@ -193,9 +193,9 @@ namespace RegexerUIV2
                                     break;
                                 case SyntaxStructure.TokenName.MultiLine:
                                     //Some of the first and last children are whitespace, which should have no style.
-                                    var patternStartIndex = isReplacePattern ? 2 : 1;
-                                    var patternEnd = complexToken.Children[patternStartIndex].Index + complexToken.Children.Skip(patternStartIndex).Take(5).Sum(c => c.Length);
-                                    textBox.GetRange(complexToken.Children[patternStartIndex].Index, patternEnd).SetStyle(BaseStyleIndex);
+                                    var patternOffsetFromEnds = isReplacePattern ? 2 : 1;
+                                    var patternEnd = complexToken.Children[patternOffsetFromEnds].Index + complexToken.Children.Skip(patternOffsetFromEnds).SkipLast(patternOffsetFromEnds).Sum(c => c.Length);
+                                    textBox.GetRange(complexToken.Children[patternOffsetFromEnds].Index, patternEnd).SetStyle(BaseStyleIndex);
                                     break;
                             }
                             Highlight(complexToken.Children);
