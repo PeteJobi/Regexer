@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using static RegexerV2.CopyObjectWithMods;
 
 namespace RegexerV2
 {
@@ -395,6 +393,7 @@ namespace RegexerV2
         {
             ZeroOrOneAnyPatterns.Content = AnyPattern;
             ZeroOrOneAnyPatternsReplace.Content = AnyPatternReplace;
+            ReplaceStructure.Content = ScanTreeToResolveReferences(ReplaceStructure.Content, []);
         }
 
         private static And CreateMultiLine(bool startOfDocument) => new()
@@ -425,6 +424,42 @@ namespace RegexerV2
             ]
         };
 
+        private class Reference(Structure referenceNode, Modification[] modifications) : Structure
+        {
+            public readonly Structure CurrentNode = referenceNode;
+            public readonly Modification[] Modifications = modifications;
+        }
+
+        private static Structure ScanTreeToResolveReferences(Structure structure, HashSet<Structure> alreadyResolved)
+        {
+            switch (structure)
+            {
+                case Reference reference:
+                    var resolvedReference = (Structure)Copy(reference.CurrentNode, ModificationsToBranch(reference.Modifications), true);
+                    return ScanTreeToResolveReferences(resolvedReference, alreadyResolved);
+                case Vary vary:
+                    if (!alreadyResolved.Add(vary)) return structure;
+                    vary.Content = ScanTreeToResolveReferences(vary.Content, alreadyResolved);
+                    return vary;
+                case And and:
+                    if (!alreadyResolved.Add(and)) return structure;
+                    for (var i = 0; i < and.Contents.Length; i++)
+                    {
+                        and.Contents[i] = ScanTreeToResolveReferences(and.Contents[i], alreadyResolved);
+                    }
+                    return and;
+                case Or or:
+                    if (!alreadyResolved.Add(or)) return structure;
+                    for (var i = 0; i < or.Contents.Length; i++)
+                    {
+                        or.Contents[i] = ScanTreeToResolveReferences(or.Contents[i], alreadyResolved);
+                    }
+                    return or;
+            }
+
+            return structure;
+        }
+
         public enum FreeTextType
         {
             PRE_PATTERN_TEXT, SINGLE_LINE_PRE_PATTERN_TEXT, LABEL, PLAIN_TEXT, DIGITS, EXPRESSION_WITH_I, EXPRESSION_WITH_IM
@@ -445,6 +480,8 @@ namespace RegexerV2
         public class OneOrMoreNoRepeat : Or;
         public class Vary(StructureQuantifier quantifier, Structure content) : Structure
         {
+            private Vary() : this(StructureQuantifier.ONE_OR_MORE, new Modifier(".")) { }
+
             public Structure Content { get; set; } = content;
             public StructureQuantifier Quantifier { get; init; } = quantifier;
             public bool ReturnNullIfNull { get; set; }
@@ -457,16 +494,22 @@ namespace RegexerV2
         }
         public class Symbol(string value) : Structure
         {
+            private Symbol() : this(".") { }
+
             public string Value { get; set; } = value;
             public override string ToString() => Value;
         }
         public class Modifier(string value) : Structure
         {
+            private Modifier() : this(".") { }
+
             public string Value { get; set; } = value;
             public override string ToString() => Value;
         }
         public class FreeText(FreeTextType type, params Symbol[] cannotContain) : Structure
         {
+            private FreeText() : this(FreeTextType.LABEL) { }
+
             public FreeTextType Type { get; set; } = type;
             public Symbol[] CannotContain { get; set; } = cannotContain;
             public bool MustNotBeEmpty { get; set; }
