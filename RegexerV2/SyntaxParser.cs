@@ -553,7 +553,8 @@ namespace RegexerV2
                         var notContainEncountered = new int[freeText.CannotContain.Length]; //stackalloc instead of array?
                         var unescapedNotContainEncountered = new int[freeText.CannotContain.Length]; //stackalloc instead of array?
                         var pos = index;
-                        var escapeIndices = new List<int>[] { [], [] };
+                        var escapeIndices = new List<int>[freeText.CannotContain.Length];
+                        for (var i = 0; i < escapeIndices.Length; i++) escapeIndices[i] = [];
                         var acceptedEscapeIndices = new List<int>();
 
                         while (pos < end)
