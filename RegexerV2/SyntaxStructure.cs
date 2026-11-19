@@ -15,6 +15,7 @@ namespace RegexerV2
         private static readonly Symbol NewLineSymbol = new("\r\n");
         private static readonly Vary ZeroOrOneAnyPatterns = new(StructureQuantifier.ZERO_OR_ONE, AnyPattern){ ReturnNullIfNull = true };
         private static readonly Vary ZeroOrOneAnyPatternsReplace = new(StructureQuantifier.ZERO_OR_ONE, AnyPatternReplace){ ReturnNullIfNull = true };
+        private static readonly FreeText LabelBeforeDemarcate = new(FreeTextType.LABEL, DemarcateAfterLabelSymbol) { MustNotBeEmpty = true, Name = TokenName.Label };
         internal static readonly FreeText SingleLineFreeText = new(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, CloserSymbol, OpenerSymbol){ Name = TokenName.FreeText, ProceedIfInvalidAfterEncountered = CloserSymbol };
 
         private static readonly string[] SingleLineStructureToAnyPatternPath =
@@ -37,7 +38,7 @@ namespace RegexerV2
             Name = TokenName.MultiLine,
             Contents = [
                 OpenerSymbol,
-                new FreeText(FreeTextType.LABEL, DemarcateAfterLabelSymbol) { MustNotBeEmpty = true, Name = TokenName.Label },
+                LabelBeforeDemarcate,
                 DemarcateAfterLabelSymbol,
                 new Modifier("ml"),
                 new Vary(StructureQuantifier.ZERO_OR_ONE, new And
@@ -76,7 +77,7 @@ namespace RegexerV2
                 new Whitespace{ Type = WhitespaceType.START_OF_LINE },
                 new FreeText(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, OpenerSymbol){ Name = TokenName.FreeText },
                 OpenerSymbol,
-                new FreeText(FreeTextType.LABEL, DemarcateAfterLabelSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
+                LabelBeforeDemarcate,
                 DemarcateAfterLabelSymbol,
                 new Modifier("ml"),
                 CloserSymbol,
@@ -94,7 +95,7 @@ namespace RegexerV2
                 new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                 {
                     Contents = [
-                        new FreeText(FreeTextType.LABEL, DemarcateAfterLabelSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
+                        LabelBeforeDemarcate,
                         DemarcateAfterLabelSymbol
                     ]
                 }),
@@ -111,7 +112,7 @@ namespace RegexerV2
             Contents = [
                 new Whitespace(),
                 OpenerSymbol,
-                new FreeText(FreeTextType.LABEL, DemarcateAfterLabelSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
+                LabelBeforeDemarcate,
                 DemarcateAfterLabelSymbol,
                 new Or
                 {
@@ -163,7 +164,7 @@ namespace RegexerV2
                                         new And
                                         {
                                             Contents = [
-                                                new FreeText(FreeTextType.LABEL, DemarcateAfterLabelSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
+                                                LabelBeforeDemarcate,
                                                 new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                                                 {
                                                     Contents = [
@@ -246,7 +247,7 @@ namespace RegexerV2
                                 new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                                 {
                                     Contents = [
-                                        new FreeText(FreeTextType.LABEL, DemarcateAfterLabelSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
+                                        LabelBeforeDemarcate,
                                         DemarcateAfterLabelSymbol
                                     ]
                                 }),
@@ -387,7 +388,7 @@ namespace RegexerV2
                                                 Name = TokenName.MatchMultipleSpread,
                                                 Contents = [
                                                     OpenerSymbol,
-                                                    new FreeText(FreeTextType.LABEL, DemarcateSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
+                                                    LabelBeforeDemarcate,
                                                     DemarcateSymbol,
                                                     new Modifier("m"),
                                                     CloserSymbol
