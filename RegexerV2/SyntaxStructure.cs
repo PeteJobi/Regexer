@@ -10,6 +10,7 @@ namespace RegexerV2
         private static readonly Symbol DemarcateAfterLabelSymbol = new("|"){ Name = TokenName.Demarcate, SuggestionName = TokenName.DemarcateAfterLabel };
         private static readonly Symbol CloseAmountQuantifierSymbol = new(">");
         private static readonly Symbol HyphenSymbol = new("-");
+        private static readonly Symbol CommaSymbol = new(",");
         private static readonly Symbol StartPlainTextSymbol = new("{");
         private static readonly Symbol EndPlainTextSymbol = new("}");
         private static readonly Symbol NewLineSymbol = new("\r\n");
@@ -366,6 +367,33 @@ namespace RegexerV2
                             new FreeText(FreeTextType.PLAIN_TEXT, DemarcateSymbol, CloserSymbol){ Name = TokenName.PlainText },
                             new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                             {
+                                Name = TokenName.MatchMultipleSort,
+                                Contents = [
+                                    DemarcateSymbol,
+                                    new Or
+                                    {
+                                        Contents = [
+                                            new Symbol("<>"),
+                                            new Vary(StructureQuantifier.ONE_OR_MORE, new And
+                                            {
+                                                Name = TokenName.MatchMultipleSortByCapture,
+                                                Contents = [
+                                                    new Or{ Contents = [new Symbol(">"), new Symbol("<")] },
+                                                    new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                                                    {
+                                                        Contents = [
+                                                            new Symbol(":"),
+                                                            new FreeText(FreeTextType.LABEL, CommaSymbol, DemarcateAfterLabelSymbol, CloserSymbol){ MustNotBeEmpty = true, Name = TokenName.Label }
+                                                        ]
+                                                    })
+                                                ]
+                                            }){ Separator = CommaSymbol }
+                                        ]
+                                    }
+                                ]
+                            }),
+                            new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                            {
                                 SuggestionName = TokenName.MatchMultipleReplace,
                                 Contents = [
                                     DemarcateSymbol,
@@ -531,7 +559,7 @@ namespace RegexerV2
         public enum TokenName
         {
             None, FreeText, PlainText, Pattern, Label, RestrictionQuantifierNewLine, ExactAmountQuantifier, MaxAmountQuantifier, Optional, Modifier, MultiLine, Unordered, UnorderedGroup, Opener, Closer, Demarcate, SingleLineStructure,
-            MatchMultiple, MatchMultipleReplace, MatchMultipleSpread, MatchMultipleMatch, Duplicate, DuplicateSeparator, Capitalize, Evaluate, DemarcateAfterLabel, Quantifier
+            MatchMultiple, MatchMultipleReplace, MatchMultipleSort, MatchMultipleSortByCapture, MatchMultipleSpread, MatchMultipleMatch, Duplicate, DuplicateSeparator, Capitalize, Evaluate, DemarcateAfterLabel, Quantifier
         }
         public class Token
         {

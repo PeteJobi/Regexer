@@ -620,9 +620,43 @@ namespace RegexerV2
                 case TokenName.MatchMultiple:
                     var spreadAmount = inputCaptures.Count;
                     var singleLineIndex = 4;
+                    int[] order = [.. Enumerable.Range(0, spreadAmount)];
+                    if (children.Count > 3 && children[3].Name == TokenName.MatchMultipleSort)
+                    {
+                        singleLineIndex = 5;
+                        var sortParamsTokens = ((ComplexToken)children[3]).Children;
+                        var paramCaptures = new List<CaptureCollection>();
+                        var sortParams = new List<(int ArrayIndex, bool Ascending, bool IsDigit)>();
+                        for (var i = 1; i < sortParamsTokens.Count; i += 2)
+                        {
+                            if (sortParamsTokens[i].Name == TokenName.MatchMultipleSortByCapture)
+                            {
+                                var paramTokens = ((ComplexToken)sortParamsTokens[i]).Children;
+                                string captureLabel;
+                                if (paramTokens.Count > 2)
+                                {
+                                    if (!matchCaptureData.Match.Groups.ContainsKey(paramTokens[2].Text)) continue;
+                                    captureLabel = paramTokens[2].Text;
+                                }
+                                else captureLabel = label;
+                                paramCaptures.Add(matchCaptureData.Match.Groups[captureLabel].Captures);
+                                sortParams.Add((sortParams.Count, paramTokens[0].Text == ">", patternMap[captureLabel].IsDigit));
+                            }
+                            else
+                            {
+                                Array.Reverse(order);
+                                break;
+                            }
+                        }
+
+                        if (paramCaptures.Count > 0)
+                        {
+                            order = SortMultiCriteria(paramCaptures, sortParams, spreadAmount);
+                        }
+                    }
                     var totalLength = 0;
                     var outputStart = patternToken.Index + outputOffset;
-                    for (var s = 0; s < spreadAmount; s++)
+                    foreach (var s in order)
                     {
                         outputMatchData = new MatchData(outputStart + totalLength, 0, string.Empty);
                         outputCaptures.Add(outputMatchData);
@@ -647,7 +681,7 @@ namespace RegexerV2
                         outputMatchData.Text = patternBuilder.ToString(outputMatchData.Index, outputMatchData.Length);
                         totalLength += outputMatchData.Length;
 
-                        if (s == spreadAmount - 1) break;
+                        if (s == order[^1]) break;
                         totalLength += ProcessReplaceFreeText(pattern, (FreeTextToken)children[2], matchCaptureData.Match);
                     }
 
