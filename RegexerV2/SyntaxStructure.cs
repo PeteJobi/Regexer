@@ -280,7 +280,7 @@ namespace RegexerV2
             ]
         };
 
-        private static readonly And PatternReplace = new()
+        private static readonly And SimplePatternReplace = new()
         {
             Name = TokenName.Pattern,
             Contents =
@@ -296,53 +296,6 @@ namespace RegexerV2
                         {
                             Contents =
                             [
-                                new And
-                                {
-                                    Name = TokenName.Optional,
-                                    Contents =
-                                    [
-                                        new Or
-                                        {
-                                            Contents = [new Modifier("oi"), new Modifier("o")]
-                                        },
-                                        DemarcateSymbol,
-                                        SingleLineStructuresReplace
-                                    ]
-                                },
-                                new And
-                                {
-                                    Name = TokenName.MatchMultiple,
-                                    Contents = [
-                                        new Modifier("m"),
-                                        DemarcateSymbol,
-                                        new FreeText(FreeTextType.PLAIN_TEXT, DemarcateSymbol, CloserSymbol){ Name = TokenName.PlainText },
-                                        new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                                        {
-                                            SuggestionName = TokenName.MatchMultipleReplace,
-                                            Contents = [
-                                                DemarcateSymbol,
-                                                new Vary(StructureQuantifier.ONE_OR_MORE, new And
-                                                {
-                                                    Name = TokenName.SingleLineStructure,
-                                                    Contents = [
-                                                        SingleLineFreeText,
-                                                        new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                                                        {
-                                                            Name = TokenName.MatchMultipleSpread,
-                                                            Contents = [
-                                                                OpenerSymbol,
-                                                                new FreeText(FreeTextType.LABEL, DemarcateSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
-                                                                DemarcateSymbol,
-                                                                new Modifier("m"),
-                                                                CloserSymbol
-                                                            ]
-                                                        }){ ReturnNullIfNull = true }
-                                                    ]
-                                                })
-                                            ]
-                                        })
-                                    ]
-                                },
                                 new And
                                 {
                                     Name = TokenName.Duplicate,
@@ -394,6 +347,60 @@ namespace RegexerV2
                 CloserSymbol
             ]
         };
+
+        private static readonly Reference PatternReplace = new(SimplePatternReplace, [
+            new Modification(
+                [nameof(And.Contents), "2", nameof(Vary.Content), nameof(And.Contents), "1", nameof(Or.Contents), "0"],
+                new ArrayItemValue([
+                    new And
+                    {
+                        Name = TokenName.Optional,
+                        Contents =
+                        [
+                            new Or
+                            {
+                                Contents = [new Modifier("oi"), new Modifier("o")]
+                            },
+                            DemarcateSymbol,
+                            SingleLineStructuresReplace
+                        ]
+                    },
+                    new And
+                    {
+                        Name = TokenName.MatchMultiple,
+                        Contents = [
+                            new Modifier("m"),
+                            DemarcateSymbol,
+                            new FreeText(FreeTextType.PLAIN_TEXT, DemarcateSymbol, CloserSymbol){ Name = TokenName.PlainText },
+                            new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                            {
+                                SuggestionName = TokenName.MatchMultipleReplace,
+                                Contents = [
+                                    DemarcateSymbol,
+                                    new Vary(StructureQuantifier.ONE_OR_MORE, new And
+                                    {
+                                        Name = TokenName.SingleLineStructure,
+                                        Contents = [
+                                            SingleLineFreeText,
+                                            new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                                            {
+                                                Name = TokenName.MatchMultipleSpread,
+                                                Contents = [
+                                                    OpenerSymbol,
+                                                    new FreeText(FreeTextType.LABEL, DemarcateSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
+                                                    DemarcateSymbol,
+                                                    new Modifier("m"),
+                                                    CloserSymbol
+                                                ]
+                                            }){ ReturnNullIfNull = true }
+                                        ]
+                                    })
+                                ]
+                            })
+                        ]
+                    }
+                ], ArrayItemAction.Insert))
+        ]);
 
         private static readonly Or AnyPattern = new() { Contents = [Pattern, Unordered, MultiLine] };
 
