@@ -369,24 +369,7 @@ namespace RegexerV2
                                 SuggestionName = TokenName.MatchMultipleReplace,
                                 Contents = [
                                     DemarcateSymbol,
-                                    new Vary(StructureQuantifier.ONE_OR_MORE, new And
-                                    {
-                                        Name = TokenName.SingleLineStructure,
-                                        Contents = [
-                                            SingleLineFreeText,
-                                            new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                                            {
-                                                Name = TokenName.MatchMultipleSpread,
-                                                Contents = [
-                                                    OpenerSymbol,
-                                                    LabelBeforeDemarcate,
-                                                    DemarcateSymbol,
-                                                    new Modifier("m"),
-                                                    CloserSymbol
-                                                ]
-                                            }){ ReturnNullIfNull = true }
-                                        ]
-                                    })
+                                    new Reference(SingleLineStructuresReplace, [new Modification(SingleLineStructureToAnyPatternPath, new Structure[]{ SimplePatternReplace })])
                                 ]
                             })
                         ]

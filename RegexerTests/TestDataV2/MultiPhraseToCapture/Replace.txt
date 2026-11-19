@@ -1,1 +1,1 @@
-﻿<input [[mul|m|--|The key is [[key|m]], the value is [[value|m]]]]/>
+﻿<input [[mul|m|--|The key is [[key]], the value is [[value]]]]/>

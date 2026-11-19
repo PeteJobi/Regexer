@@ -619,53 +619,39 @@ namespace RegexerV2
 
                 case TokenName.MatchMultiple:
                     var spreadAmount = inputCaptures.Count;
-                    length = 0;
-                    singleLineStart = 0;
+                    var singleLineIndex = 4;
+                    var totalLength = 0;
+                    var outputStart = patternToken.Index + outputOffset;
                     for (var s = 0; s < spreadAmount; s++)
                     {
-                        if (children.Count > 4)
+                        outputMatchData = new MatchData(outputStart + totalLength, 0, string.Empty);
+                        outputCaptures.Add(outputMatchData);
+                        if (children.Count > singleLineIndex)
                         {
-                            for (var i = 4; i < children.Count; i++)
+                            singleLineStart = children[singleLineIndex].Index;
+                            offset = 0;
+                            for (var i = singleLineIndex; i < children.Count; i++)
                             {
                                 var singleLineToken = (ComplexToken)children[i];
-                                foreach (var token in singleLineToken.Children)
-                                {
-                                    switch (token.Name)
-                                    {
-                                        case TokenName.FreeText:
-                                            length += ProcessReplaceFreeText(pattern, token, matchCaptureData.Match);
-                                            break;
-                                        case TokenName.MatchMultipleSpread:
-                                            var spreadToken = (ComplexToken)token;
-                                            var spreadLabel = pattern.Substring(spreadToken.Children[1].Index, spreadToken.Children[1].Length);
-                                            List<MatchData> spreadOutputCaptures;
-                                            n = GetAlphabeticalOrderIndex(outputIndieMatches, l => l.Label, spreadLabel);
-                                            if (n.DidNotExist) outputIndieMatches.Insert(n.Index, new IndividualMatch(spreadLabel, spreadOutputCaptures = []));
-                                            else spreadOutputCaptures = outputIndieMatches[n.Index].Captures;
-                                            var spreadCapture = matchCaptureData.Match.Groups[spreadLabel].Captures[s];
-                                            patternBuilder.Append(spreadCapture.Value);
-                                            spreadOutputCaptures.Add(new MatchData(patternToken.Index + outputOffset + length, spreadCapture.Length, spreadCapture.Value));
-                                            length += spreadCapture.Length;
-                                            break;
-                                        default:
-                                            throw new NotImplementedException($"Unsupported Token type '{token.Name}'");
-                                    }
-                                }
+                                length = ProcessReplaceFullStructure(pattern, singleLineToken.Children, matchCaptureData with { CaptureIndex = s }, outputIndieMatches, outputMatchData.Index - singleLineStart - offset);
+                                offset += singleLineToken.Length - length;
+                                outputMatchData.Length += length;
                             }
                         }
                         else
                         {
                             patternBuilder.Append(inputCaptures[s]);
-                            length += inputCaptures[s].Length;
+                            outputMatchData.Length += inputCaptures[s].Length;
                         }
-                        outputCaptures.Add(new MatchData(patternToken.Index + outputOffset + singleLineStart, length - singleLineStart, patternBuilder.ToString(patternToken.Index + outputOffset + singleLineStart, length - singleLineStart)));
+
+                        outputMatchData.Text = patternBuilder.ToString(outputMatchData.Index, outputMatchData.Length);
+                        totalLength += outputMatchData.Length;
 
                         if (s == spreadAmount - 1) break;
-                        length += ProcessReplaceFreeText(pattern, (FreeTextToken)children[2], matchCaptureData.Match);
-                        singleLineStart = length;
+                        totalLength += ProcessReplaceFreeText(pattern, (FreeTextToken)children[2], matchCaptureData.Match);
                     }
 
-                    return length;
+                    return totalLength;
             }
 
             return 0;
@@ -983,6 +969,37 @@ namespace RegexerV2
 
             // If not found, return the insertion point (left position)
             return (left, true);
+        }
+
+        private static int[] SortMultiCriteria(List<CaptureCollection> captureCollections, List<(int ArrayIndex, bool Ascending, bool IsDigit)> criteria, int length) //Initial code by Gemini Auto
+        {
+            // Allocate the index array once
+            var indices = new int[length];
+            for (var i = 0; i < length; i++)
+            {
+                indices[i] = i;
+            }
+
+            // Sort the indices using Array.Sort with an inline comparison delegate
+            Array.Sort(indices, (i1, i2) =>
+            {
+                foreach (var (arrIdx, ascending, isDigit) in criteria)
+                {
+                    var targetArray = captureCollections[arrIdx];
+                    var val1 = targetArray[i1].Value;
+                    var val2 = targetArray[i2].Value;
+
+                    var comparison = isDigit 
+                        ? int.Parse(val1).CompareTo(int.Parse(val2))
+                        : string.Compare(val1, val2, StringComparison.Ordinal);
+
+                    if (comparison != 0) return ascending ? comparison : -comparison;
+                }
+
+                return 0; // All criteria matched; preserve original relative order
+            });
+
+            return indices;
         }
 
         private class PatternData(string label)

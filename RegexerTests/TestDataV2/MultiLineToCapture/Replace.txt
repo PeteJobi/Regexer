@@ -1,4 +1,4 @@
 ﻿saveUser{ 
   [[line|m|,
-  |"[[key|m]]" = "[[value|m]]"]]
+  |"[[key]]" = "[[value]]"]]
 }
