@@ -17,6 +17,9 @@ namespace RegexerV2
         private static readonly Vary ZeroOrOneAnyPatternsReplace = new(StructureQuantifier.ZERO_OR_ONE, AnyPatternReplace){ ReturnNullIfNull = true };
         internal static readonly FreeText SingleLineFreeText = new(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, CloserSymbol, OpenerSymbol){ Name = TokenName.FreeText, ProceedIfInvalidAfterEncountered = CloserSymbol };
 
+        private static readonly string[] SingleLineStructureToAnyPatternPath =
+            [nameof(Vary.Content), nameof(And.Contents), "1", nameof(Vary.Content), nameof(Or.Contents)];
+
         private static readonly Vary SingleLineStructures = new(StructureQuantifier.ONE_OR_MORE, new And
         {
             Name = TokenName.SingleLineStructure,
@@ -262,7 +265,9 @@ namespace RegexerV2
                                             SuggestionName = TokenName.MatchMultipleMatch,
                                             Contents = [
                                                 DemarcateSymbol,
-                                                SingleLineStructures
+                                                new Reference(SingleLineStructures, [
+                                                    new Modification([..SingleLineStructureToAnyPatternPath, "2"], new ArrayItemValue([], ArrayItemAction.Remove))
+                                                ])
                                             ]
                                         })
                                     ]
