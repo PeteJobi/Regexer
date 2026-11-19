@@ -163,6 +163,7 @@ namespace RegexerV2
                         {
                             if (pos >= input.Length - 1) return null;
                             if (input[pos] == '\r' && input[pos + 1] == '\n') pos += 2;
+                            else if (whitespace.Type == WhitespaceType.START_OF_LINE_NOT_DOCUMENT) return null;
                         }
                         while (pos < input.Length)
                         {
@@ -509,6 +510,8 @@ namespace RegexerV2
                         {
                             if(pos >= end - 1) return (null, []);
                             if (input[pos] == '\r' && input[pos + 1] == '\n') pos += 2;
+                            else if (whitespace.Type == WhitespaceType.START_OF_LINE_NOT_DOCUMENT 
+                                     || (whitespace.Type == WhitespaceType.START_OF_LINE && pos != start)) return (null, []);
                         }
                         while (pos < end)
                         {
