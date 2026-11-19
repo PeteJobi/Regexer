@@ -478,6 +478,7 @@ namespace RegexerV2
 
             public Structure Content { get; set; } = content;
             public StructureQuantifier Quantifier { get; init; } = quantifier;
+            public Structure? Separator { get; set; }
             public bool ReturnNullIfNull { get; set; }
             public override string ToString() => $"{Quantifier switch
             {

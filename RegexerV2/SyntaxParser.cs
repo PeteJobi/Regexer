@@ -125,7 +125,8 @@ namespace RegexerV2
                         var length = 0;
                         while (amount > 0 && i < input.Length)
                         {
-                            var token = ParsePattern(input, i, [vary.Content], 0)?.ToArray();
+                            Structure[] structuresToParse = subResults.Count > 0 && vary.Separator != null ? [vary.Separator, vary.Content] : [vary.Content];
+                            var token = ParsePattern(input, i, structuresToParse, 0)?.ToArray();
                             var tokenLength = token?.Sum(t => t.Length) ?? 0;
                             if ((token == null || tokenLength == 0) && subResults.Count == 0 && vary.ReturnNullIfNull) return null;
                             if (token == null || tokenLength == 0) break;
@@ -456,7 +457,8 @@ namespace RegexerV2
                         var length = 0;
                         while (amount > 0 && i < end)
                         {
-                            var token = ParsePatternWithSuggestions(input, start, end, i, [vary.Content], 0, withSuggestions);
+                            Structure[] structuresToParse = subResults.Count > 0 && vary.Separator != null ? [vary.Separator, vary.Content] : [vary.Content];
+                            var token = ParsePatternWithSuggestions(input, start, end, i, structuresToParse, 0, withSuggestions);
                             suggestions.AddRange(AddAncestorToSuggestions(token.Suggestions, vary.Name));
                             var tokenLength = token.AlreadyTyped?.Sum(t => t.Length) ?? 0;
                             if ((token.AlreadyTyped == null || tokenLength == 0) && subResults.Count == 0 && vary.ReturnNullIfNull) return (null, suggestions);
