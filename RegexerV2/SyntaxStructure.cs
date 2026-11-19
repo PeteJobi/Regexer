@@ -29,7 +29,42 @@ namespace RegexerV2
             Contents = [SingleLineFreeText, ZeroOrOneAnyPatternsReplace]
         });
 
-        private static readonly Or MultiLine = new() { Contents = [CreateMultiLine(true), CreateMultiLine(false)] };
+        private static readonly And MultiLineBase = new()
+        {
+            Name = TokenName.MultiLine,
+            Contents = [
+                OpenerSymbol,
+                new FreeText(FreeTextType.LABEL, DemarcateAfterLabelSymbol) { MustNotBeEmpty = true, Name = TokenName.Label },
+                DemarcateAfterLabelSymbol,
+                new Modifier("ml"),
+                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                {
+                    Contents = [
+                        DemarcateSymbol,
+                        new OneOrMoreNoRepeat
+                        {
+                            Name = TokenName.Quantifier,
+                            Contents = [
+                                new Modifier("o"), //Zero or more lines
+                                new Modifier("g") //Greedy
+                            ]
+                        }
+                    ]
+                }),
+                CloserSymbol,
+                new Whitespace{ Type = WhitespaceType.END_OF_LINE }
+            ]
+        };
+        private static readonly Or MultiLine = new() { 
+            Contents = [
+                new Reference(MultiLineBase, [
+                    new Modification([nameof(And.Contents), "0"], new ArrayItemValue([new Whitespace{ Type = WhitespaceType.START_OF_DOCUMENT }], ArrayItemAction.Insert)),
+                    new Modification([nameof(And.Contents), "4", nameof(Vary.Content), nameof(And.Contents), "1", nameof(OneOrMoreNoRepeat.Contents), "0"],
+                        new ArrayItemValue([], ArrayItemAction.Remove)),
+                ]),
+                new Reference(MultiLineBase, [new Modification([nameof(And.Contents), "0"],
+                    new ArrayItemValue([new Whitespace { Type = WhitespaceType.START_OF_LINE_NOT_DOCUMENT }], ArrayItemAction.Insert))])
+        ]};
 
         private static readonly And MultiLineReplace = new()
         {
@@ -395,34 +430,6 @@ namespace RegexerV2
             ZeroOrOneAnyPatternsReplace.Content = AnyPatternReplace;
             ReplaceStructure.Content = ScanTreeToResolveReferences(ReplaceStructure.Content, []);
         }
-
-        private static And CreateMultiLine(bool startOfDocument) => new()
-        {
-            Name = TokenName.MultiLine,
-            Contents = [
-                new Whitespace{ Type = startOfDocument ? WhitespaceType.START_OF_DOCUMENT : WhitespaceType.START_OF_LINE_NOT_DOCUMENT },
-                OpenerSymbol,
-                new FreeText(FreeTextType.LABEL, DemarcateAfterLabelSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
-                DemarcateAfterLabelSymbol,
-                new Modifier("ml"),
-                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                {
-                    Contents = [
-                        DemarcateSymbol,
-                        new OneOrMoreNoRepeat
-                        {
-                            Name = TokenName.Quantifier,
-                            Contents = [
-                                ..startOfDocument ? Array.Empty<Structure>() : [new Modifier("o")], //Zero or more lines
-                                new Modifier("g") //Greedy
-                            ]
-                        }
-                    ]
-                }),
-                CloserSymbol,
-                new Whitespace{ Type = WhitespaceType.END_OF_LINE }
-            ]
-        };
 
         private class Reference(Structure referenceNode, Modification[] modifications) : Structure
         {
