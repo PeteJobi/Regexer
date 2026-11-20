@@ -155,89 +155,80 @@ namespace RegexerV2
                     Contents =
                     [
                         new FreeText(FreeTextType.LABEL, CloserSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
-                        new And
+                        new Or
                         {
                             Contents = [
-                                new Or
+                                new And
                                 {
                                     Contents = [
-                                        new And
+                                        LabelBeforeDemarcate,
+                                        new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                                         {
                                             Contents = [
-                                                LabelBeforeDemarcate,
-                                                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                                                DemarcateAfterLabelSymbol,
+                                                new OneOrMoreNoRepeat
                                                 {
-                                                    Contents = [
-                                                        DemarcateAfterLabelSymbol,
-                                                        new OneOrMoreNoRepeat
+                                                    Name = TokenName.RestrictionQuantifierNewLine,
+                                                    Contents =
+                                                    [
+                                                        new Or
                                                         {
-                                                            Name = TokenName.RestrictionQuantifierNewLine,
                                                             Contents =
                                                             [
-                                                                new Or
-                                                                {
-                                                                    Contents =
-                                                                    [
-                                                                        new Modifier("w"),
-                                                                        new Modifier("d"),
-                                                                        new Modifier("s")
-                                                                    ]
-                                                                },
-                                                                new Or
-                                                                {
-                                                                    Contents =
-                                                                    [
-                                                                        new Modifier("g"),
-                                                                        new And
-                                                                        {
-                                                                            Name = TokenName.ExactAmountQuantifier,
-                                                                            Contents =
-                                                                            [
-                                                                                new Symbol("<"),
-                                                                                new FreeText(FreeTextType.DIGITS,
-                                                                                    CloseAmountQuantifierSymbol, HyphenSymbol){ MustNotBeEmpty = true },
-                                                                                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                                                                                {
-                                                                                    SuggestionName = TokenName.MaxAmountQuantifier,
-                                                                                    Contents =
-                                                                                    [
-                                                                                        HyphenSymbol,
-                                                                                        new FreeText(FreeTextType.DIGITS,
-                                                                                            CloseAmountQuantifierSymbol){ MustNotBeEmpty = true }
-                                                                                    ]
-                                                                                }),
-                                                                                CloseAmountQuantifierSymbol,
-                                                                            ]
-                                                                        }
-                                                                    ]
-                                                                },
-                                                                new Modifier("l"),
+                                                                new Modifier("w"),
+                                                                new Modifier("d"),
+                                                                new Modifier("s")
                                                             ]
                                                         },
+                                                        new Or
+                                                        {
+                                                            Contents =
+                                                            [
+                                                                new OneOrMoreNoRepeat
+                                                                {
+                                                                    Name = TokenName.Quantifier,
+                                                                    Contents = [
+                                                                        new Modifier("o"), //Zero or more
+                                                                        new Modifier("g") //Greedy
+                                                                    ]
+                                                                },
+                                                                new And
+                                                                {
+                                                                    Name = TokenName.ExactAmountQuantifier,
+                                                                    Contents =
+                                                                    [
+                                                                        new Symbol("<"),
+                                                                        new FreeText(FreeTextType.DIGITS, CloseAmountQuantifierSymbol, HyphenSymbol){ MustNotBeEmpty = true },
+                                                                        new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                                                                        {
+                                                                            SuggestionName = TokenName.MaxAmountQuantifier,
+                                                                            Contents =
+                                                                            [
+                                                                                HyphenSymbol,
+                                                                                new FreeText(FreeTextType.DIGITS, CloseAmountQuantifierSymbol){ MustNotBeEmpty = true }
+                                                                            ]
+                                                                        }),
+                                                                        CloseAmountQuantifierSymbol,
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        new Modifier("l"),
                                                     ]
-                                                })
+                                                },
                                             ]
-                                        },
-                                        new And
-                                        {
-                                            Contents = [
-                                                new Vary(StructureQuantifier.ZERO_OR_ONE, new FreeText(FreeTextType.LABEL, StartPlainTextSymbol){ MustNotBeEmpty = true, Name = TokenName.Label }),
-                                                StartPlainTextSymbol,
-                                                new FreeText(FreeTextType.PLAIN_TEXT, EndPlainTextSymbol){ Name = TokenName.PlainText },
-                                                EndPlainTextSymbol
-                                            ]
-                                        }
+                                        })
                                     ]
                                 },
-                                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                                new And
                                 {
-                                    Name = TokenName.Optional,
-                                    Contents =
-                                    [
-                                        DemarcateSymbol,
-                                        new Modifier("o")
+                                    Contents = [
+                                        new Vary(StructureQuantifier.ZERO_OR_ONE, new FreeText(FreeTextType.LABEL, StartPlainTextSymbol){ MustNotBeEmpty = true, Name = TokenName.Label }),
+                                        StartPlainTextSymbol,
+                                        new FreeText(FreeTextType.PLAIN_TEXT, EndPlainTextSymbol){ Name = TokenName.PlainText },
+                                        EndPlainTextSymbol
                                     ]
-                                })
+                                }
                             ]
                         },
                         new And

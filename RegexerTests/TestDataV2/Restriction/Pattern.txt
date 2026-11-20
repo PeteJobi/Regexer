@@ -1,1 +1,1 @@
-﻿[[name|w]], [[age|d|o]].
+﻿[[name|w]], [[age|do]].

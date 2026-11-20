@@ -364,12 +364,6 @@ namespace RegexerV2
             {
                 patternBuilder.Append($"(?<{label}>{restriction}{quantifier})");
             }
-
-            if (elements[^2].Name == TokenName.Optional)
-            {
-                patternBuilder.Append('?');
-                patternData?.IsOptional = true;
-            }
             return;
 
             void ProcessRestrictionQuantifierNewLine(ComplexToken restrictionQuantifierToken, ref ReadOnlySpan<char> restriction, ref ReadOnlySpan<char> quantifier)
@@ -379,37 +373,69 @@ namespace RegexerV2
                 var hasL = false;
                 foreach (var modifier in modifiers)
                 {
-                    if (modifier is ComplexToken exactAmount)
+                    switch (modifier.Name)
                     {
-                        var amount1 = pattern.AsSpan(exactAmount.Children[1].Index, exactAmount.Children[1].Length);
-                        if (exactAmount.Children.Count > 3)
+                        case TokenName.Quantifier:
                         {
-                            var amount2 = pattern.AsSpan(exactAmount.Children[3].Index, exactAmount.Children[3].Length);
-                            quantifier = $"{{{amount1},{amount2}}}".AsSpan();
+                            var hasG = false;
+                            var hasO = false;
+                            var quantifierMods = ((ComplexToken)modifier).Children;
+                            foreach (var mod in quantifierMods)
+                            {
+                                var modText = pattern.AsSpan(mod.Index, mod.Length);
+                                switch (modText)
+                                {
+                                    case "g":
+                                        hasG = true;
+                                        continue;
+                                    case "o":
+                                        hasO = true;
+                                        continue;
+                                }
+                            }
+
+                            quantifier = (hasO, hasG) switch
+                            {
+                                (true, false) => "*?".AsSpan(),
+                                (false, true) => "+".AsSpan(),
+                                (true, true) => "*".AsSpan(),
+                                _ => throw new ArgumentOutOfRangeException()
+                            };
+                            continue;
                         }
-                        else quantifier = $"{{{amount1}}}".AsSpan();
-                        continue;
-                    }
-                    var modifierSpan = pattern.AsSpan(modifier.Index, modifier.Length);
-                    switch (modifierSpan)
-                    {
-                        case "g":
-                            quantifier = "+".AsSpan();
+                        case TokenName.ExactAmountQuantifier:
+                        {
+                            var exactAmount = (ComplexToken)modifier;
+                            var amount1 = pattern.AsSpan(exactAmount.Children[1].Index, exactAmount.Children[1].Length);
+                            if (exactAmount.Children.Count > 3)
+                            {
+                                var amount2 = pattern.AsSpan(exactAmount.Children[3].Index, exactAmount.Children[3].Length);
+                                quantifier = $"{{{amount1},{amount2}}}".AsSpan();
+                            }
+                            else quantifier = $"{{{amount1}}}".AsSpan();
                             continue;
-                        case "l":
-                            hasL = true;
-                            continue;
-                        case "w":
-                            restrictionChar = 'w';
-                            continue;
-                        case "d":
-                            restrictionChar = 'd';
-                            patternData!.IsDigit = true;
-                            continue;
-                        case "s":
-                            restrictionChar = 's';
-                            continue;
-                        default: throw new NotSupportedException($"Unsupported restriction modifier: {modifierSpan.ToString()}");
+                        }
+                        default:
+                        {
+                            var modifierSpan = pattern.AsSpan(modifier.Index, modifier.Length);
+                            switch (modifierSpan)
+                            {
+                                case "l":
+                                    hasL = true;
+                                    continue;
+                                case "w":
+                                    restrictionChar = 'w';
+                                    continue;
+                                case "d":
+                                    restrictionChar = 'd';
+                                    patternData!.IsDigit = true;
+                                    continue;
+                                case "s":
+                                    restrictionChar = 's';
+                                    continue;
+                                default: throw new NotSupportedException($"Unsupported restriction modifier: {modifierSpan.ToString()}");
+                            }
+                        }
                     }
                 }
 
@@ -446,9 +472,9 @@ namespace RegexerV2
 
             void ProcessRegex(FreeTextToken regexToken)
             {
-                _ = label == null ? patternBuilder.Append("(?:") : patternBuilder.Append($"(?<{label}>");
+                if(label != null) patternBuilder.Append($"(?<{label}>");
                 ProcessPlainText(pattern, regexToken);
-                patternBuilder.Append(')');
+                if(label != null) patternBuilder.Append(')');
             }
         }
 
@@ -481,16 +507,11 @@ namespace RegexerV2
             switch (elements[3].Name)
             {
                 case TokenName.Optional:
-                    if (!patternData.IsOptional)
-                    {
-                        patternBuilder.Append(pattern.AsSpan(patternToken.Index, patternToken.Length)); //Use the pattern text as is
-                        return patternToken.Length;
-                    }
                     var modifier = pattern.AsSpan(children[0].Index, children[0].Length);
                     var outputMatchData = new MatchData(0, 0, string.Empty);
                     outputCaptures.Add(outputMatchData);
 
-                    if ((modifier is not "o" || !inputMatch.Success) && (modifier is not "oi" || inputMatch.Success))
+                    if ((modifier is not "o" || inputMatch.Value == string.Empty) && (modifier is not "oi" || inputMatch.Value != string.Empty))
                     {
                         for (var i = 2; i < children.Count - 1; i++)
                         {
@@ -796,7 +817,7 @@ namespace RegexerV2
                         continue;
                     }
 
-                    patternMap.Add(label, new PatternData(label) { IsOptional = true });
+                    patternMap.Add(label, new PatternData(label) { IsUnordered = true });
                     singleLineTokenIndex = 6;
                 }
                 else singleLineTokenIndex = 4;
@@ -834,7 +855,7 @@ namespace RegexerV2
             {
                 var unorderedElements = ((ComplexToken)unorderedGroupToken.Children[i]).Children;
                 var label = pattern.Substring(unorderedElements[2].Index, unorderedElements[2].Length);
-                if (!patternMap.TryGetValue(label, out var patternData) || !patternData.IsOptional)
+                if (!patternMap.TryGetValue(label, out var patternData) || !patternData.IsUnordered)
                 {
                     patternBuilder.Append(pattern.AsSpan(unorderedGroupToken.Children[i].Index, unorderedGroupToken.Children[i].Length)); //Use the pattern text as is
                     totalLength += unorderedGroupToken.Children[i].Length;
@@ -918,7 +939,7 @@ namespace RegexerV2
                 var matchCaptures = match.Groups[label].Captures;
                 for (var i = 0; i < matchCaptures.Count; i++)
                 {
-                    captures.Add(new MatchData(matchCaptures[i].Index, matchCaptures[i].Length, matchCaptures[i].Value));
+                    if(matchCaptures[i].Length > 0) captures.Add(new MatchData(matchCaptures[i].Index, matchCaptures[i].Length, matchCaptures[i].Value));
                 }
                 individualMatches.Insert(n.Index, new IndividualMatch(label, captures));
                 cancellationToken.ThrowIfCancellationRequested();
@@ -966,7 +987,7 @@ namespace RegexerV2
         private class PatternData(string label)
         {
             public string Label { get; set; } = label;
-            public bool IsOptional { get; set; }
+            public bool IsUnordered { get; set; }
             public bool IsDigit { get; set; }
             public bool IsMultiLine { get; set; }
             public bool IsMultiMatch { get; set; }
