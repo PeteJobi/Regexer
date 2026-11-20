@@ -273,7 +273,7 @@ namespace RegexerV2
             ]
         };
 
-        private static readonly And SimplePatternReplace = new()
+        private static readonly And PatternReplace = new()
         {
             Name = TokenName.Pattern,
             Contents =
@@ -289,6 +289,22 @@ namespace RegexerV2
                         {
                             Contents =
                             [
+                                new And
+                                {
+                                    Name = TokenName.Optional,
+                                    Contents =
+                                    [
+                                        new Or
+                                        {
+                                            Contents = [new Modifier("oi"), new Modifier("o")]
+                                        },
+                                        DemarcateSymbol,
+                                        new Reference(SingleLineStructuresReplace,
+                                        [//Remove MultiLineReplace
+                                            new Modification([..SingleLineStructureToAnyPatternPath, "3"], new ArrayItemValue([], ArrayItemAction.Remove))
+                                        ])
+                                    ]
+                                },
                                 new And
                                 {
                                     Name = TokenName.Duplicate,
@@ -341,73 +357,68 @@ namespace RegexerV2
             ]
         };
 
-        private static readonly Reference PatternReplace = new(SimplePatternReplace, [
-            new Modification(
-                [nameof(And.Contents), "2", nameof(Vary.Content), nameof(And.Contents), "1", nameof(Or.Contents), "0"],
-                new ArrayItemValue([
-                    new And
-                    {
-                        Name = TokenName.Optional,
-                        Contents =
+        private static readonly And MatchMultipleReplace = new()
+        {
+            Name = TokenName.MatchMultiple,
+            Contents =
+            [
+                OpenerSymbol,
+                LabelBeforeDemarcate,
+                DemarcateAfterLabelSymbol,
+                new Modifier("m"),
+                DemarcateSymbol,
+                new FreeText(FreeTextType.PLAIN_TEXT, DemarcateSymbol, CloserSymbol) { Name = TokenName.PlainText },
+                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                {
+                    Name = TokenName.MatchMultipleSort,
+                    Contents =
+                    [
+                        DemarcateSymbol,
+                        new Or
+                        {
+                            Contents =
+                            [
+                                new Symbol("<>"),
+                                new Vary(StructureQuantifier.ONE_OR_MORE, new And
+                                {
+                                    Name = TokenName.MatchMultipleSortByCapture,
+                                    Contents =
+                                    [
+                                        new Or { Contents = [new Symbol(">"), new Symbol("<")] },
+                                        new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                                        {
+                                            Contents =
+                                            [
+                                                new Symbol(":"),
+                                                new FreeText(FreeTextType.LABEL, CommaSymbol, DemarcateAfterLabelSymbol,
+                                                    CloserSymbol) { MustNotBeEmpty = true, Name = TokenName.Label }
+                                            ]
+                                        })
+                                    ]
+                                }) { Separator = CommaSymbol }
+                            ]
+                        }
+                    ]
+                }),
+                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                {
+                    SuggestionName = TokenName.MatchMultipleReplace,
+                    Contents =
+                    [
+                        DemarcateSymbol,
+                        new Reference(SingleLineStructuresReplace,
                         [
-                            new Or
-                            {
-                                Contents = [new Modifier("oi"), new Modifier("o")]
-                            },
-                            DemarcateSymbol,
-                            SingleLineStructuresReplace
-                        ]
-                    },
-                    new And
-                    {
-                        Name = TokenName.MatchMultiple,
-                        Contents = [
-                            new Modifier("m"),
-                            DemarcateSymbol,
-                            new FreeText(FreeTextType.PLAIN_TEXT, DemarcateSymbol, CloserSymbol){ Name = TokenName.PlainText },
-                            new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                            {
-                                Name = TokenName.MatchMultipleSort,
-                                Contents = [
-                                    DemarcateSymbol,
-                                    new Or
-                                    {
-                                        Contents = [
-                                            new Symbol("<>"),
-                                            new Vary(StructureQuantifier.ONE_OR_MORE, new And
-                                            {
-                                                Name = TokenName.MatchMultipleSortByCapture,
-                                                Contents = [
-                                                    new Or{ Contents = [new Symbol(">"), new Symbol("<")] },
-                                                    new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                                                    {
-                                                        Contents = [
-                                                            new Symbol(":"),
-                                                            new FreeText(FreeTextType.LABEL, CommaSymbol, DemarcateAfterLabelSymbol, CloserSymbol){ MustNotBeEmpty = true, Name = TokenName.Label }
-                                                        ]
-                                                    })
-                                                ]
-                                            }){ Separator = CommaSymbol }
-                                        ]
-                                    }
-                                ]
-                            }),
-                            new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                            {
-                                SuggestionName = TokenName.MatchMultipleReplace,
-                                Contents = [
-                                    DemarcateSymbol,
-                                    new Reference(SingleLineStructuresReplace, [new Modification(SingleLineStructureToAnyPatternPath, new Structure[]{ SimplePatternReplace })])
-                                ]
-                            })
-                        ]
-                    }
-                ], ArrayItemAction.Insert))
-        ]);
+                            new Modification(SingleLineStructureToAnyPatternPath, new Structure[] { PatternReplace })
+                        ])
+                    ]
+                }),
+                CloserSymbol
+            ]
+        };
 
         private static readonly Or AnyPattern = new() { Contents = [Pattern, Unordered, MultiLine] };
 
-        private static readonly Or AnyPatternReplace = new() { Contents = [PatternReplace, UnorderedReplace, MultiLineReplace] };
+        private static readonly Or AnyPatternReplace = new() { Contents = [PatternReplace, MatchMultipleReplace, UnorderedReplace, MultiLineReplace] };
 
         public static readonly Vary FindStructure = new (StructureQuantifier.ZERO_OR_MORE, new Or
         {
