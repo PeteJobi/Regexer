@@ -88,7 +88,7 @@ namespace RegexerV2
                 }
                 outputOffset += matches[i].Index - lastInputMatchEnd;
                 var outputIndieMatches = new List<IndividualMatch>();
-                var length = prefixSpaceLength + ProcessReplaceFullStructure(replace, patternStructure, matches[i], i, outputIndieMatches, outputOffset + prefixSpaceLength);
+                var length = prefixSpaceLength + ProcessReplaceFullStructure(replace, patternStructure, new MatchCaptureData(matches[i], i, 0), outputIndieMatches, outputOffset + prefixSpaceLength);
                 cancellationToken.ThrowIfCancellationRequested();
                 results[i] = new RegexerMatchPair
                 {
@@ -154,7 +154,7 @@ namespace RegexerV2
             }
         }
 
-        private int ProcessReplaceFullStructure(string pattern, IEnumerable<Token> structure, Match match, int matchIndex, List<IndividualMatch> outputIndieMatches, int outputOffset)
+        private int ProcessReplaceFullStructure(string pattern, IEnumerable<Token> structure, MatchCaptureData matchCaptureData, List<IndividualMatch> outputIndieMatches, int outputOffset)
         {
             var totalLength = 0;
             foreach (var token in structure)
@@ -163,19 +163,19 @@ namespace RegexerV2
                 switch (token)
                 {
                     case FreeTextToken freeTextToken:
-                        length = ProcessReplaceFreeText(pattern, freeTextToken, match);
+                        length = ProcessReplaceFreeText(pattern, freeTextToken, matchCaptureData.Match);
                         break;
                     case ComplexToken complexToken:
                         switch (complexToken.Name)
                         {
                             case TokenName.Pattern:
-                                length = ProcessReplacePatternToken(pattern, complexToken, match, matchIndex, outputIndieMatches, outputOffset);
+                                length = ProcessReplacePatternToken(pattern, complexToken, matchCaptureData, outputIndieMatches, outputOffset);
                                 break;
                             case TokenName.MultiLine:
-                                length = ProcessReplaceMultiLineToken(pattern, complexToken, match, outputIndieMatches, outputOffset);
+                                length = ProcessReplaceMultiLineToken(pattern, complexToken, matchCaptureData, outputIndieMatches, outputOffset);
                                 break;
                             case TokenName.UnorderedGroup:
-                                length = ProcessReplaceUnorderedGroupToken(pattern, complexToken, match, matchIndex, outputIndieMatches, outputOffset);
+                                length = ProcessReplaceUnorderedGroupToken(pattern, complexToken, matchCaptureData, outputIndieMatches, outputOffset);
                                 break;
                             default:
                                 throw new NotImplementedException($"Unsupported complex token: {complexToken.Name}");
@@ -479,7 +479,7 @@ namespace RegexerV2
         }
 
         private readonly StringBuilder evalBuilder = new();
-        private int ProcessReplacePatternToken(string pattern, ComplexToken patternToken, Match match, int matchIndex, List<IndividualMatch> outputIndieMatches, int outputOffset)
+        private int ProcessReplacePatternToken(string pattern, ComplexToken patternToken, MatchCaptureData matchCaptureData, List<IndividualMatch> outputIndieMatches, int outputOffset)
         {
             var elements = patternToken.Children;
             var label = pattern.Substring(elements[1].Index, elements[1].Length);
@@ -489,7 +489,8 @@ namespace RegexerV2
                 return patternToken.Length;
             }
 
-            var inputMatch = match.Groups[label];
+            var inputCaptures = matchCaptureData.Match.Groups[label].Captures;
+            var inputMatch = inputCaptures[int.Min(matchCaptureData.CaptureIndex, inputCaptures.Count - 1)];
             var outputCaptures = new List<MatchData>();
             var n = GetAlphabeticalOrderIndex(outputIndieMatches, l => l.Label, label);
             if (n.DidNotExist) outputIndieMatches.Insert(n.Index, new IndividualMatch(label, outputCaptures));
@@ -534,7 +535,7 @@ namespace RegexerV2
                     for (var i = 2; i < children.Count; i++)
                     {
                         var singleLineToken = (ComplexToken)children[i];
-                        length = ProcessReplaceFullStructure(pattern, singleLineToken.Children, match, matchIndex, outputIndieMatches, outputMatchData.Index - singleLineStart - offset);
+                        length = ProcessReplaceFullStructure(pattern, singleLineToken.Children, matchCaptureData, outputIndieMatches, outputMatchData.Index - singleLineStart - offset);
                         offset += singleLineToken.Length - length;
                         outputMatchData.Length += length;
                     }
@@ -546,7 +547,7 @@ namespace RegexerV2
                     for (var i = children[2].Index; i < children[2].Index + children[2].Length; i++)
                     {
                         var symbol = pattern[i];
-                        if (symbol == 'i') evalBuilder.Append(matchIndex + 1);
+                        if (symbol == 'i') evalBuilder.Append(matchCaptureData.MatchIndex + 1);
                         else evalBuilder.Append(symbol);
                     }
 
@@ -568,7 +569,7 @@ namespace RegexerV2
                     var separatorLength = 0;
                     if (children.Count > 4)
                     {
-                        separatorLength = ProcessReplaceFreeText(pattern, (FreeTextToken)children[4], match);
+                        separatorLength = ProcessReplaceFreeText(pattern, (FreeTextToken)children[4], matchCaptureData.Match);
                         length += separatorLength;
                     }
                     patternBuilder.Append(inputMatch.Value);
@@ -604,7 +605,7 @@ namespace RegexerV2
                     for (var i = children[2].Index; i < children[2].Index + children[2].Length; i++)
                     {
                         var symbol = pattern[i];
-                        if (symbol == 'i') evalBuilder.Append(matchIndex + 1);
+                        if (symbol == 'i') evalBuilder.Append(matchCaptureData.MatchIndex + 1);
                         else if (symbol == 'm') evalBuilder.Append(int.Parse(inputMatch.Value));
                         else evalBuilder.Append(symbol);
                     }
@@ -617,7 +618,7 @@ namespace RegexerV2
                     return length;
 
                 case TokenName.MatchMultiple:
-                    var spreadAmount = inputMatch.Captures.Count;
+                    var spreadAmount = inputCaptures.Count;
                     length = 0;
                     singleLineStart = 0;
                     for (var s = 0; s < spreadAmount; s++)
@@ -632,7 +633,7 @@ namespace RegexerV2
                                     switch (token.Name)
                                     {
                                         case TokenName.FreeText:
-                                            length += ProcessReplaceFreeText(pattern, token, match);
+                                            length += ProcessReplaceFreeText(pattern, token, matchCaptureData.Match);
                                             break;
                                         case TokenName.MatchMultipleSpread:
                                             var spreadToken = (ComplexToken)token;
@@ -641,7 +642,7 @@ namespace RegexerV2
                                             n = GetAlphabeticalOrderIndex(outputIndieMatches, l => l.Label, spreadLabel);
                                             if (n.DidNotExist) outputIndieMatches.Insert(n.Index, new IndividualMatch(spreadLabel, spreadOutputCaptures = []));
                                             else spreadOutputCaptures = outputIndieMatches[n.Index].Captures;
-                                            var spreadCapture = match.Groups[spreadLabel].Captures[s];
+                                            var spreadCapture = matchCaptureData.Match.Groups[spreadLabel].Captures[s];
                                             patternBuilder.Append(spreadCapture.Value);
                                             spreadOutputCaptures.Add(new MatchData(patternToken.Index + outputOffset + length, spreadCapture.Length, spreadCapture.Value));
                                             length += spreadCapture.Length;
@@ -654,13 +655,13 @@ namespace RegexerV2
                         }
                         else
                         {
-                            patternBuilder.Append(inputMatch.Captures[s]);
-                            length += inputMatch.Captures[s].Length;
+                            patternBuilder.Append(inputCaptures[s]);
+                            length += inputCaptures[s].Length;
                         }
                         outputCaptures.Add(new MatchData(patternToken.Index + outputOffset + singleLineStart, length - singleLineStart, patternBuilder.ToString(patternToken.Index + outputOffset + singleLineStart, length - singleLineStart)));
 
                         if (s == spreadAmount - 1) break;
-                        length += ProcessReplaceFreeText(pattern, (FreeTextToken)children[2], match);
+                        length += ProcessReplaceFreeText(pattern, (FreeTextToken)children[2], matchCaptureData.Match);
                         singleLineStart = length;
                     }
 
@@ -742,7 +743,7 @@ namespace RegexerV2
             hasMl = true;
         }
 
-        private int ProcessReplaceMultiLineToken(string pattern, ComplexToken multiLineToken, Match match, List<IndividualMatch> outputIndieMatches, int outputOffset)
+        private int ProcessReplaceMultiLineToken(string pattern, ComplexToken multiLineToken, MatchCaptureData matchCaptureData, List<IndividualMatch> outputIndieMatches, int outputOffset)
         {
             var elements = multiLineToken.Children;
             var label = pattern.Substring(elements[3].Index, elements[3].Length);
@@ -752,7 +753,7 @@ namespace RegexerV2
                 return multiLineToken.Length;
             }
 
-            var lineCaptures = match.Groups[$"{label}Lines"].Captures;
+            var lineCaptures = matchCaptureData.Match.Groups[$"{label}Lines"].Captures;
 
             var outputCaptures = new List<MatchData>();
             var n = GetAlphabeticalOrderIndex(outputIndieMatches, l => l.Label, label);
@@ -773,16 +774,16 @@ namespace RegexerV2
                 }
                 if (hasNewLine || hasMl)
                 {
-                    patternBuilder.Append(match.Groups[PrefixSpaceLabel].Value);
-                    outputLength += match.Groups[PrefixSpaceLabel].Length;
+                    patternBuilder.Append(matchCaptureData.Match.Groups[PrefixSpaceLabel].Value);
+                    outputLength += matchCaptureData.Match.Groups[PrefixSpaceLabel].Length;
                 }
                 var line = lineCaptures[i];
                 patternBuilder.Append(precedingSpace);
                 outputLength += precedingSpace.Length;
                 var outputLineStart = outputLength;
-                outputLength += ProcessReplaceFreeText(pattern, (FreeTextToken)elements[1], match/*, outputOffset - elements[1].Index + multiLineToken.Index*/);
+                outputLength += ProcessReplaceFreeText(pattern, (FreeTextToken)elements[1], matchCaptureData.Match/*, outputOffset - elements[1].Index + multiLineToken.Index*/);
                 patternBuilder.Append(line.Value);
-                outputLength += line.Length + ProcessReplaceFreeText(pattern, (FreeTextToken)elements[7], match/*, outputOffset - elements[7].Index + multiLineToken.Index*/);
+                outputLength += line.Length + ProcessReplaceFreeText(pattern, (FreeTextToken)elements[7], matchCaptureData.Match/*, outputOffset - elements[7].Index + multiLineToken.Index*/);
                 var outputLineLength = outputLength - outputLineStart;
                 patternBuilder.Append(pattern.AsSpan(elements[8].Index, elements[8].Length));
                 outputLength += elements[8].Length;
@@ -846,7 +847,7 @@ namespace RegexerV2
             patternBuilder.Append(inAnyOrder).Append(noDuplicates).Append(nothingElseBesidesThem)/*.Append(@"(?:\r\n)?")*/;
         }
 
-        private int ProcessReplaceUnorderedGroupToken(string pattern, ComplexToken unorderedGroupToken, Match match, int matchIndex, List<IndividualMatch> outputIndieMatches, int outputOffset)
+        private int ProcessReplaceUnorderedGroupToken(string pattern, ComplexToken unorderedGroupToken, MatchCaptureData matchCaptureData, List<IndividualMatch> outputIndieMatches, int outputOffset)
         {
             var totalLength = 0;
             var outputStart = unorderedGroupToken.Index + outputOffset;
@@ -862,7 +863,7 @@ namespace RegexerV2
                     continue;
                 }
 
-                var inputMatch = match.Groups[label];
+                var inputMatch = matchCaptureData.Match.Groups[label];
                 var outputMatchData = new MatchData(0, 0, string.Empty);
                 var n = GetAlphabeticalOrderIndex(outputIndieMatches, l => l.Label, label);
                 if (n.DidNotExist) outputIndieMatches.Insert(n.Index, new IndividualMatch(label, [outputMatchData]));
@@ -887,7 +888,7 @@ namespace RegexerV2
                     }
                     continue;
                 }
-                var whitespaceLength = ProcessReplaceFreeText(pattern, firstEntryWhitespace ?? unorderedElements[0], match);
+                var whitespaceLength = ProcessReplaceFreeText(pattern, firstEntryWhitespace ?? unorderedElements[0], matchCaptureData.Match);
                 firstEntryWhitespace = null;
                 outputMatchData.Index = outputStart + totalLength + whitespaceLength;
                 if (unorderedElements.Count > 6)
@@ -897,7 +898,7 @@ namespace RegexerV2
                     for (var j = 6; j < unorderedElements.Count - 1; j++)
                     {
                         var singleLineToken = (ComplexToken)unorderedElements[j];
-                        var length = ProcessReplaceFullStructure(pattern, singleLineToken.Children, match, matchIndex, outputIndieMatches, outputMatchData.Index - singleLineStart - offset);
+                        var length = ProcessReplaceFullStructure(pattern, singleLineToken.Children, matchCaptureData, outputIndieMatches, outputMatchData.Index - singleLineStart - offset);
                         offset += singleLineToken.Length - length;
                         outputMatchData.Length += length;
                     }
@@ -1105,5 +1106,12 @@ namespace RegexerV2
         {
             return $"{Label} -> {string.Join(", ", Captures.Select(c => $"[{c}]"))}";
         }
+    }
+
+    internal struct MatchCaptureData(Match match, int matchIndex, int captureIndex)
+    {
+        public Match Match { get; set; } = match;
+        public int MatchIndex { get; set; } = matchIndex;
+        public int CaptureIndex { get; set; } = captureIndex;
     }
 }
