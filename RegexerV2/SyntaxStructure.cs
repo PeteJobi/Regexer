@@ -70,10 +70,11 @@ namespace RegexerV2
             ]
         };
 
-        private static readonly And MultiLineBase = new()
+        private static readonly And MultiLine = new()
         {
             Name = TokenName.MultiLine,
             Contents = [
+                new Whitespace{ Type = WhitespaceType.START_OF_LINE },
                 OpenerSymbol,
                 LabelBeforeDemarcate,
                 DemarcateAfterLabelSymbol,
@@ -88,7 +89,7 @@ namespace RegexerV2
                             Contents = [
                                 new Modifier("o"), //Zero or more lines
                                 new Modifier("g") //Greedy
-                    ]
+                            ]
                         }
                     ]
                 }),
@@ -96,16 +97,6 @@ namespace RegexerV2
                 new Whitespace{ Type = WhitespaceType.END_OF_LINE }
             ]
         };
-        private static readonly Or MultiLine = new() { 
-            Contents = [
-                new Reference(MultiLineBase, [
-                    new Modification([nameof(And.Contents), "0"], new ArrayItemValue([new Whitespace{ Type = WhitespaceType.START_OF_DOCUMENT }], ArrayItemAction.Insert)),
-                    new Modification([nameof(And.Contents), "4", nameof(Vary.Content), nameof(And.Contents), "1", nameof(OneOrMoreNoRepeat.Contents), "0"],
-                        new ArrayItemValue([], ArrayItemAction.Remove)),
-                ]),
-                new Reference(MultiLineBase, [new Modification([nameof(And.Contents), "0"],
-                    new ArrayItemValue([new Whitespace { Type = WhitespaceType.START_OF_LINE_NOT_DOCUMENT }], ArrayItemAction.Insert))])
-        ]};
 
         private static readonly And MultiLineReplace = new()
         {
@@ -509,7 +500,7 @@ namespace RegexerV2
             PRE_PATTERN_TEXT, SINGLE_LINE_PRE_PATTERN_TEXT, LABEL, PLAIN_TEXT, DIGITS, EXPRESSION_WITH_I, EXPRESSION_WITH_IM
         }
         public enum StructureQuantifier { ZERO_OR_ONE, ZERO_OR_MORE, ONE_OR_MORE }
-        public enum WhitespaceType { NONE, START_OF_DOCUMENT, START_OF_LINE, START_OF_LINE_NOT_DOCUMENT, END_OF_LINE }
+        public enum WhitespaceType { NONE, START_OF_LINE, END_OF_LINE }
 
         public class Structure
         {
@@ -566,8 +557,7 @@ namespace RegexerV2
             public WhitespaceType Type { get; set; }
             public override string ToString() => Type switch
             {
-                WhitespaceType.START_OF_LINE or WhitespaceType.START_OF_LINE_NOT_DOCUMENT => "start of line",
-                WhitespaceType.START_OF_DOCUMENT => "start of document",
+                WhitespaceType.START_OF_LINE => "start of line",
                 WhitespaceType.END_OF_LINE => "end of line",
                 _ => "whitespace"
             };

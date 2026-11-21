@@ -157,13 +157,10 @@ namespace RegexerV2
                 case Whitespace whitespace:
                     {
                         var pos = index;
-                        if ((whitespace.Type == WhitespaceType.START_OF_DOCUMENT && pos != 0)
-                            || (whitespace.Type == WhitespaceType.START_OF_LINE_NOT_DOCUMENT && pos == 0)) return null;
-                        if (whitespace.Type is WhitespaceType.START_OF_LINE or WhitespaceType.START_OF_LINE_NOT_DOCUMENT or WhitespaceType.START_OF_DOCUMENT)
+                        if (whitespace.Type == WhitespaceType.START_OF_LINE)
                         {
                             if (pos >= input.Length - 1) return null;
                             if (input[pos] == '\r' && input[pos + 1] == '\n') pos += 2;
-                            else if (whitespace.Type == WhitespaceType.START_OF_LINE_NOT_DOCUMENT) return null;
                         }
                         while (pos < input.Length)
                         {
@@ -504,14 +501,11 @@ namespace RegexerV2
                 case Whitespace whitespace:
                     {
                         var pos = index;
-                        if ((whitespace.Type == WhitespaceType.START_OF_DOCUMENT && pos != start) 
-                            || (whitespace.Type == WhitespaceType.START_OF_LINE_NOT_DOCUMENT && pos == start)) return (null, []);
-                        if (whitespace.Type is WhitespaceType.START_OF_LINE or WhitespaceType.START_OF_LINE_NOT_DOCUMENT or WhitespaceType.START_OF_DOCUMENT)
+                        if (whitespace.Type == WhitespaceType.START_OF_LINE)
                         {
                             if(pos >= end - 1) return (null, []);
                             if (input[pos] == '\r' && input[pos + 1] == '\n') pos += 2;
-                            else if (whitespace.Type == WhitespaceType.START_OF_LINE_NOT_DOCUMENT 
-                                     || (whitespace.Type == WhitespaceType.START_OF_LINE && pos != start)) return (null, []);
+                            else if (pos != start) return (null, []);
                         }
                         while (pos < end)
                         {
