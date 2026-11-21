@@ -70,6 +70,17 @@ namespace RegexerV2
             ]
         };
 
+        private static readonly Vary MatchMultipleSingleLineStructures = new(StructureQuantifier.ZERO_OR_ONE, new And
+        {
+            SuggestionName = TokenName.MatchMultipleMatch,
+            Contents = [
+                DemarcateSymbol,
+                new Reference(SingleLineStructures, [
+                    new Modification([..SingleLineStructureToAnyPatternPath, "2"], new ArrayItemValue([], ArrayItemAction.Remove))
+                ])
+            ]
+        });
+
         private static readonly And MultiLine = new()
         {
             Name = TokenName.MultiLine,
@@ -83,16 +94,10 @@ namespace RegexerV2
                 {
                     Contents = [
                         DemarcateSymbol,
-                        new OneOrMoreNoRepeat
-                        {
-                            Name = TokenName.Quantifier,
-                            Contents = [
-                                new Modifier("o"), //Zero or more lines
-                                new Modifier("g") //Greedy
-                            ]
-                        }
+                        Quantifier
                     ]
                 }),
+                MatchMultipleSingleLineStructures,
                 CloserSymbol,
                 new Whitespace{ Type = WhitespaceType.END_OF_LINE }
             ]
@@ -255,16 +260,7 @@ namespace RegexerV2
                                                 Quantifier
                                             ]
                                         }),
-                                        new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                                        {
-                                            SuggestionName = TokenName.MatchMultipleMatch,
-                                            Contents = [
-                                                DemarcateSymbol,
-                                                new Reference(SingleLineStructures, [
-                                                    new Modification([..SingleLineStructureToAnyPatternPath, "2"], new ArrayItemValue([], ArrayItemAction.Remove))
-                                                ])
-                                            ]
-                                        })
+                                        MatchMultipleSingleLineStructures
                                     ]
                                 }
                             ]
