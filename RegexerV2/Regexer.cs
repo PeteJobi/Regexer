@@ -1,8 +1,8 @@
-﻿using System.Diagnostics;
+﻿using NCalc;
+using NCalc.Exceptions;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
-using NCalc;
-using NCalc.Exceptions;
 using static RegexerV2.SyntaxStructure;
 
 namespace RegexerV2
@@ -828,48 +828,58 @@ namespace RegexerV2
 
         private void ProcessFindMultiLineToken(string pattern, ComplexToken multiLineToken)
         {
+            //Basically: $"(?:{precedingSpace}{singleLineStructure}(?:{NewLineWithPrefixSpace()}{precedingSpace}{singleLineStructure})quantifierInner)quantifierOuter";
+            //Or with preceding new line: $"(?:{NewLineWithPrefixSpace()}{precedingSpace}{singleLineStructure})quantifierOuter";
             var elements = multiLineToken.Children;
             var label = pattern.Substring(elements[2].Index, elements[2].Length);
-            var spaceStartIndexOffset = pattern[elements[0].Index] == '\r' && pattern[elements[0].Index + 1] == '\n' ? 2 : 0;
-            var precedingSpace = pattern.AsSpan(elements[0].Index + spaceStartIndexOffset, elements[0].Length - spaceStartIndexOffset);
-
             if (patternMap.ContainsKey(label))
             {
                 patternBuilder.Append($"\\k<{label}Lines>");
                 return;
             }
             patternMap.Add(label, new PatternData(label){ IsMultiLine = true });
+            var spaceStartIndexOffset = pattern[elements[0].Index] == '\r' && pattern[elements[0].Index + 1] == '\n' ? 2 : 0;
+            var precedingSpace = pattern.AsSpan(elements[0].Index + spaceStartIndexOffset, elements[0].Length - spaceStartIndexOffset);
+            var hasPrecedingNewLine = spaceStartIndexOffset != 0;
 
-            var hasOptional = false;
-            var hasGreedy = false;
-            if (elements[6] is ComplexToken quantifierToken)
+            patternBuilder.Append("(?:");
+            if (!hasPrecedingNewLine) patternBuilder.Append("(?<=(?:^|\\n))"); //See MultiLineGreedy Test
+            var singleLineStructureStartIndex = patternBuilder.Length;
+            if (hasPrecedingNewLine) patternBuilder.Append(NewLineWithPrefixSpace()).Append(precedingSpace);
+            else patternBuilder.Append(precedingSpace); //At start of pattern, no need to match a new line before the first line
+            patternBuilder.Append($"(?<{label}Lines>");
+            var restriction = @"[^\r\n]".AsSpan();
+            var quantifier = "*".AsSpan();
+            var quantifierInner = "*?".AsSpan();
+            var quantifierOuter = hasPrecedingNewLine ? "+?" : ReadOnlySpan<char>.Empty;
+            var extrasIndex = 6;
+            if (elements.Count - 2 > extrasIndex)
             {
-                foreach (var modifier in quantifierToken.Children)
+                if (elements[extrasIndex].Name is TokenName.Quantifier or TokenName.ExactAmountQuantifier)
                 {
-                    switch (modifier.Text)
+                    if (hasPrecedingNewLine) ProcessQuantifier(pattern, (ComplexToken)elements[extrasIndex], ref quantifierOuter);
+                    else ProcessQuantifierWithSeparator(pattern, (ComplexToken)elements[extrasIndex], ref quantifierInner, ref quantifierOuter);
+                    extrasIndex += 2;
+                }
+                if (elements.Count - 2 > extrasIndex)
+                {
+                    for (var i = extrasIndex; i < elements.Count - 2; i++)
                     {
-                        case "o": hasOptional = true; break;
-                        case "g": hasGreedy = true; break;
+                        ProcessFindFullStructure(pattern, ((ComplexToken)elements[i]).Children);
                     }
                 }
+                else patternBuilder.Append($"{restriction}{quantifier}");
             }
-
-            if (spaceStartIndexOffset == 0) //At start of pattern, no need to match a new line before the first line
+            else patternBuilder.Append($"{restriction}{quantifier}");
+            patternBuilder.Append(')');
+            var singleLineStructureLength = patternBuilder.Length - singleLineStructureStartIndex;
+            if (!hasPrecedingNewLine)
             {
-                var quantifier = hasGreedy ? "*" : "*?";
-                patternBuilder.Append($@"(?<=(?:^|\n)){precedingSpace}(?<{label}Lines>[^\r\n]*)(?:{NewLineWithPrefixSpace()}{precedingSpace}(?<{label}Lines>[^\r\n]*)){quantifier}");
+                patternBuilder.Append("(?:").Append(NewLineWithPrefixSpace()).Append(precedingSpace);
+                patternBuilder.Append(patternBuilder, singleLineStructureStartIndex, singleLineStructureLength);
+                patternBuilder.Append($"){quantifierInner}");
             }
-            else
-            {
-                var quantifier = (hasOptional, hasGreedy) switch
-                {
-                    (true, false) => "*?",
-                    (false, true) => "+",
-                    (true, true) => "*",
-                    _ => "+?"
-                };
-                patternBuilder.Append($@"(?:{NewLineWithPrefixSpace()}{precedingSpace}(?<{label}Lines>[^\r\n]*)){quantifier}");
-            }
+            patternBuilder.Append($"){quantifierOuter}");
 
             hasMl = true;
         }
