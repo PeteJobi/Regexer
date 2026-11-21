@@ -376,68 +376,29 @@ namespace RegexerV2
                 var hasL = false;
                 foreach (var modifier in modifiers)
                 {
-                    switch (modifier.Name)
+                    if (modifier.Name is TokenName.Quantifier or TokenName.ExactAmountQuantifier)
                     {
-                        case TokenName.Quantifier:
+                        ProcessQuantifier(pattern, (ComplexToken)modifier, ref quantifier);
+                    }
+                    else
+                    {
+                        var modifierSpan = pattern.AsSpan(modifier.Index, modifier.Length);
+                        switch (modifierSpan)
                         {
-                            var hasG = false;
-                            var hasO = false;
-                            var quantifierMods = ((ComplexToken)modifier).Children;
-                            foreach (var mod in quantifierMods)
-                            {
-                                var modText = pattern.AsSpan(mod.Index, mod.Length);
-                                switch (modText)
-                                {
-                                    case "g":
-                                        hasG = true;
-                                        continue;
-                                    case "o":
-                                        hasO = true;
-                                        continue;
-                                }
-                            }
-
-                            quantifier = (hasO, hasG) switch
-                            {
-                                (true, false) => "*?".AsSpan(),
-                                (false, true) => "+".AsSpan(),
-                                (true, true) => "*".AsSpan(),
-                                _ => throw new ArgumentOutOfRangeException()
-                            };
-                            continue;
-                        }
-                        case TokenName.ExactAmountQuantifier:
-                        {
-                            var exactAmount = (ComplexToken)modifier;
-                            var amount1 = pattern.AsSpan(exactAmount.Children[1].Index, exactAmount.Children[1].Length);
-                            if (exactAmount.Children.Count > 3)
-                            {
-                                var amount2 = pattern.AsSpan(exactAmount.Children[3].Index, exactAmount.Children[3].Length);
-                                quantifier = $"{{{amount1},{amount2}}}".AsSpan();
-                            }
-                            else quantifier = $"{{{amount1}}}".AsSpan();
-                            continue;
-                        }
-                        default:
-                        {
-                            var modifierSpan = pattern.AsSpan(modifier.Index, modifier.Length);
-                            switch (modifierSpan)
-                            {
-                                case "l":
-                                    hasL = true;
-                                    continue;
-                                case "w":
-                                    restrictionChar = 'w';
-                                    continue;
-                                case "d":
-                                    restrictionChar = 'd';
-                                    patternData!.IsDigit = true;
-                                    continue;
-                                case "s":
-                                    restrictionChar = 's';
-                                    continue;
-                                default: throw new NotSupportedException($"Unsupported restriction modifier: {modifierSpan.ToString()}");
-                            }
+                            case "l":
+                                hasL = true;
+                                continue;
+                            case "w":
+                                restrictionChar = 'w';
+                                continue;
+                            case "d":
+                                restrictionChar = 'd';
+                                patternData!.IsDigit = true;
+                                continue;
+                            case "s":
+                                restrictionChar = 's';
+                                continue;
+                            default: throw new NotSupportedException($"Unsupported restriction modifier: {modifierSpan.ToString()}");
                         }
                     }
                 }
@@ -453,24 +414,44 @@ namespace RegexerV2
 
             void ProcessMatchMultiple(ComplexToken matchMultipleToken, ReadOnlySpan<char> restriction, ReadOnlySpan<char> quantifier)
             {
-                //Basically $"{singleLineStructure}(?:{separator}{singleLineStructure})*?";
+                //Basically: $"(?:{singleLineStructure}(?:{separator}{singleLineStructure})quantifierInner)quantifierOuter";
+                //Or without separator: $"(?:{singleLineStructure})quantifierOuter";
                 var matchMultipleElements = matchMultipleToken.Children;
+                patternBuilder.Append("(?:");
                 var singleLineStructureStartIndex = patternBuilder.Length;
                 if (label != null) patternBuilder.Append($"(?<{label}>");
-                if (matchMultipleElements.Count > 6)
+                var hasSeparator = matchMultipleElements[3].Length > 0;
+                var quantifierInner = "*?".AsSpan();
+                var quantifierOuter = ReadOnlySpan<char>.Empty;
+                var extrasIndex = 6;
+                if (matchMultipleElements.Count > extrasIndex)
                 {
-                    for (var i = 6; i < matchMultipleElements.Count; i++)
+                    if (matchMultipleElements[extrasIndex].Name is TokenName.Quantifier or TokenName.ExactAmountQuantifier)
                     {
-                        ProcessFindFullStructure(pattern, ((ComplexToken)matchMultipleElements[i]).Children);
+                        if (hasSeparator) ProcessQuantifierWithSeparator(pattern, (ComplexToken)matchMultipleElements[extrasIndex], ref quantifierInner, ref quantifierOuter);
+                        else ProcessQuantifier(pattern, (ComplexToken)matchMultipleElements[extrasIndex], ref quantifierOuter);
+                        extrasIndex += 2;
                     }
+                    if (matchMultipleElements.Count > extrasIndex)
+                    {
+                        for (var i = extrasIndex; i < matchMultipleElements.Count; i++)
+                        {
+                            ProcessFindFullStructure(pattern, ((ComplexToken)matchMultipleElements[i]).Children);
+                        }
+                    }
+                    else patternBuilder.Append($"{restriction}{quantifier}");
                 }
                 else patternBuilder.Append($"{restriction}{quantifier}");
                 if (label != null) patternBuilder.Append(')');
                 var singleLineStructureLength = patternBuilder.Length - singleLineStructureStartIndex;
-                patternBuilder.Append("(?:");
-                ProcessPlainText(pattern, (FreeTextToken)matchMultipleElements[3]);
-                patternBuilder.Append(patternBuilder, singleLineStructureStartIndex, singleLineStructureLength);
-                patternBuilder.Append(")*?");
+                if (hasSeparator)
+                {
+                    patternBuilder.Append("(?:");
+                    ProcessPlainText(pattern, (FreeTextToken)matchMultipleElements[3]);
+                    patternBuilder.Append(patternBuilder, singleLineStructureStartIndex, singleLineStructureLength);
+                    patternBuilder.Append($"){quantifierInner}");
+                }
+                patternBuilder.Append($"){quantifierOuter}");
             }
 
             void ProcessRegex(FreeTextToken regexToken)
@@ -479,6 +460,114 @@ namespace RegexerV2
                 ProcessPlainText(pattern, regexToken);
                 if(label != null) patternBuilder.Append(')');
             }
+        }
+
+        private static void ProcessQuantifier(string pattern, ComplexToken quantifierToken, ref ReadOnlySpan<char> quantifier)
+        {
+            switch (quantifierToken.Name)
+            {
+                case TokenName.Quantifier:
+                {
+                    var (hasOptional, hasGreedy) = GetQuantifierFlags(pattern, quantifierToken);
+                    quantifier = (hasOptional, hasGreedy) switch
+                    {
+                        (true, false) => "*?".AsSpan(),
+                        (false, true) => "+".AsSpan(),
+                        (true, true) => "*".AsSpan(),
+                        _ => throw new ArgumentOutOfRangeException()
+                    };
+                    break;
+                }
+                case TokenName.ExactAmountQuantifier:
+                {
+                    GetQuantifierBounds(pattern, quantifierToken, out var lower, out var upper);
+                    quantifier = !upper.IsEmpty ? $"{{{lower},{upper}}}".AsSpan() : $"{{{lower}}}".AsSpan();
+                    break;
+                }
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private static void ProcessQuantifierWithSeparator(string pattern, ComplexToken quantifierToken, ref ReadOnlySpan<char> quantifierInner, ref ReadOnlySpan<char> quantifierOuter)
+        {
+            switch (quantifierToken.Name)
+            {
+                case TokenName.Quantifier:
+                {
+                    var (hasOptional, hasGreedy) = GetQuantifierFlags(pattern, quantifierToken);
+                    switch (hasOptional, hasGreedy)
+                    {
+                        case (true, false):
+                                quantifierInner = "*?".AsSpan();
+                                quantifierOuter = "?".AsSpan();
+                                break;
+                        case (false, true):
+                                quantifierInner = "*".AsSpan();
+                                quantifierOuter = ReadOnlySpan<char>.Empty;
+                                break;
+                        case (true, true):
+                                quantifierInner = "*".AsSpan();
+                                quantifierOuter = "?".AsSpan();
+                                break;
+                    }
+                    break;
+                }
+                case TokenName.ExactAmountQuantifier:
+                {
+                    GetQuantifierBounds(pattern, quantifierToken, out var lower, out var upper);
+                    var lowerInt = int.Parse(lower);
+                    if(lowerInt == 0) quantifierOuter = "?".AsSpan();
+                    else
+                    {
+                        lower = (lowerInt - 1).ToString().AsSpan();
+                        quantifierOuter = ReadOnlySpan<char>.Empty;
+                    }
+                    if (!upper.IsEmpty)
+                    {
+                        upper = int.Max(0, int.Parse(upper) - 1).ToString().AsSpan();
+                        quantifierInner = $"{{{lower},{upper}}}".AsSpan();
+                    }
+                    else
+                    {
+                        if (lowerInt == 0) quantifierOuter = $"{{{lower}}}".AsSpan();
+                        quantifierInner = $"{{{lower}}}".AsSpan();
+                    }
+                    break;
+                }
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private static (bool Optional, bool Greedy) GetQuantifierFlags(string pattern, ComplexToken quantifierToken)
+        {
+            var hasGreedy = false;
+            var hasOptional = false;
+
+            foreach (var mod in quantifierToken.Children)
+            {
+                var modText = pattern.AsSpan(mod.Index, mod.Length);
+                switch (modText)
+                {
+                    case "g":
+                        hasGreedy = true;
+                        continue;
+                    case "o":
+                        hasOptional = true;
+                        continue;
+                }
+            }
+
+            return (hasOptional, hasGreedy);
+        }
+
+        private static void GetQuantifierBounds(string pattern, ComplexToken quantifierToken, out ReadOnlySpan<char> lower, out ReadOnlySpan<char> upper)
+        {
+            lower = pattern.AsSpan(quantifierToken.Children[1].Index, quantifierToken.Children[1].Length);
+            upper = quantifierToken.Children.Count > 3 
+                ? pattern.AsSpan(quantifierToken.Children[3].Index, quantifierToken.Children[3].Length)
+                : ReadOnlySpan<char>.Empty;
         }
 
         private readonly StringBuilder evalBuilder = new();
