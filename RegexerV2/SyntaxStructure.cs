@@ -34,6 +34,42 @@ namespace RegexerV2
             Contents = [SingleLineFreeText, ZeroOrOneAnyPatternsReplace]
         });
 
+        private static readonly Or Quantifier = new()
+        {
+            Contents =
+            [
+                new OneOrMoreNoRepeat
+                {
+                    Name = TokenName.Quantifier,
+                    Contents =
+                    [
+                        new Modifier("o"), //Zero or more
+                        new Modifier("g") //Greedy
+                    ]
+                },
+                new And
+                {
+                    Name = TokenName.ExactAmountQuantifier,
+                    Contents =
+                    [
+                        new Symbol("<"),
+                        new FreeText(FreeTextType.DIGITS, CloseAmountQuantifierSymbol, HyphenSymbol)
+                            { MustNotBeEmpty = true },
+                        new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                        {
+                            SuggestionName = TokenName.MaxAmountQuantifier,
+                            Contents =
+                            [
+                                HyphenSymbol,
+                                new FreeText(FreeTextType.DIGITS, CloseAmountQuantifierSymbol) { MustNotBeEmpty = true }
+                            ]
+                        }),
+                        CloseAmountQuantifierSymbol,
+                    ]
+                }
+            ]
+        };
+
         private static readonly And MultiLineBase = new()
         {
             Name = TokenName.MultiLine,
@@ -52,7 +88,7 @@ namespace RegexerV2
                             Contents = [
                                 new Modifier("o"), //Zero or more lines
                                 new Modifier("g") //Greedy
-                            ]
+                    ]
                         }
                     ]
                 }),
@@ -181,39 +217,7 @@ namespace RegexerV2
                                                                 new Modifier("s")
                                                             ]
                                                         },
-                                                        new Or
-                                                        {
-                                                            Contents =
-                                                            [
-                                                                new OneOrMoreNoRepeat
-                                                                {
-                                                                    Name = TokenName.Quantifier,
-                                                                    Contents = [
-                                                                        new Modifier("o"), //Zero or more
-                                                                        new Modifier("g") //Greedy
-                                                                    ]
-                                                                },
-                                                                new And
-                                                                {
-                                                                    Name = TokenName.ExactAmountQuantifier,
-                                                                    Contents =
-                                                                    [
-                                                                        new Symbol("<"),
-                                                                        new FreeText(FreeTextType.DIGITS, CloseAmountQuantifierSymbol, HyphenSymbol){ MustNotBeEmpty = true },
-                                                                        new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                                                                        {
-                                                                            SuggestionName = TokenName.MaxAmountQuantifier,
-                                                                            Contents =
-                                                                            [
-                                                                                HyphenSymbol,
-                                                                                new FreeText(FreeTextType.DIGITS, CloseAmountQuantifierSymbol){ MustNotBeEmpty = true }
-                                                                            ]
-                                                                        }),
-                                                                        CloseAmountQuantifierSymbol,
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        },
+                                                        Quantifier,
                                                         new Modifier("l"),
                                                     ]
                                                 },
@@ -253,6 +257,13 @@ namespace RegexerV2
                                         StartPlainTextSymbol,
                                         new FreeText(FreeTextType.PLAIN_TEXT, EndPlainTextSymbol){ Name = TokenName.PlainText },
                                         EndPlainTextSymbol,
+                                        new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                                        {
+                                            Contents = [
+                                                DemarcateSymbol,
+                                                Quantifier
+                                            ]
+                                        }),
                                         new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                                         {
                                             SuggestionName = TokenName.MatchMultipleMatch,
