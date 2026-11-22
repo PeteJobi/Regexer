@@ -311,7 +311,7 @@ namespace RegexerV2
                             if (input[i + index] != symbol.Value[i]) return (null, []);
                         }
 
-                        var result = new Token { Index = index, Length = symbol.Value.Length, Text = symbol.Value, Name = symbol.Name };
+                        var result = new Token { Index = index, Length = symbol.Value.Length, Text = symbol.Value, Name = symbol.Name == TokenName.None ? TokenName.Symbol : symbol.Name };
                         if (si < structure.Length - 1)
                         {
                             var parse = ParsePatternWithSuggestions(input, start, end, index + result.Length, structure, si + 1, withSuggestions);
@@ -470,7 +470,12 @@ namespace RegexerV2
                         if (withSuggestions)
                         {
                             if (index == end) suggestions = AddAncestorToSuggestions(ParsePatternWithSuggestions(input, start, end, index, [vary.Content], 0, withSuggestions).Suggestions, vary.Name);
-                            else if(i == end && suggestions.Count == 0 && vary.Content.Name == TokenName.SingleLineStructure) suggestions.Add(new SuggestionToken(SingleLineFreeText));
+                            else if(i == end)
+                            {
+                                if(suggestions.Count == 0 && vary.Content.Name == TokenName.SingleLineStructure) suggestions.Add(new SuggestionToken(SingleLineFreeText));
+                                else if(subResults.Count > 0 && vary.Separator != null)
+                                    suggestions.AddRange(AddAncestorToSuggestions(ParsePatternWithSuggestions(input, start, end, i, [vary.Separator], 0, withSuggestions).Suggestions, vary.Name));
+                            }
                         }
 
                         if (vary.Quantifier == StructureQuantifier.ONE_OR_MORE && length == 0) return (null, suggestions);
