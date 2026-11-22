@@ -1201,12 +1201,6 @@ namespace RegexerV2
             private readonly Structure[] _findStructureArray = [FindStructure];
             private readonly Structure[] _replaceStructureArray = [ReplaceStructure];
 
-            public IEnumerable<Token> ParsePatternOriginal(string pattern, bool isReplace)
-            {
-                //Will be phased out in the future, use ParsePattern or ParsePatternWithSuggestions instead
-                return _parser.ParsePattern(pattern, 0, isReplace ? _replaceStructureArray : _findStructureArray, 0)!;
-            }
-
             public IEnumerable<Token> ParsePattern(string pattern, bool isReplace)
             {
                 return _parser.ParsePatternWithSuggestions(pattern, 0, pattern.Length, 0, isReplace ? _replaceStructureArray : _findStructureArray, 0, false).AlreadyTyped!;
