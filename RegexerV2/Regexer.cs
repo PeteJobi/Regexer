@@ -758,7 +758,7 @@ namespace RegexerV2
             var singleLineIndex = 7;
             int[] order = [.. Enumerable.Range(0, spreadAmount)];
             var children = patternToken.Children;
-            if (children.Count > sortIndex && children[sortIndex].Name == TokenName.MatchMultipleSort)
+            if (children.Count > sortIndex && children[sortIndex].Name == TokenName.MatchMultipleReorder)
             {
                 singleLineIndex = 8;
                 var sortParamsTokens = ((ComplexToken)children[sortIndex]).Children;

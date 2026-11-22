@@ -103,22 +103,6 @@ namespace RegexerV2
             ]
         };
 
-        private static readonly And MultiLineReplace = new()
-        {
-            Name = TokenName.MultiLine,
-            Contents = [
-                new Whitespace{ Type = WhitespaceType.START_OF_LINE },
-                new FreeText(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, OpenerSymbol){ Name = TokenName.FreeText },
-                OpenerSymbol,
-                LabelBeforeDemarcate,
-                DemarcateAfterLabelSymbol,
-                new Modifier("ml"),
-                CloserSymbol,
-                new FreeText(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, NewLineSymbol){ Name = TokenName.FreeText },
-                new Whitespace{ Type = WhitespaceType.END_OF_LINE }
-            ]
-        };
-
         private static readonly Vary Unordered = new(StructureQuantifier.ONE_OR_MORE, new And
         {
             Name = TokenName.Unordered,
@@ -355,6 +339,51 @@ namespace RegexerV2
             ]
         };
 
+        private static readonly Vary MatchMultipleReorder = new(StructureQuantifier.ZERO_OR_ONE, new And
+        {
+            Name = TokenName.MatchMultipleReorder,
+            Contents =
+            [
+                DemarcateSymbol,
+                new Or
+                {
+                    Contents =
+                    [
+                        new Symbol("<>"),
+                        new Vary(StructureQuantifier.ONE_OR_MORE, new And
+                        {
+                            Name = TokenName.MatchMultipleSortByCapture,
+                            Contents =
+                            [
+                                new Or { Contents = [new Symbol(">"), new Symbol("<")] },
+                                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                                {
+                                    Contents =
+                                    [
+                                        new Symbol(":"),
+                                        new FreeText(FreeTextType.LABEL, CommaSymbol, DemarcateAfterLabelSymbol,
+                                            CloserSymbol) { MustNotBeEmpty = true, Name = TokenName.Label }
+                                    ]
+                                })
+                            ]
+                        }) { Separator = CommaSymbol }
+                    ]
+                }
+            ]
+        });
+
+        private static readonly Vary MatchMultipleSingleLineStructuresReplace = new(StructureQuantifier.ZERO_OR_ONE, new And
+        {
+            SuggestionName = TokenName.MatchMultipleReplace,
+            Contents =
+            [
+                DemarcateSymbol,
+                new Reference(SingleLineStructuresReplace, [
+                    new Modification(SingleLineStructureToAnyPatternPath, new Structure[] { PatternReplace })
+                ])
+            ]
+        });
+
         private static readonly And MatchMultipleReplace = new()
         {
             Name = TokenName.MatchMultiple,
@@ -366,51 +395,27 @@ namespace RegexerV2
                 new Modifier("m"),
                 DemarcateSymbol,
                 new FreeText(FreeTextType.PLAIN_TEXT, DemarcateSymbol, CloserSymbol) { Name = TokenName.PlainText },
-                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                {
-                    Name = TokenName.MatchMultipleSort,
-                    Contents =
-                    [
-                        DemarcateSymbol,
-                        new Or
-                        {
-                            Contents =
-                            [
-                                new Symbol("<>"),
-                                new Vary(StructureQuantifier.ONE_OR_MORE, new And
-                                {
-                                    Name = TokenName.MatchMultipleSortByCapture,
-                                    Contents =
-                                    [
-                                        new Or { Contents = [new Symbol(">"), new Symbol("<")] },
-                                        new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                                        {
-                                            Contents =
-                                            [
-                                                new Symbol(":"),
-                                                new FreeText(FreeTextType.LABEL, CommaSymbol, DemarcateAfterLabelSymbol,
-                                                    CloserSymbol) { MustNotBeEmpty = true, Name = TokenName.Label }
-                                            ]
-                                        })
-                                    ]
-                                }) { Separator = CommaSymbol }
-                            ]
-                        }
-                    ]
-                }),
-                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
-                {
-                    SuggestionName = TokenName.MatchMultipleReplace,
-                    Contents =
-                    [
-                        DemarcateSymbol,
-                        new Reference(SingleLineStructuresReplace,
-                        [
-                            new Modification(SingleLineStructureToAnyPatternPath, new Structure[] { PatternReplace })
-                        ])
-                    ]
-                }),
+                MatchMultipleReorder,
+                MatchMultipleSingleLineStructuresReplace,
                 CloserSymbol
+            ]
+        };
+
+        private static readonly And MultiLineReplace = new()
+        {
+            Name = TokenName.MultiLine,
+            Contents = [
+                new Whitespace{ Type = WhitespaceType.START_OF_LINE },
+                new FreeText(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, OpenerSymbol){ Name = TokenName.FreeText },
+                OpenerSymbol,
+                LabelBeforeDemarcate,
+                DemarcateAfterLabelSymbol,
+                new Modifier("ml"),
+                MatchMultipleReorder,
+                MatchMultipleSingleLineStructuresReplace,
+                CloserSymbol,
+                new FreeText(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, NewLineSymbol){ Name = TokenName.FreeText },
+                new Whitespace{ Type = WhitespaceType.END_OF_LINE }
             ]
         };
 
@@ -567,7 +572,7 @@ namespace RegexerV2
         public enum TokenName
         {
             None, FreeText, PlainText, Pattern, Label, RestrictionQuantifierNewLine, ExactAmountQuantifier, MaxAmountQuantifier, Optional, Modifier, MultiLine, Unordered, UnorderedGroup, Opener, Closer, Demarcate, SingleLineStructure,
-            MatchMultiple, MatchMultipleReplace, MatchMultipleSort, MatchMultipleSortByCapture, MatchMultipleSpread, MatchMultipleMatch, Duplicate, DuplicateSeparator, Capitalize, Evaluate, DemarcateAfterLabel, Quantifier
+            MatchMultiple, MatchMultipleReplace, MatchMultipleReorder, MatchMultipleSortByCapture, MatchMultipleSpread, MatchMultipleMatch, Duplicate, DuplicateSeparator, Capitalize, Evaluate, DemarcateAfterLabel, Quantifier
         }
         public class Token
         {
