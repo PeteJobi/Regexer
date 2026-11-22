@@ -25,18 +25,7 @@
       "IndividualMatches": [
         {
           "Label": "comment",
-          "Captures": [
-            {
-              "Index": 0,
-              "Length": 0,
-              "Text": ""
-            },
-            {
-              "Index": 0,
-              "Length": 0,
-              "Text": ""
-            }
-          ]
+          "Captures": []
         },
         {
           "Label": "word",
@@ -141,18 +130,7 @@
       "IndividualMatches": [
         {
           "Label": "comment",
-          "Captures": [
-            {
-              "Index": 0,
-              "Length": 0,
-              "Text": ""
-            },
-            {
-              "Index": 0,
-              "Length": 0,
-              "Text": ""
-            }
-          ]
+          "Captures": []
         },
         {
           "Label": "word",

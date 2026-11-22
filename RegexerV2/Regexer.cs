@@ -581,8 +581,6 @@ namespace RegexerV2
                 return patternToken.Length;
             }
 
-            var inputCaptures = matchCaptureData.Match.Groups[label].Captures;
-            var inputMatch = inputCaptures[int.Min(matchCaptureData.CaptureIndex, inputCaptures.Count - 1)];
             var outputCaptures = new List<MatchData>();
             var n = GetAlphabeticalOrderIndex(outputIndieMatches, l => l.Label, label);
             if (n.DidNotExist) outputIndieMatches.Insert(n.Index, new IndividualMatch(label, outputCaptures));
@@ -590,9 +588,10 @@ namespace RegexerV2
 
             if (elements.Count <= 3) //Simple pattern with no transform
             {
-                patternBuilder.Append(inputMatch.Value);
-                outputCaptures.Add(new MatchData(patternToken.Index + outputOffset, inputMatch.Length, inputMatch.Value));
-                return inputMatch.Length;
+                if (!TryGetCapture(out var capture)) return 0;
+                patternBuilder.Append(capture.ValueSpan);
+                if(capture.Length > 0) outputCaptures.Add(new MatchData(patternToken.Index + outputOffset, capture.Length, capture.Value));
+                return capture.Length;
             }
 
             var children = ((ComplexToken)elements[3]).Children;
@@ -601,10 +600,8 @@ namespace RegexerV2
             {
                 case TokenName.Optional:
                     var modifier = pattern.AsSpan(children[0].Index, children[0].Length);
-                    var outputMatchData = new MatchData(0, 0, string.Empty);
-                    outputCaptures.Add(outputMatchData);
 
-                    if ((modifier is not "o" || inputMatch.Value == string.Empty) && (modifier is not "oi" || inputMatch.Value != string.Empty))
+                    if ((modifier is not "o" || !TryGetCapture(out var capture) || capture.Value == string.Empty) && (modifier is not "oi" || (TryGetCapture(out capture) && capture.Value != string.Empty)))
                     {
                         for (var i = 2; i < children.Count - 1; i++)
                         {
@@ -621,6 +618,8 @@ namespace RegexerV2
                         return 0;
                     }
 
+                    var outputMatchData = new MatchData(0, 0, string.Empty);
+                    outputCaptures.Add(outputMatchData);
                     outputMatchData.Index = patternToken.Index + outputOffset;
                     var offset = 0;
                     var singleLineStart = children.Count > 2 ? children[2].Index : 0;
@@ -644,35 +643,31 @@ namespace RegexerV2
                     }
 
                     var duplicationAmount = EvaluateByte(evalBuilder.ToString());
-                    if (duplicationAmount == 0)
-                    {
-                        outputCaptures.Add(new MatchData(0, 0, string.Empty));
-                        return 0;
-                    }
-                    patternBuilder.Append(inputMatch.Value);
-                    length = inputMatch.Length;
+                    if (duplicationAmount == 0 || !TryGetCapture(out capture)) return 0;
+                    patternBuilder.Append(capture.ValueSpan);
+                    length = capture.Length;
                     if (duplicationAmount == 1)
                     {
-                        outputCaptures.Add(new MatchData(patternToken.Index + outputOffset, length, inputMatch.Value));
+                        outputCaptures.Add(new MatchData(patternToken.Index + outputOffset, length, capture.Value));
                         return length;
                     }
 
-                    var separatorStart = patternToken.Index + outputOffset + inputMatch.Length;
+                    var separatorStart = patternToken.Index + outputOffset + capture.Length;
                     var separatorLength = 0;
                     if (children.Count > 4)
                     {
                         separatorLength = ProcessReplaceFreeText(pattern, (FreeTextToken)children[4], matchCaptureData.Match);
                         length += separatorLength;
                     }
-                    patternBuilder.Append(inputMatch.Value);
-                    length += inputMatch.Length;
+                    patternBuilder.Append(capture.ValueSpan);
+                    length += capture.Length;
 
                     for (var i = 0; i < duplicationAmount - 2; i++)
                     {
                         patternBuilder.Append(patternBuilder, separatorStart, separatorLength);
                         length += separatorLength;
-                        patternBuilder.Append(inputMatch.Value);
-                        length += inputMatch.Length;
+                        patternBuilder.Append(capture.ValueSpan);
+                        length += capture.Length;
                     }
 
                     outputCaptures.Add(new MatchData(patternToken.Index + outputOffset, length, patternBuilder.ToString(patternToken.Index + outputOffset, length)));
@@ -680,25 +675,27 @@ namespace RegexerV2
 
                 case TokenName.Capitalize:
                     var capitalizeModifier = pattern.AsSpan(children[2].Index, children[2].Length);
+                    if (!TryGetCapture(out capture)) return 0;
                     patternBuilder.Append(capitalizeModifier switch
                     {
-                        "u" => inputMatch.Value.ToUpper(), //u: Upper case
-                        "l" => inputMatch.Value.ToLower(), //l: Lower case
-                        "fu" => inputMatch.Value[..1].ToUpper() + inputMatch.Value[1..], //fu: First letter upper case
-                        "fl" => inputMatch.Value[..1].ToLower() + inputMatch.Value[1..], //fl: First letter lower case
-                        _ => inputMatch.Value[..1].ToUpper() + inputMatch.Value[1..].ToLower() //s: Sentence case
+                        "u" => capture.Value.ToUpper(), //u: Upper case
+                        "l" => capture.Value.ToLower(), //l: Lower case
+                        "fu" => capture.Value[..1].ToUpper() + capture.Value[1..], //fu: First letter upper case
+                        "fl" => capture.Value[..1].ToLower() + capture.Value[1..], //fl: First letter lower case
+                        _ => capture.Value[..1].ToUpper() + capture.Value[1..].ToLower() //s: Sentence case
                     });
-                    outputCaptures.Add(new MatchData(patternToken.Index + outputOffset, inputMatch.Length,
-                        patternBuilder.ToString(patternToken.Index + outputOffset, inputMatch.Length)));
-                    return inputMatch.Length;
+                    outputCaptures.Add(new MatchData(patternToken.Index + outputOffset, capture.Length,
+                        patternBuilder.ToString(patternToken.Index + outputOffset, capture.Length)));
+                    return capture.Length;
 
                 case TokenName.Evaluate:
+                    if (!TryGetCapture(out capture)) return 0;
                     evalBuilder.Clear();
                     for (var i = children[2].Index; i < children[2].Index + children[2].Length; i++)
                     {
                         var symbol = pattern[i];
                         if (symbol == 'i') evalBuilder.Append(matchCaptureData.MatchIndex + 1);
-                        else if (symbol == 'm') evalBuilder.Append(int.Parse(inputMatch.Value));
+                        else if (symbol == 'm') evalBuilder.Append(int.Parse(capture.Value));
                         else evalBuilder.Append(symbol);
                     }
 
@@ -711,6 +708,18 @@ namespace RegexerV2
             }
 
             return 0;
+
+            bool TryGetCapture(out Capture capture)
+            {
+                var captures = matchCaptureData.Match.Groups[label].Captures;
+                if (matchCaptureData.CaptureIndex >= captures.Count)
+                {
+                    capture = default;
+                    return false;
+                }
+                capture = captures[matchCaptureData.CaptureIndex];
+                return true;
+            }
 
             static byte EvaluateByte(string expression)
             {

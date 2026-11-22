@@ -155,13 +155,7 @@
         },
         {
           "Label": "params",
-          "Captures": [
-            {
-              "Index": 94,
-              "Length": 0,
-              "Text": ""
-            }
-          ]
+          "Captures": []
         },
         {
           "Label": "type",

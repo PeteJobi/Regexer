@@ -95,13 +95,7 @@
         },
         {
           "Label": "comment",
-          "Captures": [
-            {
-              "Index": 7426,
-              "Length": 0,
-              "Text": ""
-            }
-          ]
+          "Captures": []
         },
         {
           "Label": "dat",

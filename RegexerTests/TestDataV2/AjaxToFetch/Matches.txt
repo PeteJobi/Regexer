@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "InputMatch": {
       "IndividualMatches": [
@@ -409,13 +409,7 @@
         },
         {
           "Label": "comment",
-          "Captures": [
-            {
-              "Index": 640,
-              "Length": 0,
-              "Text": ""
-            }
-          ]
+          "Captures": []
         },
         {
           "Label": "ident",

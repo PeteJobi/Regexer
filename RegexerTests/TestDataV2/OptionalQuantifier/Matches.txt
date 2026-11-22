@@ -25,13 +25,7 @@
       "IndividualMatches": [
         {
           "Label": "comment",
-          "Captures": [
-            {
-              "Index": 8,
-              "Length": 0,
-              "Text": ""
-            }
-          ]
+          "Captures": []
         },
         {
           "Label": "word",
@@ -131,13 +125,7 @@
       "IndividualMatches": [
         {
           "Label": "comment",
-          "Captures": [
-            {
-              "Index": 42,
-              "Length": 0,
-              "Text": ""
-            }
-          ]
+          "Captures": []
         },
         {
           "Label": "word",
