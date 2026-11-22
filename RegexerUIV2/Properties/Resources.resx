@@ -162,42 +162,6 @@
   <data name="ModifierText" xml:space="preserve">
     <value>Restrict your matches to digits, alphanumeric characters e.t.c for precision or specify how much stuff should be matched</value>
   </data>
-  <data name="WordTitle" xml:space="preserve">
-    <value>Word restriction (\w)</value>
-  </data>
-  <data name="WordText" xml:space="preserve">
-    <value>Restrict the match to underscore and alphanumeric characters (_, a-z, A - Z)</value>
-  </data>
-  <data name="DigitTitle" xml:space="preserve">
-    <value>Digit restriction (\d)</value>
-  </data>
-  <data name="DigitText" xml:space="preserve">
-    <value>Restrict the match to digits (0 - 9)</value>
-  </data>
-  <data name="SpaceTitle" xml:space="preserve">
-    <value>Whitespace restriction (\s)</value>
-  </data>
-  <data name="SpaceText" xml:space="preserve">
-    <value>Restrict the match to whitespace (tabs, spaces)</value>
-  </data>
-  <data name="GreedyTitle" xml:space="preserve">
-    <value>Greedy quantifier (+)</value>
-  </data>
-  <data name="GreedyText" xml:space="preserve">
-    <value>Match the most characters that can fit the pattern. It can go all the way to the end of the line, but can't include line breaks.</value>
-  </data>
-  <data name="OptionalTitle" xml:space="preserve">
-    <value>Optional quantifier (?)</value>
-  </data>
-  <data name="OptionalText" xml:space="preserve">
-    <value>This match may or may not be present</value>
-  </data>
-  <data name="LBTitle" xml:space="preserve">
-    <value>Line breaks inclusion (\r\n)</value>
-  </data>
-  <data name="LBText" xml:space="preserve">
-    <value>Include line breaks in the match. This means the match can span multiple lines.</value>
-  </data>
   <data name="MultiLineTitle" xml:space="preserve">
     <value>Multiline match</value>
   </data>
@@ -213,20 +177,8 @@
   <data name="ReplaceTitle" xml:space="preserve">
     <value>Replace appearing match</value>
   </data>
-  <data name="ReplaceInverseTitle" xml:space="preserve">
-    <value>Replace missing match</value>
-  </data>
-  <data name="ReplaceInverseText" xml:space="preserve">
-    <value>Replace a match with the specified text if it does not appear, otherwise, omit it. The specified text can contain other matches</value>
-  </data>
   <data name="ReplaceText" xml:space="preserve">
     <value>Replace a match with the specified text if it appears, otherwise, omit it. The specified text can contain other matches</value>
-  </data>
-  <data name="ReplaceMultiTitle" xml:space="preserve">
-    <value>Replace multiple occurrence matches</value>
-  </data>
-  <data name="ReplaceMultiText" xml:space="preserve">
-    <value>Replace multiple line/phrases that were matched with the |m pattern. You can change the separator, and transform each occurrence or replace them entirely</value>
   </data>
   <data name="ReplaceMultiMatchText" xml:space="preserve">
     <value>Enter the text that will replace each match occurrence. If captures from the match part of the |m pattern are used here, their individual matches will be used for each occurrence.</value>
@@ -398,5 +350,59 @@
   </data>
   <data name="MatchMultipleSortAgainText" xml:space="preserve">
     <value>You can add multiple sort parameters, separated by commas. The lines/phrases will be sorted by each parameters in the order they appear</value>
+  </data>
+  <data name="ReplaceInverseTitle" xml:space="preserve">
+    <value>Replace missing match</value>
+  </data>
+  <data name="ReplaceInverseText" xml:space="preserve">
+    <value>Replace a match with the specified text if it does not appear, otherwise, omit it. The specified text can contain other matches</value>
+  </data>
+  <data name="ReplaceMultiTitle" xml:space="preserve">
+    <value>Replace multiple occurrence matches</value>
+  </data>
+  <data name="ReplaceMultiText" xml:space="preserve">
+    <value>Replace multiple line/phrases that were matched with the |m pattern. You can change the separator, and transform each occurrence or replace them entirely</value>
+  </data>
+  <data name="DigitTitle" xml:space="preserve">
+    <value>Digit restriction (\d)</value>
+  </data>
+  <data name="DigitText" xml:space="preserve">
+    <value>Restrict the match to digits (0 - 9)</value>
+  </data>
+  <data name="SpaceTitle" xml:space="preserve">
+    <value>Whitespace restriction (\s)</value>
+  </data>
+  <data name="SpaceText" xml:space="preserve">
+    <value>Restrict the match to whitespace (tabs, spaces)</value>
+  </data>
+  <data name="GreedyTitle" xml:space="preserve">
+    <value>Greedy quantifier (+)</value>
+  </data>
+  <data name="GreedyText" xml:space="preserve">
+    <value>Match the most characters that can fit the pattern. It can go all the way to the end of the line, but can't include line breaks.</value>
+  </data>
+  <data name="OptionalTitle" xml:space="preserve">
+    <value>Optional quantifier (*/?)</value>
+  </data>
+  <data name="OptionalText" xml:space="preserve">
+    <value>This match may or may not be empty</value>
+  </data>
+  <data name="WordTitle" xml:space="preserve">
+    <value>Word restriction (\w)</value>
+  </data>
+  <data name="WordText" xml:space="preserve">
+    <value>Restrict the match to underscore and alphanumeric characters (_, a-z, A - Z)</value>
+  </data>
+  <data name="LBTitle" xml:space="preserve">
+    <value>Line breaks inclusion (\r\n)</value>
+  </data>
+  <data name="LBText" xml:space="preserve">
+    <value>Include line breaks in the match. This means the match can span multiple lines.</value>
+  </data>
+  <data name="OptionalMatchTitle" xml:space="preserve">
+    <value>Optional match (?)</value>
+  </data>
+  <data name="OptionalMatchText" xml:space="preserve">
+    <value>This line/phrase may or may not be present</value>
   </data>
 </root>

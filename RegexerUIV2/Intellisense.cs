@@ -145,10 +145,8 @@ namespace RegexerUIV2
                                     case TokenName.MatchMultiple:
                                     case TokenName.MatchMultipleMatch:
                                     case TokenName.MultiLineMatch:
-                                        allSuggestions.Add(new SuggestionItem(TypeTextHere(_isReplace ? "replacement text" : "line/phrase to match"), string.Empty));
-                                        break;
                                     case TokenName.Optional:
-                                        allSuggestions.Add(new SuggestionItem(TypeTextHere("replacement text"), string.Empty));
+                                        allSuggestions.Add(new SuggestionItem(TypeTextHere(_isReplace ? "replacement text" : "line/phrase to match"), string.Empty));
                                         break;
                                     case TokenName.MatchMultipleReplace:
                                     case TokenName.MultiLineReplace:
@@ -205,7 +203,9 @@ namespace RegexerUIV2
                                             : new SuggestionItem("|{ <Separator> }", "|{", GetResource("MultipleMatchSeparatorTitle"), GetResource("MultipleMatchSeparatorText")));
                                         break;
                                     case TokenName.Optional:
-                                        allSuggestions.Add(new SuggestionItem("| <Replace text>", symbol.Value, GetResource("ReplaceTitle"), GetResource("ReplaceText")));
+                                        allSuggestions.Add(_isReplace
+                                            ? new SuggestionItem("| <Replace text>", symbol.Value, GetResource("ReplaceTitle"), GetResource("ReplaceText"))
+                                            : new SuggestionItem("| <Optional match>", symbol.Value, GetResource("OptionalMatchTitle"), GetResource("OptionalMatchText")));
                                         break;
                                     case TokenName.Duplicate:
                                         allSuggestions.Add(new SuggestionItem("| <Duplication amount> | <Separator>", "|", GetResource("DuplicationSeparatorTitle"), GetResource("DuplicationSeparatorText")));
@@ -414,9 +414,12 @@ namespace RegexerUIV2
                                     : new SuggestionItem("l (Include line breaks)", "l", GetResource("LBTitle"), GetResource("LBText")));
                                 break;
                             case "o":
-                                allSuggestions.Add(_isReplace
-                                    ? new SuggestionItem("o <Replace text>", "o|", GetResource("ReplaceTitle"), GetResource("ReplaceText"))
-                                    : new SuggestionItem("o (Optional)", "o", GetResource("OptionalTitle"), GetResource("OptionalText")));
+                                if(suggestionToken.Ancestors[^1] == TokenName.Optional)
+                                    allSuggestions.Add(new SuggestionItem("o <Optional match>", "o|", GetResource("OptionalMatchTitle"), GetResource("OptionalMatchText")));
+                                else
+                                    allSuggestions.Add(_isReplace
+                                        ? new SuggestionItem("o <Replace text>", "o|", GetResource("ReplaceTitle"), GetResource("ReplaceText"))
+                                        : new SuggestionItem("o (Optional)", "o", GetResource("OptionalTitle"), GetResource("OptionalText")));
                                 break;
                             case "oi":
                                 allSuggestions.Add(new SuggestionItem("oi <Inverse replace text>", "oi|", GetResource("ReplaceInverseTitle"), GetResource("ReplaceInverseText")) { TextInsertionIndex = suggestionToken.PlacementIndex });

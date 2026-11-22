@@ -346,6 +346,10 @@ namespace RegexerV2
                     ProcessMatchMultiple((ComplexToken)elements[labelIndex + 2], restriction, quantifier);
                     patternData?.IsMultiMatch = true;
                 }
+                else if (elements[labelIndex + 2].Name == TokenName.Optional)
+                {
+                    ProcessOptionalMatch((ComplexToken)elements[labelIndex + 2]);
+                }
                 else if (elements[labelIndex + 2].Name == TokenName.PlainText)
                 {
                     ProcessRegex((FreeTextToken)elements[labelIndex + 2]);
@@ -452,6 +456,18 @@ namespace RegexerV2
                     patternBuilder.Append($"){quantifierInner}");
                 }
                 patternBuilder.Append($"){quantifierOuter}");
+            }
+
+            void ProcessOptionalMatch(ComplexToken optionalToken)
+            {
+                var matchMultipleElements = optionalToken.Children;
+                if (label != null) patternBuilder.Append($"(?<{label}>");
+                else patternBuilder.Append("(?:");
+                for (var i = 2; i < matchMultipleElements.Count; i++)
+                {
+                    ProcessFindFullStructure(pattern, ((ComplexToken)matchMultipleElements[i]).Children);
+                }
+                patternBuilder.Append(")?");
             }
 
             void ProcessRegex(FreeTextToken regexToken)

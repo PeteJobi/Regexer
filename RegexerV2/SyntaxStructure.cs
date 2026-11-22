@@ -19,7 +19,8 @@ namespace RegexerV2
         private static readonly Vary ZeroOrOneAnyPatterns = new(StructureQuantifier.ZERO_OR_ONE, AnyPattern){ ReturnNullIfNull = true };
         private static readonly Vary ZeroOrOneAnyPatternsReplace = new(StructureQuantifier.ZERO_OR_ONE, AnyPatternReplace){ ReturnNullIfNull = true };
         private static readonly FreeText LabelBeforeDemarcate = new(FreeTextType.LABEL, DemarcateAfterLabelSymbol) { MustNotBeEmpty = true, Name = TokenName.Label };
-        internal static readonly FreeText SingleLineFreeText = new(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, CloserSymbol, OpenerSymbol){ Name = TokenName.FreeText, ProceedIfInvalidAfterEncountered = CloserSymbol };
+        internal static readonly FreeText SingleLineFreeText = new(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, CloserSymbol, OpenerSymbol)
+            { Name = TokenName.FreeText, ProceedIfInvalidAfterEncountered = CloserSymbol };
 
         private static readonly string[] SingleLineStructureToAnyPatternPath =
             [nameof(Vary.Content), nameof(And.Contents), "1", nameof(Vary.Content), nameof(Or.Contents)];
@@ -72,14 +73,16 @@ namespace RegexerV2
             ]
         };
 
+        private static readonly Reference SingleLineStructuresWithoutMultiLine = new(SingleLineStructures,
+        [ //Remove MultiLine
+            new Modification([.. SingleLineStructureToAnyPatternPath, "2"], new ArrayItemValue([], ArrayItemAction.Remove))
+        ]);
         private static readonly Vary MatchMultipleSingleLineStructures = new(StructureQuantifier.ZERO_OR_ONE, new And
         {
             SuggestionName = TokenName.MatchMultipleMatch,
             Contents = [
                 DemarcateSymbol,
-                new Reference(SingleLineStructures, [
-                    new Modification([..SingleLineStructureToAnyPatternPath, "2"], new ArrayItemValue([], ArrayItemAction.Remove))
-                ])
+                SingleLineStructuresWithoutMultiLine
             ]
         });
 
@@ -120,7 +123,7 @@ namespace RegexerV2
                 }),
                 new Modifier("u"),
                 DemarcateSymbol,
-                SingleLineStructures,
+                SingleLineStructuresWithoutMultiLine,
                 CloserSymbol
             ]
         }){ Name = TokenName.UnorderedGroup };
@@ -214,6 +217,27 @@ namespace RegexerV2
                                         StartPlainTextSymbol,
                                         new FreeText(FreeTextType.PLAIN_TEXT, EndPlainTextSymbol){ Name = TokenName.PlainText },
                                         EndPlainTextSymbol
+                                    ]
+                                }
+                            ]
+                        },
+                        new And
+                        {
+                            Contents = [
+                                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                                {
+                                    Contents = [
+                                        LabelBeforeDemarcate,
+                                        DemarcateAfterLabelSymbol
+                                    ]
+                                }),
+                                new And
+                                {
+                                    Name = TokenName.Optional,
+                                    Contents = [
+                                        new Modifier("o"),
+                                        DemarcateSymbol,
+                                        SingleLineStructuresWithoutMultiLine
                                     ]
                                 }
                             ]
