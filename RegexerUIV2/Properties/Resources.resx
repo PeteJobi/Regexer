@@ -136,13 +136,19 @@
     <value>Multi match separator</value>
   </data>
   <data name="MultipleMatchSeparatorText" xml:space="preserve">
-    <value>The text that separates each occurrence. Can be a regex pattern</value>
+    <value>The text that separates each occurrence. Can be a regex pattern. Can also be empty.</value>
   </data>
   <data name="MultipleMatchMatchTitle" xml:space="preserve">
     <value>Multi match phrase/line</value>
   </data>
+  <data name="MultiLineMatchTitle" xml:space="preserve">
+    <value>Multi line match structure</value>
+  </data>
   <data name="MultipleMatchMatchText" xml:space="preserve">
     <value>This pattern matches each occurrence. If omitted, will match whatever appears between the separators</value>
+  </data>
+  <data name="MultiLineMatchText" xml:space="preserve">
+    <value>This pattern defines the structure of each match. If omitted, will match all the lines that can be matched</value>
   </data>
   <data name="CustomRegexTitle" xml:space="preserve">
     <value>Custom regex</value>
@@ -156,40 +162,40 @@
   <data name="ModifierText" xml:space="preserve">
     <value>Restrict your matches to digits, alphanumeric characters e.t.c for precision or specify how much stuff should be matched</value>
   </data>
-  <data name="CustomRegexWordTitle" xml:space="preserve">
+  <data name="WordTitle" xml:space="preserve">
     <value>Word restriction (\w)</value>
   </data>
-  <data name="CustomRegexWordText" xml:space="preserve">
+  <data name="WordText" xml:space="preserve">
     <value>Restrict the match to underscore and alphanumeric characters (_, a-z, A - Z)</value>
   </data>
-  <data name="CustomRegexDigitTitle" xml:space="preserve">
+  <data name="DigitTitle" xml:space="preserve">
     <value>Digit restriction (\d)</value>
   </data>
-  <data name="CustomRegexDigitText" xml:space="preserve">
+  <data name="DigitText" xml:space="preserve">
     <value>Restrict the match to digits (0 - 9)</value>
   </data>
-  <data name="CustomRegexSpaceTitle" xml:space="preserve">
+  <data name="SpaceTitle" xml:space="preserve">
     <value>Whitespace restriction (\s)</value>
   </data>
-  <data name="CustomRegexSpaceText" xml:space="preserve">
+  <data name="SpaceText" xml:space="preserve">
     <value>Restrict the match to whitespace (tabs, spaces)</value>
   </data>
-  <data name="CustomRegexGreedyTitle" xml:space="preserve">
+  <data name="GreedyTitle" xml:space="preserve">
     <value>Greedy quantifier (+)</value>
   </data>
-  <data name="CustomRegexGreedyText" xml:space="preserve">
+  <data name="GreedyText" xml:space="preserve">
     <value>Match the most characters that can fit the pattern. It can go all the way to the end of the line, but can't include line breaks.</value>
   </data>
-  <data name="CustomRegexOptionalTitle" xml:space="preserve">
+  <data name="OptionalTitle" xml:space="preserve">
     <value>Optional quantifier (?)</value>
   </data>
-  <data name="CustomRegexOptionalText" xml:space="preserve">
+  <data name="OptionalText" xml:space="preserve">
     <value>This match may or may not be present</value>
   </data>
-  <data name="CustomRegexLBTitle" xml:space="preserve">
+  <data name="LBTitle" xml:space="preserve">
     <value>Line breaks inclusion (\r\n)</value>
   </data>
-  <data name="CustomRegexLBText" xml:space="preserve">
+  <data name="LBText" xml:space="preserve">
     <value>Include line breaks in the match. This means the match can span multiple lines.</value>
   </data>
   <data name="MultiLineTitle" xml:space="preserve">
@@ -222,10 +228,10 @@
   <data name="ReplaceMultiText" xml:space="preserve">
     <value>Replace multiple line/phrases that were matched with the |m pattern. You can change the separator, and transform each occurrence or replace them entirely</value>
   </data>
-  <data name="ReplaceMultiReplaceText" xml:space="preserve">
-    <value>Enter the text that will replace each match occurrence. If the match part of the |m pattern had sub-matches, you can reference them here with [[foo|m]]</value>
+  <data name="ReplaceMultiMatchText" xml:space="preserve">
+    <value>Enter the text that will replace each match occurrence. If captures from the match part of the |m pattern are used here, their individual matches will be used for each occurrence.</value>
   </data>
-  <data name="ReplaceMultiReplaceTitle" xml:space="preserve">
+  <data name="ReplaceMultiMatchTitle" xml:space="preserve">
     <value>Replacement per match occurrence</value>
   </data>
   <data name="DuplicationTitle" xml:space="preserve">
@@ -318,46 +324,79 @@
   <data name="NoUReplaceText" xml:space="preserve">
     <value>Use the match as captured without transforming, when no replacement text is specified.</value>
   </data>
-  <data name="MultiMatchCaptureTitle" xml:space="preserve">
-    <value>Multi match capture</value>
-  </data>
-  <data name="MultiMatchCaptureText" xml:space="preserve">
-    <value>This is to be used within a multi match replacement text. It represents a single capture from the multiple captures.</value>
-  </data>
-  <data name="CustomRegexExactTitle" xml:space="preserve">
+  <data name="ExactAmountQuantTitle" xml:space="preserve">
     <value>Exact amount or range ({1,3})</value>
   </data>
-  <data name="CustomRegexExactText" xml:space="preserve">
+  <data name="ExactAmountQuantText" xml:space="preserve">
     <value>Match only the specified amount (which can be an exact number or a range) of characters.</value>
   </data>
-  <data name="CustomRegexExactDashTitle" xml:space="preserve">
+  <data name="ExactAmountDashTitle" xml:space="preserve">
     <value>Amount range separator</value>
   </data>
-  <data name="CustomRegexExactDashText" xml:space="preserve">
+  <data name="ExactAmountDashText" xml:space="preserve">
     <value>Use a dash to separate the minimum and maximum amount of characters to match. Maximum can be omitted.</value>
   </data>
-  <data name="CustomRegexExactCloseTitle" xml:space="preserve">
+  <data name="ExactAmountCloseTitle" xml:space="preserve">
     <value>Close amount range</value>
   </data>
-  <data name="CustomRegexExactCloseText" xml:space="preserve">
+  <data name="ExactAmountCloseTitle1" xml:space="preserve">
+    <value>Close amount range</value>
+  </data>
+  <data name="ExactAmountCloseText" xml:space="preserve">
     <value>Close the amount range with &gt;</value>
   </data>
-  <data name="MultiLineQuantifierTitle" xml:space="preserve">
-    <value>Multi Line Quantifier</value>
+  <data name="ReplaceMultiLineText" xml:space="preserve">
+    <value>Enter the text that will replace each matched line. If captures from the match part of the |ml pattern are used here, their individual matches will be used for each occurrence.</value>
   </data>
-  <data name="MultiLineQuantifierText" xml:space="preserve">
-    <value>Specify how much (or how few) lines you want to capture. If not specified, it will capture only the number of lines necessary for a match, and won't capture empty lines.</value>
+  <data name="ReplaceMultiLineTitle" xml:space="preserve">
+    <value>Replacement per matched line</value>
   </data>
-  <data name="MultiLineOptionalTitle" xml:space="preserve">
-    <value>Optional/Empty Multi Line</value>
+  <data name="ReplaceMultiSeparatorTitle" xml:space="preserve">
+    <value>Multiple occurrence separator</value>
   </data>
-  <data name="MultiLineOptionalText" xml:space="preserve">
-    <value>Match zero or more lines (rather than one or more)</value>
+  <data name="ReplaceMultiSeparatorText" xml:space="preserve">
+    <value>Separator text to show between captured multiple lines/phrases. &gt;&gt;Replace multiple line/phrases that were matched with the |m pattern. You can change the separator, order, and transform each occurrence or replace them entirely</value>
   </data>
-  <data name="MultiLineGreedyTitle" xml:space="preserve">
-    <value>Greedy Multi Line</value>
+  <data name="QuantifierTitle" xml:space="preserve">
+    <value>Multi line/phrase quantifier</value>
   </data>
-  <data name="MultiLineGreedyText" xml:space="preserve">
-    <value>Capture as many lines as possible in the match</value>
+  <data name="QuantifierText" xml:space="preserve">
+    <value>How much you want this to capture</value>
+  </data>
+  <data name="MatchMultipleReorderTitle" xml:space="preserve">
+    <value>Reorder captured lines/phrases</value>
+  </data>
+  <data name="MatchMultipleReorderText" xml:space="preserve">
+    <value>Reverse or sort the captured lines/phrases by individual sub-matches</value>
+  </data>
+  <data name="MatchMultipleReverseTitle" xml:space="preserve">
+    <value>Reverse matched lines/phrases</value>
+  </data>
+  <data name="MatchMultipleReverseText" xml:space="preserve">
+    <value>Reverse the order of the captured lines/phrases</value>
+  </data>
+  <data name="MatchMultipleSortDescTitle" xml:space="preserve">
+    <value>Sort in descending order using sub-match</value>
+  </data>
+  <data name="MatchMultipleSortDescText" xml:space="preserve">
+    <value>Sort the lines/phrase in descending alphabetic or numeric order using any of the captured sub-matches. If you don't specify a sub-match, the entire line/phrase is used.</value>
+  </data>
+  <data name="MatchMultipleSortAscText" xml:space="preserve">
+    <value>Sort the lines/phrase in ascending alphabetic or numeric order using any of the captured sub-matches. If you don't specify a sub-match, the entire line/phrase is used.</value>
+  </data>
+  <data name="MatchMultipleSortAscTitle" xml:space="preserve">
+    <value>Sort in ascending order using sub-match</value>
+  </data>
+  <data name="MatchMultipleSortAgainTitle" xml:space="preserve">
+    <value>Add another sort parameter</value>
+  </data>
+  <data name="MatchMultipleSortByCaptureTitle" xml:space="preserve">
+    <value>Sort by captured sub-match</value>
+  </data>
+  <data name="MatchMultipleSortByCaptureText" xml:space="preserve">
+    <value>Sort by captured sub-match. Note that said captured sub-match is from the input i.e you're sorting the output, using captures from the input. The sort is in alphabetic order, unless you use a sub-match with a digit (d) restriction, in which case it is in numeric order.</value>
+  </data>
+  <data name="MatchMultipleSortAgainText" xml:space="preserve">
+    <value>You can add multiple sort parameters, separated by commas. The lines/phrases will be sorted by each parameters in the order they appear</value>
   </data>
 </root>

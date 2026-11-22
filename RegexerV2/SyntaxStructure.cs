@@ -7,6 +7,8 @@ namespace RegexerV2
         private static readonly Symbol OpenerSymbol = new("[["){ Name = TokenName.Opener };
         private static readonly Symbol CloserSymbol = new("]]"){ Name = TokenName.Closer };
         private static readonly Symbol DemarcateSymbol = new("|"){ Name = TokenName.Demarcate };
+        private static readonly Symbol Demarcate2Symbol = new("|"){ Name = TokenName.Demarcate, SuggestionName = TokenName.Demarcate2 };
+        private static readonly Symbol Demarcate3Symbol = new("|"){ Name = TokenName.Demarcate, SuggestionName = TokenName.Demarcate3 };
         private static readonly Symbol DemarcateAfterLabelSymbol = new("|"){ Name = TokenName.Demarcate, SuggestionName = TokenName.DemarcateAfterLabel };
         private static readonly Symbol CloseAmountQuantifierSymbol = new(">");
         private static readonly Symbol HyphenSymbol = new("-");
@@ -97,7 +99,7 @@ namespace RegexerV2
                         Quantifier
                     ]
                 }),
-                MatchMultipleSingleLineStructures,
+                new Reference(MatchMultipleSingleLineStructures, [new Modification([nameof(Vary.Content), nameof(And.SuggestionName)], TokenName.MultiLineMatch)]),
                 CloserSymbol,
                 new Whitespace{ Type = WhitespaceType.END_OF_LINE }
             ]
@@ -240,7 +242,7 @@ namespace RegexerV2
                                         new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                                         {
                                             Contents = [
-                                                DemarcateSymbol,
+                                                Demarcate2Symbol,
                                                 Quantifier
                                             ]
                                         }),
@@ -344,24 +346,24 @@ namespace RegexerV2
             Name = TokenName.MatchMultipleReorder,
             Contents =
             [
-                DemarcateSymbol,
+                Demarcate2Symbol,
                 new Or
                 {
                     Contents =
                     [
-                        new Symbol("<>"),
+                        new Symbol("<>"){ Name = TokenName.MatchMultipleSortByCapture }, //The tokenName is for highlighting purposes only, it is not used in parsing
                         new Vary(StructureQuantifier.ONE_OR_MORE, new And
                         {
                             Name = TokenName.MatchMultipleSortByCapture,
                             Contents =
                             [
-                                new Or { Contents = [new Symbol(">"), new Symbol("<")] },
+                                new Or { Contents = [new Symbol(">"){ Name = TokenName.MatchMultipleSortByCapture }, new Symbol("<"){ Name = TokenName.MatchMultipleSortByCapture }] },
                                 new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                                 {
                                     Contents =
                                     [
                                         new Symbol(":"),
-                                        new FreeText(FreeTextType.LABEL, CommaSymbol, DemarcateAfterLabelSymbol,
+                                        new FreeText(FreeTextType.LABEL, CommaSymbol, Demarcate2Symbol, 
                                             CloserSymbol) { MustNotBeEmpty = true, Name = TokenName.Label }
                                     ]
                                 })
@@ -377,7 +379,7 @@ namespace RegexerV2
             SuggestionName = TokenName.MatchMultipleReplace,
             Contents =
             [
-                DemarcateSymbol,
+                Demarcate3Symbol,
                 new Reference(SingleLineStructuresReplace, [
                     new Modification(SingleLineStructureToAnyPatternPath, new Structure[] { PatternReplace })
                 ])
@@ -412,7 +414,7 @@ namespace RegexerV2
                 DemarcateAfterLabelSymbol,
                 new Modifier("ml"),
                 MatchMultipleReorder,
-                MatchMultipleSingleLineStructuresReplace,
+                new Reference(MatchMultipleSingleLineStructuresReplace, [new Modification([nameof(Vary.Content), nameof(And.SuggestionName)], TokenName.MultiLineReplace)]),
                 CloserSymbol,
                 new FreeText(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, NewLineSymbol){ Name = TokenName.FreeText },
                 new Whitespace{ Type = WhitespaceType.END_OF_LINE }
@@ -571,8 +573,8 @@ namespace RegexerV2
 
         public enum TokenName
         {
-            None, FreeText, PlainText, Pattern, Label, RestrictionQuantifierNewLine, ExactAmountQuantifier, MaxAmountQuantifier, Optional, Modifier, MultiLine, Unordered, UnorderedGroup, Opener, Closer, Demarcate, SingleLineStructure,
-            MatchMultiple, MatchMultipleReplace, MatchMultipleReorder, MatchMultipleSortByCapture, MatchMultipleSpread, MatchMultipleMatch, Duplicate, DuplicateSeparator, Capitalize, Evaluate, DemarcateAfterLabel, Quantifier
+            None, FreeText, PlainText, Pattern, Label, RestrictionQuantifierNewLine, ExactAmountQuantifier, MaxAmountQuantifier, Optional, Symbol, Modifier, MultiLine, Unordered, UnorderedGroup, Opener, Closer, Demarcate, Demarcate2, Demarcate3, SingleLineStructure,
+            MatchMultiple, MatchMultipleReplace, MatchMultipleReorder, MatchMultipleSortByCapture, MatchMultipleMatch, MultiLineReplace, MultiLineMatch, Duplicate, DuplicateSeparator, Capitalize, Evaluate, DemarcateAfterLabel, Quantifier
         }
         public class Token
         {

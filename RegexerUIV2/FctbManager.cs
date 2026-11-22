@@ -168,7 +168,8 @@ namespace RegexerUIV2
                             {
                                 var label = textBox.Text.Substring(freeTextToken.Index, freeTextToken.Length);
                                 _patternLabels.Add(label);
-                                if (tokensArray.Length > 3 && textBox.Text.AsSpan(tokensArray[3].Index, tokensArray[3].Length) is "u" or "m")
+                                if ((tokensArray.Length > 3 && tokensArray[3].Name == SyntaxStructure.TokenName.MatchMultiple)
+                                    || (tokensArray.Length > 4 && textBox.Text.AsSpan(tokensArray[4].Index, tokensArray[4].Length) is "u"))
                                     _patternUmLabels.Add(label);
                             }
                             foreach (var escapeIndex in freeTextToken.EscapeIndices)
@@ -182,7 +183,6 @@ namespace RegexerUIV2
                                     break;
                                 case SyntaxStructure.TokenName.Pattern:
                                 case SyntaxStructure.TokenName.MatchMultiple:
-                                case SyntaxStructure.TokenName.MatchMultipleSpread:
                                     textBox.GetRange(complexToken.Index, complexToken.Index + complexToken.Length).SetStyle(BaseStyleIndex);
                                     break;
                                 case SyntaxStructure.TokenName.ExactAmountQuantifier:
@@ -205,9 +205,11 @@ namespace RegexerUIV2
                             switch (token.Name)
                             {
                                 case SyntaxStructure.TokenName.Demarcate:
+                                case SyntaxStructure.TokenName.Symbol:
                                     textBox.GetRange(token.Index, token.Index + token.Length).SetStyle(_allStyles[Style.Separator]);
                                     break;
                                 case SyntaxStructure.TokenName.Modifier:
+                                case SyntaxStructure.TokenName.MatchMultipleSortByCapture:
                                     textBox.GetRange(token.Index, token.Index + token.Length).SetStyle(_allStyles[Style.KeyLetter]);
                                     break;
                             }

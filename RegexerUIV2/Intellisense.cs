@@ -1,13 +1,6 @@
 ﻿using FastColoredTextBoxNS;
 using RegexerUIV2.Properties;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using static RegexerV2.SyntaxStructure;
 
 namespace RegexerUIV2
@@ -72,240 +65,6 @@ namespace RegexerUIV2
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        private int GetUnclosedTagIndex(string text)
-        {
-            var tagStack = new Stack<int>();
-            var lastChar = '\0';
-            for (var i = text.Length - 1; i >= 0; i--)
-            {
-                var curChar = text[i];
-                switch (curChar)
-                {
-                    case '[' when lastChar == '[':
-                    {
-                        if (tagStack.Count == 0) return i;
-                        tagStack.Pop();
-                        break;
-                    }
-                    case ']' when lastChar == ']':
-                        tagStack.Push(i);
-                        break;
-                }
-                lastChar = curChar;
-            }
-
-            return -1;
-        }
-
-        //This was the initial try at suggestions, but later scrapped and replaced with what is now GetSuggestionItems. After it's pushed, I will delete this.
-        public (List<Token> AlreadyTyped, List<Structure> Suggestions) GetSuggestionItems2(Structure structure, string text, int index)
-        {
-            switch (structure)
-            {
-                case And and:
-                    {
-                        var alreadyTyped = new List<Token>();
-                        var suggestions = new List<Structure>();
-                        var i = index;
-                        foreach (var child in and.Contents)
-                        {
-                            var result = GetSuggestionItems2(child, text, i);
-                            switch (result)
-                            {
-                                case ({ Count: 0 }, { Count: 0 }):
-                                    return ([], []);
-                                case ({ Count: > 0 }, { Count: > 0 }):
-                                    alreadyTyped.AddRange(result.AlreadyTyped);
-                                    suggestions.AddRange(result.Suggestions);
-                                    foreach (var token in result.AlreadyTyped) i += token.Length;
-                                    break;
-                                case ({ Count: > 0 }, { Count: 0 }):
-                                    alreadyTyped.AddRange(result.AlreadyTyped);
-                                    foreach (var token in result.AlreadyTyped) i += token.Length;
-                                    break;
-                                case ({ Count: 0 }, { Count: > 0 }):
-                                    suggestions.AddRange(result.Suggestions);
-                                    return (alreadyTyped, suggestions);
-                            }
-                        }
-
-                        return (alreadyTyped, suggestions);
-                    }
-                case Or or:
-                    {
-                        var alreadyTyped = new List<Token>();
-                        var suggestions = new List<Structure>();
-                        foreach (var child in or.Contents)
-                        {
-                            var result = GetSuggestionItems2(child, text, index);
-                            if (result.AlreadyTyped.Count > 0)
-                            {
-                                if (alreadyTyped.Count > 0) {}
-                                alreadyTyped = result.AlreadyTyped;
-                            }
-                            if (result.Suggestions.Count > 0) suggestions.AddRange(result.Suggestions);
-                        }
-
-                        return (alreadyTyped, suggestions);
-                    }
-                case Symbol symbol:
-                    {
-                        for (var i = 0; i < symbol.Value.Length; i++)
-                        {
-                            if(index + i == text.Length) return ([], [symbol]);
-                            if (symbol.Value[i] != text[index + i]) return ([], []);
-                        }
-                        return (
-                            [new Token { Index = index, Length = symbol.Value.Length, Text = symbol.Value, Name = symbol.Name }],
-                            []
-                            );
-                    }
-                case Modifier modifier:
-                    {
-                        for (var i = 0; i < modifier.Value.Length; i++)
-                        {
-                            if(index + i == text.Length) return ([], [modifier]);
-                            if (modifier.Value[i] != text[index + i]) return ([], []);
-                        }
-                        return (
-                            [new Token { Index = index, Length = modifier.Value.Length, Text = modifier.Value, Name = TokenName.Modifier }],
-                            []
-                            );
-                    }
-                case Vary vary:
-                    {
-                        //return GetSuggestionItems2(vary.Content, text, index);
-                        var alreadyTyped = new List<Token>();
-                        var suggestions = new List<Structure>();
-                        var amount = vary.Quantifier == StructureQuantifier.ZERO_OR_ONE ? 1 : int.MaxValue;
-                        var i = index;
-                        var length = 0;
-                        while (amount > 0 && i < text.Length)
-                        {
-                            var result = GetSuggestionItems2(vary.Content, text, index);
-                            var tokenLength = result.AlreadyTyped.Sum(t => t.Length);
-                            if (result is ([], []) && alreadyTyped.Count == 0 && vary.ReturnNullIfNull) return ([], []);
-                            if (result is ([], [])) break;
-                            alreadyTyped.AddRange(result.AlreadyTyped);
-                            suggestions = result.Suggestions;
-                            i += tokenLength;
-                            length += tokenLength;
-                            amount--;
-                        }
-
-                        if (vary.Quantifier == StructureQuantifier.ONE_OR_MORE && length == 0) return ([], []);
-                        return (alreadyTyped, i == index ? [vary.Content] : suggestions);
-                    }
-                case Whitespace whitespace:
-                    {
-                        var pos = index;
-                        if (whitespace.Type == WhitespaceType.START_OF_LINE)
-                        {
-                            if (pos != 0)
-                            {
-                                if (pos >= text.Length - 1) return ([], []);
-                                if (text[pos] != '\r' || text[pos + 1] != '\n') return ([], []);
-                                pos += 2;
-                            }
-                        }
-                        while (pos < text.Length)
-                        {
-                            var currentChar = text[pos];
-                            if (currentChar == '\r' && pos < text.Length - 1 && text[pos + 1] == '\n')
-                            {
-                                if (whitespace.Type != WhitespaceType.NONE) return (pos == index ? [] : [CreateToken()], []);
-                                pos += 2;
-                                continue;
-                            }
-
-                            if (!char.IsWhiteSpace(currentChar))
-                            {
-                                if (whitespace.Type == WhitespaceType.END_OF_LINE) return ([CreateToken()], []);
-                                return (pos == index ? [] : [CreateToken()], []);
-                            }
-                            pos++;
-                        }
-
-                        return (pos == index ? [] : [CreateToken()], [whitespace]);
-
-                        Token CreateToken() => new() { Index = index, Length = pos - index, Text = text.Substring(index, pos - index), Name = whitespace.Name };
-                    }
-                case FreeText freeText:
-                    {
-                        var escapeEncountered = false;
-                        var notContainEncountered = new int[freeText.CannotContain.Length]; //stackalloc instead of array?
-                        var unescapedNotContainEncountered = new int[freeText.CannotContain.Length]; //stackalloc instead of array?
-                        var pos = index;
-
-                        while (pos < text.Length)
-                        {
-                            var currentChar = text[pos];
-                            if (currentChar == '\\')
-                            {
-                                escapeEncountered = !escapeEncountered;
-                            }
-                            else
-                            {
-                                var currentCharIsUnescapedNotContainChar = false;
-                                for (var i = 0; i < freeText.CannotContain.Length; i++)
-                                {
-                                    if (currentChar == freeText.CannotContain[i].Value[notContainEncountered[i]])
-                                    {
-                                        notContainEncountered[i]++;
-                                        if (notContainEncountered[i] == freeText.CannotContain[i].Value.Length)
-                                        {
-                                            notContainEncountered[i] = 0;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        notContainEncountered[i] = 0;
-                                    }
-
-                                    if (currentChar == freeText.CannotContain[i].Value[unescapedNotContainEncountered[i]] && !escapeEncountered)
-                                    {
-                                        unescapedNotContainEncountered[i]++;
-                                        currentCharIsUnescapedNotContainChar = true;
-                                    }
-                                    else unescapedNotContainEncountered[i] = 0;
-
-                                    if (unescapedNotContainEncountered[i] == freeText.CannotContain[i].Value.Length)
-                                    {
-                                        return ([CreateToken(index, pos - index)], []);
-                                    }
-                                }
-
-                                escapeEncountered = false;
-
-                                if (!currentCharIsUnescapedNotContainChar && !CharAccepted(currentChar)) return ([], []);
-                            }
-
-                            pos++;
-                        }
-
-                        return (pos == index ? [] : [CreateToken(index, pos - index)], [freeText]);
-
-                        Token CreateToken(int i, int freeTextLength) => new() { Index = i, Length = freeTextLength, Text = text.Substring(i, freeTextLength), Name = freeText.Name };
-
-                        bool CharAccepted(char currentChar)
-                        {
-                            return freeText.Type switch
-                            {
-                                FreeTextType.LABEL => char.IsLetterOrDigit(currentChar) || currentChar == '_',
-                                FreeTextType.DIGITS => char.IsDigit(currentChar),
-                                FreeTextType.EXPRESSION_WITH_I => IsExpressionChar(currentChar) || currentChar == 'i',
-                                FreeTextType.EXPRESSION_WITH_IM => IsExpressionChar(currentChar) || currentChar == 'i' || currentChar == 'm',
-                                FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT => currentChar != '\r' && currentChar != '\n',
-                                _ => true
-                            };
-
-                            static bool IsExpressionChar(char ch) => char.IsDigit(ch) || ch is '+' or '-' or '*' or '/' or '(' or ')' or '%';
-                        }
-                    }
-                default: throw new NotImplementedException();
-            }
         }
 
         private readonly FreeText dummyLabelStructure = new(FreeTextType.LABEL);
@@ -385,16 +144,18 @@ namespace RegexerUIV2
                                     case TokenName.Unordered:
                                     case TokenName.MatchMultiple:
                                     case TokenName.MatchMultipleMatch:
+                                    case TokenName.MultiLineMatch:
                                         allSuggestions.Add(new SuggestionItem(TypeTextHere(_isReplace ? "replacement text" : "line/phrase to match"), string.Empty));
                                         break;
                                     case TokenName.Optional:
                                         allSuggestions.Add(new SuggestionItem(TypeTextHere("replacement text"), string.Empty));
                                         break;
                                     case TokenName.MatchMultipleReplace:
+                                    case TokenName.MultiLineReplace:
                                         allSuggestions.Add(new SuggestionItem(TypeTextHere("replacement text"), string.Empty));
                                         break;
                                     case TokenName.MultiLine:
-                                        //This is replace version of multiline (see MultiLineReplace). No need to suggest that single line text can appear before the multiline
+                                        //This is 'replace' version of multiline (see MultiLineReplace). No need to suggest that single line text can appear before the multiline
                                         break;
                                     default:
                                         throw new ArgumentOutOfRangeException();
@@ -406,7 +167,7 @@ namespace RegexerUIV2
                         switch (whitespace.Type)
                         {
                             case WhitespaceType.END_OF_LINE:
-                                if (!AlreadyAdded(suggestionToken.Ancestors[^1], whitespace)) break;
+                                if (AlreadyAdded(suggestionToken.Ancestors[^1], whitespace)) break;
                                 allSuggestions.Add(new SuggestionItem("(Enter new line)", "\r\n", string.Empty, string.Empty));
                                 break;
                             //default:
@@ -440,37 +201,78 @@ namespace RegexerUIV2
                                         break;
                                     case TokenName.MatchMultiple:
                                         allSuggestions.Add(_isReplace
-                                            ? new SuggestionItem("| <Separator | Replace text>", "|", GetResource("ReplaceMultiTitle"), GetResource("ReplaceMultiText"))
-                                            : new SuggestionItem("|{ <Separator>", "|{", GetResource("MultipleMatchSeparatorTitle"), GetResource("MultipleMatchSeparatorText")));
-                                        break;
-                                    case TokenName.MatchMultipleReplace:
-                                        allSuggestions.Add(new SuggestionItem("| <Replace text>", "|", GetResource("ReplaceMultiReplaceTitle"), GetResource("ReplaceMultiReplaceText")));
-                                        break;
-                                    case TokenName.MatchMultipleSpread:
-                                        allSuggestions.Add(new SuggestionItem("| (Capture from multi match)", "|m]]", GetResource("MultiMatchCaptureTitle"), GetResource("MultiMatchCaptureText")));
-                                        break;
-                                    case TokenName.MatchMultipleMatch:
-                                        allSuggestions.Add(new SuggestionItem("| <Match>", "|", GetResource("MultipleMatchMatchTitle"), GetResource("MultipleMatchMatchText")));
+                                            ? new SuggestionItem("| <Separator>", symbol.Value, GetResource("ReplaceMultiSeparatorTitle"), GetResource("ReplaceMultiSeparatorText"))
+                                            : new SuggestionItem("|{ <Separator> }", "|{", GetResource("MultipleMatchSeparatorTitle"), GetResource("MultipleMatchSeparatorText")));
                                         break;
                                     case TokenName.Optional:
-                                        allSuggestions.Add(_isReplace
-                                            ? new SuggestionItem("| <Replace text>", "|")
-                                            : new SuggestionItem("| <Optional>", "|o]]", GetResource("CustomRegexOptionalTitle"), GetResource("CustomRegexOptionalText")));
+                                        allSuggestions.Add(new SuggestionItem("| <Replace text>", symbol.Value, GetResource("ReplaceTitle"), GetResource("ReplaceText")));
                                         break;
                                     case TokenName.Duplicate:
-                                        allSuggestions.Add(new SuggestionItem("| <Duplication amount | Separator>", "|", GetResource("DuplicationSeparatorTitle"), GetResource("DuplicationSeparatorText")));
+                                        allSuggestions.Add(new SuggestionItem("| <Duplication amount> | <Separator>", "|", GetResource("DuplicationSeparatorTitle"), GetResource("DuplicationSeparatorText")));
                                         break;
                                     case TokenName.DuplicateSeparator:
-                                        allSuggestions.Add(new SuggestionItem("| <Separator>", "|", GetResource("DuplicationSeparatorTitle"), GetResource("DuplicationSeparatorText")));
+                                        allSuggestions.Add(new SuggestionItem("| <Separator>", symbol.Value, GetResource("DuplicationSeparatorTitle"), GetResource("DuplicationSeparatorText")));
                                         break;
                                     case TokenName.Capitalize:
-                                        allSuggestions.Add(new SuggestionItem("| <Capitalization type>", "|", GetResource("CapitalizationTitle"), GetResource("CapitalizationText")));
+                                        allSuggestions.Add(new SuggestionItem("| <Capitalization type>", symbol.Value, GetResource("CapitalizationTitle"), GetResource("CapitalizationText")));
                                         break;
                                     case TokenName.Evaluate:
-                                        allSuggestions.Add(new SuggestionItem("| <Expression>", "|", GetResource("ReplaceNumberTitle"), GetResource("ReplaceNumberText")));
+                                        allSuggestions.Add(new SuggestionItem("| <Expression>", symbol.Value, GetResource("ReplaceNumberTitle"), GetResource("ReplaceNumberText")));
+                                        break;
+                                    case TokenName.MatchMultipleMatch:
+                                        allSuggestions.Add(new SuggestionItem("| <Match>", symbol.Value, GetResource("MultipleMatchMatchTitle"), GetResource("MultipleMatchMatchText")));
+                                        break;
+                                    case TokenName.MultiLineMatch:
+                                        allSuggestions.Add(new SuggestionItem("| <Match>", symbol.Value, GetResource("MultiLineMatchTitle"), GetResource("MultiLineMatchText")));
                                         break;
                                     case TokenName.MultiLine:
-                                        allSuggestions.Add(new SuggestionItem("| <Quantifier>", "|", GetResource("MultiLineQuantifierTitle"), GetResource("MultiLineQuantifierText")));
+                                        allSuggestions.Add(new SuggestionItem("| <Quantifier>", symbol.Value, GetResource("QuantifierTitle"), GetResource("QuantifierText")));
+                                        break;
+                                    default:
+                                        throw new ArgumentOutOfRangeException();
+                                }
+                                break;
+                            case TokenName.Demarcate2:
+                                if (AlreadyAdded(suggestionToken.Ancestors[^1], symbol)) break;
+                                switch (suggestionToken.Ancestors[^1])
+                                {
+                                    case TokenName.MatchMultiple:
+                                        allSuggestions.Add(new SuggestionItem("| <Quantifier>", symbol.Value, GetResource("QuantifierTitle"), GetResource("QuantifierText")));
+                                        break;
+                                    case TokenName.ExactAmountQuantifier:
+                                        allSuggestions.Add(new SuggestionItem("| <Exact amount>", symbol.Value, GetResource("ExactAmountQuantifierTitle"), GetResource("ExactAmountQuantifierText")));
+                                        break;
+                                    case TokenName.MatchMultipleReorder:
+                                        allSuggestions.Add(new SuggestionItem("| <Reorder>", symbol.Value, GetResource("MatchMultipleReorderTitle"), GetResource("MatchMultipleReorderText")));
+                                        break;
+                                    case TokenName.MultiLineReplace:
+                                        allSuggestions.Add(new SuggestionItem("| <Replace text>", symbol.Value, GetResource("ReplaceMultiLineTitle"), GetResource("ReplaceMultiLineText")));
+                                        break;
+                                    case TokenName.MatchMultipleMatch:
+                                        allSuggestions.Add(new SuggestionItem("| <Match>", symbol.Value, GetResource("MultipleMatchMatchTitle"), GetResource("MultipleMatchMatchText")));
+                                        break;
+                                    case TokenName.MultiLineMatch:
+                                        allSuggestions.Add(new SuggestionItem("| <Match>", symbol.Value, GetResource("MultiLineMatchTitle"), GetResource("MultiLineMatchText")));
+                                        break;
+                                    default:
+                                        throw new ArgumentOutOfRangeException();
+                                }
+                                break;
+                            case TokenName.Demarcate3:
+                                if (AlreadyAdded(suggestionToken.Ancestors[^1], symbol)) break;
+                                switch (suggestionToken.Ancestors[^1])
+                                {
+                                    case TokenName.MatchMultipleReplace:
+                                        allSuggestions.Add(new SuggestionItem("| <Replace text>", symbol.Value, GetResource("ReplaceMultiTitle"), GetResource("ReplaceMultiText")));
+                                        break;
+                                    case TokenName.MultiLineReplace:
+                                        allSuggestions.Add(new SuggestionItem("| <Replace text>", symbol.Value, GetResource("ReplaceMultiLineTitle"), GetResource("ReplaceMultiLineText")));
+                                        break;
+                                    case TokenName.MatchMultipleMatch:
+                                        allSuggestions.Add(new SuggestionItem("| <Match>", symbol.Value, GetResource("MultipleMatchMatchTitle"), GetResource("MultipleMatchMatchText")));
+                                        break;
+                                    case TokenName.MultiLineMatch:
+                                        allSuggestions.Add(new SuggestionItem("| <Match>", symbol.Value, GetResource("MultiLineMatchTitle"), GetResource("MultiLineMatchText")));
                                         break;
                                     default:
                                         throw new ArgumentOutOfRangeException();
@@ -481,13 +283,29 @@ namespace RegexerUIV2
                                 switch (symbol.Value)
                                 {
                                     case "<":
-                                        allSuggestions.Add(new SuggestionItem("<..> (Exact amount match)", symbol.Value, GetResource("CustomRegexExactTitle"), GetResource("CustomRegexExactText")));
+                                        switch (suggestionToken.Ancestors[^1])
+                                        {
+                                            case TokenName.ExactAmountQuantifier:
+                                                allSuggestions.Add(new SuggestionItem("<..> (Exact amount match)", symbol.Value, GetResource("ExactAmountQuantTitle"), GetResource("ExactAmountQuantText")));
+                                                break;
+                                            case TokenName.MatchMultipleSortByCapture:
+                                                allSuggestions.Add(new SuggestionItem("< (Sort in descending order)", symbol.Value, GetResource("MatchMultipleSortDescTitle"), GetResource("MatchMultipleSortDescText")));
+                                                break;
+                                        }
                                         break;
                                     case "-":
-                                        allSuggestions.Add(new SuggestionItem("- (Range separator)", symbol.Value, GetResource("CustomRegexExactDashTitle"), GetResource("CustomRegexExactDashText")));
+                                        allSuggestions.Add(new SuggestionItem("- (Range separator)", symbol.Value, GetResource("ExactAmountDashTitle"), GetResource("ExactAmountDashText")));
                                         break;
                                     case ">":
-                                        allSuggestions.Add(new SuggestionItem("> (Close range)", symbol.Value, GetResource("CustomRegexExactCloseTitle"), GetResource("CustomRegexExactCloseText")));
+                                        switch (suggestionToken.Ancestors[^1])
+                                        {
+                                            case TokenName.ExactAmountQuantifier:
+                                                allSuggestions.Add(new SuggestionItem("> (Close range)", symbol.Value, GetResource("ExactAmountCloseTitle"), GetResource("ExactAmountCloseText")));
+                                                break;
+                                            case TokenName.MatchMultipleSortByCapture:
+                                                allSuggestions.Add(new SuggestionItem("> (Sort in ascending order)", symbol.Value, GetResource("MatchMultipleSortAscTitle"), GetResource("MatchMultipleSortAscText")));
+                                                break;
+                                        }
                                         break;
                                     case "{":
                                         switch (suggestionToken.Ancestors[^1])
@@ -506,14 +324,23 @@ namespace RegexerUIV2
                                         switch (suggestionToken.Ancestors[^1])
                                         {
                                             case TokenName.Pattern:
-                                                allSuggestions.Add(new SuggestionItem("} <Close regex>", "}", GetResource("CustomRegexTitle"), GetResource("CustomRegexText")));
+                                                allSuggestions.Add(new SuggestionItem("} (Close regex)", symbol.Value, GetResource("CustomRegexTitle"), GetResource("CustomRegexText")));
                                                 break;
                                             case TokenName.MatchMultiple:
-                                                allSuggestions.Add(new SuggestionItem("} <Close separator>", "}", GetResource("MultipleMatchSeparatorTitle"), GetResource("MultipleMatchSeparatorText")));
+                                                allSuggestions.Add(new SuggestionItem("} (Close separator)", symbol.Value, GetResource("MultipleMatchSeparatorTitle"), GetResource("MultipleMatchSeparatorText")));
                                                 break;
                                             default:
                                                 throw new ArgumentOutOfRangeException();
                                         }
+                                        break;
+                                    case "<>":
+                                        allSuggestions.Add(new SuggestionItem("<> (Reverse order)", symbol.Value, GetResource("MatchMultipleReverseTitle"), GetResource("MatchMultipleReverseText")));
+                                        break;
+                                    case ":":
+                                        allSuggestions.Add(new SuggestionItem(": <Sub-match label>", symbol.Value, GetResource("MatchMultipleSortByCaptureTitle"), GetResource("MatchMultipleSortByCaptureText")));
+                                        break;
+                                    case ",":
+                                        allSuggestions.Add(new SuggestionItem(", (Sort again)", symbol.Value, GetResource("MatchMultipleSortAgainTitle"), GetResource("MatchMultipleSortAgainText")));
                                         break;
                                     default:
                                         throw new ArgumentOutOfRangeException();
@@ -527,8 +354,8 @@ namespace RegexerUIV2
                         {
                             case "ml":
                                 allSuggestions.Add(_isReplace
-                                    ? new SuggestionItem("ml (Multi line replace)", "ml]]", GetResource("MultiLineRepTitle"), GetResource("MultiLineRepText")) { TextInsertionIndex = suggestionToken.PlacementIndex }
-                                    : new SuggestionItem("ml (Multi line match)", "ml]]\r\n", GetResource("MultiLineTitle"), GetResource("MultiLineText")){ TextInsertionIndex = suggestionToken.PlacementIndex });
+                                    ? new SuggestionItem("ml <Reorder> | <Replace text>", modifier.Value, GetResource("MultiLineRepTitle"), GetResource("MultiLineRepText")) { TextInsertionIndex = suggestionToken.PlacementIndex }
+                                    : new SuggestionItem("ml <Quantifier> | <Multiple match>", modifier.Value, GetResource("MultiLineTitle"), GetResource("MultiLineText")){ TextInsertionIndex = suggestionToken.PlacementIndex });
                                 break;
                             case "u":
                                 if (_isReplace)
@@ -540,7 +367,7 @@ namespace RegexerUIV2
                                             allSuggestions.Add(new SuggestionItem("u (No replacement)", "u]]", GetResource("NoUReplaceTitle"), GetResource("NoUReplaceText")));
                                             break;
                                         case TokenName.Capitalize:
-                                            allSuggestions.Add(new SuggestionItem("u <Uppercase>", "u]]", GetResource("UppercaseText"), ""));
+                                            allSuggestions.Add(new SuggestionItem("u (Uppercase)", "u]]", GetResource("UppercaseText"), ""));
                                             break;
                                         default:
                                             throw new ArgumentOutOfRangeException();
@@ -557,44 +384,39 @@ namespace RegexerUIV2
                                     switch (suggestionToken.Ancestors[^1])
                                     {
                                         case TokenName.MatchMultiple:
-                                            allSuggestions.Add(new SuggestionItem("m <Separator | Replace text>", "m|", GetResource("ReplaceMultiTitle"), GetResource("ReplaceMultiText")));
-                                            break;
-                                        case TokenName.MatchMultipleSpread:
-                                            allSuggestions.Add(new SuggestionItem("m (Capture from multi match)", "m]]", GetResource("MultiMatchCaptureTitle"), GetResource("MultiMatchCaptureText")));
+                                            allSuggestions.Add(new SuggestionItem("m <Separator> | <Reorder> | <Replace text>", "m|", GetResource("ReplaceMultiTitle"), GetResource("ReplaceMultiText")));
                                             break;
                                         default:
                                             throw new ArgumentOutOfRangeException();
                                     }
                                 }
-                                else allSuggestions.Add(new SuggestionItem("m <Separator | Multiple text to match>", "m|{", GetResource("MultipleMatchTitle"), GetResource("MultipleMatchText")));
+                                else allSuggestions.Add(new SuggestionItem("m <Separator> | <Quantifier> | <Multiple match>", "m|{", GetResource("MultipleMatchTitle"), GetResource("MultipleMatchText")));
                                 break;
                             case "w":
-                                allSuggestions.Add(new SuggestionItem("w <Word>", "w", GetResource("CustomRegexWordTitle"), GetResource("CustomRegexWordText")));
+                                allSuggestions.Add(new SuggestionItem("w (Word)", "w", GetResource("WordTitle"), GetResource("WordText")));
                                 break;
                             case "d":
                                 allSuggestions.Add(_isReplace
-                                    ? new SuggestionItem("d <Duplication amount | Separator>", "d|", GetResource("DuplicationTitle"), GetResource("DuplicationText"))
-                                    : new SuggestionItem("d <Digit>", "d", GetResource("CustomRegexDigitTitle"), GetResource("CustomRegexDigitText")));
+                                    ? new SuggestionItem("d <Duplication amount> | <Separator>", "d|", GetResource("DuplicationTitle"), GetResource("DuplicationText"))
+                                    : new SuggestionItem("d (Digit)", "d", GetResource("DigitTitle"), GetResource("DigitText")));
                                 break;
                             case "s":
                                 allSuggestions.Add(_isReplace
-                                    ? new SuggestionItem("s <Sentence case>", "s]]", GetResource("SentenceText"), "")
-                                    : new SuggestionItem("s <Whitespace>", "s", GetResource("CustomRegexSpaceTitle"), GetResource("CustomRegexSpaceText")));
+                                    ? new SuggestionItem("s (Sentence case)", "s]]", GetResource("SentenceText"), "")
+                                    : new SuggestionItem("s (Whitespace)", "s", GetResource("SpaceTitle"), GetResource("SpaceText")));
                                 break;
                             case "g":
-                                allSuggestions.Add(suggestionToken.Ancestors[^1] == TokenName.Quantifier ? new SuggestionItem("g <Greedy match>", "g", GetResource("MultiLineGreedyTitle"), GetResource("MultiLineGreedyText"))
-                                    : new SuggestionItem("g <Greedy match>", "g", GetResource("CustomRegexGreedyTitle"), GetResource("CustomRegexGreedyText")));
+                                allSuggestions.Add(new SuggestionItem("g (Greedy)", "g", GetResource("GreedyTitle"), GetResource("GreedyText")));
                                 break;
                             case "l":
                                 allSuggestions.Add(_isReplace
-                                    ? new SuggestionItem("l <Lowercase>", "l]]", GetResource("LowercaseText"), "")
-                                    : new SuggestionItem("l <Include line breaks>", "l", GetResource("CustomRegexLBTitle"), GetResource("CustomRegexLBText")));
+                                    ? new SuggestionItem("l (Lowercase)", "l]]", GetResource("LowercaseText"), "")
+                                    : new SuggestionItem("l (Include line breaks)", "l", GetResource("LBTitle"), GetResource("LBText")));
                                 break;
                             case "o":
                                 allSuggestions.Add(_isReplace
                                     ? new SuggestionItem("o <Replace text>", "o|", GetResource("ReplaceTitle"), GetResource("ReplaceText"))
-                                    : suggestionToken.Ancestors[^1] == TokenName.Quantifier ? new SuggestionItem("o <Optional match>", "o", GetResource("MultiLineOptionalTitle"), GetResource("MultiLineOptionalText"))
-                                        : new SuggestionItem("o <Optional match>", "o]]", GetResource("CustomRegexOptionalTitle"), GetResource("CustomRegexOptionalText")));
+                                    : new SuggestionItem("o (Optional)", "o", GetResource("OptionalTitle"), GetResource("OptionalText")));
                                 break;
                             case "oi":
                                 allSuggestions.Add(new SuggestionItem("oi <Inverse replace text>", "oi|", GetResource("ReplaceInverseTitle"), GetResource("ReplaceInverseText")) { TextInsertionIndex = suggestionToken.PlacementIndex });
@@ -606,10 +428,10 @@ namespace RegexerUIV2
                                 allSuggestions.Add(new SuggestionItem("c <Capitalization>", "c|", GetResource("CapitalizationTitle"), GetResource("CapitalizationText")));
                                 break;
                             case "fu":
-                                allSuggestions.Add(new SuggestionItem("fu <First letter uppercase>", "fu]]", GetResource("FirstUppercaseText"), "") { TextInsertionIndex = suggestionToken.PlacementIndex });
+                                allSuggestions.Add(new SuggestionItem("fu (First letter uppercase)", "fu]]", GetResource("FirstUppercaseText"), "") { TextInsertionIndex = suggestionToken.PlacementIndex });
                                 break;
                             case "fl":
-                                allSuggestions.Add(new SuggestionItem("fl <First letter lowercase>", "fl]]", GetResource("FirstLowercaseText"), "") { TextInsertionIndex = suggestionToken.PlacementIndex });
+                                allSuggestions.Add(new SuggestionItem("fl (First letter lowercase)", "fl]]", GetResource("FirstLowercaseText"), "") { TextInsertionIndex = suggestionToken.PlacementIndex });
                                 break;
                         }
                         break;
@@ -627,7 +449,7 @@ namespace RegexerUIV2
 
             bool AlreadyAddedP(Structure structure) => AlreadyAdded(TokenName.Pattern, structure);
 
-            string TypeTextHere(ReadOnlySpan<char> text) => $"(Type {text} here)";
+            static string TypeTextHere(ReadOnlySpan<char> text) => $"(Type {text} here)";
 
             static string GetResource(string name) => Resources.ResourceManager.GetString(name);
         }
@@ -661,24 +483,6 @@ namespace RegexerUIV2
         }
     }
 
-    public class IntellisenseData
-    {
-        public IntellisenseData(string match, bool dontShow = false)
-        {
-            Match = match;
-            DontShow = dontShow;
-        }
-
-        public string Match { get; set; }
-        public SuggestionItem[] SuggestionItems { get; set; }
-        public bool DontShow { get; set; } //These suggestions will not be shown automatically. User will have to trigger them manually by pressing Ctrl+Space
-
-        public override string ToString()
-        {
-            return Match;
-        }
-    }
-
     public class SuggestionItem(string suggestion, string textToInsert, string tipTitle, string tipText)
     {
         public SuggestionItem(string suggestion, string textToInsert) : this(suggestion, textToInsert, string.Empty, string.Empty)
@@ -690,8 +494,6 @@ namespace RegexerUIV2
         public int? TextInsertionIndex { get; set; }
         public string TipTitle { get; set; } = tipTitle;
         public string TipText { get; set; } = tipText;
-        public IntellisenseData? IntellisenseData { get; set; }
-        public Func<GroupCollection, bool>? ShouldHide { get; set; }
 
         public override string ToString()
         {
