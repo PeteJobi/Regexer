@@ -74,8 +74,9 @@ namespace RegexerV2
         };
 
         private static readonly Reference SingleLineStructuresWithoutMultiLine = new(SingleLineStructures,
-        [ //Remove MultiLine
-            new Modification([.. SingleLineStructureToAnyPatternPath, "2"], new ArrayItemValue([], ArrayItemAction.Remove))
+        [ //Remove MultiLine and StartOrEndOfPattern
+            new Modification([.. SingleLineStructureToAnyPatternPath, "2"], new ArrayItemValue([], ArrayItemAction.Remove)),
+            new Modification([.. SingleLineStructureToAnyPatternPath, "3"], new ArrayItemValue([], ArrayItemAction.Remove)),
         ]);
         private static readonly Vary MatchMultipleSingleLineStructures = new(StructureQuantifier.ZERO_OR_ONE, new And
         {
@@ -165,6 +166,82 @@ namespace RegexerV2
                 CloserSymbol
             ]
         }){ Name = TokenName.UnorderedGroup };
+
+        private static FreeText MatchIndexDigits => new(FreeTextType.DIGITS, CommaSymbol, Demarcate3Symbol) { MustNotBeEmpty = true };
+        private static readonly And MatchIndexReplace = new()
+        {
+            Name = TokenName.KeyPattern,
+            Contents =
+            [
+                OpenerSymbol,
+                new Symbol("#"),
+                new Vary(StructureQuantifier.ZERO_OR_ONE, new Or
+                {
+                    Contents = [
+                        new And
+                        {
+                            Name = TokenName.Evaluate,
+                            Contents = [
+                                DemarcateAfterLabelSymbol,
+                                new Modifier("e"),
+                                DemarcateSymbol,
+                                new FreeText(FreeTextType.EXPRESSION_WITH_I, CloserSymbol){ MustNotBeEmpty = true }
+                            ]
+                        },
+                        new And
+                        {
+                            Name = TokenName.Addition,
+                            Contents = [
+                                DemarcateAfterLabelSymbol,
+                                new Modifier("a"),
+                                DemarcateSymbol,
+                                new Or
+                                {
+                                    Contents = [
+                                        new OneOrMoreNoRepeat
+                                        {
+                                            Name = TokenName.StartMiddleEnd,
+                                            Contents = [new Modifier("x"), new Modifier("y"), new Modifier("z")]
+                                        },
+                                        new Vary(StructureQuantifier.ONE_OR_MORE, MatchIndexDigits){ Name = TokenName.Indices, Separator = CommaSymbol },
+                                        new And
+                                        {
+                                            Name = TokenName.StartIntervalEnd,
+                                            Contents = [
+                                                new Modifier("s"),
+                                                new Symbol(":"),
+                                                MatchIndexDigits,
+                                                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                                                {
+                                                    Contents = [
+                                                        CommaSymbol,
+                                                        new Modifier("+"),
+                                                        new Symbol(":"),
+                                                        MatchIndexDigits
+                                                    ]
+                                                }),
+                                                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                                                {
+                                                    Contents = [
+                                                        CommaSymbol,
+                                                        new Modifier("e"),
+                                                        new Symbol(":"),
+                                                        MatchIndexDigits
+                                                    ]
+                                                })
+                                            ]
+                                        }
+                                    ]
+                                },
+                                Demarcate2Symbol,
+                                SingleLineStructuresReplace
+                            ]
+                        }
+                    ]
+                }),
+                CloserSymbol
+            ]
+        };
 
         private static readonly And Pattern = new()
         {
@@ -405,7 +482,15 @@ namespace RegexerV2
             [
                 Demarcate3Symbol,
                 new Reference(SingleLineStructuresReplace, [
-                    new Modification(SingleLineStructureToAnyPatternPath, new Structure[] { PatternReplace })
+                    new Modification(SingleLineStructureToAnyPatternPath, new Structure[] { 
+                        PatternReplace,
+                        new Reference(MatchIndexReplace, [
+                            new Modification([nameof(And.Contents), "1"], new Or { Contents = [new Symbol("##"), new Symbol("#")] }),
+                            new Modification([nameof(And.Contents), "3", nameof(Vary.Content), nameof(And.Contents), "5"], new Reference(SingleLineStructuresReplace, [
+                                new Modification(SingleLineStructureToAnyPatternPath, new Structure[] { PatternReplace }) //Replace SingleLineStructuresReplace in the MatchIndexReplace with a version that only allows PatternReplace
+                            ])),
+                        ])
+                    })
                 ])
             ]
         });
@@ -471,21 +556,21 @@ namespace RegexerV2
 
         private static readonly Or AnyPattern = new() { Contents = [Pattern, Unordered, MultiLine, StartOrEndOfPattern] };
 
-        private static readonly Or AnyPatternReplace = new() { Contents = [PatternReplace, MatchMultipleReplace, UnorderedReplace, MultiLineReplace] };
+        private static readonly Or AnyPatternReplace = new() { Contents = [PatternReplace, MatchMultipleReplace, UnorderedReplace, MultiLineReplace, MatchIndexReplace] };
 
         public static readonly Vary FindStructure = new (StructureQuantifier.ZERO_OR_MORE, new Or
-        {
-            Contents = [
-                MultiLine,
-                new And //Other patterns
                 {
-                    Contents =
-                    [
-                        new FreeText(FreeTextType.PRE_PATTERN_TEXT, OpenerSymbol, NewLineSymbol){ Name = TokenName.FreeText },
-                        ZeroOrOneAnyPatterns
+                    Contents = [
+                        MultiLine,
+                        new And //Other patterns
+                        {
+                            Contents =
+                            [
+                                new FreeText(FreeTextType.PRE_PATTERN_TEXT, OpenerSymbol, NewLineSymbol){ Name = TokenName.FreeText },
+                                ZeroOrOneAnyPatterns
+                            ]
+                        }
                     ]
-                }
-            ]
         });
 
         public static readonly Vary ReplaceStructure = new(StructureQuantifier.ZERO_OR_MORE, new Or
@@ -634,7 +719,7 @@ namespace RegexerV2
         {
             None, FreeText, PlainText, Pattern, KeyPattern, Label, RestrictionQuantifierNewLine, ExactAmountQuantifier, MaxAmountQuantifier, Optional, Symbol, Modifier, MultiLine, Unordered, UnorderedGroup, Opener, Closer, Demarcate, Demarcate2,
             Demarcate3, SingleLineStructure, MatchMultiple, MatchMultipleReplace, MatchMultipleReorder, MatchMultipleSortByCapture, MatchMultipleMatch, MultiLineReplace, MultiLineMatch, Duplicate, DuplicateSeparator, Capitalize, Evaluate,
-            DemarcateAfterLabel, Quantifier
+            DemarcateAfterLabel, Quantifier, StartMiddleEnd, StartIntervalEnd, Indices, Addition
         }
         public class Token
         {
