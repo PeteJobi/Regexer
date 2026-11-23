@@ -753,43 +753,14 @@ namespace RegexerV2
             else outputCaptures = outputIndieMatches[n.Index].Captures;
 
             var inputCaptures = matchCaptureData.Match.Groups[label].Captures;
-            var spreadAmount = inputCaptures.Count;
             const int sortIndex = 6;
             var singleLineIndex = 7;
-            int[] order = [.. Enumerable.Range(0, spreadAmount)];
+            int[] order = [.. Enumerable.Range(0, inputCaptures.Count)];
             var children = patternToken.Children;
             if (children.Count > sortIndex && children[sortIndex].Name == TokenName.MatchMultipleReorder)
             {
                 singleLineIndex = 8;
-                var sortParamsTokens = ((ComplexToken)children[sortIndex]).Children;
-                var paramCaptures = new List<CaptureCollection>();
-                var sortParams = new List<(int ArrayIndex, bool Ascending, bool IsDigit)>();
-                for (var i = 1; i < sortParamsTokens.Count; i += 2)
-                {
-                    if (sortParamsTokens[i].Name == TokenName.MatchMultipleSortByCapture)
-                    {
-                        var paramTokens = ((ComplexToken)sortParamsTokens[i]).Children;
-                        string captureLabel;
-                        if (paramTokens.Count > 2)
-                        {
-                            if (!matchCaptureData.Match.Groups.ContainsKey(paramTokens[2].Text)) continue;
-                            captureLabel = paramTokens[2].Text;
-                        }
-                        else captureLabel = label;
-                        paramCaptures.Add(matchCaptureData.Match.Groups[captureLabel].Captures);
-                        sortParams.Add((sortParams.Count, paramTokens[0].Text == ">", patternMap[captureLabel].IsDigit));
-                    }
-                    else
-                    {
-                        Array.Reverse(order);
-                        break;
-                    }
-                }
-
-                if (paramCaptures.Count > 0)
-                {
-                    order = SortMultiCriteria(paramCaptures, sortParams, spreadAmount);
-                }
+                GetMatchMultipleOrderIndices((ComplexToken)children[sortIndex], matchCaptureData, label, ref order);
             }
 
             var totalLength = 0;
@@ -824,6 +795,39 @@ namespace RegexerV2
             }
 
             return totalLength;
+        }
+
+        private void GetMatchMultipleOrderIndices(ComplexToken reorderToken, MatchCaptureData matchCaptureData, string patternLabel, ref int[] order)
+        {
+            var sortParamsTokens = reorderToken.Children;
+            var paramCaptures = new List<CaptureCollection>();
+            var sortParams = new List<(int ArrayIndex, bool Ascending, bool IsDigit)>();
+            for (var i = 1; i < sortParamsTokens.Count; i += 2)
+            {
+                if (sortParamsTokens[i].Name == TokenName.MatchMultipleSortByCapture && sortParamsTokens[i] is ComplexToken complexToken)
+                {
+                    var paramTokens = complexToken.Children;
+                    string captureLabel;
+                    if (paramTokens.Count > 2)
+                    {
+                        if (!matchCaptureData.Match.Groups.ContainsKey(paramTokens[2].Text)) continue;
+                        captureLabel = paramTokens[2].Text;
+                    }
+                    else captureLabel = patternLabel;
+                    paramCaptures.Add(matchCaptureData.Match.Groups[captureLabel].Captures);
+                    sortParams.Add((sortParams.Count, paramTokens[0].Text == ">", patternMap[captureLabel].IsDigit));
+                }
+                else
+                {
+                    Array.Reverse(order);
+                    break;
+                }
+            }
+
+            if (paramCaptures.Count > 0)
+            {
+                order = SortMultiCriteria(paramCaptures, sortParams, matchCaptureData.Match.Groups[patternLabel].Captures.Count);
+            }
         }
 
         private void ProcessFindMultiLineToken(string pattern, ComplexToken multiLineToken)
@@ -886,8 +890,8 @@ namespace RegexerV2
 
         private int ProcessReplaceMultiLineToken(string pattern, ComplexToken multiLineToken, MatchCaptureData matchCaptureData, List<IndividualMatch> outputIndieMatches, int outputOffset)
         {
-            var elements = multiLineToken.Children;
-            var label = pattern.Substring(elements[3].Index, elements[3].Length);
+            var children = multiLineToken.Children;
+            var label = pattern.Substring(children[3].Index, children[3].Length);
             if (!patternMap.TryGetValue(label, out var patternData) || !patternData.IsMultiLine)
             {
                 patternBuilder.Append(pattern.AsSpan(multiLineToken.Index, multiLineToken.Length)); //Use the pattern text as is
@@ -901,39 +905,64 @@ namespace RegexerV2
             if (n.DidNotExist) outputIndieMatches.Insert(n.Index, new IndividualMatch(label, outputCaptures));
             else outputCaptures = outputIndieMatches[n.Index].Captures;
 
-            var spaceStartIndexOffset = pattern[elements[0].Index] == '\r' && pattern[elements[0].Index + 1] == '\n' ? 2 : 0;
-            var precedingSpace = pattern.AsSpan(elements[0].Index + spaceStartIndexOffset, elements[0].Length - spaceStartIndexOffset);
-
-            var outputStart = multiLineToken.Index + outputOffset;
-            for (var i = 0; i < lineCaptures.Count; i++)
+            const int sortIndex = 6;
+            var singleLineIndex = 7;
+            int[] order = [.. Enumerable.Range(0, lineCaptures.Count)];
+            if (children.Count > sortIndex && children[sortIndex].Name == TokenName.MatchMultipleReorder)
             {
-                var outputLength = 0;
-                if (i > 0 || spaceStartIndexOffset > 0)
+                singleLineIndex = 8;
+                GetMatchMultipleOrderIndices((ComplexToken)children[sortIndex], matchCaptureData, $"{label}Lines", ref order);
+            }
+
+            var spaceStartIndexOffset = pattern[children[0].Index] == '\r' && pattern[children[0].Index + 1] == '\n' ? 2 : 0;
+            var precedingSpace = pattern.AsSpan(children[0].Index + spaceStartIndexOffset, children[0].Length - spaceStartIndexOffset);
+
+            var totalLength = 0;
+            foreach (var s in order)
+            {
+                var whiteSpaceLength = 0;
+                if (s != order[0] || spaceStartIndexOffset > 0)
                 {
                     patternBuilder.AppendLine();
-                    outputLength += 2;
+                    whiteSpaceLength += 2;
                 }
                 if (hasNewLine || hasMl)
                 {
                     patternBuilder.Append(matchCaptureData.Match.Groups[PrefixSpaceLabel].Value);
-                    outputLength += matchCaptureData.Match.Groups[PrefixSpaceLabel].Length;
+                    whiteSpaceLength += matchCaptureData.Match.Groups[PrefixSpaceLabel].Length;
                 }
-                var line = lineCaptures[i];
                 patternBuilder.Append(precedingSpace);
-                outputLength += precedingSpace.Length;
-                var outputLineStart = outputLength;
-                outputLength += ProcessReplaceFreeText(pattern, (FreeTextToken)elements[1], matchCaptureData.Match/*, outputOffset - elements[1].Index + multiLineToken.Index*/);
-                patternBuilder.Append(line.Value);
-                outputLength += line.Length + ProcessReplaceFreeText(pattern, (FreeTextToken)elements[7], matchCaptureData.Match/*, outputOffset - elements[7].Index + multiLineToken.Index*/);
-                var outputLineLength = outputLength - outputLineStart;
-                patternBuilder.Append(pattern.AsSpan(elements[8].Index, elements[8].Length));
-                outputLength += elements[8].Length;
-                outputCaptures.Add(new MatchData(outputStart + outputLineStart, outputLineLength,
-                    patternBuilder.ToString(outputStart + outputLineStart, outputLineLength)));
-                outputStart += outputLength;
+                whiteSpaceLength += precedingSpace.Length;
+                var outputMatchData = new MatchData(totalLength + multiLineToken.Index + whiteSpaceLength + outputOffset, 0, string.Empty);
+                outputCaptures.Add(outputMatchData);
+                outputMatchData.Length += ProcessReplaceFreeText(pattern, (FreeTextToken)children[1], matchCaptureData.Match);
+
+                if (children.Count - 3 > singleLineIndex)
+                {
+                    var offset = -outputMatchData.Length;
+                    for (var i = singleLineIndex; i < children.Count - 3; i++)
+                    {
+                        var singleLineToken = (ComplexToken)children[i];
+                        var length = ProcessReplaceFullStructure(pattern, singleLineToken.Children, matchCaptureData with { CaptureIndex = s },
+                            outputIndieMatches, outputMatchData.Index - children[singleLineIndex].Index - offset);
+                        offset += singleLineToken.Length - length;
+                        outputMatchData.Length += length;
+                    }
+                }
+                else
+                {
+                    patternBuilder.Append(lineCaptures[s]);
+                    outputMatchData.Length += lineCaptures[s].Length;
+                }
+
+                outputMatchData.Length += ProcessReplaceFreeText(pattern, (FreeTextToken)children[^2], matchCaptureData.Match);
+                outputMatchData.Text = patternBuilder.ToString(outputMatchData.Index, outputMatchData.Length);
+                patternBuilder.Append(pattern.AsSpan(children[^1].Index, children[^1].Length));
+                whiteSpaceLength += children[^1].Length;
+                totalLength += outputMatchData.Length + whiteSpaceLength;
             }
 
-            return outputStart - (multiLineToken.Index + outputOffset);
+            return totalLength;
         }
 
         private readonly StringBuilder tempPatternBuilder = new();
