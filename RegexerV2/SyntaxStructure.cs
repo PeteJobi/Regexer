@@ -445,7 +445,31 @@ namespace RegexerV2
             ]
         };
 
-        private static readonly Or AnyPattern = new() { Contents = [Pattern, Unordered, MultiLine] };
+        private static readonly Or StartOrEndOfPattern = new()
+        {
+            Contents = [
+                new Anchor(AnchorType.START_OF_PATTERN, new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                {
+                    Name = TokenName.KeyPattern,
+                    Contents = [
+                        OpenerSymbol,
+                        new Symbol("^"),
+                        CloserSymbol
+                    ]
+                })),
+                new Anchor(AnchorType.END_OF_PATTERN, new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                {
+                    Name = TokenName.KeyPattern,
+                    Contents = [
+                        OpenerSymbol,
+                        new Symbol("$"),
+                        CloserSymbol
+                    ]
+                }))
+            ]
+        };
+
+        private static readonly Or AnyPattern = new() { Contents = [Pattern, Unordered, MultiLine, StartOrEndOfPattern] };
 
         private static readonly Or AnyPatternReplace = new() { Contents = [PatternReplace, MatchMultipleReplace, UnorderedReplace, MultiLineReplace] };
 
@@ -486,12 +510,6 @@ namespace RegexerV2
             ReplaceStructure.Content = ScanTreeToResolveReferences(ReplaceStructure.Content, []);
         }
 
-        private class Reference(Structure referenceNode, Modification[] modifications) : Structure
-        {
-            public readonly Structure CurrentNode = referenceNode;
-            public readonly Modification[] Modifications = modifications;
-        }
-
         private static Structure ScanTreeToResolveReferences(Structure structure, HashSet<Structure> alreadyResolved)
         {
             switch (structure)
@@ -528,6 +546,7 @@ namespace RegexerV2
         }
         public enum StructureQuantifier { ZERO_OR_ONE, ZERO_OR_MORE, ONE_OR_MORE }
         public enum WhitespaceType { NONE, START_OF_LINE, END_OF_LINE }
+        public enum AnchorType { START_OF_PATTERN, END_OF_PATTERN }
 
         public class Structure
         {
@@ -594,11 +613,28 @@ namespace RegexerV2
             public required Structure[] Contents { get; set; }
             public override string ToString() => Name == TokenName.SingleLineStructure ? nameof(SingleLineStructures) : string.Join<Structure>(", ", Contents);
         }
+        public class Anchor(AnchorType type, Structure content) : Structure
+        {
+            public AnchorType Type { get; set; } = type;
+            public Structure Content { get; set; } = content;
+            public override string ToString() => Type switch
+            {
+                AnchorType.START_OF_PATTERN => $"^({Content})",
+                AnchorType.END_OF_PATTERN => $"({Content})$",
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+        private class Reference(Structure referenceNode, Modification[] modifications) : Structure
+        {
+            public readonly Structure CurrentNode = referenceNode;
+            public readonly Modification[] Modifications = modifications;
+        }
 
         public enum TokenName
         {
-            None, FreeText, PlainText, Pattern, Label, RestrictionQuantifierNewLine, ExactAmountQuantifier, MaxAmountQuantifier, Optional, Symbol, Modifier, MultiLine, Unordered, UnorderedGroup, Opener, Closer, Demarcate, Demarcate2, Demarcate3, SingleLineStructure,
-            MatchMultiple, MatchMultipleReplace, MatchMultipleReorder, MatchMultipleSortByCapture, MatchMultipleMatch, MultiLineReplace, MultiLineMatch, Duplicate, DuplicateSeparator, Capitalize, Evaluate, DemarcateAfterLabel, Quantifier
+            None, FreeText, PlainText, Pattern, KeyPattern, Label, RestrictionQuantifierNewLine, ExactAmountQuantifier, MaxAmountQuantifier, Optional, Symbol, Modifier, MultiLine, Unordered, UnorderedGroup, Opener, Closer, Demarcate, Demarcate2,
+            Demarcate3, SingleLineStructure, MatchMultiple, MatchMultipleReplace, MatchMultipleReorder, MatchMultipleSortByCapture, MatchMultipleMatch, MultiLineReplace, MultiLineMatch, Duplicate, DuplicateSeparator, Capitalize, Evaluate,
+            DemarcateAfterLabel, Quantifier
         }
         public class Token
         {

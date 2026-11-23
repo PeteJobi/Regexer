@@ -11,7 +11,7 @@ namespace RegexerV2
     {
         private bool _exactWhiteSpace;
         private readonly TimeSpan _regexTimeout;
-        private bool hasNewLine, hasMl;
+        private bool hasNewLine, hasMl, hasSol;
         private readonly Parser _parser = new();
         private const string PrefixSpaceLabel = "__space__";
         private readonly StringBuilder patternBuilder = new();
@@ -52,10 +52,10 @@ namespace RegexerV2
 
             patternBuilder.Clear();
             patternMap.Clear();
-            hasNewLine = hasMl = false;
+            hasNewLine = hasMl = hasSol = false;
             ProcessFindFullStructure(find, patternStructure);
-            //if (hasNewLine || hasMl) patternBuilder.Insert(0, $@"(?<=(?:^|\n))(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
             if (hasNewLine || hasMl) patternBuilder.Insert(0, $@"(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
+            if(hasSol) patternBuilder.Insert(0, @"(?<=(?:^|\n))".AsSpan());
             find = patternBuilder.ToString();
             var matches = Regex.Matches(input, find, RegexOptions.None, _regexTimeout);
             try
@@ -137,6 +137,9 @@ namespace RegexerV2
                     case ComplexToken complexToken:
                         switch (complexToken.Name)
                         {
+                            case TokenName.KeyPattern:
+                                ProcessFindKeyPattern(pattern, complexToken);
+                                break;
                             case TokenName.Pattern:
                                 ProcessFindPatternToken(pattern, complexToken);
                                 break;
@@ -168,6 +171,9 @@ namespace RegexerV2
                     case ComplexToken complexToken:
                         switch (complexToken.Name)
                         {
+                            case TokenName.KeyPattern:
+                                length = ProcessReplaceKeyPattern(pattern, complexToken, matchCaptureData, outputIndieMatches, outputOffset);
+                                break;
                             case TokenName.Pattern:
                                 length = ProcessReplacePatternToken(pattern, complexToken, matchCaptureData, outputIndieMatches, outputOffset);
                                 break;
@@ -309,6 +315,20 @@ namespace RegexerV2
         }
 
         private ReadOnlySpan<char> NewLineWithPrefixSpace() => $"\r\n\\k<{PrefixSpaceLabel}>".AsSpan();
+
+        private void ProcessFindKeyPattern(string pattern, ComplexToken keyPatternToken)
+        {
+            var content = pattern.AsSpan(keyPatternToken.Children[1].Index, keyPatternToken.Children[1].Length);
+            switch (content)
+            {
+                case "^":
+                    hasSol = true;
+                    return;
+                case "$":
+                    patternBuilder.Append(@"(?=($|\r))");
+                    return;
+            }
+        }
 
         private void ProcessFindPatternToken(string pattern, ComplexToken patternToken)
         {

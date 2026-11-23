@@ -231,6 +231,23 @@ namespace RegexerV2
 
                         Token CreateToken() => new() { Index = index, Length = pos - index, Text = input.Substring(index, pos - index), Name = whitespace.Name };
                     }
+                case Anchor anchor:
+                    {
+                        switch (anchor.Type)
+                        {
+                            case AnchorType.START_OF_PATTERN:
+                                return index != start ? (null, []) : ParsePatternWithSuggestions(input, start, end, index, [anchor.Content], 0, withSuggestions);
+                            case AnchorType.END_OF_PATTERN:
+                                var token = ParsePatternWithSuggestions(input, start, end, index, [anchor.Content], 0, withSuggestions);
+                                var tokenLength = token.AlreadyTyped?.Sum(t => t.Length) ?? 0;
+                                return token with
+                                {
+                                    AlreadyTyped = index + tokenLength != end ? null : token.AlreadyTyped
+                                };
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }
                 case FreeText freeText:
                     {
                         if (index > end) return (null, [new SuggestionToken(freeText)]);
