@@ -182,6 +182,7 @@ namespace RegexerUIV2
                                     textBox.GetRange(complexToken.Index, complexToken.Index + complexToken.Length).SetStyle(_allStyles[Style.BaseLight]);
                                     break;
                                 case SyntaxStructure.TokenName.Pattern:
+                                case SyntaxStructure.TokenName.KeyPattern:
                                 case SyntaxStructure.TokenName.MatchMultiple:
                                     textBox.GetRange(complexToken.Index, complexToken.Index + complexToken.Length).SetStyle(BaseStyleIndex);
                                     break;

@@ -16,6 +16,7 @@ namespace RegexerUIV2
         private readonly Func<List<SuggestionToken>> _getSuggestionTokens;
         private readonly Func<bool> _showOnCommand;
         private bool _shouldRefreshLabelSuggestions;
+        private readonly HashSet<(TokenName, Structure)> _uniqueSuggestionTokens;
 
         public Intellisense(FastColoredTextBox textBox, AutocompleteMenu autocompleteMenu, bool isReplace,
             Func<IEnumerable<string>> getTypedLabels, Func<List<SuggestionToken>> getSuggestionTokens, Func<bool> showOnCommand)
@@ -43,6 +44,23 @@ namespace RegexerUIV2
                     : _textBox.Selection.Start;
                 _autocompleteMenu.Fragment.End = _textBox.Selection.End;
             };
+
+            var suggestionTokensComparer = EqualityComparer<(TokenName, Structure)>.Create(
+                equals: (a, b) =>
+                {
+                    if (a.Item1 == b.Item1 && ReferenceEquals(a.Item2, b.Item2)) return true;
+                    //if (a.Item1 is null || b.Item1 is null) return false;
+                    //return CollectionsMarshal.AsSpan(a.Item1).SequenceEqual(CollectionsMarshal.AsSpan(b.Item1))
+                    return a.Item1 == b.Item1 && a.Item2.ToString() == b.Item2.ToString();
+                },
+                getHashCode: token =>
+                {
+                    var hash = new HashCode();
+                    hash.Add(token.Item1.ToString());
+                    hash.Add(token.Item2.ToString());
+                    return hash.ToHashCode();
+                });
+            _uniqueSuggestionTokens = new HashSet<(TokenName, Structure)>(suggestionTokensComparer);
         }
 
         public IEnumerator<AutocompleteItem> GetEnumerator()
@@ -67,12 +85,10 @@ namespace RegexerUIV2
             return GetEnumerator();
         }
 
-        private readonly FreeText dummyLabelStructure = new(FreeTextType.LABEL);
         private List<SuggestionItem> GetSuggestionItems()
         {
             var suggestionTokens = _getSuggestionTokens();
             var allSuggestions = new List<SuggestionItem>();
-            var alreadyAdded = new HashSet<(TokenName, Structure)>();
 
             foreach (var suggestionToken in suggestionTokens)
             {
@@ -82,14 +98,14 @@ namespace RegexerUIV2
                         switch (freeTextToken.Type)
                         {
                             case FreeTextType.LABEL:
-                                if (AlreadyAddedP(dummyLabelStructure)) break;
+                                if (AlreadyAddedP(freeTextToken)) break;
                                 allSuggestions.Add(new SuggestionItem(TypeTextHere("match label"), string.Empty));
                                 if (!_isReplace) break;
                                 var labelSuggestions = GetLabelSuggestion(suggestionToken.LabelFreeTextEnteredSoFar, suggestionToken.PlacementIndex);
                                 allSuggestions.AddRange(labelSuggestions);
                                 break;
                             case FreeTextType.DIGITS:
-                                if (AlreadyAdded(suggestionToken.Ancestors[^1], freeTextToken)) break;
+                                if (AlreadyAdded(suggestionToken.Ancestors, freeTextToken)) break;
                                 switch (suggestionToken.Ancestors[^1])
                                 {
                                     case TokenName.ExactAmountQuantifier:
@@ -98,12 +114,18 @@ namespace RegexerUIV2
                                     case TokenName.MaxAmountQuantifier:
                                         allSuggestions.Add(new SuggestionItem(TypeTextHere("maximum amount"), string.Empty));
                                         break;
+                                    case TokenName.Indices:
+                                        allSuggestions.Add(new SuggestionItem(TypeTextHere("match number"), string.Empty));
+                                        break;
+                                    case TokenName.StartIntervalEnd:
+                                        allSuggestions.Add(new SuggestionItem(TypeTextHere("number"), string.Empty));
+                                        break;
                                     default:
                                         throw new ArgumentOutOfRangeException();
                                 }
                                 break;
                             case FreeTextType.PLAIN_TEXT:
-                                if (AlreadyAdded(suggestionToken.Ancestors[^1], freeTextToken)) break;
+                                if (AlreadyAdded(suggestionToken.Ancestors, freeTextToken)) break;
                                 switch (suggestionToken.Ancestors[^1])
                                 {
                                     case TokenName.Pattern:
@@ -118,27 +140,26 @@ namespace RegexerUIV2
                                         throw new ArgumentOutOfRangeException();
                                 }
                                 break;
-                            case FreeTextType.EXPRESSION_WITH_IM:
+                            case FreeTextType.EXPRESSION_WITH_IC or FreeTextType.EXPRESSION_WITH_ICJD or FreeTextType.EXPRESSION_WITH_ICJDM:
+                                if (AlreadyAdded(suggestionToken.Ancestors, freeTextToken)) break;
                                 allSuggestions.Add(new SuggestionItem(TypeTextHere("new number/expression"), string.Empty));
-                                allSuggestions.Add(new SuggestionItem("m <Original match value>", "m", GetResource("MatchValueTitle"), GetResource("MatchValueText")));
-                                allSuggestions.Add(new SuggestionItem("i <Index of match>", "i", GetResource("MatchIndexTitle"), GetResource("MatchIndexText")));
+                                if (freeTextToken.Type == FreeTextType.EXPRESSION_WITH_ICJDM) allSuggestions.Add(new SuggestionItem("m (Original match value)", "m", GetResource("MatchValueTitle"), GetResource("MatchValueText")));
+                                allSuggestions.Add(new SuggestionItem("i (Index of match)", "i", GetResource("MatchIndexText"), string.Empty));
+                                allSuggestions.Add(new SuggestionItem("c (Number of matches)", "c", GetResource("MatchCountText"), string.Empty));
+                                if (freeTextToken.Type is FreeTextType.EXPRESSION_WITH_ICJD or FreeTextType.EXPRESSION_WITH_ICJDM)
+                                {
+                                    allSuggestions.Add(new SuggestionItem("j (Index of sub-match)", "j", GetResource("SubMatchIndexText"), string.Empty));
+                                    allSuggestions.Add(new SuggestionItem("d (Number of sub-matches)", "d", GetResource("SubMatchCountText"), string.Empty));
+                                }
                                 allSuggestions.Add(new SuggestionItem("+", "+", GetResource("AdditionText"), string.Empty));
                                 allSuggestions.Add(new SuggestionItem("-", "-", GetResource("SubtractionText"), string.Empty));
                                 allSuggestions.Add(new SuggestionItem("*", "*", GetResource("MultiplicationText"), string.Empty));
                                 allSuggestions.Add(new SuggestionItem("/", "/", GetResource("DivisionText"), string.Empty));
                                 allSuggestions.Add(new SuggestionItem("%", "%", GetResource("ModuloText"), string.Empty));
                                 break;
-                            case FreeTextType.EXPRESSION_WITH_I:
-                                allSuggestions.Add(new SuggestionItem(TypeTextHere("duplication amount/expression"), string.Empty));
-                                allSuggestions.Add(new SuggestionItem("i <Index of match>", "i", GetResource("MatchIndexTitle"), GetResource("MatchIndexText")));
-                                allSuggestions.Add(new SuggestionItem("+", "+", GetResource("AdditionText"), string.Empty));
-                                allSuggestions.Add(new SuggestionItem("-", "-", GetResource("SubtractionText"), string.Empty));
-                                allSuggestions.Add(new SuggestionItem("*", "*", GetResource("MultiplicationText"), string.Empty));
-                                allSuggestions.Add(new SuggestionItem("/", "/", GetResource("DivisionText"), string.Empty));
-                                allSuggestions.Add(new SuggestionItem("%", "%", GetResource("ModuloText"), string.Empty));
                                 break;
                             case FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT:
-                                if (AlreadyAdded(suggestionToken.Ancestors[^1], freeTextToken)) break;
+                                if (AlreadyAdded(suggestionToken.Ancestors, freeTextToken)) break;
                                 switch (suggestionToken.Ancestors[^1])
                                 {
                                     case TokenName.Unordered:
@@ -151,6 +172,9 @@ namespace RegexerUIV2
                                     case TokenName.MatchMultipleReplace:
                                     case TokenName.MultiLineReplace:
                                         allSuggestions.Add(new SuggestionItem(TypeTextHere("replacement text"), string.Empty));
+                                        break;
+                                    case TokenName.Addition:
+                                        allSuggestions.Add(new SuggestionItem(TypeTextHere("additional text"), string.Empty));
                                         break;
                                     case TokenName.MultiLine:
                                         //This is 'replace' version of multiline (see MultiLineReplace). No need to suggest that single line text can appear before the multiline
@@ -165,7 +189,7 @@ namespace RegexerUIV2
                         switch (whitespace.Type)
                         {
                             case WhitespaceType.END_OF_LINE:
-                                if (AlreadyAdded(suggestionToken.Ancestors[^1], whitespace)) break;
+                                if (AlreadyAdded(suggestionToken.Ancestors, whitespace)) break;
                                 allSuggestions.Add(new SuggestionItem("(Enter new line)", "\r\n", string.Empty, string.Empty));
                                 break;
                             //default:
@@ -184,12 +208,14 @@ namespace RegexerUIV2
                                 break;
                             case TokenName.DemarcateAfterLabel:
                                 if(AlreadyAddedP(symbol)) break;
-                                allSuggestions.Add(_isReplace
+                                if (suggestionToken.Ancestors[0] == TokenName.KeyPattern)
+                                    allSuggestions.Add(new SuggestionItem("| <Match number modifiers>", symbol.Value, GetResource("MatchNumModifierTitle"), GetResource("MatchNumModifierText")));
+                                else allSuggestions.Add(_isReplace
                                     ? new SuggestionItem("| <Replace modifiers>", symbol.Value, GetResource("ReplaceModifierTitle"), GetResource("ReplaceModifierText"))
                                     : new SuggestionItem("| <Modifiers>", symbol.Value, GetResource("ModifierTitle"), GetResource("ModifierText")));
                                 break;
                             case TokenName.Demarcate:
-                                if (AlreadyAdded(suggestionToken.Ancestors[^1], symbol)) break;
+                                if (AlreadyAdded(suggestionToken.Ancestors, symbol)) break;
                                 switch (suggestionToken.Ancestors[^1])
                                 {
                                     case TokenName.Unordered:
@@ -217,7 +243,9 @@ namespace RegexerUIV2
                                         allSuggestions.Add(new SuggestionItem("| <Capitalization type>", symbol.Value, GetResource("CapitalizationTitle"), GetResource("CapitalizationText")));
                                         break;
                                     case TokenName.Evaluate:
-                                        allSuggestions.Add(new SuggestionItem("| <Expression>", symbol.Value, GetResource("ReplaceNumberTitle"), GetResource("ReplaceNumberText")));
+                                        allSuggestions.Add(suggestionToken.Ancestors[0] == TokenName.KeyPattern
+                                            ? new SuggestionItem("| <Expression>", symbol.Value, GetResource("ReplaceMatchNumberTitle"), GetResource("ReplaceMatchNumberText"))
+                                            : new SuggestionItem("| <Expression>", symbol.Value, GetResource("ReplaceNumberTitle"), GetResource("ReplaceNumberText")));
                                         break;
                                     case TokenName.MatchMultipleMatch:
                                         allSuggestions.Add(new SuggestionItem("| <Match>", symbol.Value, GetResource("MultipleMatchMatchTitle"), GetResource("MultipleMatchMatchText")));
@@ -228,12 +256,15 @@ namespace RegexerUIV2
                                     case TokenName.MultiLine:
                                         allSuggestions.Add(new SuggestionItem("| <Quantifier>", symbol.Value, GetResource("QuantifierTitle"), GetResource("QuantifierText")));
                                         break;
+                                    case TokenName.Addition:
+                                        allSuggestions.Add(new SuggestionItem("| <Match number selection>", "|", GetResource("MatchNumSelTitle"), GetResource("MatchNumSelText")));
+                                        break;
                                     default:
                                         throw new ArgumentOutOfRangeException();
                                 }
                                 break;
                             case TokenName.Demarcate2:
-                                if (AlreadyAdded(suggestionToken.Ancestors[^1], symbol)) break;
+                                if (AlreadyAdded(suggestionToken.Ancestors, symbol)) break;
                                 switch (suggestionToken.Ancestors[^1])
                                 {
                                     case TokenName.MatchMultiple:
@@ -248,6 +279,9 @@ namespace RegexerUIV2
                                     case TokenName.MultiLineReplace:
                                         allSuggestions.Add(new SuggestionItem("| <Replace text>", symbol.Value, GetResource("ReplaceMultiLineTitle"), GetResource("ReplaceMultiLineText")));
                                         break;
+                                    case TokenName.Addition:
+                                        allSuggestions.Add(new SuggestionItem("| <Addition text>", symbol.Value, GetResource("MatchNumAdditionTitle"), GetResource("MatchNumAdditionText")));
+                                        break;
                                     case TokenName.MatchMultipleMatch:
                                         allSuggestions.Add(new SuggestionItem("| <Match>", symbol.Value, GetResource("MultipleMatchMatchTitle"), GetResource("MultipleMatchMatchText")));
                                         break;
@@ -259,7 +293,7 @@ namespace RegexerUIV2
                                 }
                                 break;
                             case TokenName.Demarcate3:
-                                if (AlreadyAdded(suggestionToken.Ancestors[^1], symbol)) break;
+                                if (AlreadyAdded(suggestionToken.Ancestors, symbol)) break;
                                 switch (suggestionToken.Ancestors[^1])
                                 {
                                     case TokenName.MatchMultipleReplace:
@@ -279,7 +313,7 @@ namespace RegexerUIV2
                                 }
                                 break;
                             default:
-                                if (AlreadyAdded(suggestionToken.Ancestors[^1], symbol)) break;
+                                if (AlreadyAdded(suggestionToken.Ancestors, symbol)) break;
                                 switch (symbol.Value)
                                 {
                                     case "<":
@@ -337,10 +371,33 @@ namespace RegexerUIV2
                                         allSuggestions.Add(new SuggestionItem("<> (Reverse order)", symbol.Value, GetResource("MatchMultipleReverseTitle"), GetResource("MatchMultipleReverseText")));
                                         break;
                                     case ":":
-                                        allSuggestions.Add(new SuggestionItem(": <Sub-match label>", symbol.Value, GetResource("MatchMultipleSortByCaptureTitle"), GetResource("MatchMultipleSortByCaptureText")));
+                                        allSuggestions.Add(suggestionToken.Ancestors[^1] switch
+                                        {
+                                            TokenName.MatchMultipleSortByCapture => new SuggestionItem(": <Sub-match label>", symbol.Value, GetResource("MatchMultipleSortByCaptureTitle"), GetResource("MatchMultipleSortByCaptureText")),
+                                            TokenName.StartIntervalEnd => new SuggestionItem(": <Number>", symbol.Value),
+                                            _ => throw new ArgumentOutOfRangeException()
+                                        });
                                         break;
                                     case ",":
-                                        allSuggestions.Add(new SuggestionItem(", (Sort again)", symbol.Value, GetResource("MatchMultipleSortAgainTitle"), GetResource("MatchMultipleSortAgainText")));
+                                        allSuggestions.Add(suggestionToken.Ancestors[^1] switch
+                                        {
+                                            TokenName.MatchMultipleSortByCapture => new SuggestionItem(", (Sort again)", symbol.Value, GetResource("MatchMultipleSortAgainTitle"), GetResource("MatchMultipleSortAgainText")),
+                                            TokenName.Indices => new SuggestionItem(", (More match numbers)", symbol.Value),
+                                            TokenName.StartIntervalEnd => new SuggestionItem(", (Interval and/or end match number)", symbol.Value, GetResource("MatchIntervalEndText"), string.Empty),
+                                            _ => throw new ArgumentOutOfRangeException()
+                                        });
+                                        break;
+                                    case "^":
+                                        allSuggestions.Add(new SuggestionItem("^ (Start of line)", "^]]", GetResource("StartOfLineTitle"), GetResource("StartOfLineText")));
+                                        break;
+                                    case "$":
+                                        allSuggestions.Add(new SuggestionItem("$ (End of line)", "$]]", GetResource("EndOfLineTitle"), GetResource("EndOfLineText")));
+                                        break;
+                                    case "#":
+                                        allSuggestions.Add(new SuggestionItem("# (Match number)", symbol.Value, GetResource("MatchNumberTitle"), GetResource("MatchNumberText")));
+                                        break;
+                                    case "##":
+                                        allSuggestions.Add(new SuggestionItem("## (Sub-match number)", symbol.Value, GetResource("SubMatchNumberTitle"), GetResource("SubMatchNumberText")));
                                         break;
                                     default:
                                         throw new ArgumentOutOfRangeException();
@@ -349,7 +406,7 @@ namespace RegexerUIV2
                         }
                         break;
                     case Modifier modifier:
-                        if (AlreadyAdded(suggestionToken.Ancestors[^1], modifier)) break;
+                        if (AlreadyAdded(suggestionToken.Ancestors, modifier)) break;
                         switch (modifier.Value)
                         {
                             case "ml":
@@ -401,9 +458,12 @@ namespace RegexerUIV2
                                     : new SuggestionItem("d (Digit)", "d", GetResource("DigitTitle"), GetResource("DigitText")));
                                 break;
                             case "s":
-                                allSuggestions.Add(_isReplace
-                                    ? new SuggestionItem("s (Sentence case)", "s]]", GetResource("SentenceText"), "")
-                                    : new SuggestionItem("s (Whitespace)", "s", GetResource("SpaceTitle"), GetResource("SpaceText")));
+                                allSuggestions.Add(suggestionToken.Ancestors[^1] switch {
+                                    TokenName.Capitalize => new SuggestionItem("s (Sentence case)", "s]]", GetResource("SentenceText"), ""),
+                                    TokenName.RestrictionQuantifierNewLine => new SuggestionItem("s (Whitespace)", "s", GetResource("SpaceTitle"), GetResource("SpaceText")),
+                                    TokenName.StartIntervalEnd => new SuggestionItem("s < Start number>", "s:", GetResource("MatchStartNumText"), string.Empty),
+                                    _ => throw new ArgumentOutOfRangeException()
+                                });
                                 break;
                             case "g":
                                 allSuggestions.Add(new SuggestionItem("g (Greedy)", "g", GetResource("GreedyTitle"), GetResource("GreedyText")));
@@ -413,6 +473,9 @@ namespace RegexerUIV2
                                     ? new SuggestionItem("l (Lowercase)", "l]]", GetResource("LowercaseText"), "")
                                     : new SuggestionItem("l (Include line breaks)", "l", GetResource("LBTitle"), GetResource("LBText")));
                                 break;
+                            case "a":
+                                allSuggestions.Add(new SuggestionItem("a <Match number selection> | <Addition text>", "a|", GetResource("MatchNumAdditionTitle"), GetResource("MatchNumAdditionText")));
+                                break;  
                             case "o":
                                 if(suggestionToken.Ancestors[^1] == TokenName.Optional)
                                     allSuggestions.Add(new SuggestionItem("o <Optional match>", "o|", GetResource("OptionalMatchTitle"), GetResource("OptionalMatchText")));
@@ -425,7 +488,14 @@ namespace RegexerUIV2
                                 allSuggestions.Add(new SuggestionItem("oi <Inverse replace text>", "oi|", GetResource("ReplaceInverseTitle"), GetResource("ReplaceInverseText")) { TextInsertionIndex = suggestionToken.PlacementIndex });
                                 break;
                             case "e":
-                                allSuggestions.Add(new SuggestionItem("e <New number>", "e|", GetResource("ReplaceNumberTitle"), GetResource("ReplaceNumberText")));
+                                if(suggestionToken.Ancestors[^1] == TokenName.StartIntervalEnd)
+                                    allSuggestions.Add(new SuggestionItem("e <End number>", "e:", GetResource("MatchEndNumText"), string.Empty));
+                                else allSuggestions.Add(suggestionToken.Ancestors[^2] switch
+                                    {
+                                        TokenName.Pattern => new SuggestionItem("e <New number>", "e|", GetResource("ReplaceNumberTitle"), GetResource("ReplaceNumberText")),
+                                        TokenName.KeyPattern => new SuggestionItem("e <New match number>", "e|", GetResource("ReplaceMatchNumberTitle"), GetResource("ReplaceMatchNumberText")),
+                                        _ => throw new ArgumentOutOfRangeException()
+                                    });
                                 break;
                             case "c":
                                 allSuggestions.Add(new SuggestionItem("c <Capitalization>", "c|", GetResource("CapitalizationTitle"), GetResource("CapitalizationText")));
@@ -436,21 +506,35 @@ namespace RegexerUIV2
                             case "fl":
                                 allSuggestions.Add(new SuggestionItem("fl (First letter lowercase)", "fl]]", GetResource("FirstLowercaseText"), "") { TextInsertionIndex = suggestionToken.PlacementIndex });
                                 break;
+                            case "x":
+                                allSuggestions.Add(new SuggestionItem("x (Select first match)", modifier.Value, GetResource("MatchSelectFirstText"), string.Empty));
+                                break;
+                            case "y":
+                                allSuggestions.Add(new SuggestionItem("y (Select between first and last match)", modifier.Value, GetResource("MatchSelectFirstToLastText"), string.Empty));
+                                break;
+                            case "z":
+                                allSuggestions.Add(new SuggestionItem("z (Select last match)", modifier.Value, GetResource("MatchSelectLastText"), string.Empty));
+                                break;
+                            case "+":
+                                allSuggestions.Add(new SuggestionItem("+ <Interval>", "+:", GetResource("MatchIntervalNumText"), string.Empty));
+                                break;
                         }
                         break;
                 }
             }
-            alreadyAdded.Clear();
+            _uniqueSuggestionTokens.Clear();
             return allSuggestions;
 
-            bool AlreadyAdded(TokenName tokenName, Structure structure)
+            bool AlreadyAdded(List<TokenName> tokenNames, Structure structure) => AlreadyAddedT(tokenNames[^1], structure);
+
+            bool AlreadyAddedT(TokenName tokenName, Structure structure)
             {
-                var exists = alreadyAdded.Contains((tokenName, structure));
-                if(!exists) alreadyAdded.Add((tokenName, structure));
+                var exists = _uniqueSuggestionTokens.Contains((tokenName, structure));
+                if (!exists) _uniqueSuggestionTokens.Add((tokenName, structure));
                 return exists;
             }
 
-            bool AlreadyAddedP(Structure structure) => AlreadyAdded(TokenName.Pattern, structure);
+            bool AlreadyAddedP(Structure structure) => AlreadyAddedT(TokenName.Pattern, structure);
 
             static string TypeTextHere(ReadOnlySpan<char> text) => $"(Type {text} here)";
 
