@@ -745,22 +745,23 @@ namespace RegexerV2
             }
 
             return EvaluateString(_evalBuilder.ToString());
-        }
-        private static int EvaluateString(string expression)
-        {
-            var exceptionMessage = $"Expression \"{expression}\" could not be evaluated.";
-            try
+
+            static int EvaluateString(string expression)
             {
-                var expr = new Expression(expression);
-                return expr.Evaluate<int>();
-            }
-            catch (NCalcParserException e)
-            {
-                throw new ArithmeticException(exceptionMessage, e);
-            }
-            catch (NCalcEvaluationException e)
-            {
-                throw new ArithmeticException(exceptionMessage, e);
+                var exceptionMessage = $"Expression \"{expression}\" could not be evaluated.";
+                try
+                {
+                    var expr = new Expression(expression);
+                    return expr.Evaluate<int>();
+                }
+                catch (NCalcParserException e)
+                {
+                    throw new ArithmeticException(exceptionMessage, e);
+                }
+                catch (NCalcEvaluationException e)
+                {
+                    throw new ArithmeticException(exceptionMessage, e);
+                }
             }
         }
 
@@ -827,15 +828,8 @@ namespace RegexerV2
                     return outputMatchData.Length;
 
                 case TokenName.Duplicate:
-                    _evalBuilder.Clear();
-                    for (var i = children[2].Index; i < children[2].Index + children[2].Length; i++)
-                    {
-                        var symbol = pattern[i];
-                        if (symbol == 'i') _evalBuilder.Append(matchCaptureData.MatchIndex + 1);
-                        else _evalBuilder.Append(symbol);
-                    }
-
-                    var duplicationAmount = EvaluateByte(_evalBuilder.ToString());
+                    var duplicationAmount = Evaluate(pattern, children[2], matchCaptureData.MatchIndex, matchCaptureData.CaptureIndex,
+                        matchCaptureData.MatchCount, matchCaptureData.CaptureCount, ReadOnlySpan<char>.Empty);
                     if (duplicationAmount == 0 || !TryGetCapture(out capture)) return 0;
                     patternBuilder.Append(capture.ValueSpan);
                     length = capture.Length;
@@ -904,17 +898,6 @@ namespace RegexerV2
                 }
                 capture = captures[matchCaptureData.CaptureIndex];
                 return true;
-            }
-
-            static byte EvaluateByte(string expression)
-            {
-                var evaluation = EvaluateString(expression);
-                if (evaluation > byte.MaxValue)
-                {
-                    throw new ArgumentOutOfRangeException("The maximum amount of duplications allowed is 255.", default(Exception));
-                }
-
-                return (byte)evaluation;
             }
         }
 
