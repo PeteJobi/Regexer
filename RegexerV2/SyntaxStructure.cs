@@ -185,7 +185,7 @@ namespace RegexerV2
                                 DemarcateAfterLabelSymbol,
                                 new Modifier("e"),
                                 DemarcateSymbol,
-                                new FreeText(FreeTextType.EXPRESSION_WITH_I, CloserSymbol){ MustNotBeEmpty = true }
+                                new FreeText(FreeTextType.EXPRESSION_WITH_IC, CloserSymbol){ MustNotBeEmpty = true }
                             ]
                         },
                         new And
@@ -396,7 +396,7 @@ namespace RegexerV2
                                     Contents = [
                                         new Modifier("d"),
                                         DemarcateSymbol,
-                                        new FreeText(FreeTextType.EXPRESSION_WITH_I, DemarcateSymbol, CloserSymbol){ MustNotBeEmpty = true },
+                                        new FreeText(FreeTextType.EXPRESSION_WITH_ICJD, DemarcateSymbol, CloserSymbol){ MustNotBeEmpty = true },
                                         new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                                         {
                                             SuggestionName = TokenName.DuplicateSeparator,
@@ -431,7 +431,7 @@ namespace RegexerV2
                                     Contents = [
                                         new Modifier("e"),
                                         DemarcateSymbol,
-                                        new FreeText(FreeTextType.EXPRESSION_WITH_IM, CloserSymbol){ MustNotBeEmpty = true },
+                                        new FreeText(FreeTextType.EXPRESSION_WITH_ICJDM, CloserSymbol){ MustNotBeEmpty = true },
                                     ]
                                 }
                             ]
@@ -627,7 +627,7 @@ namespace RegexerV2
 
         public enum FreeTextType
         {
-            PRE_PATTERN_TEXT, SINGLE_LINE_PRE_PATTERN_TEXT, LABEL, PLAIN_TEXT, DIGITS, EXPRESSION_WITH_I, EXPRESSION_WITH_IM
+            PRE_PATTERN_TEXT, SINGLE_LINE_PRE_PATTERN_TEXT, LABEL, PLAIN_TEXT, DIGITS, EXPRESSION_WITH_IC, EXPRESSION_WITH_ICJD, EXPRESSION_WITH_ICJDM
         }
         public enum StructureQuantifier { ZERO_OR_ONE, ZERO_OR_MORE, ONE_OR_MORE }
         public enum WhitespaceType { NONE, START_OF_LINE, END_OF_LINE }

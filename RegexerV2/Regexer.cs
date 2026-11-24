@@ -349,7 +349,7 @@ namespace RegexerV2
             switch (children[2].Name)
             {
                 case TokenName.Evaluate:
-                    var replacement = Evaluate(pattern, ((ComplexToken)children[2]).Children[^1], index, ReadOnlySpan<char>.Empty);
+                    var replacement = Evaluate(pattern, ((ComplexToken)children[2]).Children[^1], index, 0, count, 0, ReadOnlySpan<char>.Empty);
                     patternBuilder.Append(replacement);
                     return replacement.ToString().Length;
                 case TokenName.Addition:
@@ -727,29 +727,40 @@ namespace RegexerV2
         }
 
         private readonly StringBuilder _evalBuilder = new();
-        private int Evaluate(string pattern, Token token, int i, ReadOnlySpan<char> m)
+        private int Evaluate(string pattern, Token token, int i, int j, int c, int d, ReadOnlySpan<char> m)
         {
             _evalBuilder.Clear();
-            for (var j = token.Index; j < token.Index + token.Length; j++)
+            for (var n = token.Index; n < token.Index + token.Length; n++)
             {
-                var symbol = pattern[j];
-                if (symbol == 'i') _evalBuilder.Append(i + 1);
-                else if (symbol == 'm') _evalBuilder.Append(int.Parse(m));
-                else _evalBuilder.Append(symbol);
+                var symbol = pattern[n];
+                _ = symbol switch
+                {
+                    'i' => _evalBuilder.Append(i + 1),
+                    'j' => _evalBuilder.Append(j + 1),
+                    'c' => _evalBuilder.Append(c),
+                    'd' => _evalBuilder.Append(d),
+                    'm' => _evalBuilder.Append(int.Parse(m)),
+                    _ => _evalBuilder.Append(symbol)
+                };
             }
 
             return EvaluateString(_evalBuilder.ToString());
         }
         private static int EvaluateString(string expression)
         {
+            var exceptionMessage = $"Expression \"{expression}\" could not be evaluated.";
             try
             {
                 var expr = new Expression(expression);
                 return expr.Evaluate<int>();
             }
+            catch (NCalcParserException e)
+            {
+                throw new ArithmeticException(exceptionMessage, e);
+            }
             catch (NCalcEvaluationException e)
             {
-                throw new ArithmeticException($"Expression \"{expression}\" could not be evaluated.", e);
+                throw new ArithmeticException(exceptionMessage, e);
             }
         }
 
@@ -872,7 +883,8 @@ namespace RegexerV2
 
                 case TokenName.Evaluate:
                     if (!TryGetCapture(out capture)) return 0;
-                    var replacement = Evaluate(pattern, children[2], matchCaptureData.MatchIndex, capture.ValueSpan);
+                    var replacement = Evaluate(pattern, children[2], matchCaptureData.MatchIndex, matchCaptureData.CaptureIndex, matchCaptureData.MatchCount,
+                        matchCaptureData.CaptureCount, capture.ValueSpan);
                     patternBuilder.Append(replacement);
                     length = replacement.ToString().Length;
                     outputCaptures.Add(new MatchData(patternToken.Index + outputOffset, length,

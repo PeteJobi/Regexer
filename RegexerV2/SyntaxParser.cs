@@ -366,13 +366,15 @@ namespace RegexerV2
                             {
                                 FreeTextType.LABEL => char.IsLetterOrDigit(currentChar) || currentChar == '_',
                                 FreeTextType.DIGITS => char.IsDigit(currentChar),
-                                FreeTextType.EXPRESSION_WITH_I => IsExpressionChar(currentChar) || currentChar == 'i',
-                                FreeTextType.EXPRESSION_WITH_IM => IsExpressionChar(currentChar) || currentChar == 'i' || currentChar == 'm',
+                                FreeTextType.EXPRESSION_WITH_IC => IsExpressionChar(currentChar) || currentChar == 'i' || currentChar == 'c',
+                                FreeTextType.EXPRESSION_WITH_ICJD => IsExpressionChar(currentChar) || CharIsIcjd(currentChar),
+                                FreeTextType.EXPRESSION_WITH_ICJDM => IsExpressionChar(currentChar) || CharIsIcjd(currentChar) || currentChar == 'm',
                                 FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT => currentChar != '\r' && currentChar != '\n',
                                 _ => true
                             };
 
                             static bool IsExpressionChar(char ch) => char.IsDigit(ch) || ch is '+' or '-' or '*' or '/' or '(' or ')' or '%';
+                            static bool CharIsIcjd(char ch) => ch is 'i' or 'c' or 'j' or 'd';
                         }
                     }
                 default: throw new NotImplementedException();
