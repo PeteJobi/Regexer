@@ -60,6 +60,7 @@
             wordWrapToolStripCheckBox = new ToolStripMenuItem();
             lineNumbersToolStripCheckbox = new ToolStripMenuItem();
             exactWhitespaceToolStripCheckbox = new ToolStripMenuItem();
+            ignoreCasingToolStripMenuItem = new ToolStripMenuItem();
             suggestionModeToolStripMenuItem = new ToolStripMenuItem();
             suggestOnCommandToolStripMenuItem = new ToolStripMenuItem();
             alwaysSuggestToolStripMenuItem = new ToolStripMenuItem();
@@ -342,13 +343,13 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, toolStripMenuItem2 });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(125, 24);
+            menuStrip1.Size = new Size(245, 24);
             menuStrip1.TabIndex = 3;
             menuStrip1.Text = "menuStrip1";
             // 
             // toolStripMenuItem2
             // 
-            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { processOnButtonClickToolStripMenuItem, syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, exactWhitespaceToolStripCheckbox, suggestionModeToolStripMenuItem, highlightModeToolStripMenuItem });
+            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { processOnButtonClickToolStripMenuItem, syncTabsToolStripCheckBox, syncScrollToolStripCheckBox, wordWrapToolStripCheckBox, lineNumbersToolStripCheckbox, exactWhitespaceToolStripCheckbox, ignoreCasingToolStripMenuItem, suggestionModeToolStripMenuItem, highlightModeToolStripMenuItem });
             toolStripMenuItem2.Name = "toolStripMenuItem2";
             toolStripMenuItem2.Size = new Size(80, 20);
             toolStripMenuItem2.Text = "Preferences";
@@ -402,6 +403,14 @@
             exactWhitespaceToolStripCheckbox.Text = "Exact whitespace";
             exactWhitespaceToolStripCheckbox.CheckedChanged += exactWhitespaceCheckBox_CheckedChanged;
             // 
+            // ignoreCasingToolStripMenuItem
+            // 
+            ignoreCasingToolStripMenuItem.CheckOnClick = true;
+            ignoreCasingToolStripMenuItem.Name = "ignoreCasingToolStripMenuItem";
+            ignoreCasingToolStripMenuItem.Size = new Size(197, 22);
+            ignoreCasingToolStripMenuItem.Text = "Ignore Casing";
+            ignoreCasingToolStripMenuItem.CheckedChanged += ignoreCasingToolStripMenuItem_CheckedChanged;
+            // 
             // suggestionModeToolStripMenuItem
             // 
             suggestionModeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { suggestOnCommandToolStripMenuItem, alwaysSuggestToolStripMenuItem });
@@ -453,7 +462,7 @@
             // 
             toolStrip1.Dock = DockStyle.None;
             toolStrip1.Items.AddRange(new ToolStripItem[] { templatesComboBox, saveTemplateBut, deleteTemplateBut, toolStripSeparator1, prevBut, nextBut });
-            toolStrip1.Location = new Point(125, 0);
+            toolStrip1.Location = new Point(245, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(415, 24);
             toolStrip1.TabIndex = 4;
@@ -525,7 +534,7 @@
             // 
             matchNavLabel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             matchNavLabel.AutoSize = true;
-            matchNavLabel.Location = new Point(543, 0);
+            matchNavLabel.Location = new Point(663, 0);
             matchNavLabel.Name = "matchNavLabel";
             matchNavLabel.Size = new Size(38, 24);
             matchNavLabel.TabIndex = 5;
@@ -621,5 +630,6 @@
         private ToolStripMenuItem multiColouredToolStripMenuItem;
         private ToolStripMenuItem processOnButtonClickToolStripMenuItem;
         private Button findAndReplaceButton;
+        private ToolStripMenuItem ignoreCasingToolStripMenuItem;
     }
 }

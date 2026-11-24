@@ -11,6 +11,7 @@ namespace RegexerV2
     {
         private bool _exactWhiteSpace;
         private readonly TimeSpan _regexTimeout;
+        private bool _ignoreCasing;
         private bool hasNewLine, hasMl, hasSol;
         private readonly Parser _parser = new();
         private const string PrefixSpaceLabel = "__space__";
@@ -32,6 +33,8 @@ namespace RegexerV2
         }
 
         public void SetExactWhiteSpace(bool exactWhiteSpace) => _exactWhiteSpace = exactWhiteSpace;
+
+        public void SetIgnoreCasing(bool ignoreCasing) => _ignoreCasing = ignoreCasing;
 
         public async Task<RegexerResult> AutoRegexAsync(string input, string find, string replace, CancellationToken cancellationToken)
         {
@@ -59,7 +62,7 @@ namespace RegexerV2
             if (hasNewLine || hasMl) patternBuilder.Insert(0, $@"(?<{PrefixSpaceLabel}>[^\S\r\n]*)".AsSpan());
             if(hasSol) patternBuilder.Insert(0, @"(?<=(?:^|\n))".AsSpan());
             find = patternBuilder.ToString();
-            var matches = Regex.Matches(input, find, RegexOptions.None, _regexTimeout);
+            var matches = Regex.Matches(input, find, _ignoreCasing ? RegexOptions.IgnoreCase : RegexOptions.None, _regexTimeout);
             try
             {
                 if (matches.Count == 0) return NoMatchesResult;

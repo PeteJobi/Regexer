@@ -132,15 +132,15 @@ namespace RegexerUIV2
             async Task GetAndProcessResults(CancellationToken cancellationToken)
             {
                 var cancelled = false;
-            try
-            {
+                try
+                {
                     var result = await regexer.AutoRegexAsync(inputTextbox.Text, findTextbox.Text, replaceTextbox.Text,
                         cancellationToken);
                     if (result == Regexer.CancelledResult)
-                {
+                    {
                         cancelled = true;
-                    return;
-                }
+                        return;
+                    }
 
                     if (result == Regexer.NoMatchesResult)
                     {
@@ -148,19 +148,19 @@ namespace RegexerUIV2
                         return; //finally block will still execute to cancel the delay and reset nav
                     }
 
-                var scrollPositionX = outputTextbox.HorizontalScroll.Value;
-                var scrollPositionY = outputTextbox.VerticalScroll.Value;
-                Reset();
-                outputTextbox.Text = result.Output;
-                outputTextbox.HorizontalScroll.Value = scrollPositionX;
-                outputTextbox.VerticalScroll.Value = scrollPositionY;
-                outputTextbox.UpdateScrollbars();
+                    var scrollPositionX = outputTextbox.HorizontalScroll.Value;
+                    var scrollPositionY = outputTextbox.VerticalScroll.Value;
+                    Reset();
+                    outputTextbox.Text = result.Output;
+                    outputTextbox.HorizontalScroll.Value = scrollPositionX;
+                    outputTextbox.VerticalScroll.Value = scrollPositionY;
+                    outputTextbox.UpdateScrollbars();
 
-                if (result.Matches != null)
-                {
-                    _regexerMatchPairs = result.Matches;
+                    if (result.Matches != null)
+                    {
+                        _regexerMatchPairs = result.Matches;
 
-                    fctbManager.SetMainTabCanBeStyled(true);
+                        fctbManager.SetMainTabCanBeStyled(true);
                         if (inputTabs.SelectedIndex == MainTabIndex || outputTabs.SelectedIndex == MainTabIndex)
                             _ = fctbManager.StyleMatches(inputTextbox, outputTextbox, _regexerMatchPairs, matchRanges,
                                 cancellationToken);
@@ -170,48 +170,48 @@ namespace RegexerUIV2
                         outputMatchesTextbox.Text = string.Join(Environment.NewLine,
                             result.Matches.Select(m => m.OutputMatch.Text));
 
-                    _matchesTabCanBeStyled = true;
-                    if (inputTabs.SelectedIndex == MatchesTabIndex || outputTabs.SelectedIndex == MatchesTabIndex)
+                        _matchesTabCanBeStyled = true;
+                        if (inputTabs.SelectedIndex == MatchesTabIndex || outputTabs.SelectedIndex == MatchesTabIndex)
                             _ = StyleMatchesTab(cancellationToken);
 
-                    fctbManager.SetIndieMatchesTabCanBeStyled(true);
+                        fctbManager.SetIndieMatchesTabCanBeStyled(true);
                         if (inputTabs.SelectedIndex == IndieMatchesTabIndex ||
                             outputTabs.SelectedIndex == IndieMatchesTabIndex)
                             _ = fctbManager.PopulateSubMatches(inputDataGridView, outputDataGridView,
                                 _regexerMatchPairs, cancellationToken);
+                    }
                 }
-                }
-            catch (RegexMatchTimeoutException ex)
-            {
-                SetErrorMessage(ex.ToString());
-            }
-            catch (RegexParseException ex)
-            {
-                SetErrorMessage(ex.ToString());
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                SetErrorMessage(ex.ToString());
-            }
-            catch (ArithmeticException ex)
-            {
-                SetErrorMessage(ex.ToString());
-            }
-            finally
-            {
-                    if(!cancelled)
-                    {
-                // ReSharper disable once MethodHasAsyncOverload
-                delayTokenSource.Cancel();
-                if (_regexerMatchPairs.Length > 0)
+                catch (RegexMatchTimeoutException ex)
                 {
-                    currentMatchRange = -1;
-                    prevBut.Enabled = nextBut.Enabled = matchNavLabel.Visible = true;
-                    matchNavLabel.Text = $"{_regexerMatchPairs.Length} matches";
+                    SetErrorMessage(ex.ToString());
                 }
-                else
-                    ResetNav();
-            }
+                catch (RegexParseException ex)
+                {
+                    SetErrorMessage(ex.ToString());
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    SetErrorMessage(ex.ToString());
+                }
+                catch (ArithmeticException ex)
+                {
+                    SetErrorMessage(ex.ToString());
+                }
+                finally
+                {
+                    if (!cancelled)
+                    {
+                        // ReSharper disable once MethodHasAsyncOverload
+                        delayTokenSource.Cancel();
+                        if (_regexerMatchPairs.Length > 0)
+                        {
+                            currentMatchRange = -1;
+                            prevBut.Enabled = nextBut.Enabled = matchNavLabel.Visible = true;
+                            matchNavLabel.Text = $"{_regexerMatchPairs.Length} matches";
+                        }
+                        else
+                            ResetNav();
+                    }
                 }
             }
 
@@ -310,7 +310,7 @@ namespace RegexerUIV2
 
         private async Task StyleMatchesTab(CancellationToken cancellationToken)
         {
-            if(!_matchesTabCanBeStyled) return;
+            if (!_matchesTabCanBeStyled) return;
             _matchesTabCanBeStyled = false;
             const int batchSize = 500;
             var batches = _regexerMatchPairs.Chunk(batchSize);
@@ -333,7 +333,7 @@ namespace RegexerUIV2
                         outputMatchLineBackgroundData.AddRange(Enumerable.Repeat(alternate, outputMatchRange.End.iLine - outputMatchRange.Start.iLine));
                     }
 
-                    if(_regexerMatchPairs.Length > batchSize) await Task.Delay(1000, cancellationToken);
+                    if (_regexerMatchPairs.Length > batchSize) await Task.Delay(1000, cancellationToken);
                 }
                 Debug.WriteLine(inputMatchLineBackgroundData.Count);
                 inputMatchLineBackgroundData.Add(alternate);
@@ -396,7 +396,7 @@ namespace RegexerUIV2
         private void outToInBut_Click(object sender, EventArgs e)
         {
             inputTextbox.Text = outputTextbox.Text;
-            if(processOnButtonClickToolStripMenuItem.Checked)
+            if (processOnButtonClickToolStripMenuItem.Checked)
             {
                 Reset();
                 ResetNav();
@@ -694,7 +694,7 @@ namespace RegexerUIV2
             inputTextbox.Text = string.Empty;
             findTextbox.Text = string.Empty;
             replaceTextbox.Text = string.Empty;
-            if(processOnButtonClickToolStripMenuItem.Checked) _ = FindAndReplace(); //Basically just calls Reset() and cancels any ongoing processing
+            if (processOnButtonClickToolStripMenuItem.Checked) _ = FindAndReplace(); //Basically just calls Reset() and cancels any ongoing processing
         }
 
         private async void exactWhitespaceCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -744,10 +744,16 @@ namespace RegexerUIV2
         private async void processOnButtonClickToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             findAndReplaceButton.Visible = processOnButtonClickToolStripMenuItem.Checked;
-            if(!processOnButtonClickToolStripMenuItem.Checked) await FindAndReplace();
+            if (!processOnButtonClickToolStripMenuItem.Checked) await FindAndReplace();
         }
 
         private async void findAndReplaceButton_Click(object sender, EventArgs e) => await FindAndReplace();
+
+        private async void ignoreCasingToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            regexer.SetIgnoreCasing(ignoreCasingToolStripMenuItem.Checked);
+            await FindAndReplace();
+        }
     }
 
     internal struct ScrollValues
