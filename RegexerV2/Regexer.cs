@@ -1008,7 +1008,7 @@ namespace RegexerV2
                 patternBuilder.Append($"\\k<{label}>");
                 return;
             }
-            patternMap.Add(label, new PatternData(label){ IsMultiLine = true });
+            patternMap.Add(label, new PatternData(label));
             var spaceStartIndexOffset = pattern[elements[0].Index] == '\r' && pattern[elements[0].Index + 1] == '\n' ? 2 : 0;
             var precedingSpace = pattern.AsSpan(elements[0].Index + spaceStartIndexOffset, elements[0].Length - spaceStartIndexOffset);
             var hasPrecedingNewLine = spaceStartIndexOffset != 0;
@@ -1059,7 +1059,7 @@ namespace RegexerV2
         {
             var children = multiLineToken.Children;
             var label = pattern.Substring(children[3].Index, children[3].Length);
-            if (!patternMap.TryGetValue(label, out var patternData) || !patternData.IsMultiLine)
+            if (!patternMap.TryGetValue(label, out var patternData))
             {
                 patternBuilder.Append(pattern.AsSpan(multiLineToken.Index, multiLineToken.Length)); //Use the pattern text as is
                 return multiLineToken.Length;
