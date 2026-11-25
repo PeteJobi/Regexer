@@ -436,6 +436,35 @@ namespace RegexerUIV2
             matchNavLabel.Text = $"{currentMatchRange + 1} of {_regexerMatchPairs.Length} matches";
         }
 
+        private void UpdateMaximumScrollValues()
+        {
+            inputScroll.MaximumX = int.Max(inputTextbox.AutoScrollMinSize.Width - inputTextbox.ClientSize.Width, 0);
+            inputScroll.MaximumY = int.Max(inputTextbox.AutoScrollMinSize.Height - inputTextbox.ClientSize.Height, 0);
+            outputScroll.MaximumX = int.Max(outputTextbox.AutoScrollMinSize.Width - outputTextbox.ClientSize.Width, 0);
+            outputScroll.MaximumY = int.Max(outputTextbox.AutoScrollMinSize.Height - outputTextbox.ClientSize.Height, 0);
+        }
+
+        private void UpdateMatchesMaximumScrollValues()
+        {
+            inputScroll.MatchesMaximumX = int.Max(inputMatchesTextbox.AutoScrollMinSize.Width - inputMatchesTextbox.ClientSize.Width, 0);
+            inputScroll.MatchesMaximumY = int.Max(inputMatchesTextbox.AutoScrollMinSize.Height - inputMatchesTextbox.ClientSize.Height, 0);
+            outputScroll.MatchesMaximumX = int.Max(outputMatchesTextbox.AutoScrollMinSize.Width - outputMatchesTextbox.ClientSize.Width, 0);
+            outputScroll.MatchesMaximumY = int.Max(outputMatchesTextbox.AutoScrollMinSize.Height - outputMatchesTextbox.ClientSize.Height, 0);
+        }
+
+        private void UpdateDataGridMaximumScrollValues()
+        {
+            var totalColumnsWidth = inputDataGridView.Columns.GetColumnsWidth(DataGridViewElementStates.Visible);
+            var rowHeadersWidth = inputDataGridView.RowHeadersVisible ? inputDataGridView.RowHeadersWidth : 0;
+            var usableClientWidth = inputDataGridView.ClientSize.Width - rowHeadersWidth;
+            inputScroll.IndieMaximumX = Math.Max(0, totalColumnsWidth - usableClientWidth);
+
+            totalColumnsWidth = outputDataGridView.Columns.GetColumnsWidth(DataGridViewElementStates.Visible);
+            rowHeadersWidth = outputDataGridView.RowHeadersVisible ? outputDataGridView.RowHeadersWidth : 0;
+            usableClientWidth = outputDataGridView.ClientSize.Width - rowHeadersWidth;
+            outputScroll.IndieMaximumX = Math.Max(0, totalColumnsWidth - usableClientWidth);
+        }
+
         private void wordWrapToolStripCheckBox_Click(object sender, EventArgs e)
         {
             inputTextbox.WordWrap = wordWrapToolStripCheckBox.Checked;
@@ -464,17 +493,9 @@ namespace RegexerUIV2
                 outputMatchLineBackgroundData[e.LineIndex] ? FctbManager.BaseBrush : FctbManager.BaseBrushLight, e.LineRect);
         }
 
-        private void InputTextbox_SizeChanged(object? sender, EventArgs e)
-        {
-            inputScroll.MaximumX = int.Max(inputTextbox.AutoScrollMinSize.Width - inputTextbox.ClientSize.Width, 0);
-            inputScroll.MaximumY = int.Max(inputTextbox.AutoScrollMinSize.Height - inputTextbox.ClientSize.Height, 0);
-        }
+        private void InputTextbox_SizeChanged(object? sender, EventArgs e) => UpdateMaximumScrollValues();
 
-        private void OutputTextbox_SizeChanged(object? sender, EventArgs e)
-        {
-            outputScroll.MaximumX = int.Max(outputTextbox.AutoScrollMinSize.Width - outputTextbox.ClientSize.Width, 0);
-            outputScroll.MaximumY = int.Max(outputTextbox.AutoScrollMinSize.Height - outputTextbox.ClientSize.Height, 0);
-        }
+        private void OutputTextbox_SizeChanged(object? sender, EventArgs e) => UpdateMaximumScrollValues();
 
         private void InputTextbox_Scroll(object? sender, ScrollEventArgs e)
         {
@@ -497,17 +518,9 @@ namespace RegexerUIV2
             inputTextbox.Invalidate();
         }
 
-        private void InputMatchesTextbox_SizeChanged(object? sender, EventArgs e)
-        {
-            inputScroll.MatchesMaximumX = int.Max(inputMatchesTextbox.AutoScrollMinSize.Width - inputMatchesTextbox.ClientSize.Width, 0);
-            inputScroll.MatchesMaximumY = int.Max(inputMatchesTextbox.AutoScrollMinSize.Height - inputMatchesTextbox.ClientSize.Height, 0);
-        }
+        private void InputMatchesTextbox_SizeChanged(object? sender, EventArgs e) => UpdateMatchesMaximumScrollValues();
 
-        private void OutputMatchesTextbox_SizeChanged(object? sender, EventArgs e)
-        {
-            outputScroll.MatchesMaximumX = int.Max(outputMatchesTextbox.AutoScrollMinSize.Width - outputMatchesTextbox.ClientSize.Width, 0);
-            outputScroll.MatchesMaximumY = int.Max(outputMatchesTextbox.AutoScrollMinSize.Height - outputMatchesTextbox.ClientSize.Height, 0);
-        }
+        private void OutputMatchesTextbox_SizeChanged(object? sender, EventArgs e) => UpdateMatchesMaximumScrollValues();
 
         private void InputMatchesTextbox_Scroll(object? sender, ScrollEventArgs e)
         {
@@ -620,21 +633,11 @@ namespace RegexerUIV2
             ((DataGridView)sender).ClearSelection();
         }
 
-        private void inputDataGridView_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
-        {
-            var totalColumnsWidth = inputDataGridView.Columns.GetColumnsWidth(DataGridViewElementStates.Visible);
-            var rowHeadersWidth = inputDataGridView.RowHeadersVisible ? inputDataGridView.RowHeadersWidth : 0;
-            var usableClientWidth = inputDataGridView.ClientSize.Width - rowHeadersWidth;
-            inputScroll.IndieMaximumX = Math.Max(0, totalColumnsWidth - usableClientWidth);
-        }
+        private void inputDataGridView_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e) =>
+            UpdateDataGridMaximumScrollValues();
 
-        private void outputDataGridView_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
-        {
-            var totalColumnsWidth = outputDataGridView.Columns.GetColumnsWidth(DataGridViewElementStates.Visible);
-            var rowHeadersWidth = outputDataGridView.RowHeadersVisible ? outputDataGridView.RowHeadersWidth : 0;
-            var usableClientWidth = outputDataGridView.ClientSize.Width - rowHeadersWidth;
-            outputScroll.IndieMaximumX = Math.Max(0, totalColumnsWidth - usableClientWidth);
-        }
+        private void outputDataGridView_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e) =>
+            UpdateDataGridMaximumScrollValues();
 
         private void inputDataGridView_Scroll(object sender, ScrollEventArgs e)
         {
