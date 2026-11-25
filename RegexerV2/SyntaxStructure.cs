@@ -18,9 +18,9 @@ namespace RegexerV2
         private static readonly Symbol NewLineSymbol = new("\r\n");
         private static readonly Vary ZeroOrOneAnyPatterns = new(StructureQuantifier.ZERO_OR_ONE, AnyPattern){ ReturnNullIfNull = true };
         private static readonly Vary ZeroOrOneAnyPatternsReplace = new(StructureQuantifier.ZERO_OR_ONE, AnyPatternReplace){ ReturnNullIfNull = true };
-        private static readonly FreeText LabelBeforeDemarcate = new(FreeTextType.LABEL, DemarcateAfterLabelSymbol) { MustNotBeEmpty = true, Name = TokenName.Label };
+        private static readonly FreeText LabelBeforeDemarcate = new(FreeTextType.LABEL, DemarcateAfterLabelSymbol) { Name = TokenName.Label };
         internal static readonly FreeText SingleLineFreeText = new(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, CloserSymbol, OpenerSymbol)
-            { Name = TokenName.FreeText, ProceedIfInvalidAfterEncountered = CloserSymbol };
+            { Name = TokenName.FreeText, ProceedIfInvalidAfterEncountered = CloserSymbol, CanBeEmpty = true };
 
         private static readonly string[] SingleLineStructureToAnyPatternPath =
             [nameof(Vary.Content), nameof(And.Contents), "1", nameof(Vary.Content), nameof(Or.Contents)];
@@ -56,15 +56,14 @@ namespace RegexerV2
                     Contents =
                     [
                         new Symbol("<"),
-                        new FreeText(FreeTextType.DIGITS, CloseAmountQuantifierSymbol, HyphenSymbol)
-                            { MustNotBeEmpty = true },
+                        new FreeText(FreeTextType.DIGITS, CloseAmountQuantifierSymbol, HyphenSymbol),
                         new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                         {
                             SuggestionName = TokenName.MaxAmountQuantifier,
                             Contents =
                             [
                                 HyphenSymbol,
-                                new FreeText(FreeTextType.DIGITS, CloseAmountQuantifierSymbol) { MustNotBeEmpty = true }
+                                new FreeText(FreeTextType.DIGITS, CloseAmountQuantifierSymbol)
                             ]
                         }),
                         CloseAmountQuantifierSymbol,
@@ -167,7 +166,7 @@ namespace RegexerV2
             ]
         }){ Name = TokenName.UnorderedGroup };
 
-        private static FreeText MatchIndexDigits => new(FreeTextType.DIGITS, CommaSymbol, Demarcate3Symbol) { MustNotBeEmpty = true };
+        private static FreeText MatchIndexDigits => new(FreeTextType.DIGITS, CommaSymbol, Demarcate3Symbol);
         private static readonly And MatchIndexReplace = new()
         {
             Name = TokenName.KeyPattern,
@@ -185,7 +184,7 @@ namespace RegexerV2
                                 DemarcateAfterLabelSymbol,
                                 new Modifier("e"),
                                 DemarcateSymbol,
-                                new FreeText(FreeTextType.EXPRESSION_WITH_IC, CloserSymbol){ MustNotBeEmpty = true }
+                                new FreeText(FreeTextType.EXPRESSION_WITH_IC, CloserSymbol)
                             ]
                         },
                         new And
@@ -253,7 +252,7 @@ namespace RegexerV2
                 {
                     Contents =
                     [
-                        new FreeText(FreeTextType.LABEL, CloserSymbol){ MustNotBeEmpty = true, Name = TokenName.Label },
+                        new FreeText(FreeTextType.LABEL, CloserSymbol){ Name = TokenName.Label },
                         new Or
                         {
                             Contents = [
@@ -290,9 +289,9 @@ namespace RegexerV2
                                 new And
                                 {
                                     Contents = [
-                                        new Vary(StructureQuantifier.ZERO_OR_ONE, new FreeText(FreeTextType.LABEL, StartPlainTextSymbol){ MustNotBeEmpty = true, Name = TokenName.Label }),
+                                        new Vary(StructureQuantifier.ZERO_OR_ONE, new FreeText(FreeTextType.LABEL, StartPlainTextSymbol){ Name = TokenName.Label }),
                                         StartPlainTextSymbol,
-                                        new FreeText(FreeTextType.PLAIN_TEXT, EndPlainTextSymbol){ Name = TokenName.PlainText },
+                                        new FreeText(FreeTextType.PLAIN_TEXT, EndPlainTextSymbol){ Name = TokenName.PlainText, CanBeEmpty = true },
                                         EndPlainTextSymbol
                                     ]
                                 }
@@ -338,7 +337,7 @@ namespace RegexerV2
                                         new Modifier("m"),
                                         DemarcateSymbol,
                                         StartPlainTextSymbol,
-                                        new FreeText(FreeTextType.PLAIN_TEXT, EndPlainTextSymbol){ Name = TokenName.PlainText },
+                                        new FreeText(FreeTextType.PLAIN_TEXT, EndPlainTextSymbol){ Name = TokenName.PlainText, CanBeEmpty = true },
                                         EndPlainTextSymbol,
                                         new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                                         {
@@ -364,7 +363,7 @@ namespace RegexerV2
             Contents =
             [
                 OpenerSymbol,
-                new FreeText(FreeTextType.LABEL, DemarcateAfterLabelSymbol, CloserSymbol) { MustNotBeEmpty = true, Name = TokenName.Label },
+                new FreeText(FreeTextType.LABEL, DemarcateAfterLabelSymbol, CloserSymbol) { Name = TokenName.Label },
                 new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                 {
                     Contents =
@@ -396,13 +395,13 @@ namespace RegexerV2
                                     Contents = [
                                         new Modifier("d"),
                                         DemarcateSymbol,
-                                        new FreeText(FreeTextType.EXPRESSION_WITH_ICJD, DemarcateSymbol, CloserSymbol){ MustNotBeEmpty = true },
+                                        new FreeText(FreeTextType.EXPRESSION_WITH_ICJD, DemarcateSymbol, CloserSymbol),
                                         new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                                         {
                                             SuggestionName = TokenName.DuplicateSeparator,
                                             Contents = [
                                                 DemarcateSymbol,
-                                                new FreeText(FreeTextType.PLAIN_TEXT, CloserSymbol){ Name = TokenName.PlainText }
+                                                new FreeText(FreeTextType.PLAIN_TEXT, CloserSymbol){ Name = TokenName.PlainText, CanBeEmpty = true }
                                             ]
                                         })
                                     ]
@@ -431,7 +430,7 @@ namespace RegexerV2
                                     Contents = [
                                         new Modifier("e"),
                                         DemarcateSymbol,
-                                        new FreeText(FreeTextType.EXPRESSION_WITH_ICJDM, CloserSymbol){ MustNotBeEmpty = true },
+                                        new FreeText(FreeTextType.EXPRESSION_WITH_ICJDM, CloserSymbol),
                                     ]
                                 }
                             ]
@@ -465,7 +464,7 @@ namespace RegexerV2
                                     [
                                         new Symbol(":"),
                                         new FreeText(FreeTextType.LABEL, CommaSymbol, Demarcate2Symbol, 
-                                            CloserSymbol) { MustNotBeEmpty = true, Name = TokenName.Label }
+                                            CloserSymbol) { Name = TokenName.Label }
                                     ]
                                 })
                             ]
@@ -505,7 +504,7 @@ namespace RegexerV2
                 DemarcateAfterLabelSymbol,
                 new Modifier("m"),
                 DemarcateSymbol,
-                new FreeText(FreeTextType.PLAIN_TEXT, DemarcateSymbol, CloserSymbol) { Name = TokenName.PlainText },
+                new FreeText(FreeTextType.PLAIN_TEXT, DemarcateSymbol, CloserSymbol) { Name = TokenName.PlainText, CanBeEmpty = true },
                 MatchMultipleReorder,
                 MatchMultipleSingleLineStructuresReplace,
                 CloserSymbol
@@ -517,7 +516,7 @@ namespace RegexerV2
             Name = TokenName.MultiLine,
             Contents = [
                 new Whitespace{ Type = WhitespaceType.START_OF_LINE },
-                new FreeText(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, OpenerSymbol){ Name = TokenName.FreeText },
+                new FreeText(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, OpenerSymbol){ Name = TokenName.FreeText, CanBeEmpty = true },
                 OpenerSymbol,
                 LabelBeforeDemarcate,
                 DemarcateAfterLabelSymbol,
@@ -525,7 +524,7 @@ namespace RegexerV2
                 MatchMultipleReorder,
                 new Reference(MatchMultipleSingleLineStructuresReplace, [new Modification([nameof(Vary.Content), nameof(And.SuggestionName)], TokenName.MultiLineReplace)]),
                 CloserSymbol,
-                new FreeText(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, NewLineSymbol){ Name = TokenName.FreeText },
+                new FreeText(FreeTextType.SINGLE_LINE_PRE_PATTERN_TEXT, NewLineSymbol){ Name = TokenName.FreeText, CanBeEmpty = true },
                 new Whitespace{ Type = WhitespaceType.END_OF_LINE }
             ]
         };
@@ -566,7 +565,7 @@ namespace RegexerV2
                         {
                             Contents =
                             [
-                                new FreeText(FreeTextType.PRE_PATTERN_TEXT, OpenerSymbol, NewLineSymbol){ Name = TokenName.FreeText },
+                                new FreeText(FreeTextType.PRE_PATTERN_TEXT, OpenerSymbol, NewLineSymbol){ Name = TokenName.FreeText, CanBeEmpty = true },
                                 ZeroOrOneAnyPatterns
                             ]
                         }
@@ -581,7 +580,7 @@ namespace RegexerV2
                 {
                     Contents =
                     [
-                        new FreeText(FreeTextType.PRE_PATTERN_TEXT, OpenerSymbol, NewLineSymbol){ Name = TokenName.FreeText },
+                        new FreeText(FreeTextType.PRE_PATTERN_TEXT, OpenerSymbol, NewLineSymbol){ Name = TokenName.FreeText, CanBeEmpty = true },
                         ZeroOrOneAnyPatternsReplace
                     ]
                 }
@@ -679,7 +678,7 @@ namespace RegexerV2
 
             public FreeTextType Type { get; set; } = type;
             public Symbol[] CannotContain { get; set; } = cannotContain;
-            public bool MustNotBeEmpty { get; set; }
+            public bool CanBeEmpty { get; set; }
             public Symbol? ProceedIfInvalidAfterEncountered { get; set; }
             public override string ToString() => Type.ToString();
         }

@@ -346,7 +346,7 @@ namespace RegexerV2
                                 }
                                 suggestions.Add(suggestionToken);
                             }
-                            if (freeText.MustNotBeEmpty && freeTextLength == 0) return (null, suggestions);
+                            if (!freeText.CanBeEmpty && freeTextLength == 0) return (null, suggestions);
                             var result = CreateToken(freeTextLength);
                             if (si >= structure.Length - 1) return result.Length == 0 ? ([], suggestions) : ([result], suggestions);
                             var parse = ParsePatternWithSuggestions(input, start, end, index + result.Length, structure, si + 1, withSuggestions);
