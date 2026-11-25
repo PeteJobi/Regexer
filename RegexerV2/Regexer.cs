@@ -438,7 +438,7 @@ namespace RegexerV2
 
                     var outputStart = keyPatternToken.Index + outputOffset;
                     var offset = 0;
-                    var singleLineStart = optionalToken.Children.Count > 2 ? optionalToken.Children[2].Index : 0;
+                    var singleLineStart = optionalToken.Children.Count > 5 ? optionalToken.Children[5].Index : 0;
                     var outputLength = 0;
                     for (var i = 5; i < optionalToken.Children.Count; i++)
                     {
@@ -1005,7 +1005,7 @@ namespace RegexerV2
             var label = pattern.Substring(elements[2].Index, elements[2].Length);
             if (patternMap.ContainsKey(label))
             {
-                patternBuilder.Append($"\\k<{label}Lines>");
+                patternBuilder.Append($"\\k<{label}>");
                 return;
             }
             patternMap.Add(label, new PatternData(label){ IsMultiLine = true });
@@ -1018,7 +1018,7 @@ namespace RegexerV2
             var singleLineStructureStartIndex = patternBuilder.Length;
             if (hasPrecedingNewLine) patternBuilder.Append(NewLineWithPrefixSpace()).Append(precedingSpace);
             else patternBuilder.Append(precedingSpace); //At start of pattern, no need to match a new line before the first line
-            patternBuilder.Append($"(?<{label}Lines>");
+            patternBuilder.Append($"(?<{label}>");
             var restriction = @"[^\r\n]".AsSpan();
             var quantifier = "*".AsSpan();
             var quantifierInner = "*?".AsSpan();
@@ -1065,7 +1065,7 @@ namespace RegexerV2
                 return multiLineToken.Length;
             }
 
-            var lineCaptures = matchCaptureData.Match.Groups[$"{label}Lines"].Captures;
+            var lineCaptures = matchCaptureData.Match.Groups[label].Captures;
 
             var outputCaptures = new List<MatchData>();
             var n = GetAlphabeticalOrderIndex(outputIndieMatches, l => l.Label, label);
@@ -1078,7 +1078,7 @@ namespace RegexerV2
             if (children.Count > sortIndex && children[sortIndex].Name == TokenName.MatchMultipleReorder)
             {
                 singleLineIndex = 8;
-                GetMatchMultipleOrderIndices((ComplexToken)children[sortIndex], matchCaptureData, $"{label}Lines", ref order);
+                GetMatchMultipleOrderIndices((ComplexToken)children[sortIndex], matchCaptureData, label, ref order);
             }
 
             var spaceStartIndexOffset = pattern[children[0].Index] == '\r' && pattern[children[0].Index + 1] == '\n' ? 2 : 0;
@@ -1260,20 +1260,7 @@ namespace RegexerV2
             foreach (var label in patternMap.Keys)
             {
                 var n = GetAlphabeticalOrderIndex(individualMatches, l => l.Label, label);
-                var patternData = patternMap[label];
                 var captures = new List<MatchData>();
-                if (patternData.IsMultiLine)
-                {
-                    var lines = match.Groups[$"{label}Lines"].Captures;
-                    for (var i = 0; i < lines.Count; i++)
-                    {
-                        captures.Add(new MatchData(lines[i].Index, lines[i].Length, lines[i].Value));
-                    }
-                    individualMatches.Insert(n.Index, new IndividualMatch(label, captures));
-                    continue;
-                }
-
-                captures = [];
                 var matchCaptures = match.Groups[label].Captures;
                 for (var i = 0; i < matchCaptures.Count; i++)
                 {
