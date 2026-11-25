@@ -63,7 +63,7 @@ namespace RegexerV2
                             Contents =
                             [
                                 HyphenSymbol,
-                                new FreeText(FreeTextType.DIGITS, CloseAmountQuantifierSymbol)
+                                new FreeText(FreeTextType.DIGITS, CloseAmountQuantifierSymbol){ CanBeEmpty = true }
                             ]
                         }),
                         CloseAmountQuantifierSymbol,

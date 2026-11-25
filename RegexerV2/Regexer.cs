@@ -639,8 +639,8 @@ namespace RegexerV2
                 }
                 case TokenName.ExactAmountQuantifier:
                 {
-                    GetQuantifierBounds(pattern, quantifierToken, out var lower, out var upper);
-                    quantifier = !upper.IsEmpty ? $"{{{lower},{upper}}}".AsSpan() : $"{{{lower}}}".AsSpan();
+                    var hasBoth = GetQuantifierBounds(pattern, quantifierToken, out var lower, out var upper);
+                    quantifier = hasBoth ? $"{{{lower},{upper}}}".AsSpan() : $"{{{lower}}}".AsSpan();
                     break;
                 }
                 default:
@@ -674,7 +674,7 @@ namespace RegexerV2
                 }
                 case TokenName.ExactAmountQuantifier:
                 {
-                    GetQuantifierBounds(pattern, quantifierToken, out var lower, out var upper);
+                    var hasBoth = GetQuantifierBounds(pattern, quantifierToken, out var lower, out var upper);
                     var lowerInt = int.Parse(lower);
                     if(lowerInt == 0) quantifierOuter = "?".AsSpan();
                     else
@@ -682,9 +682,9 @@ namespace RegexerV2
                         lower = (lowerInt - 1).ToString().AsSpan();
                         quantifierOuter = ReadOnlySpan<char>.Empty;
                     }
-                    if (!upper.IsEmpty)
+                    if (hasBoth)
                     {
-                        upper = int.Max(0, int.Parse(upper) - 1).ToString().AsSpan();
+                        if(!upper.IsEmpty) upper = int.Max(0, int.Parse(upper) - 1).ToString().AsSpan();
                         quantifierInner = $"{{{lower},{upper}}}".AsSpan();
                     }
                     else
@@ -721,12 +721,14 @@ namespace RegexerV2
             return (hasOptional, hasGreedy);
         }
 
-        private static void GetQuantifierBounds(string pattern, ComplexToken quantifierToken, out ReadOnlySpan<char> lower, out ReadOnlySpan<char> upper)
+        private static bool GetQuantifierBounds(string pattern, ComplexToken quantifierToken, out ReadOnlySpan<char> lower, out ReadOnlySpan<char> upper)
         {
+            var hasBoth = quantifierToken.Children.Count > 3;
             lower = pattern.AsSpan(quantifierToken.Children[1].Index, quantifierToken.Children[1].Length);
-            upper = quantifierToken.Children.Count > 3 
+            upper = quantifierToken.Children.Count > 4
                 ? pattern.AsSpan(quantifierToken.Children[3].Index, quantifierToken.Children[3].Length)
                 : ReadOnlySpan<char>.Empty;
+            return hasBoth;
         }
 
         private readonly StringBuilder _evalBuilder = new();
