@@ -1,0 +1,128 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "lines",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 69,
+              "Text": "The stray cat claimed the warmest spot on the hood of the parked car."
+            },
+            {
+              "Index": 71,
+              "Length": 75,
+              "Text": "A gentle breeze rustled the dry leaves scattered across the empty sidewalk."
+            },
+            {
+              "Index": 148,
+              "Length": 59,
+              "Text": "She forgot to set her alarm before going to bed last night."
+            },
+            {
+              "Index": 209,
+              "Length": 68,
+              "Text": "Freshly baked bread filled the entire house with a comforting aroma."
+            },
+            {
+              "Index": 279,
+              "Length": 81,
+              "Text": "Clouds gathered quickly on the horizon, signaling an approaching afternoon storm."
+            },
+            {
+              "Index": 362,
+              "Length": 71,
+              "Text": "He spent the entire Sunday afternoon organizing his bookshelf by color."
+            },
+            {
+              "Index": 435,
+              "Length": 73,
+              "Text": "The old grandfather clock in the hallway chimed twelve times at midnight."
+            },
+            {
+              "Index": 510,
+              "Length": 75,
+              "Text": "A single yellow butterfly landed briefly on the edge of the ceramic teacup."
+            },
+            {
+              "Index": 587,
+              "Length": 77,
+              "Text": "They decided to take the scenic route along the coast instead of the highway."
+            },
+            {
+              "Index": 666,
+              "Length": 83,
+              "Text": "Learning to play a new instrument takes patience, practice, and a lot of curiosity."
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 749,
+      "Text": "The stray cat claimed the warmest spot on the hood of the parked car.\r\nA gentle breeze rustled the dry leaves scattered across the empty sidewalk.\r\nShe forgot to set her alarm before going to bed last night.\r\nFreshly baked bread filled the entire house with a comforting aroma.\r\nClouds gathered quickly on the horizon, signaling an approaching afternoon storm.\r\nHe spent the entire Sunday afternoon organizing his bookshelf by color.\r\nThe old grandfather clock in the hallway chimed twelve times at midnight.\r\nA single yellow butterfly landed briefly on the edge of the ceramic teacup.\r\nThey decided to take the scenic route along the coast instead of the highway.\r\nLearning to play a new instrument takes patience, practice, and a lot of curiosity."
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "lines",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 75,
+              "Text": "A gentle breeze rustled the dry leaves scattered across the empty sidewalk."
+            },
+            {
+              "Index": 77,
+              "Length": 75,
+              "Text": "A single yellow butterfly landed briefly on the edge of the ceramic teacup."
+            },
+            {
+              "Index": 154,
+              "Length": 81,
+              "Text": "Clouds gathered quickly on the horizon, signaling an approaching afternoon storm."
+            },
+            {
+              "Index": 237,
+              "Length": 68,
+              "Text": "Freshly baked bread filled the entire house with a comforting aroma."
+            },
+            {
+              "Index": 307,
+              "Length": 71,
+              "Text": "He spent the entire Sunday afternoon organizing his bookshelf by color."
+            },
+            {
+              "Index": 380,
+              "Length": 83,
+              "Text": "Learning to play a new instrument takes patience, practice, and a lot of curiosity."
+            },
+            {
+              "Index": 465,
+              "Length": 59,
+              "Text": "She forgot to set her alarm before going to bed last night."
+            },
+            {
+              "Index": 526,
+              "Length": 73,
+              "Text": "The old grandfather clock in the hallway chimed twelve times at midnight."
+            },
+            {
+              "Index": 601,
+              "Length": 69,
+              "Text": "The stray cat claimed the warmest spot on the hood of the parked car."
+            },
+            {
+              "Index": 672,
+              "Length": 77,
+              "Text": "They decided to take the scenic route along the coast instead of the highway."
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 749,
+      "Text": "A gentle breeze rustled the dry leaves scattered across the empty sidewalk.\r\nA single yellow butterfly landed briefly on the edge of the ceramic teacup.\r\nClouds gathered quickly on the horizon, signaling an approaching afternoon storm.\r\nFreshly baked bread filled the entire house with a comforting aroma.\r\nHe spent the entire Sunday afternoon organizing his bookshelf by color.\r\nLearning to play a new instrument takes patience, practice, and a lot of curiosity.\r\nShe forgot to set her alarm before going to bed last night.\r\nThe old grandfather clock in the hallway chimed twelve times at midnight.\r\nThe stray cat claimed the warmest spot on the hood of the parked car.\r\nThey decided to take the scenic route along the coast instead of the highway."
+    }
+  }
+]

@@ -67,32 +67,30 @@
     }
 
     const fetchUnsubbedPublicCourses = () => {
-        $.ajax({
-            url: Strings.URL_CLASS + `unsubbedCourses/${classe.id}`,
-            contentType: "application/json",
-            method: "GET",
-            success: (_courses: Types.ICourse[]) => {
-                if (!hasMounted.current) return
-                courses.current = courses.current.concat(_courses)
-                setUnsubCourses(_courses)
-            },
-            error: (xhr, status, error) => {
+        Functions.fetchCall<Types.ICourse[]>(Strings.URL_CLASS + `unsubbedCourses/${classe.id}`, {
+            notOk: (status, responseText, noConnection, noConnectionString) => {
+                console.log(responseText, status, noConnection, noConnectionString)
                 console.log(xhr.responseText, status, error)
             }
+            }).then((response: Types.ICourse[]) => {
+            if(!response.ok) return
+            const _courses = response.result
+            if (!hasMounted.current) return
+            courses.current = courses.current.concat(_courses)
+            setUnsubCourses(_courses)
         })
     }
     const fetchInitRatings = () => {
-        $.ajax({
-            url: Strings.URL_CLASS + "ratings/" + classe.id,
-            contentType: "application/json",
-            data: { count: Integers.OPTS_DOM_LIMIT } as Types.IOptsLoadParams,
-            method: "GET",
-            success: (result: Types.IInfScrollResult<Types.IOptRow>) => {
-                setOptRowsInit(result)
-            },
-            error: (xhr, status, error) => {
+        Functions.fetchCall<Types.IInfScrollResult<Types.IOptRow>>(Strings.URL_CLASS + "ratings/" + classe.id, {
+            body: { count: Integers.OPTS_DOM_LIMIT } as Types.IOptsLoadParams,
+            notOk: (status, responseText, noConnection, noConnectionString) => {
+                console.log(responseText, status, noConnection, noConnectionString)
                 console.log(xhr.responseText, status, error)
             }
+            }).then((response: Types.IInfScrollResult<Types.IOptRow>) => {
+            if(!response.ok) return
+            const result = response.result
+            setOptRowsInit(result)
         })
     }
     const fetchMoreRatings = (down: boolean, refId: string | number) => {
@@ -101,52 +99,50 @@
             return int === 0 ? Integers.MAX_INT : int
         })
         return new Promise<Types.IInfScrollResult<Types.IOptRow>>((resolve, reject) => {
-            $.ajax({
-                url: Strings.URL_CLASS + "ratings/" + classe.id,
-                contentType: "application/json",
-                data: { count: Integers.OPTS_DOM_LIMIT, ref1Id, ref2Id, ref3Id, ref4Id, ref5Id } as Types.IRatsLoadParams,
-                method: "GET",
-                success: (result: Types.IInfScrollResult<Types.IOptRow>) => {
-                    resolve(result)
-                },
-                error: (xhr, status, error) => {
+            Functions.fetchCall<Types.IInfScrollResult<Types.IOptRow>>(Strings.URL_CLASS + "ratings/" + classe.id, {
+                body: { count: Integers.OPTS_DOM_LIMIT, ref1Id, ref2Id, ref3Id, ref4Id, ref5Id } as Types.IRatsLoadParams,
+                notOk: (status, responseText, noConnection, noConnectionString) => {
+                    console.log(responseText, status, noConnection, noConnectionString)
                     console.log(xhr.responseText, status, error)
                     reject("an error occured in fetchMoreRatings CourseInfo.tsx")
                 }
+                }).then((response: Types.IInfScrollResult<Types.IOptRow>) => {
+                if(!response.ok) return
+                const result = response.result
+                resolve(result)
             })
         })
     }
     const fetchInitMembers = (isTutor: boolean) => {
-        $.ajax({
-            url: `${Strings.URL_CLASS}${isTutor ? "tutors" : "students"}/${course.id}`,
-            contentType: "application/json",
-            data: { refId: 0, count: Integers.FETCH_DOWN_COUNT, forward: true } as Types.IItemsLoadParams,
-            method: "GET",
-            success: (result: Types.IInfScrollResult<Types.IIDUser>) => {
-                isTutor ? setTutorsInit(result) : setStudentsInit(result)
-            },
-            error: (xhr, status, error) => {
+        Functions.fetchCall<Types.IInfScrollResult<Types.IIDUser>>(`${Strings.URL_CLASS}${isTutor ? "tutors" : "students"}/${course.id}`, {
+            body: { refId: 0, count: Integers.FETCH_DOWN_COUNT, forward: true } as Types.IItemsLoadParams,
+            notOk: (status, responseText, noConnection, noConnectionString) => {
+                console.log(responseText, status, noConnection, noConnectionString)
                 console.log(xhr.responseText, status, error)
             }
+            }).then((response: Types.IInfScrollResult<Types.IIDUser>) => {
+            if(!response.ok) return
+            const result = response.result
+            isTutor ? setTutorsInit(result) : setStudentsInit(result)
         })
     }
 
     const join = () => {
-        $.ajax({
-            url: Strings.URL_CLASS + "joinClass/" + classe.id, // api/Class/joinClass
-            contentType: "application/json",
-            method: "POST",
-            success: (classe: Types.IClass) => {
-                updClassDispatch({
-                    type: Strings.UPDATE_CLASS_PARAMS,
-                    classAction: Strings.EDIT_CLASS,
-                    classId: classe.id,
-                    class: classe
-                })
-            },
-            error: (xhr, status, error) => {
+        Functions.fetchCall<Types.IClass>(Strings.URL_CLASS + "joinClass/" + classe.id, { // api/Class/joinClass
+            method: "post",
+            notOk: (status, responseText, noConnection, noConnectionString) => {
+                console.log(responseText, status, noConnection, noConnectionString)
                 console.log(xhr.responseText, status, error)
             }
+            }).then((response: Types.IClass) => {
+            if(!response.ok) return
+            const classe = response.result
+            updClassDispatch({
+                type: Strings.UPDATE_CLASS_PARAMS,
+                classAction: Strings.EDIT_CLASS,
+                classId: classe.id,
+                class: classe
+            })
         })
     }
 
@@ -160,8 +156,9 @@
                 console.log(responseText, status, noConnection, noConnectionString)
                 console.log(xhr.responseText, status, error)
             }
-        }).then((response) => {
+            }).then((response) => {
             if(!response.ok) return
+            
             updClassDispatch({ type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.RELOAD_CLASS, classId: classe.id })
             console.log("Unsubscribed")
         })
@@ -187,17 +184,17 @@
     //}
 
     const request = () => {
-        $.ajax({
-            url: Strings.URL_NOTICE + "memberRequest/" + classe.id,
-            method: "POST",
-            contentType: "application/json",
-            success: (successful: boolean) => {
-                if (successful) console.log("sent")
-                else setJoinObj({ text: Texts.LEAVE_CLASS, path: Paths.UNSUBSCRIBE, col: Objects.ButType.RED }) //has already joined
-            },
-            error: (xhr, status, error) => {
+        Functions.fetchCall<boolean>(Strings.URL_NOTICE + "memberRequest/" + classe.id, {
+            method: "post",
+            notOk: (status, responseText, noConnection, noConnectionString) => {
+                console.log(responseText, status, noConnection, noConnectionString)
                 console.log(xhr.responseText, status, error)
             }
+            }).then((response: boolean) => {
+            if(!response.ok) return
+            const successful = response.result
+            if (successful) console.log("sent")
+            else setJoinObj({ text: Texts.LEAVE_CLASS, path: Paths.UNSUBSCRIBE, col: Objects.ButType.RED }) //has already joined
         })
     }
 
@@ -208,8 +205,9 @@
                 console.log(responseText, status, noConnection, noConnectionString)
                 console.log(xhr.responseText, status, error)
             }
-        }).then((response) => {
+            }).then((response) => {
             if(!response.ok) return
+            
             console.log("Left")
         })
         updClassDispatch({
@@ -254,8 +252,9 @@
                 console.log(responseText, status, noConnection, noConnectionString)
                 console.log(xhr.responseText, "fa", error, status)
             }
-        }).then((response) => {
+            }).then((response) => {
             if(!response.ok) return
+            
             if (!hasMounted.current) return;
             setIsLoading(false)
             updCourseDispatch({
@@ -274,8 +273,9 @@
                 console.log(responseText, status, noConnection, noConnectionString)
                 console.log(xhr.responseText, "fa", error, status)
             }
-        }).then((response) => {
+            }).then((response) => {
             if(!response.ok) return
+            
             if (!hasMounted.current) return;
             setIsLoading(false)
             updClassDispatch({
@@ -318,50 +318,47 @@
 
     useEffect(() => {
         hasMounted.current = true
-        $.ajax({
-            url: Strings.URL_CLASS + `tablesAndEvents/${course.id}`,
-            contentType: "application/json",
-            method: "GET",
-            success: tAndE => {
-                if (!hasMounted.current) return
-                Functions.sortEvents(tAndE.events)
-                setTableAndEvents(tAndE)
-            },
-            error: (xhr, status, error) => {
+        Functions.fetchCall(Strings.URL_CLASS + `tablesAndEvents/${course.id}`, {
+            notOk: (status, responseText, noConnection, noConnectionString) => {
+                console.log(responseText, status, noConnection, noConnectionString)
                 console.log(xhr.responseText, status, error)
             }
+            }).then((response) => {
+            if(!response.ok) return
+            const tAndE = response.result
+            if (!hasMounted.current) return
+            Functions.sortEvents(tAndE.events)
+            setTableAndEvents(tAndE)
         })
-        $.ajax({
-            url: Strings.URL_CLASS + "postStats",
-            contentType: "application/json",
-            method: "GET",
-            data: { courseId: course.id, isMain: course.isMain },
-            processData: true,
-            success: postStats => {
-                if (hasMounted.current) setPostStats(postStats)
-            },
-            error: (xhr, status, error) => {
+        Functions.fetchCall(Strings.URL_CLASS + "postStats", {
+            body: { courseId: course.id, isMain: course.isMain },
+            query: { courseId: course.id, isMain: course.isMain },
+            notOk: (status, responseText, noConnection, noConnectionString) => {
+                console.log(responseText, status, noConnection, noConnectionString)
                 console.log(xhr.responseText, status, error)
             }
+            }).then((response) => {
+            if(!response.ok) return
+            const postStats = response.result
+            if (hasMounted.current) setPostStats(postStats)
         })
 
         if (user && isMain && !isMember) {
             if (classe.joinMode === Objects.JoinType.REQUEST) {
-                $.ajax({
-                    url: Strings.URL_NOTICE + `memberRequestCheck/${classe.id}`,
-                    method: "GET",
-                    contentType: "application/json",
-                    success: (hasRequested: boolean) => {
-                        setShowBut(true)
-                        setJoinObj({
-                            text: hasRequested ? Texts.CANCEL_REQUEST : Texts.REQUEST_TO_JOIN,
-                            path: hasRequested ? Paths.UNSUBSCRIBE : Paths.SUBSCRIBE,
-                            col: hasRequested ? Objects.ButType.RED : Objects.ButType.GREEN
-                        })
-                    },
-                    error: (xhr, status, error) => {
+                Functions.fetchCall<boolean>(Strings.URL_NOTICE + `memberRequestCheck/${classe.id}`, {
+                    notOk: (status, responseText, noConnection, noConnectionString) => {
+                        console.log(responseText, status, noConnection, noConnectionString)
                         console.log(xhr.responseText, status, error)
                     }
+                    }).then((response: boolean) => {
+                    if(!response.ok) return
+                    const hasRequested = response.result
+                    setShowBut(true)
+                    setJoinObj({
+                        text: hasRequested ? Texts.CANCEL_REQUEST : Texts.REQUEST_TO_JOIN,
+                        path: hasRequested ? Paths.UNSUBSCRIBE : Paths.SUBSCRIBE,
+                        col: hasRequested ? Objects.ButType.RED : Objects.ButType.GREEN
+                    })
                 })
             }
         }
@@ -377,18 +374,17 @@
         if (pageView === Objects.PageView.EXPANDED && isMain ? classe.mainCourseId === refreshPostStatsId ||
             classe.courses.find(c => c.id === refreshPostStatsId) : course.id === refreshPostStatsId) {
             pStatsDispatch({ type: Strings.CLEAR_REFRESH_POST_STATS });
-            $.ajax({
-                url: Strings.URL_CLASS + "postStats",
-                contentType: "application/json",
-                method: "GET",
-                data: { courseId: course.id, isMain: course.isMain },
-                processData: true,
-                success: postStats => {
-                    if (hasMounted.current) setPostStats(postStats)
-                },
-                error: (xhr, status, error) => {
+            Functions.fetchCall(Strings.URL_CLASS + "postStats", {
+                body: { courseId: course.id, isMain: course.isMain },
+                query: { courseId: course.id, isMain: course.isMain },
+                notOk: (status, responseText, noConnection, noConnectionString) => {
+                    console.log(responseText, status, noConnection, noConnectionString)
                     console.log(xhr.responseText, status, error)
                 }
+                }).then((response) => {
+                if(!response.ok) return
+                const postStats = response.result
+                if (hasMounted.current) setPostStats(postStats)
             })
         }
     }, [refreshPostStatsId])

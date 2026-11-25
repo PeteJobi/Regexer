@@ -1,0 +1,258 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "chore",
+          "Captures": [
+            {
+              "Index": 65,
+              "Length": 51,
+              "Text": "1. Sweep and mop the living room and hallway floors"
+            },
+            {
+              "Index": 118,
+              "Length": 48,
+              "Text": "2. Wash dishes and wipe down kitchen countertops"
+            },
+            {
+              "Index": 168,
+              "Length": 46,
+              "Text": "3. Scrub the bathroom sink, toilet, and shower"
+            },
+            {
+              "Index": 216,
+              "Length": 44,
+              "Text": "4. Take out the trash and replace bin liners"
+            },
+            {
+              "Index": 262,
+              "Length": 42,
+              "Text": "5. Vacuum carpets, rugs, and sofa cushions"
+            },
+            {
+              "Index": 306,
+              "Length": 59,
+              "Text": "6. Clean the stovetop, microwave, and refrigerator exterior"
+            },
+            {
+              "Index": 367,
+              "Length": 45,
+              "Text": "7. Dust shelves, windowsills, and electronics"
+            },
+            {
+              "Index": 414,
+              "Length": 60,
+              "Text": "8. Wash, dry, and fold shared laundry (towels and bedsheets)"
+            },
+            {
+              "Index": 476,
+              "Length": 53,
+              "Text": "9. Water indoor plants and sweep the porch or balcony"
+            },
+            {
+              "Index": 531,
+              "Length": 62,
+              "Text": "10. Restock bathroom tissue, hand soap, and dishwashing liquid"
+            }
+          ]
+        },
+        {
+          "Label": "header",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 61,
+              "Text": "Roster. (Tobi, Iyanu and Tooni will alternate between chores)"
+            }
+          ]
+        },
+        {
+          "Label": "roster",
+          "Captures": [
+            {
+              "Index": 65,
+              "Length": 51,
+              "Text": "1. Sweep and mop the living room and hallway floors"
+            },
+            {
+              "Index": 118,
+              "Length": 48,
+              "Text": "2. Wash dishes and wipe down kitchen countertops"
+            },
+            {
+              "Index": 168,
+              "Length": 46,
+              "Text": "3. Scrub the bathroom sink, toilet, and shower"
+            },
+            {
+              "Index": 216,
+              "Length": 44,
+              "Text": "4. Take out the trash and replace bin liners"
+            },
+            {
+              "Index": 262,
+              "Length": 42,
+              "Text": "5. Vacuum carpets, rugs, and sofa cushions"
+            },
+            {
+              "Index": 306,
+              "Length": 59,
+              "Text": "6. Clean the stovetop, microwave, and refrigerator exterior"
+            },
+            {
+              "Index": 367,
+              "Length": 45,
+              "Text": "7. Dust shelves, windowsills, and electronics"
+            },
+            {
+              "Index": 414,
+              "Length": 60,
+              "Text": "8. Wash, dry, and fold shared laundry (towels and bedsheets)"
+            },
+            {
+              "Index": 476,
+              "Length": 53,
+              "Text": "9. Water indoor plants and sweep the porch or balcony"
+            },
+            {
+              "Index": 531,
+              "Length": 62,
+              "Text": "10. Restock bathroom tissue, hand soap, and dishwashing liquid"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 593,
+      "Text": "Roster. (Tobi, Iyanu and Tooni will alternate between chores)\r\n\r\n1. Sweep and mop the living room and hallway floors\r\n2. Wash dishes and wipe down kitchen countertops\r\n3. Scrub the bathroom sink, toilet, and shower\r\n4. Take out the trash and replace bin liners\r\n5. Vacuum carpets, rugs, and sofa cushions\r\n6. Clean the stovetop, microwave, and refrigerator exterior\r\n7. Dust shelves, windowsills, and electronics\r\n8. Wash, dry, and fold shared laundry (towels and bedsheets)\r\n9. Water indoor plants and sweep the porch or balcony\r\n10. Restock bathroom tissue, hand soap, and dishwashing liquid"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "chore",
+          "Captures": [
+            {
+              "Index": 65,
+              "Length": 51,
+              "Text": "1. Sweep and mop the living room and hallway floors"
+            },
+            {
+              "Index": 137,
+              "Length": 48,
+              "Text": "2. Wash dishes and wipe down kitchen countertops"
+            },
+            {
+              "Index": 207,
+              "Length": 46,
+              "Text": "3. Scrub the bathroom sink, toilet, and shower"
+            },
+            {
+              "Index": 275,
+              "Length": 44,
+              "Text": "4. Take out the trash and replace bin liners"
+            },
+            {
+              "Index": 340,
+              "Length": 42,
+              "Text": "5. Vacuum carpets, rugs, and sofa cushions"
+            },
+            {
+              "Index": 404,
+              "Length": 59,
+              "Text": "6. Clean the stovetop, microwave, and refrigerator exterior"
+            },
+            {
+              "Index": 485,
+              "Length": 45,
+              "Text": "7. Dust shelves, windowsills, and electronics"
+            },
+            {
+              "Index": 551,
+              "Length": 60,
+              "Text": "8. Wash, dry, and fold shared laundry (towels and bedsheets)"
+            },
+            {
+              "Index": 633,
+              "Length": 53,
+              "Text": "9. Water indoor plants and sweep the porch or balcony"
+            },
+            {
+              "Index": 708,
+              "Length": 62,
+              "Text": "10. Restock bathroom tissue, hand soap, and dishwashing liquid"
+            }
+          ]
+        },
+        {
+          "Label": "header",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 61,
+              "Text": "Roster. (Tobi, Iyanu and Tooni will alternate between chores)"
+            }
+          ]
+        },
+        {
+          "Label": "roster",
+          "Captures": [
+            {
+              "Index": 65,
+              "Length": 70,
+              "Text": "1. Sweep and mop the living room and hallway floors (Assigned to Tobi)"
+            },
+            {
+              "Index": 137,
+              "Length": 68,
+              "Text": "2. Wash dishes and wipe down kitchen countertops (Assigned to Iyanu)"
+            },
+            {
+              "Index": 207,
+              "Length": 66,
+              "Text": "3. Scrub the bathroom sink, toilet, and shower (Assigned to Tooni)"
+            },
+            {
+              "Index": 275,
+              "Length": 63,
+              "Text": "4. Take out the trash and replace bin liners (Assigned to Tobi)"
+            },
+            {
+              "Index": 340,
+              "Length": 62,
+              "Text": "5. Vacuum carpets, rugs, and sofa cushions (Assigned to Iyanu)"
+            },
+            {
+              "Index": 404,
+              "Length": 79,
+              "Text": "6. Clean the stovetop, microwave, and refrigerator exterior (Assigned to Tooni)"
+            },
+            {
+              "Index": 485,
+              "Length": 64,
+              "Text": "7. Dust shelves, windowsills, and electronics (Assigned to Tobi)"
+            },
+            {
+              "Index": 551,
+              "Length": 80,
+              "Text": "8. Wash, dry, and fold shared laundry (towels and bedsheets) (Assigned to Iyanu)"
+            },
+            {
+              "Index": 633,
+              "Length": 73,
+              "Text": "9. Water indoor plants and sweep the porch or balcony (Assigned to Tooni)"
+            },
+            {
+              "Index": 708,
+              "Length": 62,
+              "Text": "10. Restock bathroom tissue, hand soap, and dishwashing liquid"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 770,
+      "Text": "Roster. (Tobi, Iyanu and Tooni will alternate between chores)\r\n\r\n1. Sweep and mop the living room and hallway floors (Assigned to Tobi)\r\n2. Wash dishes and wipe down kitchen countertops (Assigned to Iyanu)\r\n3. Scrub the bathroom sink, toilet, and shower (Assigned to Tooni)\r\n4. Take out the trash and replace bin liners (Assigned to Tobi)\r\n5. Vacuum carpets, rugs, and sofa cushions (Assigned to Iyanu)\r\n6. Clean the stovetop, microwave, and refrigerator exterior (Assigned to Tooni)\r\n7. Dust shelves, windowsills, and electronics (Assigned to Tobi)\r\n8. Wash, dry, and fold shared laundry (towels and bedsheets) (Assigned to Iyanu)\r\n9. Water indoor plants and sweep the porch or balcony (Assigned to Tooni)\r\n10. Restock bathroom tissue, hand soap, and dishwashing liquid"
+    }
+  }
+]

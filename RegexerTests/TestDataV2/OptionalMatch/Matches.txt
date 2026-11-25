@@ -1,0 +1,245 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "_args",
+          "Captures": [
+            {
+              "Index": 124,
+              "Length": 25,
+              "Text": "int a, string b, char[] c"
+            }
+          ]
+        },
+        {
+          "Label": "args",
+          "Captures": [
+            {
+              "Index": 124,
+              "Length": 5,
+              "Text": "int a"
+            },
+            {
+              "Index": 131,
+              "Length": 8,
+              "Text": "string b"
+            },
+            {
+              "Index": 141,
+              "Length": 8,
+              "Text": "char[] c"
+            }
+          ]
+        },
+        {
+          "Label": "method",
+          "Captures": [
+            {
+              "Index": 112,
+              "Length": 11,
+              "Text": "DoSomething"
+            }
+          ]
+        },
+        {
+          "Label": "namespace",
+          "Captures": [
+            {
+              "Index": 97,
+              "Length": 14,
+              "Text": "       Utility"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 124,
+              "Length": 3,
+              "Text": "int"
+            },
+            {
+              "Index": 131,
+              "Length": 6,
+              "Text": "string"
+            },
+            {
+              "Index": 141,
+              "Length": 6,
+              "Text": "char[]"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 128,
+              "Length": 1,
+              "Text": "a"
+            },
+            {
+              "Index": 138,
+              "Length": 1,
+              "Text": "b"
+            },
+            {
+              "Index": 148,
+              "Length": 1,
+              "Text": "c"
+            }
+          ]
+        }
+      ],
+      "Index": 97,
+      "Length": 54,
+      "Text": "       Utility.DoSomething(int a, string b, char[] c);"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "_args",
+          "Captures": [
+            {
+              "Index": 104,
+              "Length": 29,
+              "Text": "//Parameters passed: a, b, c."
+            },
+            {
+              "Index": 162,
+              "Length": 25,
+              "Text": "int a, string b, char[] c"
+            }
+          ]
+        },
+        {
+          "Label": "method",
+          "Captures": [
+            {
+              "Index": 150,
+              "Length": 11,
+              "Text": "DoSomething"
+            }
+          ]
+        },
+        {
+          "Label": "namespace",
+          "Captures": [
+            {
+              "Index": 135,
+              "Length": 14,
+              "Text": "       Utility"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 125,
+              "Length": 1,
+              "Text": "a"
+            },
+            {
+              "Index": 128,
+              "Length": 1,
+              "Text": "b"
+            },
+            {
+              "Index": 131,
+              "Length": 1,
+              "Text": "c"
+            }
+          ]
+        }
+      ],
+      "Index": 97,
+      "Length": 92,
+      "Text": "       //Parameters passed: a, b, c.\r\n       Utility.DoSomething(int a, string b, char[] c);"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "_args",
+          "Captures": []
+        },
+        {
+          "Label": "args",
+          "Captures": []
+        },
+        {
+          "Label": "method",
+          "Captures": [
+            {
+              "Index": 177,
+              "Length": 5,
+              "Text": "Build"
+            }
+          ]
+        },
+        {
+          "Label": "namespace",
+          "Captures": [
+            {
+              "Index": 162,
+              "Length": 14,
+              "Text": "       Package"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
+          "Label": "var",
+          "Captures": []
+        }
+      ],
+      "Index": 162,
+      "Length": 23,
+      "Text": "       Package.Build();"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "_args",
+          "Captures": [
+            {
+              "Index": 207,
+              "Length": 23,
+              "Text": "//No parameters passed."
+            }
+          ]
+        },
+        {
+          "Label": "method",
+          "Captures": [
+            {
+              "Index": 247,
+              "Length": 5,
+              "Text": "Build"
+            }
+          ]
+        },
+        {
+          "Label": "namespace",
+          "Captures": [
+            {
+              "Index": 232,
+              "Length": 14,
+              "Text": "       Package"
+            }
+          ]
+        }
+      ],
+      "Index": 200,
+      "Length": 55,
+      "Text": "       //No parameters passed.\r\n       Package.Build();"
+    }
+  }
+]

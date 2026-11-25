@@ -1,0 +1,9 @@
+﻿public class Test{
+    private readonly string _name = "Shade";
+    
+    public void Main(){
+       Utility.DoSomething(int a, string b, char[] c);
+       
+       Package.Build();
+    }
+}

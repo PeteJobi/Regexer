@@ -6,7 +6,7 @@
     [[mePost|u|method: "POST",]]
     [[meDel|u|method: "DELETE",]]
     [[proc|u|processData: true,]]
-    success: () => {
+    success: [[{\(?}]][[result|o|[[var|w]][[o|: [[type]]]]]][[{\)?}]] => {
         [[act|ml]]
     },
     error: (xhr, status, error) => {

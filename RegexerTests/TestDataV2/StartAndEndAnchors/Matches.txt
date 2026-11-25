@@ -1,0 +1,38 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "a",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 5,
+              "Text": "apple"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 5,
+      "Text": "apple"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "a",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 5,
+              "Text": "APPLE"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 5,
+      "Text": "APPLE"
+    }
+  }
+]

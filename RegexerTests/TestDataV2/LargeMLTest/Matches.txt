@@ -6,6 +6,1317 @@
           "Label": "act",
           "Captures": [
             {
+              "Index": 3896,
+              "Length": 31,
+              "Text": "if (!hasMounted.current) return"
+            },
+            {
+              "Index": 3945,
+              "Length": 50,
+              "Text": "courses.current = courses.current.concat(_courses)"
+            },
+            {
+              "Index": 4013,
+              "Length": 25,
+              "Text": "setUnsubCourses(_courses)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": []
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": []
+        },
+        {
+          "Label": "meGet",
+          "Captures": [
+            {
+              "Index": 3809,
+              "Length": 14,
+              "Text": "method: \"GET\","
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": []
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 4118,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": []
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 3847,
+              "Length": 25,
+              "Text": "_courses: Types.ICourse[]"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 3857,
+              "Length": 15,
+              "Text": "Types.ICourse[]"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 3698,
+              "Length": 50,
+              "Text": "Strings.URL_CLASS + `unsubbedCourses/${classe.id}`"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 3847,
+              "Length": 8,
+              "Text": "_courses"
+            }
+          ]
+        }
+      ],
+      "Index": 3663,
+      "Length": 526,
+      "Text": "        $.ajax({\r\n            url: Strings.URL_CLASS + `unsubbedCourses/${classe.id}`,\r\n            contentType: \"application/json\",\r\n            method: \"GET\",\r\n            success: (_courses: Types.ICourse[]) => {\r\n                if (!hasMounted.current) return\r\n                courses.current = courses.current.concat(_courses)\r\n                setUnsubCourses(_courses)\r\n            },\r\n            error: (xhr, status, error) => {\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 4156,
+              "Length": 31,
+              "Text": "if (!hasMounted.current) return"
+            },
+            {
+              "Index": 4201,
+              "Length": 50,
+              "Text": "courses.current = courses.current.concat(_courses)"
+            },
+            {
+              "Index": 4265,
+              "Length": 25,
+              "Text": "setUnsubCourses(_courses)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 3946,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 4110,
+              "Length": 32,
+              "Text": "const _courses = response.result"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 3690,
+              "Length": 17,
+              "Text": "<Types.ICourse[]>"
+            },
+            {
+              "Index": 3691,
+              "Length": 15,
+              "Text": "Types.ICourse[]"
+            },
+            {
+              "Index": 4036,
+              "Length": 17,
+              "Text": ": Types.ICourse[]"
+            },
+            {
+              "Index": 4038,
+              "Length": 15,
+              "Text": "Types.ICourse[]"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 3708,
+              "Length": 50,
+              "Text": "Strings.URL_CLASS + `unsubbedCourses/${classe.id}`"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 4116,
+              "Length": 8,
+              "Text": "_courses"
+            }
+          ]
+        }
+      ],
+      "Index": 3663,
+      "Length": 639,
+      "Text": "        Functions.fetchCall<Types.ICourse[]>(Strings.URL_CLASS + `unsubbedCourses/${classe.id}`, {\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n            }).then((response: Types.ICourse[]) => {\r\n            if(!response.ok) return\r\n            const _courses = response.result\r\n            if (!hasMounted.current) return\r\n            courses.current = courses.current.concat(_courses)\r\n            setUnsubCourses(_courses)\r\n        })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 4561,
+              "Length": 22,
+              "Text": "setOptRowsInit(result)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 4374,
+              "Length": 66,
+              "Text": "data: { count: Integers.OPTS_DOM_LIMIT } as Types.IOptsLoadParams,"
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": [
+            {
+              "Index": 4380,
+              "Length": 59,
+              "Text": "{ count: Integers.OPTS_DOM_LIMIT } as Types.IOptsLoadParams"
+            }
+          ]
+        },
+        {
+          "Label": "meDel",
+          "Captures": []
+        },
+        {
+          "Label": "meGet",
+          "Captures": [
+            {
+              "Index": 4454,
+              "Length": 14,
+              "Text": "method: \"GET\","
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": []
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 4663,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": []
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 4492,
+              "Length": 45,
+              "Text": "result: Types.IInfScrollResult<Types.IOptRow>"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 4500,
+              "Length": 37,
+              "Text": "Types.IInfScrollResult<Types.IOptRow>"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 4271,
+              "Length": 42,
+              "Text": "Strings.URL_CLASS + \"ratings/\" + classe.id"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 4492,
+              "Length": 6,
+              "Text": "result"
+            }
+          ]
+        }
+      ],
+      "Index": 4236,
+      "Length": 498,
+      "Text": "        $.ajax({\r\n            url: Strings.URL_CLASS + \"ratings/\" + classe.id,\r\n            contentType: \"application/json\",\r\n            data: { count: Integers.OPTS_DOM_LIMIT } as Types.IOptsLoadParams,\r\n            method: \"GET\",\r\n            success: (result: Types.IInfScrollResult<Types.IOptRow>) => {\r\n                setOptRowsInit(result)\r\n            },\r\n            error: (xhr, status, error) => {\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 4956,
+              "Length": 22,
+              "Text": "setOptRowsInit(result)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 4475,
+              "Length": 66,
+              "Text": "body: { count: Integers.OPTS_DOM_LIMIT } as Types.IOptsLoadParams,"
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": [
+            {
+              "Index": 4481,
+              "Length": 59,
+              "Text": "{ count: Integers.OPTS_DOM_LIMIT } as Types.IOptsLoadParams"
+            }
+          ]
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 4726,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 4912,
+              "Length": 30,
+              "Text": "const result = response.result"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 4376,
+              "Length": 39,
+              "Text": "<Types.IInfScrollResult<Types.IOptRow>>"
+            },
+            {
+              "Index": 4377,
+              "Length": 37,
+              "Text": "Types.IInfScrollResult<Types.IOptRow>"
+            },
+            {
+              "Index": 4816,
+              "Length": 39,
+              "Text": ": Types.IInfScrollResult<Types.IOptRow>"
+            },
+            {
+              "Index": 4818,
+              "Length": 37,
+              "Text": "Types.IInfScrollResult<Types.IOptRow>"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 4416,
+              "Length": 42,
+              "Text": "Strings.URL_CLASS + \"ratings/\" + classe.id"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 4918,
+              "Length": 6,
+              "Text": "result"
+            }
+          ]
+        }
+      ],
+      "Index": 4349,
+      "Length": 641,
+      "Text": "        Functions.fetchCall<Types.IInfScrollResult<Types.IOptRow>>(Strings.URL_CLASS + \"ratings/\" + classe.id, {\r\n            body: { count: Integers.OPTS_DOM_LIMIT } as Types.IOptsLoadParams,\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n            }).then((response: Types.IInfScrollResult<Types.IOptRow>) => {\r\n            if(!response.ok) return\r\n            const result = response.result\r\n            setOptRowsInit(result)\r\n        })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 5503,
+              "Length": 15,
+              "Text": "resolve(result)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 5264,
+              "Length": 106,
+              "Text": "data: { count: Integers.OPTS_DOM_LIMIT, ref1Id, ref2Id, ref3Id, ref4Id, ref5Id } as Types.IRatsLoadParams,"
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": [
+            {
+              "Index": 5270,
+              "Length": 99,
+              "Text": "{ count: Integers.OPTS_DOM_LIMIT, ref1Id, ref2Id, ref3Id, ref4Id, ref5Id } as Types.IRatsLoadParams"
+            }
+          ]
+        },
+        {
+          "Label": "meDel",
+          "Captures": []
+        },
+        {
+          "Label": "meGet",
+          "Captures": [
+            {
+              "Index": 5388,
+              "Length": 14,
+              "Text": "method: \"GET\","
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": []
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 5610,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            },
+            {
+              "Index": 5676,
+              "Length": 61,
+              "Text": "reject(\"an error occured in fetchMoreRatings CourseInfo.tsx\")"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": []
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 5430,
+              "Length": 45,
+              "Text": "result: Types.IInfScrollResult<Types.IOptRow>"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 5438,
+              "Length": 37,
+              "Text": "Types.IInfScrollResult<Types.IOptRow>"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 5153,
+              "Length": 42,
+              "Text": "Strings.URL_CLASS + \"ratings/\" + classe.id"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 5430,
+              "Length": 6,
+              "Text": "result"
+            }
+          ]
+        }
+      ],
+      "Index": 5110,
+      "Length": 662,
+      "Text": "            $.ajax({\r\n                url: Strings.URL_CLASS + \"ratings/\" + classe.id,\r\n                contentType: \"application/json\",\r\n                data: { count: Integers.OPTS_DOM_LIMIT, ref1Id, ref2Id, ref3Id, ref4Id, ref5Id } as Types.IRatsLoadParams,\r\n                method: \"GET\",\r\n                success: (result: Types.IInfScrollResult<Types.IOptRow>) => {\r\n                    resolve(result)\r\n                },\r\n                error: (xhr, status, error) => {\r\n                    console.log(xhr.responseText, status, error)\r\n                    reject(\"an error occured in fetchMoreRatings CourseInfo.tsx\")\r\n                }\r\n            })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 6136,
+              "Length": 15,
+              "Text": "resolve(result)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 5500,
+              "Length": 106,
+              "Text": "body: { count: Integers.OPTS_DOM_LIMIT, ref1Id, ref2Id, ref3Id, ref4Id, ref5Id } as Types.IRatsLoadParams,"
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": [
+            {
+              "Index": 5506,
+              "Length": 99,
+              "Text": "{ count: Integers.OPTS_DOM_LIMIT, ref1Id, ref2Id, ref3Id, ref4Id, ref5Id } as Types.IRatsLoadParams"
+            }
+          ]
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 5803,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            },
+            {
+              "Index": 5869,
+              "Length": 61,
+              "Text": "reject(\"an error occured in fetchMoreRatings CourseInfo.tsx\")"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 6088,
+              "Length": 30,
+              "Text": "const result = response.result"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 5397,
+              "Length": 39,
+              "Text": "<Types.IInfScrollResult<Types.IOptRow>>"
+            },
+            {
+              "Index": 5398,
+              "Length": 37,
+              "Text": "Types.IInfScrollResult<Types.IOptRow>"
+            },
+            {
+              "Index": 5984,
+              "Length": 39,
+              "Text": ": Types.IInfScrollResult<Types.IOptRow>"
+            },
+            {
+              "Index": 5986,
+              "Length": 37,
+              "Text": "Types.IInfScrollResult<Types.IOptRow>"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 5437,
+              "Length": 42,
+              "Text": "Strings.URL_CLASS + \"ratings/\" + classe.id"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 6094,
+              "Length": 6,
+              "Text": "result"
+            }
+          ]
+        }
+      ],
+      "Index": 5366,
+      "Length": 801,
+      "Text": "            Functions.fetchCall<Types.IInfScrollResult<Types.IOptRow>>(Strings.URL_CLASS + \"ratings/\" + classe.id, {\r\n                body: { count: Integers.OPTS_DOM_LIMIT, ref1Id, ref2Id, ref3Id, ref4Id, ref5Id } as Types.IRatsLoadParams,\r\n                notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                    console.log(responseText, status, noConnection, noConnectionString)\r\n                    console.log(xhr.responseText, status, error)\r\n                    reject(\"an error occured in fetchMoreRatings CourseInfo.tsx\")\r\n                }\r\n                }).then((response: Types.IInfScrollResult<Types.IOptRow>) => {\r\n                if(!response.ok) return\r\n                const result = response.result\r\n                resolve(result)\r\n            })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 6227,
+              "Length": 57,
+              "Text": "isTutor ? setTutorsInit(result) : setStudentsInit(result)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 6012,
+              "Length": 94,
+              "Text": "data: { refId: 0, count: Integers.FETCH_DOWN_COUNT, forward: true } as Types.IItemsLoadParams,"
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": [
+            {
+              "Index": 6018,
+              "Length": 87,
+              "Text": "{ refId: 0, count: Integers.FETCH_DOWN_COUNT, forward: true } as Types.IItemsLoadParams"
+            }
+          ]
+        },
+        {
+          "Label": "meDel",
+          "Captures": []
+        },
+        {
+          "Label": "meGet",
+          "Captures": [
+            {
+              "Index": 6120,
+              "Length": 14,
+              "Text": "method: \"GET\","
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": []
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 6364,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": []
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 6158,
+              "Length": 45,
+              "Text": "result: Types.IInfScrollResult<Types.IIDUser>"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 6166,
+              "Length": 37,
+              "Text": "Types.IInfScrollResult<Types.IIDUser>"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 5882,
+              "Length": 69,
+              "Text": "`${Strings.URL_CLASS}${isTutor ? \"tutors\" : \"students\"}/${course.id}`"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 6158,
+              "Length": 6,
+              "Text": "result"
+            }
+          ]
+        }
+      ],
+      "Index": 5847,
+      "Length": 588,
+      "Text": "        $.ajax({\r\n            url: `${Strings.URL_CLASS}${isTutor ? \"tutors\" : \"students\"}/${course.id}`,\r\n            contentType: \"application/json\",\r\n            data: { refId: 0, count: Integers.FETCH_DOWN_COUNT, forward: true } as Types.IItemsLoadParams,\r\n            method: \"GET\",\r\n            success: (result: Types.IInfScrollResult<Types.IIDUser>) => {\r\n                isTutor ? setTutorsInit(result) : setStudentsInit(result)\r\n            },\r\n            error: (xhr, status, error) => {\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 6904,
+              "Length": 57,
+              "Text": "isTutor ? setTutorsInit(result) : setStudentsInit(result)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 6395,
+              "Length": 94,
+              "Text": "body: { refId: 0, count: Integers.FETCH_DOWN_COUNT, forward: true } as Types.IItemsLoadParams,"
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": [
+            {
+              "Index": 6401,
+              "Length": 87,
+              "Text": "{ refId: 0, count: Integers.FETCH_DOWN_COUNT, forward: true } as Types.IItemsLoadParams"
+            }
+          ]
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 6674,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 6860,
+              "Length": 30,
+              "Text": "const result = response.result"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 6269,
+              "Length": 39,
+              "Text": "<Types.IInfScrollResult<Types.IIDUser>>"
+            },
+            {
+              "Index": 6270,
+              "Length": 37,
+              "Text": "Types.IInfScrollResult<Types.IIDUser>"
+            },
+            {
+              "Index": 6764,
+              "Length": 39,
+              "Text": ": Types.IInfScrollResult<Types.IIDUser>"
+            },
+            {
+              "Index": 6766,
+              "Length": 37,
+              "Text": "Types.IInfScrollResult<Types.IIDUser>"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 6309,
+              "Length": 69,
+              "Text": "`${Strings.URL_CLASS}${isTutor ? \"tutors\" : \"students\"}/${course.id}`"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 6866,
+              "Length": 6,
+              "Text": "result"
+            }
+          ]
+        }
+      ],
+      "Index": 6242,
+      "Length": 731,
+      "Text": "        Functions.fetchCall<Types.IInfScrollResult<Types.IIDUser>>(`${Strings.URL_CLASS}${isTutor ? \"tutors\" : \"students\"}/${course.id}`, {\r\n            body: { refId: 0, count: Integers.FETCH_DOWN_COUNT, forward: true } as Types.IItemsLoadParams,\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n            }).then((response: Types.IInfScrollResult<Types.IIDUser>) => {\r\n            if(!response.ok) return\r\n            const result = response.result\r\n            isTutor ? setTutorsInit(result) : setStudentsInit(result)\r\n        })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 6718,
+              "Length": 18,
+              "Text": "updClassDispatch({"
+            },
+            {
+              "Index": 6754,
+              "Length": 38,
+              "Text": "    type: Strings.UPDATE_CLASS_PARAMS,"
+            },
+            {
+              "Index": 6810,
+              "Length": 36,
+              "Text": "    classAction: Strings.EDIT_CLASS,"
+            },
+            {
+              "Index": 6864,
+              "Length": 23,
+              "Text": "    classId: classe.id,"
+            },
+            {
+              "Index": 6905,
+              "Length": 17,
+              "Text": "    class: classe"
+            },
+            {
+              "Index": 6940,
+              "Length": 2,
+              "Text": "})"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 6552,
+              "Length": 23,
+              "Text": " // api/Class/joinClass"
+            }
+          ]
+        },
+        {
+          "Label": "dat",
+          "Captures": []
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": []
+        },
+        {
+          "Label": "meGet",
+          "Captures": []
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 6635,
+              "Length": 15,
+              "Text": "method: \"POST\","
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 7022,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": []
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 6674,
+              "Length": 20,
+              "Text": "classe: Types.IClass"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 6682,
+              "Length": 12,
+              "Text": "Types.IClass"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 6507,
+              "Length": 44,
+              "Text": "Strings.URL_CLASS + \"joinClass/\" + classe.id"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 6674,
+              "Length": 6,
+              "Text": "classe"
+            }
+          ]
+        }
+      ],
+      "Index": 6472,
+      "Length": 621,
+      "Text": "        $.ajax({\r\n            url: Strings.URL_CLASS + \"joinClass/\" + classe.id, // api/Class/joinClass\r\n            contentType: \"application/json\",\r\n            method: \"POST\",\r\n            success: (classe: Types.IClass) => {\r\n                updClassDispatch({\r\n                    type: Strings.UPDATE_CLASS_PARAMS,\r\n                    classAction: Strings.EDIT_CLASS,\r\n                    classId: classe.id,\r\n                    class: classe\r\n                })\r\n            },\r\n            error: (xhr, status, error) => {\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 7541,
+              "Length": 18,
+              "Text": "updClassDispatch({"
+            },
+            {
+              "Index": 7573,
+              "Length": 38,
+              "Text": "    type: Strings.UPDATE_CLASS_PARAMS,"
+            },
+            {
+              "Index": 7625,
+              "Length": 36,
+              "Text": "    classAction: Strings.EDIT_CLASS,"
+            },
+            {
+              "Index": 7675,
+              "Length": 23,
+              "Text": "    classId: classe.id,"
+            },
+            {
+              "Index": 7712,
+              "Length": 17,
+              "Text": "    class: classe"
+            },
+            {
+              "Index": 7743,
+              "Length": 2,
+              "Text": "})"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": [
+            {
+              "Index": 7099,
+              "Length": 23,
+              "Text": " // api/Class/joinClass"
+            }
+          ]
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 7136,
+              "Length": 15,
+              "Text": "method: \"post\","
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 7336,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 7497,
+              "Length": 30,
+              "Text": "const classe = response.result"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 7037,
+              "Length": 14,
+              "Text": "<Types.IClass>"
+            },
+            {
+              "Index": 7038,
+              "Length": 12,
+              "Text": "Types.IClass"
+            },
+            {
+              "Index": 7426,
+              "Length": 14,
+              "Text": ": Types.IClass"
+            },
+            {
+              "Index": 7428,
+              "Length": 12,
+              "Text": "Types.IClass"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 7052,
+              "Length": 44,
+              "Text": "Strings.URL_CLASS + \"joinClass/\" + classe.id"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 7503,
+              "Length": 6,
+              "Text": "classe"
+            }
+          ]
+        }
+      ],
+      "Index": 7010,
+      "Length": 747,
+      "Text": "        Functions.fetchCall<Types.IClass>(Strings.URL_CLASS + \"joinClass/\" + classe.id, { // api/Class/joinClass\r\n            method: \"post\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n            }).then((response: Types.IClass) => {\r\n            if(!response.ok) return\r\n            const classe = response.result\r\n            updClassDispatch({\r\n                type: Strings.UPDATE_CLASS_PARAMS,\r\n                classAction: Strings.EDIT_CLASS,\r\n                classId: classe.id,\r\n                class: classe\r\n            })\r\n        })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
               "Index": 7508,
               "Length": 110,
               "Text": "updClassDispatch({ type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.RELOAD_CLASS, classId: classe.id })"
@@ -62,6 +1373,14 @@
           "Captures": []
         },
         {
+          "Label": "result",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
           "Label": "url",
           "Captures": [
             {
@@ -70,6 +1389,10 @@
               "Text": "Strings.URL_CLASS + (isSubbing ? \"subscribeToCourse\" : \"unsubscribeFromCourse\") + `/${course.id}`"
             }
           ]
+        },
+        {
+          "Label": "var",
+          "Captures": []
         }
       ],
       "Index": 7298,
@@ -82,12 +1405,12 @@
           "Label": "act",
           "Captures": [
             {
-              "Index": 7783,
+              "Index": 8465,
               "Length": 110,
               "Text": "updClassDispatch({ type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.RELOAD_CLASS, classId: classe.id })"
             },
             {
-              "Index": 7907,
+              "Index": 8589,
               "Length": 27,
               "Text": "console.log(\"Unsubscribed\")"
             }
@@ -125,7 +1448,7 @@
           "Label": "mePost",
           "Captures": [
             {
-              "Index": 7440,
+              "Index": 8104,
               "Length": 15,
               "Text": "method: \"post\","
             }
@@ -135,7 +1458,7 @@
           "Label": "not",
           "Captures": [
             {
-              "Index": 7640,
+              "Index": 8304,
               "Length": 44,
               "Text": "console.log(xhr.responseText, status, error)"
             }
@@ -152,19 +1475,274 @@
           ]
         },
         {
+          "Label": "result",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
           "Label": "url",
           "Captures": [
             {
-              "Index": 7326,
+              "Index": 7990,
               "Length": 97,
               "Text": "Strings.URL_CLASS + (isSubbing ? \"subscribeToCourse\" : \"unsubscribeFromCourse\") + `/${course.id}`"
             }
           ]
+        },
+        {
+          "Label": "var",
+          "Captures": []
         }
       ],
-      "Index": 7298,
-      "Length": 648,
-      "Text": "        Functions.fetchCall(Strings.URL_CLASS + (isSubbing ? \"subscribeToCourse\" : \"unsubscribeFromCourse\") + `/${course.id}`, {\r\n            method: \"post\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        }).then((response) => {\r\n            if(!response.ok) return\r\n            updClassDispatch({ type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.RELOAD_CLASS, classId: classe.id })\r\n            console.log(\"Unsubscribed\")\r\n        })"
+      "Index": 7962,
+      "Length": 666,
+      "Text": "        Functions.fetchCall(Strings.URL_CLASS + (isSubbing ? \"subscribeToCourse\" : \"unsubscribeFromCourse\") + `/${course.id}`, {\r\n            method: \"post\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n            }).then((response) => {\r\n            if(!response.ok) return\r\n            \r\n            updClassDispatch({ type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.RELOAD_CLASS, classId: classe.id })\r\n            console.log(\"Unsubscribed\")\r\n        })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 9025,
+              "Length": 35,
+              "Text": "if (successful) console.log(\"sent\")"
+            },
+            {
+              "Index": 9078,
+              "Length": 116,
+              "Text": "else setJoinObj({ text: Texts.LEAVE_CLASS, path: Paths.UNSUBSCRIBE, col: Objects.ButType.RED }) //has already joined"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": []
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": []
+        },
+        {
+          "Label": "meGet",
+          "Captures": []
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 8897,
+              "Length": 15,
+              "Text": "method: \"POST\","
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 9274,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": []
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 8982,
+              "Length": 19,
+              "Text": "successful: boolean"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 8994,
+              "Length": 7,
+              "Text": "boolean"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 8833,
+              "Length": 49,
+              "Text": "Strings.URL_NOTICE + \"memberRequest/\" + classe.id"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 8982,
+              "Length": 10,
+              "Text": "successful"
+            }
+          ]
+        }
+      ],
+      "Index": 8798,
+      "Length": 547,
+      "Text": "        $.ajax({\r\n            url: Strings.URL_NOTICE + \"memberRequest/\" + classe.id,\r\n            method: \"POST\",\r\n            contentType: \"application/json\",\r\n            success: (successful: boolean) => {\r\n                if (successful) console.log(\"sent\")\r\n                else setJoinObj({ text: Texts.LEAVE_CLASS, path: Paths.UNSUBSCRIBE, col: Objects.ButType.RED }) //has already joined\r\n            },\r\n            error: (xhr, status, error) => {\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 10119,
+              "Length": 35,
+              "Text": "if (successful) console.log(\"sent\")"
+            },
+            {
+              "Index": 10168,
+              "Length": 116,
+              "Text": "else setJoinObj({ text: Texts.LEAVE_CLASS, path: Paths.UNSUBSCRIBE, col: Objects.ButType.RED }) //has already joined"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 9715,
+              "Length": 15,
+              "Text": "method: \"post\","
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 9915,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 10071,
+              "Length": 34,
+              "Text": "const successful = response.result"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 9639,
+              "Length": 9,
+              "Text": "<boolean>"
+            },
+            {
+              "Index": 9640,
+              "Length": 7,
+              "Text": "boolean"
+            },
+            {
+              "Index": 10005,
+              "Length": 9,
+              "Text": ": boolean"
+            },
+            {
+              "Index": 10007,
+              "Length": 7,
+              "Text": "boolean"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 9649,
+              "Length": 49,
+              "Text": "Strings.URL_NOTICE + \"memberRequest/\" + classe.id"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 10077,
+              "Length": 10,
+              "Text": "successful"
+            }
+          ]
+        }
+      ],
+      "Index": 9612,
+      "Length": 684,
+      "Text": "        Functions.fetchCall<boolean>(Strings.URL_NOTICE + \"memberRequest/\" + classe.id, {\r\n            method: \"post\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n            }).then((response: boolean) => {\r\n            if(!response.ok) return\r\n            const successful = response.result\r\n            if (successful) console.log(\"sent\")\r\n            else setJoinObj({ text: Texts.LEAVE_CLASS, path: Paths.UNSUBSCRIBE, col: Objects.ButType.RED }) //has already joined\r\n        })"
     }
   },
   {
@@ -231,6 +1809,14 @@
           "Captures": []
         },
         {
+          "Label": "result",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
           "Label": "url",
           "Captures": [
             {
@@ -239,6 +1825,10 @@
               "Text": "Strings.URL_CLASS + `leave/${classe.id}`"
             }
           ]
+        },
+        {
+          "Label": "var",
+          "Captures": []
         }
       ],
       "Index": 9383,
@@ -251,7 +1841,7 @@
           "Label": "act",
           "Captures": [
             {
-              "Index": 9964,
+              "Index": 10801,
               "Length": 19,
               "Text": "console.log(\"Left\")"
             }
@@ -261,7 +1851,7 @@
           "Label": "comment",
           "Captures": [
             {
-              "Index": 9586,
+              "Index": 10405,
               "Length": 21,
               "Text": " // api/Class/leave/5"
             }
@@ -295,7 +1885,7 @@
           "Label": "mePost",
           "Captures": [
             {
-              "Index": 9621,
+              "Index": 10440,
               "Length": 15,
               "Text": "method: \"post\","
             }
@@ -305,7 +1895,7 @@
           "Label": "not",
           "Captures": [
             {
-              "Index": 9821,
+              "Index": 10640,
               "Length": 44,
               "Text": "console.log(xhr.responseText, status, error)"
             }
@@ -322,19 +1912,31 @@
           ]
         },
         {
+          "Label": "result",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
           "Label": "url",
           "Captures": [
             {
-              "Index": 9543,
+              "Index": 10362,
               "Length": 40,
               "Text": "Strings.URL_CLASS + `leave/${classe.id}`"
             }
           ]
+        },
+        {
+          "Label": "var",
+          "Captures": []
         }
       ],
-      "Index": 9515,
-      "Length": 480,
-      "Text": "        Functions.fetchCall(Strings.URL_CLASS + `leave/${classe.id}`, { // api/Class/leave/5\r\n            method: \"post\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        }).then((response) => {\r\n            if(!response.ok) return\r\n            console.log(\"Left\")\r\n        })"
+      "Index": 10334,
+      "Length": 498,
+      "Text": "        Functions.fetchCall(Strings.URL_CLASS + `leave/${classe.id}`, { // api/Class/leave/5\r\n            method: \"post\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n            }).then((response) => {\r\n            if(!response.ok) return\r\n            \r\n            console.log(\"Left\")\r\n        })"
     }
   },
   {
@@ -431,6 +2033,14 @@
           "Captures": []
         },
         {
+          "Label": "result",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
           "Label": "url",
           "Captures": [
             {
@@ -439,6 +2049,10 @@
               "Text": "Strings.URL_CLASS + \"course/\" + course.id"
             }
           ]
+        },
+        {
+          "Label": "var",
+          "Captures": []
         }
       ],
       "Index": 10880,
@@ -451,37 +2065,37 @@
           "Label": "act",
           "Captures": [
             {
-              "Index": 11607,
+              "Index": 12462,
               "Length": 32,
               "Text": "if (!hasMounted.current) return;"
             },
             {
-              "Index": 11653,
+              "Index": 12508,
               "Length": 19,
               "Text": "setIsLoading(false)"
             },
             {
-              "Index": 11686,
+              "Index": 12541,
               "Length": 19,
               "Text": "updCourseDispatch({"
             },
             {
-              "Index": 11719,
+              "Index": 12574,
               "Length": 76,
               "Text": "    type: Strings.UPDATE_COURSE_PARAMS, courseAction: Strings.DELETE_COURSE,"
             },
             {
-              "Index": 11809,
+              "Index": 12664,
               "Length": 48,
               "Text": "    courseId: course.id, classId: course.classId"
             },
             {
-              "Index": 11871,
+              "Index": 12726,
               "Length": 2,
               "Text": "})"
             },
             {
-              "Index": 11887,
+              "Index": 12742,
               "Length": 96,
               "Text": "if(pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })"
             }
@@ -491,7 +2105,7 @@
           "Label": "comment",
           "Captures": [
             {
-              "Index": 11220,
+              "Index": 12057,
               "Length": 22,
               "Text": " // api/Class/Course/5"
             }
@@ -515,7 +2129,7 @@
           "Label": "meDel",
           "Captures": [
             {
-              "Index": 11256,
+              "Index": 12093,
               "Length": 17,
               "Text": "method: \"delete\","
             }
@@ -535,7 +2149,7 @@
           "Label": "not",
           "Captures": [
             {
-              "Index": 11458,
+              "Index": 12295,
               "Length": 50,
               "Text": "console.log(xhr.responseText, \"fa\", error, status)"
             }
@@ -552,19 +2166,31 @@
           ]
         },
         {
+          "Label": "result",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
           "Label": "url",
           "Captures": [
             {
-              "Index": 11176,
+              "Index": 12013,
               "Length": 41,
               "Text": "Strings.URL_CLASS + \"course/\" + course.id"
             }
           ]
+        },
+        {
+          "Label": "var",
+          "Captures": []
         }
       ],
-      "Index": 11148,
-      "Length": 847,
-      "Text": "        Functions.fetchCall(Strings.URL_CLASS + \"course/\" + course.id, { // api/Class/Course/5\r\n            method: \"delete\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, \"fa\", error, status)\r\n            }\r\n        }).then((response) => {\r\n            if(!response.ok) return\r\n            if (!hasMounted.current) return;\r\n            setIsLoading(false)\r\n            updCourseDispatch({\r\n                type: Strings.UPDATE_COURSE_PARAMS, courseAction: Strings.DELETE_COURSE,\r\n                courseId: course.id, classId: course.classId\r\n            })\r\n            if(pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })\r\n        })"
+      "Index": 11985,
+      "Length": 865,
+      "Text": "        Functions.fetchCall(Strings.URL_CLASS + \"course/\" + course.id, { // api/Class/Course/5\r\n            method: \"delete\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, \"fa\", error, status)\r\n            }\r\n            }).then((response) => {\r\n            if(!response.ok) return\r\n            \r\n            if (!hasMounted.current) return;\r\n            setIsLoading(false)\r\n            updCourseDispatch({\r\n                type: Strings.UPDATE_COURSE_PARAMS, courseAction: Strings.DELETE_COURSE,\r\n                courseId: course.id, classId: course.classId\r\n            })\r\n            if(pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })\r\n        })"
     }
   },
   {
@@ -661,6 +2287,14 @@
           "Captures": []
         },
         {
+          "Label": "result",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
           "Label": "url",
           "Captures": [
             {
@@ -669,6 +2303,10 @@
               "Text": "Strings.URL_CLASS + \"class/\" + classe.id"
             }
           ]
+        },
+        {
+          "Label": "var",
+          "Captures": []
         }
       ],
       "Index": 11735,
@@ -681,37 +2319,37 @@
           "Label": "act",
           "Captures": [
             {
-              "Index": 12525,
+              "Index": 13398,
               "Length": 32,
               "Text": "if (!hasMounted.current) return;"
             },
             {
-              "Index": 12571,
+              "Index": 13444,
               "Length": 19,
               "Text": "setIsLoading(false)"
             },
             {
-              "Index": 12604,
+              "Index": 13477,
               "Length": 18,
               "Text": "updClassDispatch({"
             },
             {
-              "Index": 12636,
+              "Index": 13509,
               "Length": 73,
               "Text": "    type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.DELETE_CLASS,"
             },
             {
-              "Index": 12723,
+              "Index": 13596,
               "Length": 22,
               "Text": "    classId: classe.id"
             },
             {
-              "Index": 12759,
+              "Index": 13632,
               "Length": 2,
               "Text": "})"
             },
             {
-              "Index": 12775,
+              "Index": 13648,
               "Length": 97,
               "Text": "if (pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })"
             }
@@ -721,7 +2359,7 @@
           "Label": "comment",
           "Captures": [
             {
-              "Index": 12140,
+              "Index": 12995,
               "Length": 20,
               "Text": " // api/Class/Course"
             }
@@ -745,7 +2383,7 @@
           "Label": "meDel",
           "Captures": [
             {
-              "Index": 12174,
+              "Index": 13029,
               "Length": 17,
               "Text": "method: \"delete\","
             }
@@ -765,7 +2403,7 @@
           "Label": "not",
           "Captures": [
             {
-              "Index": 12376,
+              "Index": 13231,
               "Length": 50,
               "Text": "console.log(xhr.responseText, \"fa\", error, status)"
             }
@@ -782,19 +2420,1010 @@
           ]
         },
         {
+          "Label": "result",
+          "Captures": []
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
           "Label": "url",
           "Captures": [
             {
-              "Index": 12097,
+              "Index": 12952,
               "Length": 40,
               "Text": "Strings.URL_CLASS + \"class/\" + classe.id"
             }
           ]
+        },
+        {
+          "Label": "var",
+          "Captures": []
         }
       ],
-      "Index": 12069,
-      "Length": 815,
-      "Text": "        Functions.fetchCall(Strings.URL_CLASS + \"class/\" + classe.id, { // api/Class/Course\r\n            method: \"delete\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, \"fa\", error, status)\r\n            }\r\n        }).then((response) => {\r\n            if(!response.ok) return\r\n            if (!hasMounted.current) return;\r\n            setIsLoading(false)\r\n            updClassDispatch({\r\n                type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.DELETE_CLASS,\r\n                classId: classe.id\r\n            })\r\n            if (pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })\r\n        })"
+      "Index": 12924,
+      "Length": 833,
+      "Text": "        Functions.fetchCall(Strings.URL_CLASS + \"class/\" + classe.id, { // api/Class/Course\r\n            method: \"delete\",\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, \"fa\", error, status)\r\n            }\r\n            }).then((response) => {\r\n            if(!response.ok) return\r\n            \r\n            if (!hasMounted.current) return;\r\n            setIsLoading(false)\r\n            updClassDispatch({\r\n                type: Strings.UPDATE_CLASS_PARAMS, classAction: Strings.DELETE_CLASS,\r\n                classId: classe.id\r\n            })\r\n            if (pageView === Objects.PageView.MODAL) popLastInfoDispatch({ type: Strings.SET_POP_LAST_INFO })\r\n        })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 14560,
+              "Length": 31,
+              "Text": "if (!hasMounted.current) return"
+            },
+            {
+              "Index": 14609,
+              "Length": 34,
+              "Text": "Functions.sortEvents(tAndE.events)"
+            },
+            {
+              "Index": 14661,
+              "Length": 24,
+              "Text": "setTableAndEvents(tAndE)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": []
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": []
+        },
+        {
+          "Label": "meGet",
+          "Captures": [
+            {
+              "Index": 14495,
+              "Length": 14,
+              "Text": "method: \"GET\","
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": []
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 14765,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": []
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 14532,
+              "Length": 5,
+              "Text": "tAndE"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 14384,
+              "Length": 50,
+              "Text": "Strings.URL_CLASS + `tablesAndEvents/${course.id}`"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 14532,
+              "Length": 5,
+              "Text": "tAndE"
+            }
+          ]
+        }
+      ],
+      "Index": 14349,
+      "Length": 487,
+      "Text": "        $.ajax({\r\n            url: Strings.URL_CLASS + `tablesAndEvents/${course.id}`,\r\n            contentType: \"application/json\",\r\n            method: \"GET\",\r\n            success: tAndE => {\r\n                if (!hasMounted.current) return\r\n                Functions.sortEvents(tAndE.events)\r\n                setTableAndEvents(tAndE)\r\n            },\r\n            error: (xhr, status, error) => {\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 16078,
+              "Length": 31,
+              "Text": "if (!hasMounted.current) return"
+            },
+            {
+              "Index": 16123,
+              "Length": 34,
+              "Text": "Functions.sortEvents(tAndE.events)"
+            },
+            {
+              "Index": 16171,
+              "Length": 24,
+              "Text": "setTableAndEvents(tAndE)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 15888,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 16035,
+              "Length": 29,
+              "Text": "const tAndE = response.result"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 15650,
+              "Length": 50,
+              "Text": "Strings.URL_CLASS + `tablesAndEvents/${course.id}`"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 16041,
+              "Length": 5,
+              "Text": "tAndE"
+            }
+          ]
+        }
+      ],
+      "Index": 15622,
+      "Length": 585,
+      "Text": "        Functions.fetchCall(Strings.URL_CLASS + `tablesAndEvents/${course.id}`, {\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n            }).then((response) => {\r\n            if(!response.ok) return\r\n            const tAndE = response.result\r\n            if (!hasMounted.current) return\r\n            Functions.sortEvents(tAndE.events)\r\n            setTableAndEvents(tAndE)\r\n        })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 15133,
+              "Length": 47,
+              "Text": "if (hasMounted.current) setPostStats(postStats)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 14993,
+              "Length": 53,
+              "Text": "data: { courseId: course.id, isMain: course.isMain },"
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": [
+            {
+              "Index": 14999,
+              "Length": 46,
+              "Text": "{ courseId: course.id, isMain: course.isMain }"
+            }
+          ]
+        },
+        {
+          "Label": "meDel",
+          "Captures": []
+        },
+        {
+          "Label": "meGet",
+          "Captures": [
+            {
+              "Index": 14965,
+              "Length": 14,
+              "Text": "method: \"GET\","
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": []
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 15260,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 15060,
+              "Length": 18,
+              "Text": "processData: true,"
+            }
+          ]
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 15101,
+              "Length": 9,
+              "Text": "postStats"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 14873,
+              "Length": 31,
+              "Text": "Strings.URL_CLASS + \"postStats\""
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 15101,
+              "Length": 9,
+              "Text": "postStats"
+            }
+          ]
+        }
+      ],
+      "Index": 14838,
+      "Length": 493,
+      "Text": "        $.ajax({\r\n            url: Strings.URL_CLASS + \"postStats\",\r\n            contentType: \"application/json\",\r\n            method: \"GET\",\r\n            data: { courseId: course.id, isMain: course.isMain },\r\n            processData: true,\r\n            success: postStats => {\r\n                if (hasMounted.current) setPostStats(postStats)\r\n            },\r\n            error: (xhr, status, error) => {\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n        })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 16785,
+              "Length": 47,
+              "Text": "if (hasMounted.current) setPostStats(postStats)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 16285,
+              "Length": 53,
+              "Text": "body: { courseId: course.id, isMain: course.isMain },"
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": [
+            {
+              "Index": 16291,
+              "Length": 46,
+              "Text": "{ courseId: course.id, isMain: course.isMain }"
+            },
+            {
+              "Index": 16359,
+              "Length": 46,
+              "Text": "{ courseId: course.id, isMain: course.isMain }"
+            }
+          ]
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 16591,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 16352,
+              "Length": 54,
+              "Text": "query: { courseId: course.id, isMain: course.isMain },"
+            }
+          ]
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 16738,
+              "Length": 33,
+              "Text": "const postStats = response.result"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 16237,
+              "Length": 31,
+              "Text": "Strings.URL_CLASS + \"postStats\""
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 16744,
+              "Length": 9,
+              "Text": "postStats"
+            }
+          ]
+        }
+      ],
+      "Index": 16209,
+      "Length": 635,
+      "Text": "        Functions.fetchCall(Strings.URL_CLASS + \"postStats\", {\r\n            body: { courseId: course.id, isMain: course.isMain },\r\n            query: { courseId: course.id, isMain: course.isMain },\r\n            notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                console.log(responseText, status, noConnection, noConnectionString)\r\n                console.log(xhr.responseText, status, error)\r\n            }\r\n            }).then((response) => {\r\n            if(!response.ok) return\r\n            const postStats = response.result\r\n            if (hasMounted.current) setPostStats(postStats)\r\n        })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 15725,
+              "Length": 16,
+              "Text": "setShowBut(true)"
+            },
+            {
+              "Index": 15767,
+              "Length": 12,
+              "Text": "setJoinObj({"
+            },
+            {
+              "Index": 15805,
+              "Length": 70,
+              "Text": "    text: hasRequested ? Texts.CANCEL_REQUEST : Texts.REQUEST_TO_JOIN,"
+            },
+            {
+              "Index": 15901,
+              "Length": 61,
+              "Text": "    path: hasRequested ? Paths.UNSUBSCRIBE : Paths.SUBSCRIBE,"
+            },
+            {
+              "Index": 15988,
+              "Length": 67,
+              "Text": "    col: hasRequested ? Objects.ButType.RED : Objects.ButType.GREEN"
+            },
+            {
+              "Index": 16081,
+              "Length": 2,
+              "Text": "})"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": []
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": []
+        },
+        {
+          "Label": "meGet",
+          "Captures": [
+            {
+              "Index": 15572,
+              "Length": 14,
+              "Text": "method: \"GET\","
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": []
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 16187,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": []
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 15672,
+              "Length": 21,
+              "Text": "hasRequested: boolean"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 15686,
+              "Length": 7,
+              "Text": "boolean"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 15495,
+              "Length": 54,
+              "Text": "Strings.URL_NOTICE + `memberRequestCheck/${classe.id}`"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 15672,
+              "Length": 12,
+              "Text": "hasRequested"
+            }
+          ]
+        }
+      ],
+      "Index": 15444,
+      "Length": 830,
+      "Text": "                $.ajax({\r\n                    url: Strings.URL_NOTICE + `memberRequestCheck/${classe.id}`,\r\n                    method: \"GET\",\r\n                    contentType: \"application/json\",\r\n                    success: (hasRequested: boolean) => {\r\n                        setShowBut(true)\r\n                        setJoinObj({\r\n                            text: hasRequested ? Texts.CANCEL_REQUEST : Texts.REQUEST_TO_JOIN,\r\n                            path: hasRequested ? Paths.UNSUBSCRIBE : Paths.SUBSCRIBE,\r\n                            col: hasRequested ? Objects.ButType.RED : Objects.ButType.GREEN\r\n                        })\r\n                    },\r\n                    error: (xhr, status, error) => {\r\n                        console.log(xhr.responseText, status, error)\r\n                    }\r\n                })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 17514,
+              "Length": 16,
+              "Text": "setShowBut(true)"
+            },
+            {
+              "Index": 17552,
+              "Length": 12,
+              "Text": "setJoinObj({"
+            },
+            {
+              "Index": 17586,
+              "Length": 70,
+              "Text": "    text: hasRequested ? Texts.CANCEL_REQUEST : Texts.REQUEST_TO_JOIN,"
+            },
+            {
+              "Index": 17678,
+              "Length": 61,
+              "Text": "    path: hasRequested ? Paths.UNSUBSCRIBE : Paths.SUBSCRIBE,"
+            },
+            {
+              "Index": 17761,
+              "Length": 67,
+              "Text": "    col: hasRequested ? Objects.ButType.RED : Objects.ButType.GREEN"
+            },
+            {
+              "Index": 17850,
+              "Length": 2,
+              "Text": "})"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": []
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 17268,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 17456,
+              "Length": 36,
+              "Text": "const hasRequested = response.result"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": [
+            {
+              "Index": 16992,
+              "Length": 9,
+              "Text": "<boolean>"
+            },
+            {
+              "Index": 16993,
+              "Length": 7,
+              "Text": "boolean"
+            },
+            {
+              "Index": 17374,
+              "Length": 9,
+              "Text": ": boolean"
+            },
+            {
+              "Index": 17376,
+              "Length": 7,
+              "Text": "boolean"
+            }
+          ]
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 17002,
+              "Length": 54,
+              "Text": "Strings.URL_NOTICE + `memberRequestCheck/${classe.id}`"
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 17462,
+              "Length": 12,
+              "Text": "hasRequested"
+            }
+          ]
+        }
+      ],
+      "Index": 16957,
+      "Length": 915,
+      "Text": "                Functions.fetchCall<boolean>(Strings.URL_NOTICE + `memberRequestCheck/${classe.id}`, {\r\n                    notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                        console.log(responseText, status, noConnection, noConnectionString)\r\n                        console.log(xhr.responseText, status, error)\r\n                    }\r\n                    }).then((response: boolean) => {\r\n                    if(!response.ok) return\r\n                    const hasRequested = response.result\r\n                    setShowBut(true)\r\n                    setJoinObj({\r\n                        text: hasRequested ? Texts.CANCEL_REQUEST : Texts.REQUEST_TO_JOIN,\r\n                        path: hasRequested ? Paths.UNSUBSCRIBE : Paths.SUBSCRIBE,\r\n                        col: hasRequested ? Objects.ButType.RED : Objects.ButType.GREEN\r\n                    })\r\n                })"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 17141,
+              "Length": 47,
+              "Text": "if (hasMounted.current) setPostStats(postStats)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 16989,
+              "Length": 53,
+              "Text": "data: { courseId: course.id, isMain: course.isMain },"
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": [
+            {
+              "Index": 16995,
+              "Length": 46,
+              "Text": "{ courseId: course.id, isMain: course.isMain }"
+            }
+          ]
+        },
+        {
+          "Label": "meDel",
+          "Captures": []
+        },
+        {
+          "Label": "meGet",
+          "Captures": [
+            {
+              "Index": 16957,
+              "Length": 14,
+              "Text": "method: \"GET\","
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": []
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 17280,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 17060,
+              "Length": 18,
+              "Text": "processData: true,"
+            }
+          ]
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 17105,
+              "Length": 9,
+              "Text": "postStats"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 16857,
+              "Length": 31,
+              "Text": "Strings.URL_CLASS + \"postStats\""
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 17105,
+              "Length": 9,
+              "Text": "postStats"
+            }
+          ]
+        }
+      ],
+      "Index": 16814,
+      "Length": 545,
+      "Text": "            $.ajax({\r\n                url: Strings.URL_CLASS + \"postStats\",\r\n                contentType: \"application/json\",\r\n                method: \"GET\",\r\n                data: { courseId: course.id, isMain: course.isMain },\r\n                processData: true,\r\n                success: postStats => {\r\n                    if (hasMounted.current) setPostStats(postStats)\r\n                },\r\n                error: (xhr, status, error) => {\r\n                    console.log(xhr.responseText, status, error)\r\n                }\r\n            })"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "act",
+          "Captures": [
+            {
+              "Index": 19032,
+              "Length": 47,
+              "Text": "if (hasMounted.current) setPostStats(postStats)"
+            }
+          ]
+        },
+        {
+          "Label": "comment",
+          "Captures": []
+        },
+        {
+          "Label": "dat",
+          "Captures": [
+            {
+              "Index": 18496,
+              "Length": 53,
+              "Text": "body: { courseId: course.id, isMain: course.isMain },"
+            }
+          ]
+        },
+        {
+          "Label": "data",
+          "Captures": [
+            {
+              "Index": 18502,
+              "Length": 46,
+              "Text": "{ courseId: course.id, isMain: course.isMain }"
+            },
+            {
+              "Index": 18574,
+              "Length": 46,
+              "Text": "{ courseId: course.id, isMain: course.isMain }"
+            }
+          ]
+        },
+        {
+          "Label": "meDel",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "mePost",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 0,
+              "Text": ""
+            }
+          ]
+        },
+        {
+          "Label": "not",
+          "Captures": [
+            {
+              "Index": 18818,
+              "Length": 44,
+              "Text": "console.log(xhr.responseText, status, error)"
+            }
+          ]
+        },
+        {
+          "Label": "proc",
+          "Captures": [
+            {
+              "Index": 18567,
+              "Length": 54,
+              "Text": "query: { courseId: course.id, isMain: course.isMain },"
+            }
+          ]
+        },
+        {
+          "Label": "result",
+          "Captures": [
+            {
+              "Index": 18981,
+              "Length": 33,
+              "Text": "const postStats = response.result"
+            }
+          ]
+        },
+        {
+          "Label": "type",
+          "Captures": []
+        },
+        {
+          "Label": "url",
+          "Captures": [
+            {
+              "Index": 18444,
+              "Length": 31,
+              "Text": "Strings.URL_CLASS + \"postStats\""
+            }
+          ]
+        },
+        {
+          "Label": "var",
+          "Captures": [
+            {
+              "Index": 18987,
+              "Length": 9,
+              "Text": "postStats"
+            }
+          ]
+        }
+      ],
+      "Index": 18412,
+      "Length": 683,
+      "Text": "            Functions.fetchCall(Strings.URL_CLASS + \"postStats\", {\r\n                body: { courseId: course.id, isMain: course.isMain },\r\n                query: { courseId: course.id, isMain: course.isMain },\r\n                notOk: (status, responseText, noConnection, noConnectionString) => {\r\n                    console.log(responseText, status, noConnection, noConnectionString)\r\n                    console.log(xhr.responseText, status, error)\r\n                }\r\n                }).then((response) => {\r\n                if(!response.ok) return\r\n                const postStats = response.result\r\n                if (hasMounted.current) setPostStats(postStats)\r\n            })"
     }
   }
 ]

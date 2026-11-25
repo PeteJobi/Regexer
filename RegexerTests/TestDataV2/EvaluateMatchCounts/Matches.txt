@@ -1,0 +1,553 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "action",
+          "Captures": [
+            {
+              "Index": 3,
+              "Length": 7,
+              "Text": "ordered"
+            },
+            {
+              "Index": 69,
+              "Length": 7,
+              "Text": "planted"
+            },
+            {
+              "Index": 135,
+              "Length": 5,
+              "Text": "baked"
+            },
+            {
+              "Index": 216,
+              "Length": 7,
+              "Text": "arrived"
+            },
+            {
+              "Index": 282,
+              "Length": 7,
+              "Text": "spotted"
+            },
+            {
+              "Index": 355,
+              "Length": 4,
+              "Text": "read"
+            },
+            {
+              "Index": 433,
+              "Length": 8,
+              "Text": "replaced"
+            },
+            {
+              "Index": 488,
+              "Length": 9,
+              "Text": "collected"
+            },
+            {
+              "Index": 566,
+              "Length": 6,
+              "Text": "scored"
+            },
+            {
+              "Index": 630,
+              "Length": 5,
+              "Text": "added"
+            }
+          ]
+        },
+        {
+          "Label": "lines",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 62,
+              "Text": "He ordered 4 pizzas before the big game started on television."
+            },
+            {
+              "Index": 64,
+              "Length": 59,
+              "Text": "They planted 12 trees along the edge of the community park."
+            },
+            {
+              "Index": 125,
+              "Length": 76,
+              "Text": "My sister baked 24 cupcakes for her friend's birthday celebration yesterday."
+            },
+            {
+              "Index": 203,
+              "Length": 74,
+              "Text": "The delivery arrived 30 minutes earlier than we originally expected today."
+            },
+            {
+              "Index": 279,
+              "Length": 68,
+              "Text": "We spotted 8 dolphins swimming playfully near the front of the boat."
+            },
+            {
+              "Index": 349,
+              "Length": 69,
+              "Text": "Sarah read 5 chapters of her new mystery novel before falling asleep."
+            },
+            {
+              "Index": 420,
+              "Length": 60,
+              "Text": "The mechanic replaced 4 tires on the truck in under an hour."
+            },
+            {
+              "Index": 482,
+              "Length": 73,
+              "Text": "David collected 150 stamps from different countries over the past decade."
+            },
+            {
+              "Index": 557,
+              "Length": 62,
+              "Text": "Our team scored 3 goals during the final minutes of the match."
+            },
+            {
+              "Index": 621,
+              "Length": 59,
+              "Text": "The chef added 2 spoons of honey to sweeten the warm sauce."
+            }
+          ]
+        },
+        {
+          "Label": "num",
+          "Captures": [
+            {
+              "Index": 11,
+              "Length": 1,
+              "Text": "4"
+            },
+            {
+              "Index": 77,
+              "Length": 2,
+              "Text": "12"
+            },
+            {
+              "Index": 141,
+              "Length": 2,
+              "Text": "24"
+            },
+            {
+              "Index": 224,
+              "Length": 2,
+              "Text": "30"
+            },
+            {
+              "Index": 290,
+              "Length": 1,
+              "Text": "8"
+            },
+            {
+              "Index": 360,
+              "Length": 1,
+              "Text": "5"
+            },
+            {
+              "Index": 442,
+              "Length": 1,
+              "Text": "4"
+            },
+            {
+              "Index": 498,
+              "Length": 3,
+              "Text": "150"
+            },
+            {
+              "Index": 573,
+              "Length": 1,
+              "Text": "3"
+            },
+            {
+              "Index": 636,
+              "Length": 1,
+              "Text": "2"
+            }
+          ]
+        },
+        {
+          "Label": "others",
+          "Captures": [
+            {
+              "Index": 13,
+              "Length": 49,
+              "Text": "pizzas before the big game started on television."
+            },
+            {
+              "Index": 80,
+              "Length": 43,
+              "Text": "trees along the edge of the community park."
+            },
+            {
+              "Index": 144,
+              "Length": 57,
+              "Text": "cupcakes for her friend's birthday celebration yesterday."
+            },
+            {
+              "Index": 227,
+              "Length": 50,
+              "Text": "minutes earlier than we originally expected today."
+            },
+            {
+              "Index": 292,
+              "Length": 55,
+              "Text": "dolphins swimming playfully near the front of the boat."
+            },
+            {
+              "Index": 362,
+              "Length": 56,
+              "Text": "chapters of her new mystery novel before falling asleep."
+            },
+            {
+              "Index": 444,
+              "Length": 36,
+              "Text": "tires on the truck in under an hour."
+            },
+            {
+              "Index": 502,
+              "Length": 53,
+              "Text": "stamps from different countries over the past decade."
+            },
+            {
+              "Index": 575,
+              "Length": 44,
+              "Text": "goals during the final minutes of the match."
+            },
+            {
+              "Index": 638,
+              "Length": 42,
+              "Text": "spoons of honey to sweeten the warm sauce."
+            }
+          ]
+        },
+        {
+          "Label": "subject",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 2,
+              "Text": "He"
+            },
+            {
+              "Index": 64,
+              "Length": 4,
+              "Text": "They"
+            },
+            {
+              "Index": 125,
+              "Length": 9,
+              "Text": "My sister"
+            },
+            {
+              "Index": 203,
+              "Length": 12,
+              "Text": "The delivery"
+            },
+            {
+              "Index": 279,
+              "Length": 2,
+              "Text": "We"
+            },
+            {
+              "Index": 349,
+              "Length": 5,
+              "Text": "Sarah"
+            },
+            {
+              "Index": 420,
+              "Length": 12,
+              "Text": "The mechanic"
+            },
+            {
+              "Index": 482,
+              "Length": 5,
+              "Text": "David"
+            },
+            {
+              "Index": 557,
+              "Length": 8,
+              "Text": "Our team"
+            },
+            {
+              "Index": 621,
+              "Length": 8,
+              "Text": "The chef"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 680,
+      "Text": "He ordered 4 pizzas before the big game started on television.\r\nThey planted 12 trees along the edge of the community park.\r\nMy sister baked 24 cupcakes for her friend's birthday celebration yesterday.\r\nThe delivery arrived 30 minutes earlier than we originally expected today.\r\nWe spotted 8 dolphins swimming playfully near the front of the boat.\r\nSarah read 5 chapters of her new mystery novel before falling asleep.\r\nThe mechanic replaced 4 tires on the truck in under an hour.\r\nDavid collected 150 stamps from different countries over the past decade.\r\nOur team scored 3 goals during the final minutes of the match.\r\nThe chef added 2 spoons of honey to sweeten the warm sauce."
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "lines",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 67,
+              "Text": "Index: 1, Index reversed: 10, Match count: 1, Sub-matches count: 10"
+            },
+            {
+              "Index": 69,
+              "Length": 66,
+              "Text": "Index: 2, Index reversed: 9, Match count: 1, Sub-matches count: 10"
+            },
+            {
+              "Index": 137,
+              "Length": 66,
+              "Text": "Index: 3, Index reversed: 8, Match count: 1, Sub-matches count: 10"
+            },
+            {
+              "Index": 205,
+              "Length": 66,
+              "Text": "Index: 4, Index reversed: 7, Match count: 1, Sub-matches count: 10"
+            },
+            {
+              "Index": 273,
+              "Length": 66,
+              "Text": "Index: 5, Index reversed: 6, Match count: 1, Sub-matches count: 10"
+            },
+            {
+              "Index": 341,
+              "Length": 66,
+              "Text": "Index: 6, Index reversed: 5, Match count: 1, Sub-matches count: 10"
+            },
+            {
+              "Index": 409,
+              "Length": 66,
+              "Text": "Index: 7, Index reversed: 4, Match count: 1, Sub-matches count: 10"
+            },
+            {
+              "Index": 477,
+              "Length": 66,
+              "Text": "Index: 8, Index reversed: 3, Match count: 1, Sub-matches count: 10"
+            },
+            {
+              "Index": 545,
+              "Length": 66,
+              "Text": "Index: 9, Index reversed: 2, Match count: 1, Sub-matches count: 10"
+            },
+            {
+              "Index": 613,
+              "Length": 67,
+              "Text": "Index: 10, Index reversed: 1, Match count: 1, Sub-matches count: 10"
+            }
+          ]
+        },
+        {
+          "Label": "num",
+          "Captures": [
+            {
+              "Index": 7,
+              "Length": 1,
+              "Text": "1"
+            },
+            {
+              "Index": 26,
+              "Length": 2,
+              "Text": "10"
+            },
+            {
+              "Index": 43,
+              "Length": 1,
+              "Text": "1"
+            },
+            {
+              "Index": 65,
+              "Length": 2,
+              "Text": "10"
+            },
+            {
+              "Index": 76,
+              "Length": 1,
+              "Text": "2"
+            },
+            {
+              "Index": 95,
+              "Length": 1,
+              "Text": "9"
+            },
+            {
+              "Index": 111,
+              "Length": 1,
+              "Text": "1"
+            },
+            {
+              "Index": 133,
+              "Length": 2,
+              "Text": "10"
+            },
+            {
+              "Index": 144,
+              "Length": 1,
+              "Text": "3"
+            },
+            {
+              "Index": 163,
+              "Length": 1,
+              "Text": "8"
+            },
+            {
+              "Index": 179,
+              "Length": 1,
+              "Text": "1"
+            },
+            {
+              "Index": 201,
+              "Length": 2,
+              "Text": "10"
+            },
+            {
+              "Index": 212,
+              "Length": 1,
+              "Text": "4"
+            },
+            {
+              "Index": 231,
+              "Length": 1,
+              "Text": "7"
+            },
+            {
+              "Index": 247,
+              "Length": 1,
+              "Text": "1"
+            },
+            {
+              "Index": 269,
+              "Length": 2,
+              "Text": "10"
+            },
+            {
+              "Index": 280,
+              "Length": 1,
+              "Text": "5"
+            },
+            {
+              "Index": 299,
+              "Length": 1,
+              "Text": "6"
+            },
+            {
+              "Index": 315,
+              "Length": 1,
+              "Text": "1"
+            },
+            {
+              "Index": 337,
+              "Length": 2,
+              "Text": "10"
+            },
+            {
+              "Index": 348,
+              "Length": 1,
+              "Text": "6"
+            },
+            {
+              "Index": 367,
+              "Length": 1,
+              "Text": "5"
+            },
+            {
+              "Index": 383,
+              "Length": 1,
+              "Text": "1"
+            },
+            {
+              "Index": 405,
+              "Length": 2,
+              "Text": "10"
+            },
+            {
+              "Index": 416,
+              "Length": 1,
+              "Text": "7"
+            },
+            {
+              "Index": 435,
+              "Length": 1,
+              "Text": "4"
+            },
+            {
+              "Index": 451,
+              "Length": 1,
+              "Text": "1"
+            },
+            {
+              "Index": 473,
+              "Length": 2,
+              "Text": "10"
+            },
+            {
+              "Index": 484,
+              "Length": 1,
+              "Text": "8"
+            },
+            {
+              "Index": 503,
+              "Length": 1,
+              "Text": "3"
+            },
+            {
+              "Index": 519,
+              "Length": 1,
+              "Text": "1"
+            },
+            {
+              "Index": 541,
+              "Length": 2,
+              "Text": "10"
+            },
+            {
+              "Index": 552,
+              "Length": 1,
+              "Text": "9"
+            },
+            {
+              "Index": 571,
+              "Length": 1,
+              "Text": "2"
+            },
+            {
+              "Index": 587,
+              "Length": 1,
+              "Text": "1"
+            },
+            {
+              "Index": 609,
+              "Length": 2,
+              "Text": "10"
+            },
+            {
+              "Index": 620,
+              "Length": 2,
+              "Text": "10"
+            },
+            {
+              "Index": 640,
+              "Length": 1,
+              "Text": "1"
+            },
+            {
+              "Index": 656,
+              "Length": 1,
+              "Text": "1"
+            },
+            {
+              "Index": 678,
+              "Length": 2,
+              "Text": "10"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 680,
+      "Text": "Index: 1, Index reversed: 10, Match count: 1, Sub-matches count: 10\r\nIndex: 2, Index reversed: 9, Match count: 1, Sub-matches count: 10\r\nIndex: 3, Index reversed: 8, Match count: 1, Sub-matches count: 10\r\nIndex: 4, Index reversed: 7, Match count: 1, Sub-matches count: 10\r\nIndex: 5, Index reversed: 6, Match count: 1, Sub-matches count: 10\r\nIndex: 6, Index reversed: 5, Match count: 1, Sub-matches count: 10\r\nIndex: 7, Index reversed: 4, Match count: 1, Sub-matches count: 10\r\nIndex: 8, Index reversed: 3, Match count: 1, Sub-matches count: 10\r\nIndex: 9, Index reversed: 2, Match count: 1, Sub-matches count: 10\r\nIndex: 10, Index reversed: 1, Match count: 1, Sub-matches count: 10"
+    }
+  }
+]

@@ -1,0 +1,568 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "action",
+          "Captures": [
+            {
+              "Index": 3,
+              "Length": 7,
+              "Text": "ordered"
+            },
+            {
+              "Index": 69,
+              "Length": 7,
+              "Text": "planted"
+            },
+            {
+              "Index": 135,
+              "Length": 5,
+              "Text": "baked"
+            },
+            {
+              "Index": 216,
+              "Length": 7,
+              "Text": "dropped"
+            },
+            {
+              "Index": 283,
+              "Length": 7,
+              "Text": "spotted"
+            },
+            {
+              "Index": 356,
+              "Length": 4,
+              "Text": "read"
+            },
+            {
+              "Index": 434,
+              "Length": 8,
+              "Text": "replaced"
+            },
+            {
+              "Index": 489,
+              "Length": 9,
+              "Text": "collected"
+            },
+            {
+              "Index": 567,
+              "Length": 6,
+              "Text": "scored"
+            },
+            {
+              "Index": 631,
+              "Length": 5,
+              "Text": "added"
+            }
+          ]
+        },
+        {
+          "Label": "items",
+          "Captures": [
+            {
+              "Index": 13,
+              "Length": 6,
+              "Text": "pizzas"
+            },
+            {
+              "Index": 80,
+              "Length": 5,
+              "Text": "trees"
+            },
+            {
+              "Index": 144,
+              "Length": 8,
+              "Text": "cupcakes"
+            },
+            {
+              "Index": 227,
+              "Length": 8,
+              "Text": "packages"
+            },
+            {
+              "Index": 293,
+              "Length": 8,
+              "Text": "dolphins"
+            },
+            {
+              "Index": 363,
+              "Length": 8,
+              "Text": "chapters"
+            },
+            {
+              "Index": 445,
+              "Length": 5,
+              "Text": "tires"
+            },
+            {
+              "Index": 503,
+              "Length": 6,
+              "Text": "stamps"
+            },
+            {
+              "Index": 576,
+              "Length": 5,
+              "Text": "goals"
+            },
+            {
+              "Index": 639,
+              "Length": 6,
+              "Text": "spoons"
+            }
+          ]
+        },
+        {
+          "Label": "lines",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 62,
+              "Text": "He ordered 4 pizzas before the big game started on television."
+            },
+            {
+              "Index": 64,
+              "Length": 59,
+              "Text": "They planted 12 trees along the edge of the community park."
+            },
+            {
+              "Index": 125,
+              "Length": 76,
+              "Text": "My sister baked 24 cupcakes for her friend's birthday celebration yesterday."
+            },
+            {
+              "Index": 203,
+              "Length": 75,
+              "Text": "The delivery dropped 30 packages earlier than we originally expected today."
+            },
+            {
+              "Index": 280,
+              "Length": 68,
+              "Text": "We spotted 8 dolphins swimming playfully near the front of the boat."
+            },
+            {
+              "Index": 350,
+              "Length": 69,
+              "Text": "Sarah read 5 chapters of her new mystery novel before falling asleep."
+            },
+            {
+              "Index": 421,
+              "Length": 60,
+              "Text": "The mechanic replaced 4 tires on the truck in under an hour."
+            },
+            {
+              "Index": 483,
+              "Length": 73,
+              "Text": "David collected 150 stamps from different countries over the past decade."
+            },
+            {
+              "Index": 558,
+              "Length": 62,
+              "Text": "Our team scored 3 goals during the final minutes of the match."
+            },
+            {
+              "Index": 622,
+              "Length": 59,
+              "Text": "The chef added 2 spoons of honey to sweeten the warm sauce."
+            }
+          ]
+        },
+        {
+          "Label": "num",
+          "Captures": [
+            {
+              "Index": 11,
+              "Length": 1,
+              "Text": "4"
+            },
+            {
+              "Index": 77,
+              "Length": 2,
+              "Text": "12"
+            },
+            {
+              "Index": 141,
+              "Length": 2,
+              "Text": "24"
+            },
+            {
+              "Index": 224,
+              "Length": 2,
+              "Text": "30"
+            },
+            {
+              "Index": 291,
+              "Length": 1,
+              "Text": "8"
+            },
+            {
+              "Index": 361,
+              "Length": 1,
+              "Text": "5"
+            },
+            {
+              "Index": 443,
+              "Length": 1,
+              "Text": "4"
+            },
+            {
+              "Index": 499,
+              "Length": 3,
+              "Text": "150"
+            },
+            {
+              "Index": 574,
+              "Length": 1,
+              "Text": "3"
+            },
+            {
+              "Index": 637,
+              "Length": 1,
+              "Text": "2"
+            }
+          ]
+        },
+        {
+          "Label": "others",
+          "Captures": [
+            {
+              "Index": 20,
+              "Length": 42,
+              "Text": "before the big game started on television."
+            },
+            {
+              "Index": 86,
+              "Length": 37,
+              "Text": "along the edge of the community park."
+            },
+            {
+              "Index": 153,
+              "Length": 48,
+              "Text": "for her friend's birthday celebration yesterday."
+            },
+            {
+              "Index": 236,
+              "Length": 42,
+              "Text": "earlier than we originally expected today."
+            },
+            {
+              "Index": 302,
+              "Length": 46,
+              "Text": "swimming playfully near the front of the boat."
+            },
+            {
+              "Index": 372,
+              "Length": 47,
+              "Text": "of her new mystery novel before falling asleep."
+            },
+            {
+              "Index": 451,
+              "Length": 30,
+              "Text": "on the truck in under an hour."
+            },
+            {
+              "Index": 510,
+              "Length": 46,
+              "Text": "from different countries over the past decade."
+            },
+            {
+              "Index": 582,
+              "Length": 38,
+              "Text": "during the final minutes of the match."
+            },
+            {
+              "Index": 646,
+              "Length": 35,
+              "Text": "of honey to sweeten the warm sauce."
+            }
+          ]
+        },
+        {
+          "Label": "subject",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 2,
+              "Text": "He"
+            },
+            {
+              "Index": 64,
+              "Length": 4,
+              "Text": "They"
+            },
+            {
+              "Index": 125,
+              "Length": 9,
+              "Text": "My sister"
+            },
+            {
+              "Index": 203,
+              "Length": 12,
+              "Text": "The delivery"
+            },
+            {
+              "Index": 280,
+              "Length": 2,
+              "Text": "We"
+            },
+            {
+              "Index": 350,
+              "Length": 5,
+              "Text": "Sarah"
+            },
+            {
+              "Index": 421,
+              "Length": 12,
+              "Text": "The mechanic"
+            },
+            {
+              "Index": 483,
+              "Length": 5,
+              "Text": "David"
+            },
+            {
+              "Index": 558,
+              "Length": 8,
+              "Text": "Our team"
+            },
+            {
+              "Index": 622,
+              "Length": 8,
+              "Text": "The chef"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 681,
+      "Text": "He ordered 4 pizzas before the big game started on television.\r\nThey planted 12 trees along the edge of the community park.\r\nMy sister baked 24 cupcakes for her friend's birthday celebration yesterday.\r\nThe delivery dropped 30 packages earlier than we originally expected today.\r\nWe spotted 8 dolphins swimming playfully near the front of the boat.\r\nSarah read 5 chapters of her new mystery novel before falling asleep.\r\nThe mechanic replaced 4 tires on the truck in under an hour.\r\nDavid collected 150 stamps from different countries over the past decade.\r\nOur team scored 3 goals during the final minutes of the match.\r\nThe chef added 2 spoons of honey to sweeten the warm sauce."
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "action",
+          "Captures": [
+            {
+              "Index": 22,
+              "Length": 7,
+              "Text": "ordered"
+            },
+            {
+              "Index": 53,
+              "Length": 7,
+              "Text": "planted"
+            },
+            {
+              "Index": 87,
+              "Length": 5,
+              "Text": "baked"
+            },
+            {
+              "Index": 119,
+              "Length": 7,
+              "Text": "dropped"
+            },
+            {
+              "Index": 152,
+              "Length": 7,
+              "Text": "spotted"
+            },
+            {
+              "Index": 185,
+              "Length": 4,
+              "Text": "read"
+            },
+            {
+              "Index": 212,
+              "Length": 8,
+              "Text": "replaced"
+            },
+            {
+              "Index": 246,
+              "Length": 9,
+              "Text": "collected"
+            },
+            {
+              "Index": 278,
+              "Length": 6,
+              "Text": "scored"
+            },
+            {
+              "Index": 308,
+              "Length": 5,
+              "Text": "added"
+            }
+          ]
+        },
+        {
+          "Label": "items",
+          "Captures": [
+            {
+              "Index": 10,
+              "Length": 6,
+              "Text": "pizzas"
+            },
+            {
+              "Index": 42,
+              "Length": 5,
+              "Text": "trees"
+            },
+            {
+              "Index": 73,
+              "Length": 8,
+              "Text": "cupcakes"
+            },
+            {
+              "Index": 105,
+              "Length": 8,
+              "Text": "packages"
+            },
+            {
+              "Index": 138,
+              "Length": 8,
+              "Text": "dolphins"
+            },
+            {
+              "Index": 171,
+              "Length": 8,
+              "Text": "chapters"
+            },
+            {
+              "Index": 201,
+              "Length": 5,
+              "Text": "tires"
+            },
+            {
+              "Index": 234,
+              "Length": 6,
+              "Text": "stamps"
+            },
+            {
+              "Index": 267,
+              "Length": 5,
+              "Text": "goals"
+            },
+            {
+              "Index": 296,
+              "Length": 6,
+              "Text": "spoons"
+            }
+          ]
+        },
+        {
+          "Label": "lines",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 29,
+              "Text": "So far, 4 pizzas were ordered"
+            },
+            {
+              "Index": 31,
+              "Length": 29,
+              "Text": "So far, 12 trees were planted"
+            },
+            {
+              "Index": 62,
+              "Length": 30,
+              "Text": "So far, 24 cupcakes were baked"
+            },
+            {
+              "Index": 94,
+              "Length": 32,
+              "Text": "So far, 30 packages were dropped"
+            },
+            {
+              "Index": 128,
+              "Length": 31,
+              "Text": "So far, 8 dolphins were spotted"
+            },
+            {
+              "Index": 161,
+              "Length": 28,
+              "Text": "So far, 5 chapters were read"
+            },
+            {
+              "Index": 191,
+              "Length": 29,
+              "Text": "So far, 4 tires were replaced"
+            },
+            {
+              "Index": 222,
+              "Length": 33,
+              "Text": "So far, 150 stamps were collected"
+            },
+            {
+              "Index": 257,
+              "Length": 27,
+              "Text": "So far, 3 goals were scored"
+            },
+            {
+              "Index": 286,
+              "Length": 27,
+              "Text": "So far, 2 spoons were added"
+            }
+          ]
+        },
+        {
+          "Label": "num",
+          "Captures": [
+            {
+              "Index": 8,
+              "Length": 1,
+              "Text": "4"
+            },
+            {
+              "Index": 39,
+              "Length": 2,
+              "Text": "12"
+            },
+            {
+              "Index": 70,
+              "Length": 2,
+              "Text": "24"
+            },
+            {
+              "Index": 102,
+              "Length": 2,
+              "Text": "30"
+            },
+            {
+              "Index": 136,
+              "Length": 1,
+              "Text": "8"
+            },
+            {
+              "Index": 169,
+              "Length": 1,
+              "Text": "5"
+            },
+            {
+              "Index": 199,
+              "Length": 1,
+              "Text": "4"
+            },
+            {
+              "Index": 230,
+              "Length": 3,
+              "Text": "150"
+            },
+            {
+              "Index": 265,
+              "Length": 1,
+              "Text": "3"
+            },
+            {
+              "Index": 294,
+              "Length": 1,
+              "Text": "2"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 313,
+      "Text": "So far, 4 pizzas were ordered\r\nSo far, 12 trees were planted\r\nSo far, 24 cupcakes were baked\r\nSo far, 30 packages were dropped\r\nSo far, 8 dolphins were spotted\r\nSo far, 5 chapters were read\r\nSo far, 4 tires were replaced\r\nSo far, 150 stamps were collected\r\nSo far, 3 goals were scored\r\nSo far, 2 spoons were added"
+    }
+  }
+]

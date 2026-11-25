@@ -1,0 +1,118 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "item",
+          "Captures": [
+            {
+              "Index": 11,
+              "Length": 6,
+              "Text": "cables"
+            },
+            {
+              "Index": 21,
+              "Length": 7,
+              "Text": "bottles"
+            },
+            {
+              "Index": 32,
+              "Length": 5,
+              "Text": "bowls"
+            },
+            {
+              "Index": 42,
+              "Length": 5,
+              "Text": "ropes"
+            }
+          ]
+        },
+        {
+          "Label": "items",
+          "Captures": [
+            {
+              "Index": 9,
+              "Length": 8,
+              "Text": "5 cables"
+            },
+            {
+              "Index": 19,
+              "Length": 9,
+              "Text": "2 bottles"
+            },
+            {
+              "Index": 30,
+              "Length": 7,
+              "Text": "8 bowls"
+            },
+            {
+              "Index": 39,
+              "Length": 8,
+              "Text": "10 ropes"
+            }
+          ]
+        },
+        {
+          "Label": "num",
+          "Captures": [
+            {
+              "Index": 9,
+              "Length": 1,
+              "Text": "5"
+            },
+            {
+              "Index": 19,
+              "Length": 1,
+              "Text": "2"
+            },
+            {
+              "Index": 30,
+              "Length": 1,
+              "Text": "8"
+            },
+            {
+              "Index": 39,
+              "Length": 2,
+              "Text": "10"
+            }
+          ]
+        }
+      ],
+      "Index": 9,
+      "Length": 38,
+      "Text": "5 cables, 2 bottles, 8 bowls, 10 ropes"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "items",
+          "Captures": [
+            {
+              "Index": 9,
+              "Length": 9,
+              "Text": "2 bottles"
+            },
+            {
+              "Index": 20,
+              "Length": 8,
+              "Text": "5 cables"
+            },
+            {
+              "Index": 30,
+              "Length": 7,
+              "Text": "8 bowls"
+            },
+            {
+              "Index": 39,
+              "Length": 8,
+              "Text": "10 ropes"
+            }
+          ]
+        }
+      ],
+      "Index": 9,
+      "Length": 38,
+      "Text": "2 bottles, 5 cables, 8 bowls, 10 ropes"
+    }
+  }
+]

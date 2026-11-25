@@ -1,0 +1,362 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 36,
+              "Text": "Disposable cups, plates, and napkins"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 36,
+      "Text": "Disposable cups, plates, and napkins"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 19,
+              "Length": 36,
+              "Text": "disposable cups, plates, and napkins"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 55,
+      "Text": "Peter first bought disposable cups, plates, and napkins"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 38,
+              "Length": 11,
+              "Text": "Bags of ice"
+            }
+          ]
+        }
+      ],
+      "Index": 38,
+      "Length": 11,
+      "Text": "Bags of ice"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 78,
+              "Length": 11,
+              "Text": "bags of ice"
+            }
+          ]
+        }
+      ],
+      "Index": 57,
+      "Length": 32,
+      "Text": "..and then he bought bags of ice"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 51,
+              "Length": 32,
+              "Text": "Assorted sodas and bottled water"
+            }
+          ]
+        }
+      ],
+      "Index": 51,
+      "Length": 32,
+      "Text": "Assorted sodas and bottled water"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 112,
+              "Length": 32,
+              "Text": "assorted sodas and bottled water"
+            }
+          ]
+        }
+      ],
+      "Index": 91,
+      "Length": 53,
+      "Text": "..and then he bought assorted sodas and bottled water"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 85,
+              "Length": 37,
+              "Text": "Tortilla chips and salsa or guacamole"
+            }
+          ]
+        }
+      ],
+      "Index": 85,
+      "Length": 37,
+      "Text": "Tortilla chips and salsa or guacamole"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 167,
+              "Length": 37,
+              "Text": "tortilla chips and salsa or guacamole"
+            }
+          ]
+        }
+      ],
+      "Index": 146,
+      "Length": 58,
+      "Text": "..and then he bought tortilla chips and salsa or guacamole"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 124,
+              "Length": 22,
+              "Text": "Balloons and streamers"
+            }
+          ]
+        }
+      ],
+      "Index": 124,
+      "Length": 22,
+      "Text": "Balloons and streamers"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 227,
+              "Length": 22,
+              "Text": "balloons and streamers"
+            }
+          ]
+        }
+      ],
+      "Index": 206,
+      "Length": 43,
+      "Text": "..and then he bought balloons and streamers"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 148,
+              "Length": 38,
+              "Text": "Paper towels and heavy-duty trash bags"
+            }
+          ]
+        }
+      ],
+      "Index": 148,
+      "Length": 38,
+      "Text": "Paper towels and heavy-duty trash bags"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 272,
+              "Length": 38,
+              "Text": "paper towels and heavy-duty trash bags"
+            }
+          ]
+        }
+      ],
+      "Index": 251,
+      "Length": 59,
+      "Text": "..and then he bought paper towels and heavy-duty trash bags"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 188,
+              "Length": 60,
+              "Text": "Charcuterie items (crackers, sliced cheese, and cured meats)"
+            }
+          ]
+        }
+      ],
+      "Index": 188,
+      "Length": 60,
+      "Text": "Charcuterie items (crackers, sliced cheese, and cured meats)"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 333,
+              "Length": 60,
+              "Text": "charcuterie items (crackers, sliced cheese, and cured meats)"
+            }
+          ]
+        }
+      ],
+      "Index": 312,
+      "Length": 81,
+      "Text": "..and then he bought charcuterie items (crackers, sliced cheese, and cured meats)"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 250,
+              "Length": 16,
+              "Text": "Plastic utensils"
+            }
+          ]
+        }
+      ],
+      "Index": 250,
+      "Length": 16,
+      "Text": "Plastic utensils"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 416,
+              "Length": 16,
+              "Text": "plastic utensils"
+            }
+          ]
+        }
+      ],
+      "Index": 395,
+      "Length": 37,
+      "Text": "..and then he bought plastic utensils"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 268,
+              "Length": 34,
+              "Text": "String lights or tea light candles"
+            }
+          ]
+        }
+      ],
+      "Index": 268,
+      "Length": 34,
+      "Text": "String lights or tea light candles"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 455,
+              "Length": 34,
+              "Text": "string lights or tea light candles"
+            }
+          ]
+        }
+      ],
+      "Index": 434,
+      "Length": 55,
+      "Text": "..and then he bought string lights or tea light candles"
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 304,
+              "Length": 17,
+              "Text": "Assorted cupcakes"
+            }
+          ]
+        }
+      ],
+      "Index": 304,
+      "Length": 17,
+      "Text": "Assorted cupcakes"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "bought",
+          "Captures": [
+            {
+              "Index": 515,
+              "Length": 17,
+              "Text": "assorted cupcakes"
+            }
+          ]
+        }
+      ],
+      "Index": 491,
+      "Length": 41,
+      "Text": "..and finally he bought assorted cupcakes"
+    }
+  }
+]

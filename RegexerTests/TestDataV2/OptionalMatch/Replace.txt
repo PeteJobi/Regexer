@@ -1,0 +1,2 @@
+﻿       [[_args|o|//Parameters passed: [[var|m|, ]].]][[_args|oi|//No parameters passed.]]
+[[namespace]].[[method]]([[_args]]);

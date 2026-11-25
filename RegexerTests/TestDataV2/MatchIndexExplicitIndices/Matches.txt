@@ -1,0 +1,258 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "header",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 53,
+              "Text": "My TODO list (I've completed items 2, 4, 5, 6 and 10)"
+            }
+          ]
+        },
+        {
+          "Label": "item",
+          "Captures": [
+            {
+              "Index": 57,
+              "Length": 30,
+              "Text": "1. Reply to unread work emails"
+            },
+            {
+              "Index": 89,
+              "Length": 49,
+              "Text": "2. Pay the monthly electricity and internet bills"
+            },
+            {
+              "Index": 140,
+              "Length": 31,
+              "Text": "3. Pick up groceries for dinner"
+            },
+            {
+              "Index": 173,
+              "Length": 33,
+              "Text": "4. Schedule a dentist appointment"
+            },
+            {
+              "Index": 208,
+              "Length": 24,
+              "Text": "5. Drop off dry cleaning"
+            },
+            {
+              "Index": 234,
+              "Length": 26,
+              "Text": "6. Water the indoor plants"
+            },
+            {
+              "Index": 262,
+              "Length": 23,
+              "Text": "7. Call Mom to catch up"
+            },
+            {
+              "Index": 287,
+              "Length": 40,
+              "Text": "8. Back up important files on the laptop"
+            },
+            {
+              "Index": 329,
+              "Length": 29,
+              "Text": "9. Clean out the refrigerator"
+            },
+            {
+              "Index": 360,
+              "Length": 27,
+              "Text": "10. Go for a 30-minute walk"
+            }
+          ]
+        },
+        {
+          "Label": "todo",
+          "Captures": [
+            {
+              "Index": 57,
+              "Length": 30,
+              "Text": "1. Reply to unread work emails"
+            },
+            {
+              "Index": 89,
+              "Length": 49,
+              "Text": "2. Pay the monthly electricity and internet bills"
+            },
+            {
+              "Index": 140,
+              "Length": 31,
+              "Text": "3. Pick up groceries for dinner"
+            },
+            {
+              "Index": 173,
+              "Length": 33,
+              "Text": "4. Schedule a dentist appointment"
+            },
+            {
+              "Index": 208,
+              "Length": 24,
+              "Text": "5. Drop off dry cleaning"
+            },
+            {
+              "Index": 234,
+              "Length": 26,
+              "Text": "6. Water the indoor plants"
+            },
+            {
+              "Index": 262,
+              "Length": 23,
+              "Text": "7. Call Mom to catch up"
+            },
+            {
+              "Index": 287,
+              "Length": 40,
+              "Text": "8. Back up important files on the laptop"
+            },
+            {
+              "Index": 329,
+              "Length": 29,
+              "Text": "9. Clean out the refrigerator"
+            },
+            {
+              "Index": 360,
+              "Length": 27,
+              "Text": "10. Go for a 30-minute walk"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 387,
+      "Text": "My TODO list (I've completed items 2, 4, 5, 6 and 10)\r\n\r\n1. Reply to unread work emails\r\n2. Pay the monthly electricity and internet bills\r\n3. Pick up groceries for dinner\r\n4. Schedule a dentist appointment\r\n5. Drop off dry cleaning\r\n6. Water the indoor plants\r\n7. Call Mom to catch up\r\n8. Back up important files on the laptop\r\n9. Clean out the refrigerator\r\n10. Go for a 30-minute walk"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "header",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 53,
+              "Text": "My TODO list (I've completed items 2, 4, 5, 6 and 10)"
+            }
+          ]
+        },
+        {
+          "Label": "item",
+          "Captures": [
+            {
+              "Index": 57,
+              "Length": 30,
+              "Text": "1. Reply to unread work emails"
+            },
+            {
+              "Index": 89,
+              "Length": 49,
+              "Text": "2. Pay the monthly electricity and internet bills"
+            },
+            {
+              "Index": 152,
+              "Length": 31,
+              "Text": "3. Pick up groceries for dinner"
+            },
+            {
+              "Index": 185,
+              "Length": 33,
+              "Text": "4. Schedule a dentist appointment"
+            },
+            {
+              "Index": 232,
+              "Length": 24,
+              "Text": "5. Drop off dry cleaning"
+            },
+            {
+              "Index": 270,
+              "Length": 26,
+              "Text": "6. Water the indoor plants"
+            },
+            {
+              "Index": 310,
+              "Length": 23,
+              "Text": "7. Call Mom to catch up"
+            },
+            {
+              "Index": 335,
+              "Length": 40,
+              "Text": "8. Back up important files on the laptop"
+            },
+            {
+              "Index": 377,
+              "Length": 29,
+              "Text": "9. Clean out the refrigerator"
+            },
+            {
+              "Index": 408,
+              "Length": 27,
+              "Text": "10. Go for a 30-minute walk"
+            }
+          ]
+        },
+        {
+          "Label": "todo",
+          "Captures": [
+            {
+              "Index": 57,
+              "Length": 30,
+              "Text": "1. Reply to unread work emails"
+            },
+            {
+              "Index": 89,
+              "Length": 61,
+              "Text": "2. Pay the monthly electricity and internet bills (Completed)"
+            },
+            {
+              "Index": 152,
+              "Length": 31,
+              "Text": "3. Pick up groceries for dinner"
+            },
+            {
+              "Index": 185,
+              "Length": 45,
+              "Text": "4. Schedule a dentist appointment (Completed)"
+            },
+            {
+              "Index": 232,
+              "Length": 36,
+              "Text": "5. Drop off dry cleaning (Completed)"
+            },
+            {
+              "Index": 270,
+              "Length": 38,
+              "Text": "6. Water the indoor plants (Completed)"
+            },
+            {
+              "Index": 310,
+              "Length": 23,
+              "Text": "7. Call Mom to catch up"
+            },
+            {
+              "Index": 335,
+              "Length": 40,
+              "Text": "8. Back up important files on the laptop"
+            },
+            {
+              "Index": 377,
+              "Length": 29,
+              "Text": "9. Clean out the refrigerator"
+            },
+            {
+              "Index": 408,
+              "Length": 39,
+              "Text": "10. Go for a 30-minute walk (Completed)"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 447,
+      "Text": "My TODO list (I've completed items 2, 4, 5, 6 and 10)\r\n\r\n1. Reply to unread work emails\r\n2. Pay the monthly electricity and internet bills (Completed)\r\n3. Pick up groceries for dinner\r\n4. Schedule a dentist appointment (Completed)\r\n5. Drop off dry cleaning (Completed)\r\n6. Water the indoor plants (Completed)\r\n7. Call Mom to catch up\r\n8. Back up important files on the laptop\r\n9. Clean out the refrigerator\r\n10. Go for a 30-minute walk (Completed)"
+    }
+  }
+]

@@ -1,0 +1,1 @@
+﻿[[lines|ml|Index: [[num|e|j]], Index reversed: [[num|e|d-j+1]], Match count: [[num|e|c]], Sub-matches count: [[num|e|d]]]]

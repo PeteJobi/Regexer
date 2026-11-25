@@ -1,0 +1,778 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "i",
+          "Captures": [
+            {
+              "Index": 68,
+              "Length": 71,
+              "Text": "Fresh sourdough loaves are pulled from the oven at five in the morning."
+            },
+            {
+              "Index": 146,
+              "Length": 57,
+              "Text": "The smell of cinnamon rolls drifts down the quiet street."
+            },
+            {
+              "Index": 210,
+              "Length": 67,
+              "Text": "Early commuters often stop by for a quick cup of dark roast coffee."
+            },
+            {
+              "Index": 284,
+              "Length": 49,
+              "Text": "Regular customers always greet the baker by name."
+            }
+          ]
+        },
+        {
+          "Label": "info",
+          "Captures": [
+            {
+              "Index": 66,
+              "Length": 73,
+              "Text": "- Fresh sourdough loaves are pulled from the oven at five in the morning."
+            },
+            {
+              "Index": 144,
+              "Length": 59,
+              "Text": "- The smell of cinnamon rolls drifts down the quiet street."
+            },
+            {
+              "Index": 208,
+              "Length": 69,
+              "Text": "- Early commuters often stop by for a quick cup of dark roast coffee."
+            },
+            {
+              "Index": 282,
+              "Length": 51,
+              "Text": "- Regular customers always greet the baker by name."
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 0,
+              "Length": 61,
+              "Text": "The neighborhood bakery opens its doors before the sun rises."
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 333,
+      "Text": "The neighborhood bakery opens its doors before the sun rises.\r\n   - Fresh sourdough loaves are pulled from the oven at five in the morning.\r\n   - The smell of cinnamon rolls drifts down the quiet street.\r\n   - Early commuters often stop by for a quick cup of dark roast coffee.\r\n   - Regular customers always greet the baker by name."
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "i",
+          "Captures": [
+            {
+              "Index": 74,
+              "Length": 71,
+              "Text": "Fresh sourdough loaves are pulled from the oven at five in the morning."
+            },
+            {
+              "Index": 155,
+              "Length": 57,
+              "Text": "The smell of cinnamon rolls drifts down the quiet street."
+            },
+            {
+              "Index": 222,
+              "Length": 67,
+              "Text": "Early commuters often stop by for a quick cup of dark roast coffee."
+            },
+            {
+              "Index": 299,
+              "Length": 49,
+              "Text": "Regular customers always greet the baker by name."
+            }
+          ]
+        },
+        {
+          "Label": "info",
+          "Captures": [
+            {
+              "Index": 69,
+              "Length": 76,
+              "Text": "1.1. Fresh sourdough loaves are pulled from the oven at five in the morning."
+            },
+            {
+              "Index": 150,
+              "Length": 62,
+              "Text": "1.2. The smell of cinnamon rolls drifts down the quiet street."
+            },
+            {
+              "Index": 217,
+              "Length": 72,
+              "Text": "1.3. Early commuters often stop by for a quick cup of dark roast coffee."
+            },
+            {
+              "Index": 294,
+              "Length": 54,
+              "Text": "1.4. Regular customers always greet the baker by name."
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 3,
+              "Length": 61,
+              "Text": "The neighborhood bakery opens its doors before the sun rises."
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 348,
+      "Text": "1. The neighborhood bakery opens its doors before the sun rises.\r\n   1.1. Fresh sourdough loaves are pulled from the oven at five in the morning.\r\n   1.2. The smell of cinnamon rolls drifts down the quiet street.\r\n   1.3. Early commuters often stop by for a quick cup of dark roast coffee.\r\n   1.4. Regular customers always greet the baker by name."
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "i",
+          "Captures": [
+            {
+              "Index": 404,
+              "Length": 67,
+              "Text": "Packing a waterproof tent protects against unexpected rain showers."
+            },
+            {
+              "Index": 478,
+              "Length": 65,
+              "Text": "Extra batteries and a sturdy flashlight are essential after dark."
+            },
+            {
+              "Index": 550,
+              "Length": 71,
+              "Text": "Bringing plenty of drinking water keeps everyone hydrated on the trail."
+            }
+          ]
+        },
+        {
+          "Label": "info",
+          "Captures": [
+            {
+              "Index": 402,
+              "Length": 69,
+              "Text": "- Packing a waterproof tent protects against unexpected rain showers."
+            },
+            {
+              "Index": 476,
+              "Length": 67,
+              "Text": "- Extra batteries and a sturdy flashlight are essential after dark."
+            },
+            {
+              "Index": 548,
+              "Length": 73,
+              "Text": "- Bringing plenty of drinking water keeps everyone hydrated on the trail."
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 335,
+              "Length": 62,
+              "Text": "Planning a weekend camping trip requires a reliable checklist."
+            }
+          ]
+        }
+      ],
+      "Index": 335,
+      "Length": 286,
+      "Text": "Planning a weekend camping trip requires a reliable checklist.\r\n   - Packing a waterproof tent protects against unexpected rain showers.\r\n   - Extra batteries and a sturdy flashlight are essential after dark.\r\n   - Bringing plenty of drinking water keeps everyone hydrated on the trail."
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "i",
+          "Captures": [
+            {
+              "Index": 425,
+              "Length": 67,
+              "Text": "Packing a waterproof tent protects against unexpected rain showers."
+            },
+            {
+              "Index": 502,
+              "Length": 65,
+              "Text": "Extra batteries and a sturdy flashlight are essential after dark."
+            },
+            {
+              "Index": 577,
+              "Length": 71,
+              "Text": "Bringing plenty of drinking water keeps everyone hydrated on the trail."
+            }
+          ]
+        },
+        {
+          "Label": "info",
+          "Captures": [
+            {
+              "Index": 420,
+              "Length": 72,
+              "Text": "2.1. Packing a waterproof tent protects against unexpected rain showers."
+            },
+            {
+              "Index": 497,
+              "Length": 70,
+              "Text": "2.2. Extra batteries and a sturdy flashlight are essential after dark."
+            },
+            {
+              "Index": 572,
+              "Length": 76,
+              "Text": "2.3. Bringing plenty of drinking water keeps everyone hydrated on the trail."
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 353,
+              "Length": 62,
+              "Text": "Planning a weekend camping trip requires a reliable checklist."
+            }
+          ]
+        }
+      ],
+      "Index": 350,
+      "Length": 298,
+      "Text": "2. Planning a weekend camping trip requires a reliable checklist.\r\n   2.1. Packing a waterproof tent protects against unexpected rain showers.\r\n   2.2. Extra batteries and a sturdy flashlight are essential after dark.\r\n   2.3. Bringing plenty of drinking water keeps everyone hydrated on the trail."
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "i",
+          "Captures": [
+            {
+              "Index": 705,
+              "Length": 71,
+              "Text": "Practicing vocabulary for fifteen minutes a day builds steady momentum."
+            },
+            {
+              "Index": 783,
+              "Length": 69,
+              "Text": "Watching foreign films helps train the ear to natural speech rhythms."
+            },
+            {
+              "Index": 859,
+              "Length": 58,
+              "Text": "Speaking with native speakers boosts confidence over time."
+            },
+            {
+              "Index": 924,
+              "Length": 75,
+              "Text": "Reading children's books provides an accessible way to grasp basic grammar."
+            },
+            {
+              "Index": 1006,
+              "Length": 63,
+              "Text": "Keeping a small notebook for new idioms makes reviewing easier."
+            }
+          ]
+        },
+        {
+          "Label": "info",
+          "Captures": [
+            {
+              "Index": 703,
+              "Length": 73,
+              "Text": "- Practicing vocabulary for fifteen minutes a day builds steady momentum."
+            },
+            {
+              "Index": 781,
+              "Length": 71,
+              "Text": "- Watching foreign films helps train the ear to natural speech rhythms."
+            },
+            {
+              "Index": 857,
+              "Length": 60,
+              "Text": "- Speaking with native speakers boosts confidence over time."
+            },
+            {
+              "Index": 922,
+              "Length": 77,
+              "Text": "- Reading children's books provides an accessible way to grasp basic grammar."
+            },
+            {
+              "Index": 1004,
+              "Length": 65,
+              "Text": "- Keeping a small notebook for new idioms makes reviewing easier."
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 623,
+              "Length": 75,
+              "Text": "Learning a new language opens doors to different cultures and perspectives."
+            }
+          ]
+        }
+      ],
+      "Index": 623,
+      "Length": 446,
+      "Text": "Learning a new language opens doors to different cultures and perspectives.\r\n   - Practicing vocabulary for fifteen minutes a day builds steady momentum.\r\n   - Watching foreign films helps train the ear to natural speech rhythms.\r\n   - Speaking with native speakers boosts confidence over time.\r\n   - Reading children's books provides an accessible way to grasp basic grammar.\r\n   - Keeping a small notebook for new idioms makes reviewing easier."
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "i",
+          "Captures": [
+            {
+              "Index": 738,
+              "Length": 71,
+              "Text": "Practicing vocabulary for fifteen minutes a day builds steady momentum."
+            },
+            {
+              "Index": 819,
+              "Length": 69,
+              "Text": "Watching foreign films helps train the ear to natural speech rhythms."
+            },
+            {
+              "Index": 898,
+              "Length": 58,
+              "Text": "Speaking with native speakers boosts confidence over time."
+            },
+            {
+              "Index": 966,
+              "Length": 75,
+              "Text": "Reading children's books provides an accessible way to grasp basic grammar."
+            },
+            {
+              "Index": 1051,
+              "Length": 63,
+              "Text": "Keeping a small notebook for new idioms makes reviewing easier."
+            }
+          ]
+        },
+        {
+          "Label": "info",
+          "Captures": [
+            {
+              "Index": 733,
+              "Length": 76,
+              "Text": "3.1. Practicing vocabulary for fifteen minutes a day builds steady momentum."
+            },
+            {
+              "Index": 814,
+              "Length": 74,
+              "Text": "3.2. Watching foreign films helps train the ear to natural speech rhythms."
+            },
+            {
+              "Index": 893,
+              "Length": 63,
+              "Text": "3.3. Speaking with native speakers boosts confidence over time."
+            },
+            {
+              "Index": 961,
+              "Length": 80,
+              "Text": "3.4. Reading children's books provides an accessible way to grasp basic grammar."
+            },
+            {
+              "Index": 1046,
+              "Length": 68,
+              "Text": "3.5. Keeping a small notebook for new idioms makes reviewing easier."
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 653,
+              "Length": 75,
+              "Text": "Learning a new language opens doors to different cultures and perspectives."
+            }
+          ]
+        }
+      ],
+      "Index": 650,
+      "Length": 464,
+      "Text": "3. Learning a new language opens doors to different cultures and perspectives.\r\n   3.1. Practicing vocabulary for fifteen minutes a day builds steady momentum.\r\n   3.2. Watching foreign films helps train the ear to natural speech rhythms.\r\n   3.3. Speaking with native speakers boosts confidence over time.\r\n   3.4. Reading children's books provides an accessible way to grasp basic grammar.\r\n   3.5. Keeping a small notebook for new idioms makes reviewing easier."
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "i",
+          "Captures": [
+            {
+              "Index": 1149,
+              "Length": 71,
+              "Text": "Neighbors share tools, seeds, and gardening tips throughout the season."
+            }
+          ]
+        },
+        {
+          "Label": "info",
+          "Captures": [
+            {
+              "Index": 1147,
+              "Length": 73,
+              "Text": "- Neighbors share tools, seeds, and gardening tips throughout the season."
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 1071,
+              "Length": 71,
+              "Text": "Urban community gardens transform empty lots into vibrant green spaces."
+            }
+          ]
+        }
+      ],
+      "Index": 1071,
+      "Length": 149,
+      "Text": "Urban community gardens transform empty lots into vibrant green spaces.\r\n   - Neighbors share tools, seeds, and gardening tips throughout the season."
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "i",
+          "Captures": [
+            {
+              "Index": 1200,
+              "Length": 71,
+              "Text": "Neighbors share tools, seeds, and gardening tips throughout the season."
+            }
+          ]
+        },
+        {
+          "Label": "info",
+          "Captures": [
+            {
+              "Index": 1195,
+              "Length": 76,
+              "Text": "4.1. Neighbors share tools, seeds, and gardening tips throughout the season."
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 1119,
+              "Length": 71,
+              "Text": "Urban community gardens transform empty lots into vibrant green spaces."
+            }
+          ]
+        }
+      ],
+      "Index": 1116,
+      "Length": 155,
+      "Text": "4. Urban community gardens transform empty lots into vibrant green spaces.\r\n   4.1. Neighbors share tools, seeds, and gardening tips throughout the season."
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "i",
+          "Captures": [
+            {
+              "Index": 1305,
+              "Length": 69,
+              "Text": "Cleaning rust off old chrome frames requires patience and steel wool."
+            },
+            {
+              "Index": 1381,
+              "Length": 61,
+              "Text": "Replacing worn brake cables ensures the bike is safe to ride."
+            },
+            {
+              "Index": 1449,
+              "Length": 69,
+              "Text": "Finding original parts often involves searching through flea markets."
+            },
+            {
+              "Index": 1525,
+              "Length": 62,
+              "Text": "A fresh coat of enamel paint gives the frame a brand-new look."
+            },
+            {
+              "Index": 1594,
+              "Length": 63,
+              "Text": "Tuning the gears properly makes pedaling smooth and effortless."
+            },
+            {
+              "Index": 1664,
+              "Length": 56,
+              "Text": "Adding a leather saddle completes the classic aesthetic."
+            }
+          ]
+        },
+        {
+          "Label": "info",
+          "Captures": [
+            {
+              "Index": 1303,
+              "Length": 71,
+              "Text": "- Cleaning rust off old chrome frames requires patience and steel wool."
+            },
+            {
+              "Index": 1379,
+              "Length": 63,
+              "Text": "- Replacing worn brake cables ensures the bike is safe to ride."
+            },
+            {
+              "Index": 1447,
+              "Length": 71,
+              "Text": "- Finding original parts often involves searching through flea markets."
+            },
+            {
+              "Index": 1523,
+              "Length": 64,
+              "Text": "- A fresh coat of enamel paint gives the frame a brand-new look."
+            },
+            {
+              "Index": 1592,
+              "Length": 65,
+              "Text": "- Tuning the gears properly makes pedaling smooth and effortless."
+            },
+            {
+              "Index": 1662,
+              "Length": 58,
+              "Text": "- Adding a leather saddle completes the classic aesthetic."
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 1222,
+              "Length": 76,
+              "Text": "Restoring vintage bicycles has become a popular hobby for weekend mechanics."
+            }
+          ]
+        }
+      ],
+      "Index": 1222,
+      "Length": 498,
+      "Text": "Restoring vintage bicycles has become a popular hobby for weekend mechanics.\r\n   - Cleaning rust off old chrome frames requires patience and steel wool.\r\n   - Replacing worn brake cables ensures the bike is safe to ride.\r\n   - Finding original parts often involves searching through flea markets.\r\n   - A fresh coat of enamel paint gives the frame a brand-new look.\r\n   - Tuning the gears properly makes pedaling smooth and effortless.\r\n   - Adding a leather saddle completes the classic aesthetic."
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "i",
+          "Captures": [
+            {
+              "Index": 1362,
+              "Length": 69,
+              "Text": "Cleaning rust off old chrome frames requires patience and steel wool."
+            },
+            {
+              "Index": 1441,
+              "Length": 61,
+              "Text": "Replacing worn brake cables ensures the bike is safe to ride."
+            },
+            {
+              "Index": 1512,
+              "Length": 69,
+              "Text": "Finding original parts often involves searching through flea markets."
+            },
+            {
+              "Index": 1591,
+              "Length": 62,
+              "Text": "A fresh coat of enamel paint gives the frame a brand-new look."
+            },
+            {
+              "Index": 1663,
+              "Length": 63,
+              "Text": "Tuning the gears properly makes pedaling smooth and effortless."
+            },
+            {
+              "Index": 1736,
+              "Length": 56,
+              "Text": "Adding a leather saddle completes the classic aesthetic."
+            }
+          ]
+        },
+        {
+          "Label": "info",
+          "Captures": [
+            {
+              "Index": 1357,
+              "Length": 74,
+              "Text": "5.1. Cleaning rust off old chrome frames requires patience and steel wool."
+            },
+            {
+              "Index": 1436,
+              "Length": 66,
+              "Text": "5.2. Replacing worn brake cables ensures the bike is safe to ride."
+            },
+            {
+              "Index": 1507,
+              "Length": 74,
+              "Text": "5.3. Finding original parts often involves searching through flea markets."
+            },
+            {
+              "Index": 1586,
+              "Length": 67,
+              "Text": "5.4. A fresh coat of enamel paint gives the frame a brand-new look."
+            },
+            {
+              "Index": 1658,
+              "Length": 68,
+              "Text": "5.5. Tuning the gears properly makes pedaling smooth and effortless."
+            },
+            {
+              "Index": 1731,
+              "Length": 61,
+              "Text": "5.6. Adding a leather saddle completes the classic aesthetic."
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 1276,
+              "Length": 76,
+              "Text": "Restoring vintage bicycles has become a popular hobby for weekend mechanics."
+            }
+          ]
+        }
+      ],
+      "Index": 1273,
+      "Length": 519,
+      "Text": "5. Restoring vintage bicycles has become a popular hobby for weekend mechanics.\r\n   5.1. Cleaning rust off old chrome frames requires patience and steel wool.\r\n   5.2. Replacing worn brake cables ensures the bike is safe to ride.\r\n   5.3. Finding original parts often involves searching through flea markets.\r\n   5.4. A fresh coat of enamel paint gives the frame a brand-new look.\r\n   5.5. Tuning the gears properly makes pedaling smooth and effortless.\r\n   5.6. Adding a leather saddle completes the classic aesthetic."
+    }
+  },
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "i",
+          "Captures": [
+            {
+              "Index": 1789,
+              "Length": 73,
+              "Text": "New soundproof study pods were installed for remote workers and students."
+            },
+            {
+              "Index": 1869,
+              "Length": 59,
+              "Text": "Large windows now let in plenty of natural afternoon light."
+            },
+            {
+              "Index": 1935,
+              "Length": 79,
+              "Text": "The expanded archive section holds rare local newspapers from the last century."
+            }
+          ]
+        },
+        {
+          "Label": "info",
+          "Captures": [
+            {
+              "Index": 1787,
+              "Length": 75,
+              "Text": "- New soundproof study pods were installed for remote workers and students."
+            },
+            {
+              "Index": 1867,
+              "Length": 61,
+              "Text": "- Large windows now let in plenty of natural afternoon light."
+            },
+            {
+              "Index": 1933,
+              "Length": 81,
+              "Text": "- The expanded archive section holds rare local newspapers from the last century."
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 1722,
+              "Length": 60,
+              "Text": "The city library recently renovated its entire second floor."
+            }
+          ]
+        }
+      ],
+      "Index": 1722,
+      "Length": 292,
+      "Text": "The city library recently renovated its entire second floor.\r\n   - New soundproof study pods were installed for remote workers and students.\r\n   - Large windows now let in plenty of natural afternoon light.\r\n   - The expanded archive section holds rare local newspapers from the last century."
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "i",
+          "Captures": [
+            {
+              "Index": 1867,
+              "Length": 73,
+              "Text": "New soundproof study pods were installed for remote workers and students."
+            },
+            {
+              "Index": 1950,
+              "Length": 59,
+              "Text": "Large windows now let in plenty of natural afternoon light."
+            },
+            {
+              "Index": 2019,
+              "Length": 79,
+              "Text": "The expanded archive section holds rare local newspapers from the last century."
+            }
+          ]
+        },
+        {
+          "Label": "info",
+          "Captures": [
+            {
+              "Index": 1862,
+              "Length": 78,
+              "Text": "6.1. New soundproof study pods were installed for remote workers and students."
+            },
+            {
+              "Index": 1945,
+              "Length": 64,
+              "Text": "6.2. Large windows now let in plenty of natural afternoon light."
+            },
+            {
+              "Index": 2014,
+              "Length": 84,
+              "Text": "6.3. The expanded archive section holds rare local newspapers from the last century."
+            }
+          ]
+        },
+        {
+          "Label": "line",
+          "Captures": [
+            {
+              "Index": 1797,
+              "Length": 60,
+              "Text": "The city library recently renovated its entire second floor."
+            }
+          ]
+        }
+      ],
+      "Index": 1794,
+      "Length": 304,
+      "Text": "6. The city library recently renovated its entire second floor.\r\n   6.1. New soundproof study pods were installed for remote workers and students.\r\n   6.2. Large windows now let in plenty of natural afternoon light.\r\n   6.3. The expanded archive section holds rare local newspapers from the last century."
+    }
+  }
+]

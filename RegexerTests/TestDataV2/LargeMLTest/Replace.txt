@@ -1,4 +1,4 @@
-﻿Functions.fetchCall([[url]], {[[comment]]
+﻿Functions.fetchCall[[type|o|<[[type]]>]]([[url]], {[[comment]]
     [[dat|u|body: [[data]],]]
     [[proc|u|query: [[data]],]]
     [[mePost|u|method: "post",]]
@@ -7,7 +7,8 @@
         console.log(responseText, status, noConnection, noConnectionString)
         [[not|ml]]
     }
-}).then((response) => {
+    }).then((response[[type|o|: [[type]]]]) => {
     if(!response.ok) return
+    [[result|o|const [[var]] = response.result]]
     [[act|ml]]
 })
