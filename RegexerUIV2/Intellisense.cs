@@ -208,7 +208,7 @@ namespace RegexerUIV2
                                 break;
                             case TokenName.DemarcateAfterLabel:
                                 if(AlreadyAddedP(symbol)) break;
-                                if (suggestionToken.Ancestors[0] == TokenName.KeyPattern)
+                                if (suggestionToken.Ancestors.Count > 1 && suggestionToken.Ancestors[^2] == TokenName.KeyPattern)
                                     allSuggestions.Add(new SuggestionItem("| <Match number modifiers>", symbol.Value, GetResource("MatchNumModifierTitle"), GetResource("MatchNumModifierText")));
                                 else allSuggestions.Add(_isReplace
                                     ? new SuggestionItem("| <Replace modifiers>", symbol.Value, GetResource("ReplaceModifierTitle"), GetResource("ReplaceModifierText"))
@@ -381,7 +381,7 @@ namespace RegexerUIV2
                                     case ",":
                                         allSuggestions.Add(suggestionToken.Ancestors[^1] switch
                                         {
-                                            TokenName.MatchMultipleSortByCapture => new SuggestionItem(", (Sort again)", symbol.Value, GetResource("MatchMultipleSortAgainTitle"), GetResource("MatchMultipleSortAgainText")),
+                                            TokenName.MatchMultipleReorder => new SuggestionItem(", (Sort again)", symbol.Value, GetResource("MatchMultipleSortAgainTitle"), GetResource("MatchMultipleSortAgainText")),
                                             TokenName.Indices => new SuggestionItem(", (More match numbers)", symbol.Value),
                                             TokenName.StartIntervalEnd => new SuggestionItem(", (Interval and/or end match number)", symbol.Value, GetResource("MatchIntervalEndText"), string.Empty),
                                             _ => throw new ArgumentOutOfRangeException()
