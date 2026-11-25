@@ -52,7 +52,7 @@ namespace RegexerUIV2
         private readonly Regexer.Parser _regexerParser = new ();
         private readonly Dictionary<Style, StyleIndex> _allStyles = new();
         private readonly HashSet<string> _patternLabels = new();
-        private readonly HashSet<string> _patternUmLabels = new();
+        private readonly HashSet<string> _patternWithCapturesLabels = new();
         private readonly Dictionary<string, StyleIndex> _labelStyleIndices = new();
         private readonly Dictionary<string, SolidBrush> _labelStyleBrushes = new();
         private readonly List<int> _findStylingOrder = new();
@@ -151,7 +151,7 @@ namespace RegexerUIV2
             if (!isReplacePattern)
             {
                 _patternLabels.Clear();
-                _patternUmLabels.Clear();
+                _patternWithCapturesLabels.Clear();
             }
             Highlight(tokens);
             void Highlight(IEnumerable<SyntaxStructure.Token> tokens)
@@ -169,8 +169,8 @@ namespace RegexerUIV2
                                 var label = textBox.Text.Substring(freeTextToken.Index, freeTextToken.Length);
                                 _patternLabels.Add(label);
                                 if ((tokensArray.Length > 3 && tokensArray[3].Name == SyntaxStructure.TokenName.MatchMultiple)
-                                    || (tokensArray.Length > 4 && textBox.Text.AsSpan(tokensArray[4].Index, tokensArray[4].Length) is "u"))
-                                    _patternUmLabels.Add(label);
+                                    || (tokensArray.Length > 4 && textBox.Text.AsSpan(tokensArray[4].Index, tokensArray[4].Length) is "u" or "ml"))
+                                    _patternWithCapturesLabels.Add(label);
                             }
                             foreach (var escapeIndex in freeTextToken.EscapeIndices)
                                 textBox.GetRange(escapeIndex, escapeIndex + 1).SetStyle(_allStyles[Style.Escape]);
@@ -237,7 +237,7 @@ namespace RegexerUIV2
                 var findMatch = matchPairs[0].InputMatch.IndividualMatches[i];
                 var replaceMatches = matchPairs[0].OutputMatch.IndividualMatches;
                 _labelStyleIndices.Add(findMatch.Label, Range.ToStyleIndex(i + 1));
-                if(_patternUmLabels.Contains(findMatch.Label))
+                if(_patternWithCapturesLabels.Contains(findMatch.Label))
                 {
                     _findStylingOrder.Insert(0, i);
                     if (replaceMatches.Count > _replaceStylingOrder.Count && replaceMatches[_replaceStylingOrder.Count].Label == findMatch.Label)
