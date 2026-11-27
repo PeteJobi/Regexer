@@ -93,6 +93,7 @@ namespace RegexerUIV2
                         Style.Label => BaseStyle,
                         Style.Separator => new TextStyle(Brushes.BlueViolet, BaseBrush, FontStyle.Bold),
                         Style.KeyLetter => new TextStyle(Brushes.CornflowerBlue, BaseBrush, FontStyle.Bold),
+                        Style.Param => new TextStyle(Brushes.ForestGreen, BaseBrush, FontStyle.Bold),
                         Style.Regex => new TextStyle(Brushes.Brown, BaseBrush, FontStyle.Bold),
                         Style.BaseLight => new TextStyle(null, BaseBrushLight, FontStyle.Regular),
                         _ => throw new ArgumentOutOfRangeException()
@@ -187,7 +188,10 @@ namespace RegexerUIV2
                                     textBox.GetRange(complexToken.Index, complexToken.Index + complexToken.Length).SetStyle(BaseStyleIndex);
                                     break;
                                 case SyntaxStructure.TokenName.ExactAmountQuantifier:
-                                    textBox.GetRange(complexToken.Index, complexToken.Index + complexToken.Length).SetStyle(_allStyles[Style.KeyLetter]);
+                                case SyntaxStructure.TokenName.MatchMultipleSortByCapture:
+                                case SyntaxStructure.TokenName.Indices:
+                                case SyntaxStructure.TokenName.StartIntervalEnd:
+                                    textBox.GetRange(complexToken.Index, complexToken.Index + complexToken.Length).SetStyle(_allStyles[Style.Param]);
                                     break;
                                 case SyntaxStructure.TokenName.Unordered:
                                     //complexToken.Children[0] is whitespace, which should have no style.
@@ -378,7 +382,7 @@ namespace RegexerUIV2
 
         public void SetHighlightMode(bool partialHighlighting) => _monoColouredHighlight = partialHighlighting;
 
-        private enum Style{ Escape, Label, Separator, KeyLetter, Regex, BaseLight }
+        private enum Style{ Escape, Label, Separator, KeyLetter, Param, Regex, BaseLight }
 
         public class CellMatchData
         {
