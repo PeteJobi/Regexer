@@ -1004,13 +1004,17 @@ namespace RegexerV2
             //Basically: $"(?:{precedingSpace}{singleLineStructure}(?:{NewLineWithPrefixSpace()}{precedingSpace}{singleLineStructure})quantifierInner)quantifierOuter";
             //Or with preceding new line: $"(?:{NewLineWithPrefixSpace()}{precedingSpace}{singleLineStructure})quantifierOuter";
             var elements = multiLineToken.Children;
-            var label = pattern.Substring(elements[2].Index, elements[2].Length);
-            if (patternMap.ContainsKey(label))
+            string? label = null;
+            if (elements[2].Name == TokenName.Label)
             {
-                patternBuilder.Append($"\\k<{label}>");
-                return;
+                label = pattern.Substring(elements[2].Index, elements[2].Length);
+                if (patternMap.ContainsKey(label))
+                {
+                    patternBuilder.Append($"\\k<{label}>");
+                    return;
+                }
+                patternMap.Add(label, new PatternData(label));
             }
-            patternMap.Add(label, new PatternData(label));
             var spaceStartIndexOffset = pattern[elements[0].Index] == '\r' && pattern[elements[0].Index + 1] == '\n' ? 2 : 0;
             var precedingSpace = pattern.AsSpan(elements[0].Index + spaceStartIndexOffset, elements[0].Length - spaceStartIndexOffset);
             var hasPrecedingNewLine = spaceStartIndexOffset != 0;
@@ -1020,12 +1024,12 @@ namespace RegexerV2
             var singleLineStructureStartIndex = patternBuilder.Length;
             if (hasPrecedingNewLine) patternBuilder.Append(NewLineWithPrefixSpace()).Append(precedingSpace);
             else patternBuilder.Append(precedingSpace); //At start of pattern, no need to match a new line before the first line
-            patternBuilder.Append($"(?<{label}>");
+            if (label != null) patternBuilder.Append($"(?<{label}>");
             var restriction = @"[^\r\n]".AsSpan();
             var quantifier = "*".AsSpan();
             var quantifierInner = "*?".AsSpan();
             var quantifierOuter = hasPrecedingNewLine ? "+?" : ReadOnlySpan<char>.Empty;
-            var extrasIndex = 6;
+            var extrasIndex = label != null ? 6 : 4;
             if (elements.Count - 2 > extrasIndex)
             {
                 if (elements[extrasIndex].Name is TokenName.Quantifier or TokenName.ExactAmountQuantifier)
@@ -1044,7 +1048,7 @@ namespace RegexerV2
                 else patternBuilder.Append($"{restriction}{quantifier}");
             }
             else patternBuilder.Append($"{restriction}{quantifier}");
-            patternBuilder.Append(')');
+            if (label != null) patternBuilder.Append(')');
             var singleLineStructureLength = patternBuilder.Length - singleLineStructureStartIndex;
             if (!hasPrecedingNewLine)
             {

@@ -1,0 +1,48 @@
+[
+  {
+    "InputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "w",
+          "Captures": [
+            {
+              "Index": 5,
+              "Length": 5,
+              "Text": "apple"
+            },
+            {
+              "Index": 14,
+              "Length": 4,
+              "Text": "ball"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 21,
+      "Text": "[\r\n  apple\r\n  ball\r\n]"
+    },
+    "OutputMatch": {
+      "IndividualMatches": [
+        {
+          "Label": "w",
+          "Captures": [
+            {
+              "Index": 5,
+              "Length": 5,
+              "Text": "apple"
+            },
+            {
+              "Index": 14,
+              "Length": 4,
+              "Text": "ball"
+            }
+          ]
+        }
+      ],
+      "Index": 0,
+      "Length": 21,
+      "Text": "{\r\n  apple\r\n  ball\r\n}"
+    }
+  }
+]

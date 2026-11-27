@@ -92,8 +92,13 @@ namespace RegexerV2
             Contents = [
                 new Whitespace{ Type = WhitespaceType.START_OF_LINE },
                 OpenerSymbol,
-                LabelBeforeDemarcate,
-                DemarcateAfterLabelSymbol,
+                new Vary(StructureQuantifier.ZERO_OR_ONE, new And
+                {
+                    Contents = [
+                        LabelBeforeDemarcate,
+                        DemarcateAfterLabelSymbol
+                    ]
+                }),
                 new Modifier("ml"),
                 new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                 {
