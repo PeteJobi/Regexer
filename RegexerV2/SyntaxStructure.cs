@@ -451,13 +451,13 @@ namespace RegexerV2
                 {
                     Contents =
                     [
-                        new Symbol("<>"){ Name = TokenName.MatchMultipleSortByCapture }, //The tokenName is for highlighting purposes only, it is not used in parsing
+                        new Symbol("<>"),
                         new Vary(StructureQuantifier.ONE_OR_MORE, new And
                         {
                             Name = TokenName.MatchMultipleSortByCapture,
                             Contents =
                             [
-                                new Or { Contents = [new Symbol(">"){ Name = TokenName.MatchMultipleSortByCapture }, new Symbol("<"){ Name = TokenName.MatchMultipleSortByCapture }] },
+                                new Or { Contents = [new Symbol(">"), new Symbol("<")] },
                                 new Vary(StructureQuantifier.ZERO_OR_ONE, new And
                                 {
                                     Contents =

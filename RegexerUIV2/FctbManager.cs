@@ -210,7 +210,6 @@ namespace RegexerUIV2
                                     textBox.GetRange(token.Index, token.Index + token.Length).SetStyle(_allStyles[Style.Separator]);
                                     break;
                                 case SyntaxStructure.TokenName.Modifier:
-                                case SyntaxStructure.TokenName.MatchMultipleSortByCapture:
                                     textBox.GetRange(token.Index, token.Index + token.Length).SetStyle(_allStyles[Style.KeyLetter]);
                                     break;
                             }
